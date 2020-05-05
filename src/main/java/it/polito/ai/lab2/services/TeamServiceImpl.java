@@ -86,7 +86,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public List<StudentDTO> getEnrolledStudents(String courseName) throws CourseNotFoundException {
         if(!courseRepository.existsById(courseName))
-            throw new CourseNotFoundException("Il corso indicato non esiste");
+            throw new CourseNotFoundException(courseName);
         return courseRepository
                 .getOne(courseName)
                 .getStudents()
@@ -98,16 +98,16 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public boolean addStudentToCourse(String studentId, String courseName) throws CourseNotFoundException, StudentNotFoundException {
         if(!courseRepository.existsById(courseName))
-            throw new CourseNotFoundException("Il corso indicato non esiste");
+            throw new CourseNotFoundException(courseName);
         if(!studentRepository.existsById(studentId))
-            throw new StudentNotFoundException("Lo studente indicato non esiste");
+            throw new StudentNotFoundException(studentId);
 
         List<Student> students = courseRepository
                 .getOne(courseName)
                 .getStudents();
 
-        for(int i = 0; i<students.size(); i++) {
-            if(students.get(i).getId().equals(studentId))
+        for (Student student : students) {
+            if (student.getId().equals(studentId))
                 return false;
         }
 
@@ -121,7 +121,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public void enableCourse(String courseName) throws CourseNotFoundException {
         if(!courseRepository.existsById(courseName))
-            throw new CourseNotFoundException("Il corso indicato non esiste");
+            throw new CourseNotFoundException(courseName);
 
         courseRepository
                 .getOne(courseName)
@@ -131,7 +131,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public void disableCourse(String courseName) throws CourseNotFoundException {
         if(!courseRepository.existsById(courseName))
-            throw new CourseNotFoundException("Il corso indicato non esiste");
+            throw new CourseNotFoundException(courseName);
 
         courseRepository
                 .getOne(courseName)
@@ -150,7 +150,7 @@ public class TeamServiceImpl implements TeamService {
     public List<Boolean> enrollAll(List<String> studentIds, String courseName) throws CourseNotFoundException, StudentNotFoundException {
         List<Boolean> successes = new ArrayList<Boolean>();
         if(!courseRepository.existsById(courseName))
-            throw new CourseNotFoundException("Il corso indicato non esiste");
+            throw new CourseNotFoundException(courseName);
         for(int i = 0; i<studentIds.size(); i++) {
             try {
                 successes.add(addStudentToCourse(studentIds.get(i), courseName));
@@ -181,7 +181,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public List<CourseDTO> getCourses(String studentId) throws StudentNotFoundException {
         if(!studentRepository.existsById(studentId))
-            throw new StudentNotFoundException("Lo studente indicato non esiste");
+            throw new StudentNotFoundException(studentId);
 
         return studentRepository
                 .getOne(studentId)
@@ -194,7 +194,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public List<TeamDTO> getTeamsForStudent(String studentId) throws StudentNotFoundException {
         if(!studentRepository.existsById(studentId))
-            throw new StudentNotFoundException("Lo studente indicato non esiste");
+            throw new StudentNotFoundException(studentId);
         return studentRepository
                 .getOne(studentId)
                 .getTeams()
@@ -206,7 +206,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public List<StudentDTO> getMembers(Long teamId) throws TeamNotFoundException {
         if(!teamRepository.existsById(teamId))
-            throw new TeamNotFoundException("Il team indicato non esiste");
+            throw new TeamNotFoundException(teamId.toString());
         return teamRepository
                 .getOne(teamId)
                 .getMembers()
@@ -216,23 +216,23 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public TeamDTO proposeTeam(String courseId, String name, List<String> memberIds)
+    public TeamDTO proposeTeam(String courseName, String name, List<String> memberIds)
         throws CourseNotFoundException, StudentNotFoundException {
 
         Team team;
         List<Student> members = new ArrayList<>();
 
-        if(!courseRepository.existsById(courseId))
-            throw new CourseNotFoundException("Il corso indicato non esiste");
+        if(!courseRepository.existsById(courseName))
+            throw new CourseNotFoundException(courseName);
 
         team = Team.builder()
                 .name(name)
                 .members(members)
                 .build();
-        team.setCourse(courseRepository.getOne(courseId));
+        team.setCourse(courseRepository.getOne(courseName));
 
-        for(int i = 0; i<memberIds.size(); i++)
-            team.addMember(studentRepository.getOne(memberIds.get(i)));
+        for (String memberId : memberIds)
+            team.addMember(studentRepository.getOne(memberId));
 
         Team t = teamRepository.save(team);
 
@@ -242,7 +242,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public List<TeamDTO> getTeamForCourse(String courseName) throws CourseNotFoundException {
         if(!courseRepository.existsById(courseName))
-            throw new CourseNotFoundException("Il corso indicato non esiste");
+            throw new CourseNotFoundException(courseName);
 
         return courseRepository
                 .getOne(courseName)
@@ -255,7 +255,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public List<StudentDTO> getStudentsInTeams(String courseName) throws CourseNotFoundException {
         if(!courseRepository.existsById(courseName))
-            throw new CourseNotFoundException("Il corso indicato non esiste");
+            throw new CourseNotFoundException(courseName);
 
         return courseRepository
                 .getStudentsInTeams(courseName)
@@ -267,7 +267,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public List<StudentDTO> getAvailableStudents(String courseName) throws CourseNotFoundException {
         if(!courseRepository.existsById(courseName))
-            throw new CourseNotFoundException("Il corso indicato non esiste");
+            throw new CourseNotFoundException(courseName);
 
         return courseRepository
                 .getStudentsNotInTeams(courseName)

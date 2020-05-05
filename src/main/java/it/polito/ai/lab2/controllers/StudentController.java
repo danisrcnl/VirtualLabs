@@ -1,13 +1,11 @@
 package it.polito.ai.lab2.controllers;
 
+import it.polito.ai.lab2.dtos.CourseDTO;
 import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -37,5 +35,13 @@ public class StudentController {
             return ModelHelper.enrich(student.get());
         else
             throw new ResponseStatusException(HttpStatus.CONFLICT, id);
+    }
+
+    @PostMapping({"", "/"})
+    public StudentDTO addStudent(@RequestBody StudentDTO studentDTO) throws ResponseStatusException {
+        if(teamService.addStudent(studentDTO))
+            return ModelHelper.enrich(studentDTO);
+        else
+            throw new ResponseStatusException(HttpStatus.CONFLICT, studentDTO.getId());
     }
 }

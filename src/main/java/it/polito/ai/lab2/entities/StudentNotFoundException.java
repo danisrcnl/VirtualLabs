@@ -4,8 +4,8 @@ import it.polito.ai.lab2.services.TeamServiceException;
 
 public class StudentNotFoundException extends TeamServiceException {
 
-    public StudentNotFoundException(String msg) {
-        System.out.println(msg);
+    public StudentNotFoundException(String id) {
+        System.out.println(id + " not found!");
     }
 
 }
