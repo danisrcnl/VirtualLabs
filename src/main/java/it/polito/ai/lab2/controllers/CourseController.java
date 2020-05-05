@@ -2,7 +2,6 @@ package it.polito.ai.lab2.controllers;
 
 import it.polito.ai.lab2.dtos.CourseDTO;
 import it.polito.ai.lab2.dtos.StudentDTO;
-import it.polito.ai.lab2.entities.Course;
 import it.polito.ai.lab2.entities.CourseNotFoundException;
 import it.polito.ai.lab2.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +55,16 @@ public class CourseController {
             return ModelHelper.enrich(courseDTO);
         else
             throw new ResponseStatusException(HttpStatus.CONFLICT, courseDTO.getName());
+    }
+
+    @PostMapping({"/{name}/enrollOne"})
+    public List<StudentDTO> enrollOne(@PathVariable String name, @RequestBody StudentDTO studentDTO) throws ResponseStatusException {
+        Optional<CourseDTO> course = teamService.getCourse(name);
+        if(!course.isPresent())
+            throw new ResponseStatusException(HttpStatus.CONFLICT, name);
+        if(!teamService.addStudentToCourse(studentDTO.getId(), name))
+            throw new ResponseStatusException(HttpStatus.CONFLICT, studentDTO.getId());
+        return enrolledStudents(name);
     }
 
 }
