@@ -16,7 +16,7 @@ public class ModelHelper {
     }
 
     public static StudentDTO enrich(StudentDTO studentDTO) {
-        Link link = linkTo(methodOn(StudentController.class).getOne(studentDTO.getName())).withSelfRel();
+        Link link = linkTo(methodOn(StudentController.class).getOne(studentDTO.getId())).withSelfRel();
         studentDTO.add(link);
         return studentDTO;
     }
