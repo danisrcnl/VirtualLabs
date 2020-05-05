@@ -20,14 +20,6 @@ import java.util.List;
 public class Lab2Application {
 
     @Bean
-    CommandLineRunner runner (TeamService teamService) {
-        return new CommandLineRunner() {
-            @Override
-            public void run(String... args) throws Exception { }
-        };
-    }
-
-    @Bean
     ModelMapper modelMapper() {
         return new ModelMapper();
     }

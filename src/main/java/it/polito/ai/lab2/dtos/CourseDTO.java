@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class CourseDTO {
+public class CourseDTO extends RepresentationModel<CourseDTO> {
 
     private String name;
     private int min;
