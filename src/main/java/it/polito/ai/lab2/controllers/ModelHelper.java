@@ -8,8 +8,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 public class ModelHelper {
 
     public static CourseDTO enrich(CourseDTO courseDTO) {
-        Link link = linkTo(methodOn(CourseController.class).getOne(courseDTO.getName())).withSelfRel();
-        courseDTO.add(link);
+        Link self = linkTo(methodOn(CourseController.class).getOne(courseDTO.getName())).withSelfRel();
+        Link enrolled = linkTo(methodOn(CourseController.class).enrolledStudents(courseDTO.getName())).withRel("enrolled");
+        courseDTO.add(self);
+        courseDTO.add(enrolled);
         return courseDTO;
     }
 
