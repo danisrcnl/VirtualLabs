@@ -2,14 +2,12 @@ package it.polito.ai.lab2.controllers;
 
 import it.polito.ai.lab2.dtos.CourseDTO;
 import it.polito.ai.lab2.dtos.StudentDTO;
+import it.polito.ai.lab2.entities.Course;
 import it.polito.ai.lab2.entities.CourseNotFoundException;
 import it.polito.ai.lab2.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -42,7 +40,7 @@ public class CourseController {
     }
 
     @GetMapping("/{name}/enrolled")
-    List<StudentDTO> enrolledStudents(@PathVariable String name) throws ResponseStatusException {
+    public List<StudentDTO> enrolledStudents(@PathVariable String name) throws ResponseStatusException {
         List<StudentDTO> enrolled;
         try {
             enrolled = teamService.getEnrolledStudents(name);
@@ -50,6 +48,14 @@ public class CourseController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, name);
         }
         return enrolled;
+    }
+
+    @PostMapping({"", "/"})
+    public CourseDTO addCourse(@RequestBody CourseDTO courseDTO) throws ResponseStatusException {
+        if(teamService.addCourse(courseDTO))
+            return ModelHelper.enrich(courseDTO);
+        else
+            throw new ResponseStatusException(HttpStatus.CONFLICT, courseDTO.getName());
     }
 
 }
