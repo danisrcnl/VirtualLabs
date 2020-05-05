@@ -1,6 +1,6 @@
 package it.polito.ai.lab2.controllers;
 
-import it.polito.ai.lab2.dtos.CourseDTO;
+import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,28 +15,27 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/API/courses")
-public class CourseController {
+@RequestMapping("/API/students")
+public class StudentController {
 
     @Autowired
     TeamService teamService;
 
-    @GetMapping({"", "/"})
-    public List<CourseDTO> all() {
+    @GetMapping({"/", ""})
+    public List<StudentDTO> all() {
         return teamService
-                .getAllCourses()
+                .getAllStudents()
                 .stream()
                 .map(ModelHelper::enrich)
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/{name}")
-    public CourseDTO getOne(@PathVariable String name) throws ResponseStatusException {
-        Optional<CourseDTO> course = teamService.getCourse(name);
-        if(course.isPresent())
-            return ModelHelper.enrich(course.get());
+    @GetMapping("/{id}")
+    public StudentDTO getOne(@PathVariable String id) throws ResponseStatusException {
+        Optional<StudentDTO> student = teamService.getStudent(id);
+        if(student.isPresent())
+            return ModelHelper.enrich(student.get());
         else
-            throw new ResponseStatusException(HttpStatus.CONFLICT, name);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, id);
     }
-
 }
