@@ -231,8 +231,15 @@ public class TeamServiceImpl implements TeamService {
                 .build();
         team.setCourse(courseRepository.getOne(courseName));
 
-        for (String memberId : memberIds)
+        List<String> availableIds = getAvailableStudents(courseName)
+                .stream()
+                .map(StudentDTO::getId)
+                .collect(Collectors.toList());
+        for (String memberId : memberIds) {
+            if(!availableIds.contains(memberId))
+                throw new TeamServiceException();
             team.addMember(studentRepository.getOne(memberId));
+        }
 
         Team t = teamRepository.save(team);
 
