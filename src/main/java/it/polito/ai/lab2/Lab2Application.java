@@ -1,14 +1,6 @@
 package it.polito.ai.lab2;
-
-import it.polito.ai.lab2.dtos.CourseDTO;
-import it.polito.ai.lab2.dtos.StudentDTO;
-import it.polito.ai.lab2.entities.Course;
-import it.polito.ai.lab2.entities.Student;
-import it.polito.ai.lab2.repositories.CourseRepository;
-import it.polito.ai.lab2.repositories.StudentRepository;
-import it.polito.ai.lab2.services.NotificationService;
-import it.polito.ai.lab2.services.NotificationServiceImpl;
-import it.polito.ai.lab2.services.TeamService;
+import it.polito.ai.lab2.entities.Token;
+import it.polito.ai.lab2.repositories.TokenRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -35,8 +28,8 @@ public class Lab2Application {
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
 
-        mailSender.setUsername("my.gmail@gmail.com");
-        mailSender.setPassword("password");
+        mailSender.setUsername("ideagraphicdesign.lecce@gmail.com");
+        mailSender.setPassword("grezewvfqmufaotk");
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
@@ -48,12 +41,11 @@ public class Lab2Application {
     }
 
     @Bean
-    CommandLineRunner runner (NotificationService notificationService) {
+    CommandLineRunner runner (TokenRepository tokenRepository) {
         return new CommandLineRunner() {
             @Override
             public void run(String... args) throws Exception {
 
-                notificationService.sendMessage("kribos@hotmail.it", "aaa", "bbb");
 
             }
         };

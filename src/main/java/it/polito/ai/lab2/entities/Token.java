@@ -4,7 +4,7 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 @Entity
 @Data
