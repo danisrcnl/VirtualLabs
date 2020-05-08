@@ -38,6 +38,10 @@ public interface TeamService {
 
     List<Boolean> addAndEnroll(Reader r, String courseName);
 
+    void activateTeam(Long teamId);
+
+    void evictTeam(Long teamId);
+
     /* studente */
 
     List<CourseDTO> getCourses(String studentId);

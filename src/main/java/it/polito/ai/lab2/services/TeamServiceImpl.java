@@ -179,6 +179,24 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public void activateTeam(Long teamId) throws TeamNotFoundException {
+        if(!teamRepository.existsById(teamId))
+            throw new TeamNotFoundException(teamId.toString());
+
+        teamRepository.getOne(teamId).setStatus(1);
+    }
+
+    @Override
+    public void evictTeam(Long teamId) throws TeamNotFoundException {
+        if(!teamRepository.existsById(teamId))
+            throw new TeamNotFoundException(teamId.toString());
+
+        Team t = teamRepository.getOne(teamId);
+        teamRepository.delete(t);
+        teamRepository.flush();
+    }
+
+    @Override
     public List<CourseDTO> getCourses(String studentId) throws StudentNotFoundException {
         if(!studentRepository.existsById(studentId))
             throw new StudentNotFoundException(studentId);
