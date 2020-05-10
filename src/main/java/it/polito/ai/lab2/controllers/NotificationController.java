@@ -20,21 +20,6 @@ public class NotificationController {
     @Autowired
     NotificationService notificationService;
 
-    @GetMapping("/notifyOne")
-    public void notifyOne() {
-        TeamDTO teamDTO = TeamDTO.builder()
-                .id(1L)
-                .name("USLecce")
-                .status(0)
-                .build();
-        List<String> ids = new ArrayList<>();
-        ids.add("0001");
-        ids.add("0002");
-        ids.add("0003");
-
-        notificationService.notifyTeam(teamDTO, ids);
-    }
-
     @GetMapping("/confirm/{tokenId}")
     public String confirm(@PathVariable String tokenId) {
         if(notificationService.confirm(tokenId))
@@ -53,7 +38,7 @@ public class NotificationController {
     public String showConfirm(@PathVariable String outcome, Model model) {
         if(outcome.equals("success"))
             model.addAttribute("msg", "Confirmation avvenuta con successo!");
-        else model.addAttribute("msg", "Confirmation fallita");
+        else model.addAttribute("msg", "Confirmation fallita o gruppo non ancora attivo");
         return "confirm";
     }
 
