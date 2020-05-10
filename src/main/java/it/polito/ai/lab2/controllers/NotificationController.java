@@ -1,5 +1,6 @@
 package it.polito.ai.lab2.controllers;
 
+import it.polito.ai.lab2.dtos.TeamDTO;
 import it.polito.ai.lab2.services.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,6 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
+import java.util.List;
+
+
 @Controller
 @RequestMapping("/notification")
 public class NotificationController {
@@ -15,21 +20,36 @@ public class NotificationController {
     @Autowired
     NotificationService notificationService;
 
+    @GetMapping("/notifyOne")
+    public void notifyOne() {
+        TeamDTO teamDTO = TeamDTO.builder()
+                .id(1L)
+                .name("USLecce")
+                .status(0)
+                .build();
+        List<String> ids = new ArrayList<>();
+        ids.add("0001");
+        ids.add("0002");
+        ids.add("0003");
+
+        notificationService.notifyTeam(teamDTO, ids);
+    }
+
     @GetMapping("/confirm/{tokenId}")
     public String confirm(@PathVariable String tokenId) {
         if(notificationService.confirm(tokenId))
-            return "redirect:/confirm/success";
-        else return "redirect:/confirm/failure";
+            return "redirect:/notification/confirmation/success";
+        else return "redirect:/notification/confirmation/failure";
     }
 
     @GetMapping("/reject/{tokenId}")
     public String reject(@PathVariable String tokenId) {
         if(notificationService.reject(tokenId))
-            return "redirect:/reject/success";
-        else return "redirect:/reject/failure";
+            return "redirect:/notification/rejection/success";
+        else return "redirect:/notification/rejection/failure";
     }
 
-    @GetMapping("/confirm/{outcome}")
+    @GetMapping("/confirmation/{outcome}")
     public String showConfirm(@PathVariable String outcome, Model model) {
         if(outcome.equals("success"))
             model.addAttribute("msg", "Confirmation avvenuta con successo!");
@@ -37,7 +57,7 @@ public class NotificationController {
         return "confirm";
     }
 
-    @GetMapping("/reject/{outcome}")
+    @GetMapping("/rejection/{outcome}")
     public String showReject(@PathVariable String outcome, Model model) {
         if(outcome.equals("success"))
             model.addAttribute("msg", "Rejection avvenuta con successo!");

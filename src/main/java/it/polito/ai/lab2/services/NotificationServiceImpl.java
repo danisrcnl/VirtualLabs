@@ -1,16 +1,14 @@
 package it.polito.ai.lab2.services;
-
 import it.polito.ai.lab2.controllers.NotificationController;
 import it.polito.ai.lab2.dtos.TeamDTO;
 import it.polito.ai.lab2.entities.Token;
 import it.polito.ai.lab2.repositories.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -33,7 +31,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void sendMessage(String address, String subject, String body) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setTo("s267743@studenti.polito.it");
+        simpleMailMessage.setTo("kribos3@hotmail.it");
         simpleMailMessage.setSubject(subject);
         simpleMailMessage.setText(body);
         javaMailSender.send(simpleMailMessage);
@@ -43,13 +41,16 @@ public class NotificationServiceImpl implements NotificationService {
     public boolean confirm(String token) {
 
         Long teamId;
+        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris"));
 
         if(!tokenRepository.existsById(token))
             return false;
 
         Token t = tokenRepository.getOne(token);
         teamId = t.getTeamId();
-        List<Token> liveTokens = tokenRepository.findAllByExpiryBefore(new Timestamp(System.currentTimeMillis()));
+        List<Token> liveTokens = tokenRepository.findAllByExpiryBefore(Timestamp.valueOf(localDateTime));
+        System.out.println(liveTokens);
+        System.out.println(Timestamp.valueOf(localDateTime));
 
         if(!liveTokens.contains(t))
             return false;
@@ -97,14 +98,16 @@ public class NotificationServiceImpl implements NotificationService {
             t.setId(id);
             tokenRepository.save(t);
             tokenRepository.flush();
-            Link confirmLink = linkTo(methodOn(NotificationController.class).confirm(id)).withRel("confirm");
-            Link rejectLink = linkTo(methodOn(NotificationController.class).reject(id)).withRel("reject");
-            String message = "Ciao, questo è un messaggio generato per gli utenti del team " + dto.getName() +
-                    "!" + System.lineSeparator() + "Clicca qui per confermare l'invito:" + System.lineSeparator()
-                    + confirmLink.toString() + System.lineSeparator() + "Clicca qui per rifiutare l'invito:" +
-                    System.lineSeparator() + rejectLink.toString();
+            Link rootLink = linkTo(NotificationController.class).withSelfRel();
+            String confirmLink = rootLink.getHref() + "/confirm/" + id;
+            String rejectLink = rootLink.getHref() + "/reject/" + id;
+            String message = "Ciao s" + memberId + "@studenti.polito.it, questo è un messaggio generato per gli " +
+                    "utenti del team " + dto.getName() + "!" + System.lineSeparator() +
+                    "Clicca qui per confermare l'invito:" + System.lineSeparator()
+                    + confirmLink + System.lineSeparator() + "Clicca qui per rifiutare l'invito:" +
+                    System.lineSeparator() + rejectLink;
             String receiver = "s" + memberId + "@studenti.polito.it";
-            sendMessage(receiver, "You've been invited in a team!", message);
+            sendMessage(receiver, "Sei stato invitato a far parte di un team!", message);
         }
     }
 }

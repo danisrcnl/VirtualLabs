@@ -1,6 +1,8 @@
 package it.polito.ai.lab2;
+import it.polito.ai.lab2.dtos.TeamDTO;
 import it.polito.ai.lab2.entities.Token;
 import it.polito.ai.lab2.repositories.TokenRepository;
+import it.polito.ai.lab2.services.NotificationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -41,11 +43,10 @@ public class Lab2Application {
     }
 
     @Bean
-    CommandLineRunner runner (TokenRepository tokenRepository) {
+    CommandLineRunner runner (NotificationService notificationService) {
         return new CommandLineRunner() {
             @Override
             public void run(String... args) throws Exception {
-
 
             }
         };
