@@ -6,6 +6,7 @@ import it.polito.ai.lab2.security.AuthenticationRequest;
 import it.polito.ai.lab2.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,7 +44,6 @@ public class AuthController {
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
             model.put("token", token);
-            System.out.println(model.toString());
             return ok(model);
         } catch(AuthenticationException e) {
             throw new BadCredentialsException("Invalid username/password supplied");

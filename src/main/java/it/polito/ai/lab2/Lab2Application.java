@@ -27,17 +27,8 @@ public class Lab2Application {
     @Autowired
     UserRepository users;
 
-    PasswordEncoder passwordEncoder = new PasswordEncoder() {
-        @Override
-        public String encode(CharSequence charSequence) {
-            return charSequence.toString();
-        }
-
-        @Override
-        public boolean matches(CharSequence charSequence, String s) {
-            return charSequence.toString().equals(s);
-        }
-    };
+    @Autowired
+    PasswordEncoder encoder;
 
     @Bean
     ModelMapper modelMapper() {
@@ -71,14 +62,14 @@ public class Lab2Application {
                 if(!users.findByUsername("user").isPresent())
                     users.save(User.builder()
                             .username("user")
-                            .password(passwordEncoder.encode("password"))
+                            .password(encoder.encode("password"))
                             .roles(Arrays.asList( "ROLE_USER"))
                             .build()
                     ); else System.out.println("Utente user già esistente");
                 if(!users.findByUsername("admin").isPresent())
                     users.save(User.builder()
                             .username("admin")
-                            .password(passwordEncoder.encode("password"))
+                            .password(encoder.encode("password"))
                             .roles(Arrays.asList("ROLE_USER", "ROLE_ADMIN"))
                             .build()
                     ); else System.out.println("Utente admin già esistente");
