@@ -5,6 +5,7 @@ import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -19,6 +20,7 @@ public class StudentController {
     @Autowired
     TeamService teamService;
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping({"/", ""})
     public List<StudentDTO> all() {
         return teamService
@@ -28,6 +30,7 @@ public class StudentController {
                 .collect(Collectors.toList());
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/{id}")
     public StudentDTO getOne(@PathVariable String id) throws ResponseStatusException {
         Optional<StudentDTO> student = teamService.getStudent(id);
@@ -37,6 +40,7 @@ public class StudentController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, id);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping({"", "/"})
     public StudentDTO addStudent(@RequestBody StudentDTO studentDTO) throws ResponseStatusException {
         if(teamService.addStudent(studentDTO))
