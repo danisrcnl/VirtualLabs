@@ -21,4 +21,10 @@ public class ModelHelper {
         studentDTO.add(link);
         return studentDTO;
     }
+
+    public static TeacherDTO enrich(TeacherDTO teacherDTO) {
+        Link link = linkTo(methodOn(TeacherController.class).getOne(teacherDTO.getId())).withSelfRel();
+        teacherDTO.add(link);
+        return teacherDTO;
+    }
 }
