@@ -4,10 +4,12 @@ import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import it.polito.ai.lab2.dtos.CourseDTO;
 import it.polito.ai.lab2.dtos.StudentDTO;
+import it.polito.ai.lab2.dtos.TeacherDTO;
 import it.polito.ai.lab2.dtos.TeamDTO;
 import it.polito.ai.lab2.entities.*;
 import it.polito.ai.lab2.repositories.CourseRepository;
 import it.polito.ai.lab2.repositories.StudentRepository;
+import it.polito.ai.lab2.repositories.TeacherRepository;
 import it.polito.ai.lab2.repositories.TeamRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +31,8 @@ public class TeamServiceImpl implements TeamService {
     CourseRepository courseRepository;
     @Autowired
     StudentRepository studentRepository;
+    @Autowired
+    TeacherRepository teacherRepository;
     @Autowired
     TeamRepository teamRepository;
     @Autowired
@@ -75,6 +80,12 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public Optional<TeacherDTO> getTeacher(String teacherId) {
+        Teacher t = teacherRepository.getOne(teacherId);
+        return Optional.ofNullable(modelMapper.map(t, TeacherDTO.class));
+    }
+
+    @Override
     public List<StudentDTO> getAllStudents() {
         return studentRepository
                 .findAll()
@@ -92,6 +103,27 @@ public class TeamServiceImpl implements TeamService {
                 .getStudents()
                 .stream()
                 .map(s -> modelMapper.map(s, StudentDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TeacherDTO> getAllTeachers() {
+        return teacherRepository
+                .findAll()
+                .stream()
+                .map(t -> modelMapper.map(t, TeacherDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TeacherDTO> getTeachersForCourse(String courseName) throws CourseNotFoundException {
+        if(!courseRepository.existsById(courseName))
+            throw new CourseNotFoundException(courseName);
+        return courseRepository
+                .getOne(courseName)
+                .getTeachers()
+                .stream()
+                .map(t -> modelMapper.map(t, TeacherDTO.class))
                 .collect(Collectors.toList());
     }
 
@@ -116,6 +148,31 @@ public class TeamServiceImpl implements TeamService {
                 .addStudent(studentRepository.getOne(studentId));
 
         return true;
+    }
+
+    @Override
+    public boolean addTeacherToCourse(String teacherId, String courseName) throws CourseNotFoundException, TeacherNotFoundException {
+
+        if(!courseRepository.existsById(courseName))
+            throw new CourseNotFoundException(courseName);
+        if(!teacherRepository.existsById(teacherId))
+            throw new TeacherNotFoundException(teacherId);
+
+        List<Teacher> teachers = courseRepository
+                .getOne(courseName)
+                .getTeachers();
+
+        for(Teacher teacher : teachers) {
+            if(teacher.getId().equals(teacherId))
+                return false;
+        }
+
+        courseRepository
+                .getOne(courseName)
+                .addTeacher(teacherRepository.getOne(teacherId));
+
+        return true;
+
     }
 
     @Override
@@ -197,6 +254,19 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public List<CourseDTO> getTeacherCourses(String teacherId) throws TeacherNotFoundException {
+        if(!teacherRepository.existsById(teacherId))
+            throw new TeacherNotFoundException(teacherId);
+
+        return teacherRepository
+                .getOne(teacherId)
+                .getCourses()
+                .stream()
+                .map(c -> modelMapper.map(c, CourseDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<CourseDTO> getCourses(String studentId) throws StudentNotFoundException {
         if(!studentRepository.existsById(studentId))
             throw new StudentNotFoundException(studentId);
@@ -210,15 +280,13 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public List<TeamDTO> getTeamsForStudent(String studentId) throws StudentNotFoundException {
+    public TeamDTO getTeamForStudent(String studentId) throws StudentNotFoundException {
         if(!studentRepository.existsById(studentId))
             throw new StudentNotFoundException(studentId);
-        return studentRepository
-                .getOne(studentId)
-                .getTeams()
-                .stream()
-                .map(t -> modelMapper.map(t, TeamDTO.class))
-                .collect(Collectors.toList());
+        return modelMapper
+                .map(studentRepository
+                    .getOne(studentId)
+                    .getTeam(), TeamDTO.class);
     }
 
     @Override

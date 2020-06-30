@@ -5,8 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,4 +22,22 @@ public class Teacher {
     private String firstName;
 
     private String name;
+
+    private String email;
+
+    private String photoPath;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name="teacher_course", joinColumns = @JoinColumn(name="teacher_id"),
+            inverseJoinColumns = @JoinColumn(name="course_name"))
+    private List<Course> courses;
+    {
+        courses = new ArrayList<>();
+    }
+
+    public int addCourse (Course course) {
+        courses.add(course);
+        course.getTeachers().add(this);
+        return courses.indexOf(course);
+    }
 }

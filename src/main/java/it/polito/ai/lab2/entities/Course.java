@@ -34,6 +34,12 @@ public class Course {
         students = new ArrayList<>();
     }
 
+    @ManyToMany(mappedBy = "courses")
+    private List<Teacher> teachers;
+    {
+        teachers = new ArrayList<>();
+    }
+
     @OneToMany(mappedBy = "course")
     private List<Team> teams;
     {
@@ -45,6 +51,12 @@ public class Course {
         students.add(student);
         student.getCourses().add(this);
         return students.indexOf(student);
+    }
+
+    public int addTeacher (Teacher teacher) {
+        teachers.add(teacher);
+        teacher.getCourses().add(this);
+        return teachers.indexOf(teacher);
     }
 
     public int addTeam (Team team) {

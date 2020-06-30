@@ -2,6 +2,7 @@ package it.polito.ai.lab2.controllers;
 
 import it.polito.ai.lab2.dtos.CourseDTO;
 import it.polito.ai.lab2.dtos.StudentDTO;
+import it.polito.ai.lab2.dtos.TeacherDTO;
 import org.springframework.hateoas.Link;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
@@ -20,5 +21,4 @@ public class ModelHelper {
         studentDTO.add(link);
         return studentDTO;
     }
-
 }

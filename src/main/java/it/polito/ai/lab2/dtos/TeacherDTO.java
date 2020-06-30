@@ -14,4 +14,6 @@ public class TeacherDTO {
     private String id;
     private String firstName;
     private String name;
+    private String email;
+    private String photoPath;
 }
