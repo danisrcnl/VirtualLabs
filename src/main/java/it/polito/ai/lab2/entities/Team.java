@@ -20,6 +20,7 @@ public class Team {
     @Id
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
     private int status;

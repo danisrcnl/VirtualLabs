@@ -267,6 +267,26 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public void setMinForCourse(int value, String courseName) throws CourseNotFoundException {
+        if(!courseRepository.existsById(courseName))
+            throw new CourseNotFoundException(courseName);
+
+        courseRepository
+                .getOne(courseName)
+                .setMin(value);
+    }
+
+    @Override
+    public void setMaxForCourse(int value, String courseName) throws CourseNotFoundException {
+        if(!courseRepository.existsById(courseName))
+            throw new CourseNotFoundException(courseName);
+
+        courseRepository
+                .getOne(courseName)
+                .setMax(value);
+    }
+
+    @Override
     public List<CourseDTO> getCourses(String studentId) throws StudentNotFoundException {
         if(!studentRepository.existsById(studentId))
             throw new StudentNotFoundException(studentId);

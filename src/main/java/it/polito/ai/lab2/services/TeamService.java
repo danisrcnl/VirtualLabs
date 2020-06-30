@@ -53,6 +53,10 @@ public interface TeamService {
 
     List<CourseDTO> getTeacherCourses(String teacherId);
 
+    void setMinForCourse(int value, String courseName);
+
+    void setMaxForCourse(int value, String courseName);
+
     /* studente */
 
     List<CourseDTO> getCourses(String studentId);

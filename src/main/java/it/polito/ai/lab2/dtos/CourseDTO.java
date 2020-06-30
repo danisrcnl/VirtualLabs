@@ -16,4 +16,5 @@ public class CourseDTO extends RepresentationModel<CourseDTO> {
     private int min;
     private int max;
     private Boolean enabled;
+    private String acronym;
 }

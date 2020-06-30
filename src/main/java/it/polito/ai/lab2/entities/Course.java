@@ -28,6 +28,8 @@ public class Course {
 
     private Boolean enabled;
 
+    private String acronym;
+
     @ManyToMany(mappedBy = "courses")
     private List<Student> students;
     {
