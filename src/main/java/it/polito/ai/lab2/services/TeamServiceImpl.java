@@ -107,6 +107,16 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public boolean addTeacher(TeacherDTO teacher) {
+        Teacher t = modelMapper.map(teacher, Teacher.class);
+        if(teacherRepository.existsById(teacher.getId()))
+            return false;
+        teacherRepository.save(t);
+        teacherRepository.flush();
+        return true;
+    }
+
+    @Override
     public List<TeacherDTO> getAllTeachers() {
         return teacherRepository
                 .findAll()

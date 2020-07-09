@@ -1,10 +1,14 @@
 package it.polito.ai.lab2;
+import it.polito.ai.lab2.dtos.TeacherDTO;
 import it.polito.ai.lab2.dtos.TeamDTO;
 import it.polito.ai.lab2.entities.Token;
 import it.polito.ai.lab2.entities.User;
+import it.polito.ai.lab2.repositories.CourseRepository;
+import it.polito.ai.lab2.repositories.TeacherRepository;
 import it.polito.ai.lab2.repositories.TokenRepository;
 import it.polito.ai.lab2.repositories.UserRepository;
 import it.polito.ai.lab2.services.NotificationService;
+import it.polito.ai.lab2.services.TeamService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -23,9 +27,6 @@ import java.util.Properties;
 
 @SpringBootApplication
 public class Lab2Application {
-
-    @Autowired
-    UserRepository users;
 
     @Autowired
     PasswordEncoder encoder;
@@ -54,28 +55,25 @@ public class Lab2Application {
     }
 
     @Bean
-    CommandLineRunner runner () {
+    CommandLineRunner runner (TeamService teamService) {
         return new CommandLineRunner() {
             @Override
             public void run(String... args) throws Exception {
 
-                if(!users.findByUsername("user").isPresent())
-                    users.save(User.builder()
-                            .username("user")
-                            .password(encoder.encode("password"))
-                            .roles(Arrays.asList( "ROLE_USER"))
-                            .build()
-                    ); else System.out.println("Utente user già esistente");
-                if(!users.findByUsername("admin").isPresent())
-                    users.save(User.builder()
-                            .username("admin")
-                            .password(encoder.encode("password"))
-                            .roles(Arrays.asList("ROLE_USER", "ROLE_ADMIN"))
-                            .build()
-                    ); else System.out.println("Utente admin già esistente");
+                teamService.addTeacherToCourse("t000001", "corso_1");
+                teamService.addTeacherToCourse("t000001", "corso_2");
+                teamService.addTeacherToCourse("t000002", "corso_1");
 
-                System.out.println(("printing all users..."));
-                users.findAll().forEach(v -> System.out.println(" User :" + v.toString()));
+                System.out.println(
+                        teamService.getAllCourses()
+                );
+                System.out.println(
+                        teamService.getTeachersForCourse("corso_1")
+                );
+                System.out.println(
+                        teamService.getTeacherCourses("t000001")
+                );
+
             }
         };
     }

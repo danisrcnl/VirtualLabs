@@ -48,6 +48,12 @@ public class Course {
         teams = new ArrayList<>();
     }
 
+    @OneToMany(mappedBy = "course")
+    private List<Assignment> assignments;
+    {
+        assignments = new ArrayList<>();
+    }
+
 
     public int addStudent (Student student) {
         students.add(student);
@@ -65,5 +71,11 @@ public class Course {
         teams.add(team);
         team.setCourse(this);
         return teams.indexOf(team);
+    }
+
+    public int addAssignment (Assignment assignment) {
+        assignments.add(assignment);
+        assignment.setCourse(this);
+        return assignments.indexOf(assignment);
     }
 }
