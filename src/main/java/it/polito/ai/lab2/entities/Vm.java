@@ -29,7 +29,7 @@ public class Vm {
     }
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "vmModel_id", referencedColumnName = "id")
+    @JoinColumn(name = "vmModel_id")
     private VmModel vmModel;
 
 }

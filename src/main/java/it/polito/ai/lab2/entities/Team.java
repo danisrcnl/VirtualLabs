@@ -37,6 +37,12 @@ public class Team {
         members = new ArrayList<>();
     }
 
+    @OneToMany(mappedBy = "team")
+    private List<Paper> papers;
+    {
+        papers = new ArrayList<>();
+    }
+
     public void setCourse(Course course) {
         if(this.course == null){
             course.getTeams().add(this);

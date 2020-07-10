@@ -25,6 +25,10 @@ public class Paper {
     private PaperStatus currentStatus;
 
     @ManyToOne
+    @JoinColumn("team_id")
+    private Team team;
+
+    @ManyToOne
     @JoinColumn("assignment_id")
     private Assignment assignment;
 
