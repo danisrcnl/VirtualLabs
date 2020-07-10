@@ -5,11 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,6 +18,7 @@ import java.sql.Timestamp;
 public class Assignment {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
 
     private String creator;
@@ -32,6 +32,13 @@ public class Assignment {
     @ManyToOne
     @JoinColumn(name="course_id")
     private Course course;
+
+    @OneToMany(mappedBy = "assignment")
+    private List<Paper> papers;
+    {
+        papers = new ArrayList<>();
+    }
+
 
     public void setCourse(Course course) {
         if(this.course == null){
