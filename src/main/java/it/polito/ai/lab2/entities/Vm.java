@@ -1,5 +1,6 @@
 package it.polito.ai.lab2.entities;
 
+import it.polito.ai.lab2.dataStructures.VmStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +20,8 @@ public class Vm {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
+
+    private VmStatus currentStatus;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name="vm_owner", joinColumns = @JoinColumn(name="vm_id"),

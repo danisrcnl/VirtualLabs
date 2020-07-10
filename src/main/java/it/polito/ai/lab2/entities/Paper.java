@@ -24,6 +24,8 @@ public class Paper {
 
     private PaperStatus currentStatus;
 
+    private int mark;
+
     @ManyToOne
     @JoinColumn("team_id")
     private Team team;
