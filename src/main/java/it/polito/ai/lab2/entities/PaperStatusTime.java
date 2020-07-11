@@ -24,6 +24,8 @@ public class PaperStatusTime {
 
     private PaperStatus paperStatus;
 
+    private String content;
+
     @ManyToOne
     @JoinColumn("paperStatusTime_id")
     private Paper paper;

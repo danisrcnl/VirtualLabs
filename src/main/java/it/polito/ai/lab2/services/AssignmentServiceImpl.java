@@ -159,6 +159,7 @@ public class AssignmentServiceImpl implements AssignmentService {
         PaperStatusTimeDTO paperStatusTimeDTO = PaperStatusTimeDTO.builder()
                 .paperStatus(PaperStatus.LETTO)
                 .timestamp(t)
+                .content(p.getContent())
                 .build();
         addPaperStatusTime(paperStatusTimeDTO, paperId);
 
@@ -169,15 +170,15 @@ public class AssignmentServiceImpl implements AssignmentService {
     public void reviewPaper(String paperId) throws PaperNotFoundException {
         if(!paperRepository.existsById(paperId))
             throw new PaperNotFoundException(paperId);
-        paperRepository
-                .getOne(paperId)
-                .setCurrentStatus(PaperStatus.RIVISTO);
+        Paper p = paperRepository.getOne(paperId);
+        p.setCurrentStatus(PaperStatus.RIVISTO);
 
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris"));
         Timestamp t = Timestamp.valueOf(localDateTime);
         PaperStatusTimeDTO paperStatusTimeDTO = PaperStatusTimeDTO.builder()
                 .paperStatus(PaperStatus.RIVISTO)
                 .timestamp(t)
+                .content(p.getContent())
                 .build();
         addPaperStatusTime(paperStatusTimeDTO, paperId);
 
@@ -187,18 +188,27 @@ public class AssignmentServiceImpl implements AssignmentService {
     public void deliverPaper(String paperId) throws PaperNotFoundException {
         if(!paperRepository.existsById(paperId))
             throw new PaperNotFoundException(paperId);
-        paperRepository
-                .getOne(paperId)
-                .setCurrentStatus(PaperStatus.CONSEGNATO);
+        Paper p = paperRepository.getOne(paperId);
+        p.setCurrentStatus(PaperStatus.CONSEGNATO);
 
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris"));
         Timestamp t = Timestamp.valueOf(localDateTime);
         PaperStatusTimeDTO paperStatusTimeDTO = PaperStatusTimeDTO.builder()
                 .paperStatus(PaperStatus.CONSEGNATO)
                 .timestamp(t)
+                .content(p.getContent())
                 .build();
         addPaperStatusTime(paperStatusTimeDTO, paperId);
 
+    }
+
+    @Override
+    public void setPaperContent(String paperId, String content) throws PaperNotFoundException {
+        if(!paperRepository.existsById(paperId))
+            throw new PaperNotFoundException(paperId);
+        paperRepository
+                .getOne(paperId)
+                .setContent(content);
     }
 
     @Override
@@ -213,5 +223,17 @@ public class AssignmentServiceImpl implements AssignmentService {
         paperStatusTimeRepository.flush();
         paperRepository.getOne(paperId).addStatusHistory(p);
         return true;
+    }
+
+    @Override
+    public List<PaperStatusTimeDTO> getPaperHistory(String paperId) throws PaperNotFoundException {
+        if(!paperRepository.existsById(paperId))
+            throw new PaperNotFoundException(paperId);
+        return paperRepository
+                .getOne(paperId)
+                .getStatusHistory()
+                .stream()
+                .map(h -> modelMapper.map(h, PaperStatusTimeDTO.class))
+                .collect(Collectors.toList());
     }
 }

@@ -3,6 +3,7 @@ package it.polito.ai.lab2.services;
 import it.polito.ai.lab2.dtos.AssignmentDTO;
 import it.polito.ai.lab2.dtos.PaperDTO;
 import it.polito.ai.lab2.dtos.PaperStatusTimeDTO;
+import it.polito.ai.lab2.entities.PaperStatusTime;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +38,11 @@ public interface AssignmentService {
 
     void deliverPaper(String paperId);
 
+    void setPaperContent(String paperId, String content);
+
 
     boolean addPaperStatusTime(PaperStatusTimeDTO paperStatusTimeDTO, String paperId);
+
+    List<PaperStatusTimeDTO> getPaperHistory(String paperId);
 
 }
