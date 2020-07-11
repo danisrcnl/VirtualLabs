@@ -35,4 +35,10 @@ public class Vm {
     @JoinColumn(name = "vmModel_id")
     private VmModel vmModel;
 
+    public int addOwner(Student student) {
+        owners.add(student);
+        student.getVms().add(this);
+        return owners.indexOf(student);
+    }
+
 }

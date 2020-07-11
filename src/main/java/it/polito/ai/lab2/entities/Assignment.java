@@ -55,4 +55,10 @@ public class Assignment {
         this.course = course;
     }
 
+    public int addPaper(Paper paper) {
+        papers.add(paper);
+        paper.setAssignment(this);
+        return papers.indexOf(paper);
+    }
+
 }

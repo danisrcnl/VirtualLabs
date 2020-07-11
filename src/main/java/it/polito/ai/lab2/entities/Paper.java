@@ -37,4 +37,10 @@ public class Paper {
     @OneToMany(mappedBy = "paper")
     private List<PaperStatusTime> statusHistory;
 
+    public int addStatusHistory(PaperStatusTime paperStatusTime) {
+        statusHistory.add(paperStatusTime);
+        paperStatusTime.setPaper(this);
+        return statusHistory.indexOf(paperStatusTime);
+    }
+
 }

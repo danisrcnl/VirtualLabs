@@ -8,11 +8,9 @@ import java.util.Optional;
 
 public interface VmService {
 
-    void addVm(VmDTO vm);
+    boolean addVm(VmDTO vm);
 
     Optional<VmDTO> getVm(String id);
-
-    Optional<VmDTO> getTeamVm(String teamId);
 
     List<VmDTO> getAllVms();
 
@@ -24,11 +22,11 @@ public interface VmService {
 
     boolean addOwner(String vmId, String studentId);
 
-    void configVm(String vmId, VmModelDTO vmModel);
+    void configVm(String vmId, String vmModelId);
 
 
 
-    void addVmModel(VmModelDTO vmModel);
+    String addVmModel(VmModelDTO vmModel);
 
     Optional<VmModelDTO> getVmModel(String id);
 

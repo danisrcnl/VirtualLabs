@@ -1,5 +1,6 @@
 package it.polito.ai.lab2.entities;
 
+import it.polito.ai.lab2.dataStructures.PaperStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,7 +22,10 @@ public class PaperStatusTime {
 
     private Timestamp timestamp;
 
+    private PaperStatus paperStatus;
+
     @ManyToOne
     @JoinColumn("paperStatusTime_id")
     private Paper paper;
+
 }

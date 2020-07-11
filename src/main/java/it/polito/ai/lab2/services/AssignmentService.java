@@ -2,13 +2,14 @@ package it.polito.ai.lab2.services;
 
 import it.polito.ai.lab2.dtos.AssignmentDTO;
 import it.polito.ai.lab2.dtos.PaperDTO;
+import it.polito.ai.lab2.dtos.PaperStatusTimeDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface AssignmentService {
 
-    void addAssignment(AssignmentDTO assignment);
+    boolean addAssignment(AssignmentDTO assignment);
 
     Optional<AssignmentDTO> getAssignment(String id);
 
@@ -16,11 +17,15 @@ public interface AssignmentService {
 
 
 
-    void addPaper(PaperDTO paper);
+    boolean addPaper(PaperDTO paper);
+
+    boolean linkPaperToAssignment(String paperId, String assignmentId);
 
     Optional<PaperDTO> getPaper(String id);
 
-    Optional<PaperDTO> getPaperForTeam(String paperId, String teamId);
+    List<PaperDTO> getPapersForTeam(Long teamId);
+
+    List<PaperDTO> getPapersForAssignment(String id);
 
     List<PaperDTO> getAllPapers();
 
@@ -31,5 +36,8 @@ public interface AssignmentService {
     void reviewPaper(String paperId);
 
     void deliverPaper(String paperId);
+
+
+    boolean addPaperStatusTime(PaperStatusTimeDTO paperStatusTimeDTO, String paperId);
 
 }

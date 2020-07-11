@@ -44,4 +44,16 @@ public class Student {
         course.getStudents().add(this);
         return courses.indexOf(course);
     }
+
+    @ManyToMany(mappedBy = "owners")
+    private List<Vm> vms;
+    {
+        vms = new ArrayList<>();
+    }
+
+    public int addVm(Vm vm) {
+        vms.add(vm);
+        vm.getOwners().add(this);
+        return vms.indexOf(vm);
+    }
 }
