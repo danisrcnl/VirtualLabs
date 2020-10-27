@@ -5,10 +5,7 @@ import it.polito.ai.lab2.dtos.TeamDTO;
 import it.polito.ai.lab2.dtos.VmDTO;
 import it.polito.ai.lab2.dtos.VmModelDTO;
 import it.polito.ai.lab2.entities.*;
-import it.polito.ai.lab2.repositories.StudentRepository;
-import it.polito.ai.lab2.repositories.TeamRepository;
-import it.polito.ai.lab2.repositories.VmModelRepository;
-import it.polito.ai.lab2.repositories.VmRepository;
+import it.polito.ai.lab2.repositories.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,20 +29,43 @@ public class VmServiceImpl implements VmService {
     StudentRepository studentRepository;
 
     @Autowired
+    CourseRepository courseRepository;
+
+    @Autowired
+    TeamRepository teamRepository;
+
+    @Autowired
     ModelMapper modelMapper;
 
+    @Autowired
+    TeamService teamService;
+
     @Override
-    public boolean addVm(VmDTO vm) {
+    public Long addVmToTeam(VmDTO vm, String teamName) throws TeamNotFoundException, VmServiceException {
+
+        if(!teamRepository.existsById(teamName))
+            throw new TeamNotFoundException(teamName);
+
+        if(teamService.getUsedNVCpuForTeam(teamName) + vm.getNVCpu() >
+                teamRepository.getOne(teamName).getCourse().getVmModel().getMaxNVCpu())
+            throw new VmServiceException("You exceeded Virtual CPU limit");
+
+        if(teamService.getUsedDiskForTeam(teamName) + vm.getDisk() >
+                teamRepository.getOne(teamName).getCourse().getVmModel().getMaxDisk())
+            throw new VmServiceException("You exceeded disk space limit");
+
+        if(teamService.getUsedRamForTeam(teamName) + vm.getRam() >
+                teamRepository.getOne(teamName).getCourse().getVmModel().getMaxRam())
+            throw new VmServiceException("You exceeded ram space limit");
+
         Vm v = modelMapper.map(vm, Vm.class);
-        if(vmRepository.existsById(vm.getId()))
-            return false;
         vmRepository.save(v);
         vmRepository.flush();
-        return true;
+        return v.getId();
     }
 
     @Override
-    public Optional<VmDTO> getVm(String id) {
+    public Optional<VmDTO> getVm(Long id) {
         Vm v = vmRepository.getOne(id);
         return Optional.ofNullable(modelMapper.map(v, VmDTO.class));
     }
@@ -60,36 +80,44 @@ public class VmServiceImpl implements VmService {
     }
 
     @Override
-    public void startVm(String id) throws VmNotFoundException {
+    public void startVm(Long id) throws VmNotFoundException {
         if(!vmRepository.existsById(id))
-            throw new VmNotFoundException(id);
+            throw new VmNotFoundException(id.toString());
         vmRepository
                 .getOne(id)
                 .setCurrentStatus(VmStatus.ACTIVE);
     }
 
     @Override
-    public void shutDownVm(String id) throws VmNotFoundException {
+    public void shutDownVm(Long id) throws VmNotFoundException {
         if(!vmRepository.existsById(id))
-            throw new VmNotFoundException(id);
+            throw new VmNotFoundException(id.toString());
         vmRepository
                 .getOne(id)
                 .setCurrentStatus(VmStatus.OFF);
     }
 
     @Override
-    public void freezeVm(String id) throws VmNotFoundException {
+    public void freezeVm(Long id) throws VmNotFoundException {
         if(!vmRepository.existsById(id))
-            throw new VmNotFoundException(id);
+            throw new VmNotFoundException(id.toString());
         vmRepository
                 .getOne(id)
                 .setCurrentStatus(VmStatus.FREEZED);
     }
 
     @Override
-    public boolean addOwner(String vmId, String studentId) throws VmNotFoundException, StudentNotFoundException {
+    public void deleteVm(Long id) throws VmNotFoundException {
+        if(!vmRepository.existsById(id))
+            throw new VmNotFoundException(id.toString());
+        vmRepository.deleteById(id);
+        vmRepository.flush();
+    }
+
+    @Override
+    public boolean addOwner(Long vmId, String studentId) throws VmNotFoundException, StudentNotFoundException {
         if (!vmRepository.existsById(vmId))
-            throw new VmNotFoundException(vmId);
+            throw new VmNotFoundException(vmId.toString());
         if (!studentRepository.existsById(studentId))
             throw new StudentNotFoundException(studentId);
 
@@ -110,42 +138,25 @@ public class VmServiceImpl implements VmService {
     }
 
     @Override
-    public void configVm(String vmId, String vmModelId) throws VmNotFoundException, VmModelNotFoundException {
-        if(!vmRepository.existsById(vmId))
-            throw new VmNotFoundException(vmId);
-        if(!vmModelRepository.existsById(vmModelId))
-            throw new VmModelNotFoundException(vmModelId);
-        vmRepository.getOne(vmId).setVmModel(
-                vmModelRepository
-                .getOne(vmModelId)
-        );
-    }
+    public Long addVmModelForCourse(VmModelDTO vmModel, String courseName) throws CourseNotFoundException {
+        if(!courseRepository.existsById(courseName))
+            throw new CourseNotFoundException(courseName);
 
-    @Override
-    public String addVmModel(VmModelDTO vmModel) {
-        VmModel v = modelMapper.map(vmModel, VmModel.class);
-        if(vmModelRepository.existsById(vmModel.getId()))
-            return "err";
-        vmModelRepository.save(v);
+        VmModel existing = courseRepository.getOne(courseName).getVmModel();
+        if(existing != null)
+            vmModelRepository.delete(existing);
         vmModelRepository.flush();
-        return v.getId();
+
+        VmModel m = modelMapper.map(vmModel, VmModel.class);
+        vmModelRepository.save(m);
+        vmModelRepository.flush();
+        return m.getId();
     }
 
     @Override
-    public Optional<VmModelDTO> getVmModel(String id) {
+    public Optional<VmModelDTO> getVmModel(Long id) {
         VmModel v = vmModelRepository.getOne(id);
         return Optional.ofNullable(modelMapper.map(v, VmModelDTO.class));
-    }
-
-    @Override
-    public Optional<VmModelDTO> getConfigForVm(String vmId) throws VmNotFoundException {
-        if(!vmRepository.existsById(vmId))
-            throw new VmNotFoundException(vmId);
-        return Optional.ofNullable(
-                modelMapper.map(vmRepository
-                        .getOne(vmId)
-                        .getVmModel(), VmModelDTO.class)
-        );
     }
 
     @Override

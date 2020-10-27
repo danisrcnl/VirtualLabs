@@ -19,7 +19,7 @@ public class Assignment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private Long id;
 
     private String creator;
 

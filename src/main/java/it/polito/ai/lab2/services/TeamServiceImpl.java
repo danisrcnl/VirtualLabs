@@ -250,7 +250,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void activateTeam(Long teamId) throws TeamNotFoundException {
+    public void activateTeam(String teamId) throws TeamNotFoundException {
         if(!teamRepository.existsById(teamId))
             throw new TeamNotFoundException(teamId.toString());
 
@@ -258,7 +258,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void evictTeam(Long teamId) throws TeamNotFoundException {
+    public void evictTeam(String teamId) throws TeamNotFoundException {
         if(!teamRepository.existsById(teamId))
             throw new TeamNotFoundException(teamId.toString());
 
@@ -324,7 +324,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public List<StudentDTO> getMembers(Long teamId) throws TeamNotFoundException {
+    public List<StudentDTO> getMembers(String teamId) throws TeamNotFoundException {
         if(!teamRepository.existsById(teamId))
             throw new TeamNotFoundException(teamId.toString());
         return teamRepository
@@ -337,13 +337,16 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public TeamDTO proposeTeam(String courseName, String name, List<String> memberIds)
-        throws CourseNotFoundException, StudentNotFoundException {
+        throws CourseNotFoundException, StudentNotFoundException, TeamServiceException {
 
         Team team;
         List<Student> members = new ArrayList<>();
 
         if(!courseRepository.existsById(courseName))
             throw new CourseNotFoundException(courseName);
+
+        if(teamRepository.existsById(name))
+            throw new TeamServiceException("This name has been already chosen");
 
         team = Team.builder()
                 .name(name)
@@ -401,5 +404,44 @@ public class TeamServiceImpl implements TeamService {
                 .stream()
                 .map(s -> modelMapper.map(s, StudentDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public int getUsedNVCpuForTeam(String teamName) throws TeamNotFoundException {
+        if(!teamRepository.existsById(teamName))
+            throw new TeamNotFoundException(teamName);
+
+        return teamRepository
+                .getOne(teamName)
+                .getVms()
+                .stream()
+                .map(vm -> vm.getNVCpu())
+                .reduce(0, Integer :: sum);
+    }
+
+    @Override
+    public int getUsedDiskForTeam(String teamName) throws TeamNotFoundException {
+        if(!teamRepository.existsById(teamName))
+        throw new TeamNotFoundException(teamName);
+
+        return teamRepository
+                .getOne(teamName)
+                .getVms()
+                .stream()
+                .map(vm -> vm.getDisk())
+                .reduce(0, Integer :: sum);
+    }
+
+    @Override
+    public int getUsedRamForTeam(String teamName) throws TeamNotFoundException {
+        if(!teamRepository.existsById(teamName))
+            throw new TeamNotFoundException(teamName);
+
+        return teamRepository
+                .getOne(teamName)
+                .getVms()
+                .stream()
+                .map(vm -> vm.getRam())
+                .reduce(0, Integer :: sum);
     }
 }

@@ -12,4 +12,7 @@ import org.springframework.hateoas.RepresentationModel;
 @Data
 public class VmDTO extends RepresentationModel<VmDTO> {
     private String id;
+    private int nVCpu;
+    private int disk;
+    private int ram;
 }

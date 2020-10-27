@@ -19,21 +19,27 @@ public class Vm {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private Long id;
+
+    private int nVCpu;
+
+    private int disk;
+
+    private int ram;
 
     private VmStatus currentStatus;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name="vm_owner", joinColumns = @JoinColumn(name="vm_id"),
-            inverseJoinColumns = @JoinColumn(name="owner_id"))
+    @JoinTable(name="vm_owner", joinColumns = @JoinColumn(name="vm"),
+            inverseJoinColumns = @JoinColumn(name="owner"))
     private List<Student> owners;
     {
         owners = new ArrayList<>();
     }
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "vmModel_id")
-    private VmModel vmModel;
+    @ManyToOne
+    @JoinColumn(name="team")
+    private Team team;
 
     public int addOwner(Student student) {
         owners.add(student);

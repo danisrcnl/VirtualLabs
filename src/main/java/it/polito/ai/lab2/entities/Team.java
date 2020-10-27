@@ -1,5 +1,6 @@
 package it.polito.ai.lab2.entities;
 
+import it.polito.ai.lab2.dataStructures.TeamId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,11 +17,7 @@ import java.util.List;
 @Data
 public class Team {
 
-    @GeneratedValue
     @Id
-    private Long id;
-
-    @Column(unique = true)
     private String name;
 
     private int status;
@@ -41,6 +38,12 @@ public class Team {
     private List<Paper> papers;
     {
         papers = new ArrayList<>();
+    }
+
+    @OneToMany(mappedBy = "team")
+    private List<Vm> vms;
+    {
+        vms = new ArrayList<>();
     }
 
     public void setCourse(Course course) {
@@ -65,5 +68,11 @@ public class Team {
         */
         student.setTeam(this);
         return members.indexOf(student);
+    }
+
+    public int addvm(Vm vm) {
+        vms.add(vm);
+        vm.setTeam(this);
+        return vms.indexOf(vm);
     }
 }

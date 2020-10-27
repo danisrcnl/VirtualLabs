@@ -8,29 +8,27 @@ import java.util.Optional;
 
 public interface VmService {
 
-    boolean addVm(VmDTO vm);
+    Long addVmToTeam(VmDTO vm, String teamName);
 
-    Optional<VmDTO> getVm(String id);
+    Optional<VmDTO> getVm(Long id);
 
     List<VmDTO> getAllVms();
 
-    void startVm(String id);
+    void startVm(Long id);
 
-    void shutDownVm(String id);
+    void shutDownVm(Long id);
 
-    void freezeVm(String id);
+    void freezeVm(Long id);
 
-    boolean addOwner(String vmId, String studentId);
+    void deleteVm(Long id);
 
-    void configVm(String vmId, String vmModelId);
+    boolean addOwner(Long vmId, String studentId);
 
 
 
-    String addVmModel(VmModelDTO vmModel);
+    Long addVmModelForCourse(VmModelDTO vmModel, String courseName);
 
-    Optional<VmModelDTO> getVmModel(String id);
-
-    Optional<VmModelDTO> getConfigForVm(String vmId);
+    Optional<VmModelDTO> getVmModel(Long id);
 
     List<VmModelDTO> getAllVmModels();
 

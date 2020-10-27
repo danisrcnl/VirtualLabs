@@ -16,15 +16,19 @@ public class VmModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private Long id;
 
-    private int nVCpu;
+    private String operatingSystem;
 
-    private int disk;
+    private int maxNVCpu;   // max nvcpu a team can allocate
 
-    private int ram;
+    private int maxDisk;    // max disk a team can allocate
+
+    private int maxRam;     // max ram a team can allocate
 
     @OneToOne(mappedBy = "vmModel")
-    private Vm vm;
+    private Course course;
+
+
 
 }

@@ -28,7 +28,7 @@ public class Student {
     private String photoPath;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name="student_course", joinColumns = @JoinColumn(name="student_id"),
+    @JoinTable(name="student_course", joinColumns = @JoinColumn(name="student"),
             inverseJoinColumns = @JoinColumn(name="course_name"))
     private List<Course> courses;
     {
@@ -36,7 +36,7 @@ public class Student {
     }
 
     @ManyToOne
-    @JoinColumn(name="team_id")
+    @JoinColumn(name="team")
     private Team team;
 
     public int addCourse (Course course) {

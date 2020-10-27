@@ -41,17 +41,15 @@ public class AssignmentServiceImpl implements AssignmentService {
     ModelMapper modelMapper;
 
     @Override
-    public boolean addAssignment(AssignmentDTO assignment) {
+    public Long addAssignment(AssignmentDTO assignment) {
         Assignment a = modelMapper.map(assignment, Assignment.class);
-        if(assignmentRepository.existsById(assignment.getId()))
-            return false;
         assignmentRepository.save(a);
         assignmentRepository.flush();
-        return true;
+        return a.getId();
     }
 
     @Override
-    public Optional<AssignmentDTO> getAssignment(String id) {
+    public Optional<AssignmentDTO> getAssignment(Long id) {
         Assignment a = assignmentRepository.getOne(id);
         return Optional.ofNullable(modelMapper.map(a, AssignmentDTO.class));
     }
@@ -66,22 +64,31 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public boolean addPaper(PaperDTO paper) {
+    public Long addPaper(PaperDTO paper, Long teamId, Long assignmentId) throws
+            AssignmentNotFoundException, TeamNotFoundException {
+
+        if(!teamRepository.existsById(teamId))
+            throw new TeamNotFoundException(teamId.toString());
+        if(!assignmentRepository.existsById(assignmentId))
+            throw new AssignmentNotFoundException(assignmentId.toString());
+
         Paper p = modelMapper.map(paper, Paper.class);
-        if(paperRepository.existsById(paper.getId()))
-            return false;
+        p.setTeam(teamRepository.getOne(teamId));
+        p.setAssignment(assignmentRepository.getOne(assignmentId));
+
         paperRepository.save(p);
         paperRepository.flush();
-        return true;
+
+        return p.getId();
     }
 
     @Override
-    public boolean linkPaperToAssignment(String paperId, String assignmentId) throws PaperNotFoundException,
+    public boolean linkPaperToAssignment(Long paperId, Long assignmentId) throws PaperNotFoundException,
             AssignmentNotFoundException {
         if(!paperRepository.existsById(paperId))
-            throw new PaperNotFoundException(paperId);
+            throw new PaperNotFoundException(paperId.toString());
         if(!assignmentRepository.existsById(assignmentId))
-            throw new AssignmentNotFoundException(assignmentId);
+            throw new AssignmentNotFoundException(assignmentId.toString());
 
         List<Paper> papers = assignmentRepository
                 .getOne(assignmentId)
@@ -100,7 +107,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public Optional<PaperDTO> getPaper(String id) {
+    public Optional<PaperDTO> getPaper(Long id) {
         Paper paper = paperRepository.getOne(id);
         return Optional.ofNullable(modelMapper.map(paper, PaperDTO.class));
     }
@@ -118,9 +125,9 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public List<PaperDTO> getPapersForAssignment(String id) throws AssignmentNotFoundException {
+    public List<PaperDTO> getPapersForAssignment(Long id) throws AssignmentNotFoundException {
         if(!assignmentRepository.existsById(id))
-            throw new AssignmentNotFoundException(id);
+            throw new AssignmentNotFoundException(id.toString());
         return assignmentRepository
                 .getOne(id)
                 .getPapers()
@@ -139,18 +146,37 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public void ratePaper(String paperId, int mark) throws PaperNotFoundException {
+    public void ratePaper(Long paperId, int mark) throws PaperNotFoundException {
         if(!paperRepository.existsById(paperId))
-            throw new PaperNotFoundException(paperId);
+            throw new PaperNotFoundException(paperId.toString());
         paperRepository
                 .getOne(paperId)
                 .setMark(mark);
     }
 
     @Override
-    public String readPaper(String paperId) throws PaperNotFoundException {
+    public String initializePaperStatus(Long paperId) throws PaperNotFoundException {
         if(!paperRepository.existsById(paperId))
-            throw new PaperNotFoundException(paperId);
+            throw new PaperNotFoundException(paperId.toString());
+        Paper p = paperRepository.getOne(paperId);
+        p.setCurrentStatus(PaperStatus.NULL);
+
+        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris"));
+        Timestamp t = Timestamp.valueOf(localDateTime);
+        PaperStatusTimeDTO paperStatusTimeDTO = PaperStatusTimeDTO.builder()
+                .paperStatus(PaperStatus.NULL)
+                .timestamp(t)
+                .content(p.getContent())
+                .build();
+        addPaperStatusTime(paperStatusTimeDTO, paperId);
+
+        return p.getContent();
+    }
+
+    @Override
+    public String readPaper(Long paperId) throws PaperNotFoundException {
+        if(!paperRepository.existsById(paperId))
+            throw new PaperNotFoundException(paperId.toString());
         Paper p = paperRepository.getOne(paperId);
         p.setCurrentStatus(PaperStatus.LETTO);
 
@@ -167,9 +193,9 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public void reviewPaper(String paperId) throws PaperNotFoundException {
+    public void reviewPaper(Long paperId) throws PaperNotFoundException {
         if(!paperRepository.existsById(paperId))
-            throw new PaperNotFoundException(paperId);
+            throw new PaperNotFoundException(paperId.toString());
         Paper p = paperRepository.getOne(paperId);
         p.setCurrentStatus(PaperStatus.RIVISTO);
 
@@ -185,9 +211,9 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public void deliverPaper(String paperId) throws PaperNotFoundException {
+    public void deliverPaper(Long paperId) throws PaperNotFoundException {
         if(!paperRepository.existsById(paperId))
-            throw new PaperNotFoundException(paperId);
+            throw new PaperNotFoundException(paperId.toString());
         Paper p = paperRepository.getOne(paperId);
         p.setCurrentStatus(PaperStatus.CONSEGNATO);
 
@@ -203,32 +229,31 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public void setPaperContent(String paperId, String content) throws PaperNotFoundException {
+    public void setPaperContent(Long paperId, String content) throws PaperNotFoundException {
         if(!paperRepository.existsById(paperId))
-            throw new PaperNotFoundException(paperId);
+            throw new PaperNotFoundException(paperId.toString());
         paperRepository
                 .getOne(paperId)
                 .setContent(content);
     }
 
     @Override
-    public boolean addPaperStatusTime(PaperStatusTimeDTO paperStatusTimeDTO, String paperId) throws
+    public Long addPaperStatusTime(PaperStatusTimeDTO paperStatusTimeDTO, Long paperId) throws
             PaperNotFoundException {
         if(!paperRepository.existsById(paperId))
-            throw new PaperNotFoundException(paperId);
-        if(paperStatusTimeRepository.existsById(paperStatusTimeDTO.getId()))
-            return false;
+            throw new PaperNotFoundException(paperId.toString());
         PaperStatusTime p = modelMapper.map(paperStatusTimeDTO, PaperStatusTime.class);
+        p.setPaper(paperRepository.getOne(paperId));
         paperStatusTimeRepository.save(p);
         paperStatusTimeRepository.flush();
         paperRepository.getOne(paperId).addStatusHistory(p);
-        return true;
+        return p.getId();
     }
 
     @Override
-    public List<PaperStatusTimeDTO> getPaperHistory(String paperId) throws PaperNotFoundException {
+    public List<PaperStatusTimeDTO> getPaperHistory(Long paperId) throws PaperNotFoundException {
         if(!paperRepository.existsById(paperId))
-            throw new PaperNotFoundException(paperId);
+            throw new PaperNotFoundException(paperId.toString());
         return paperRepository
                 .getOne(paperId)
                 .getStatusHistory()

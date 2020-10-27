@@ -10,39 +10,41 @@ import java.util.Optional;
 
 public interface AssignmentService {
 
-    boolean addAssignment(AssignmentDTO assignment);
+    Long addAssignment(AssignmentDTO assignment);
 
-    Optional<AssignmentDTO> getAssignment(String id);
+    Optional<AssignmentDTO> getAssignment(Long id);
 
     List<AssignmentDTO> getAllAssignments();
 
 
 
-    boolean addPaper(PaperDTO paper);
+    Long addPaper(PaperDTO paper, Long teamId, Long assignmentId);
 
-    boolean linkPaperToAssignment(String paperId, String assignmentId);
+    boolean linkPaperToAssignment(Long paperId, Long assignmentId);
 
-    Optional<PaperDTO> getPaper(String id);
+    Optional<PaperDTO> getPaper(Long id);
 
     List<PaperDTO> getPapersForTeam(Long teamId);
 
-    List<PaperDTO> getPapersForAssignment(String id);
+    List<PaperDTO> getPapersForAssignment(Long id);
 
     List<PaperDTO> getAllPapers();
 
-    void ratePaper(String paperId, int mark);
+    void ratePaper(Long paperId, int mark);
 
-    String readPaper(String paperId);
+    String initializePaperStatus(Long paperId);
 
-    void reviewPaper(String paperId);
+    String readPaper(Long paperId);
 
-    void deliverPaper(String paperId);
+    void reviewPaper(Long paperId);
 
-    void setPaperContent(String paperId, String content);
+    void deliverPaper(Long paperId);
+
+    void setPaperContent(Long paperId, String content);
 
 
-    boolean addPaperStatusTime(PaperStatusTimeDTO paperStatusTimeDTO, String paperId);
+    Long addPaperStatusTime(PaperStatusTimeDTO paperStatusTimeDTO, Long paperId);
 
-    List<PaperStatusTimeDTO> getPaperHistory(String paperId);
+    List<PaperStatusTimeDTO> getPaperHistory(Long paperId);
 
 }

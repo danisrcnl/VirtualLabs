@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.List;
@@ -18,7 +19,7 @@ public class Paper {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private Long id;
 
     private String content;
 
@@ -27,11 +28,11 @@ public class Paper {
     private int mark;
 
     @ManyToOne
-    @JoinColumn("team_id")
+    @JoinColumn(name="team")
     private Team team;
 
     @ManyToOne
-    @JoinColumn("assignment_id")
+    @JoinColumn(name="assignment")
     private Assignment assignment;
 
     @OneToMany(mappedBy = "paper")

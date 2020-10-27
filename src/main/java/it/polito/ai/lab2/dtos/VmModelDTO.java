@@ -13,8 +13,9 @@ import org.springframework.hateoas.RepresentationModel;
 public class VmModelDTO extends RepresentationModel<VmModelDTO> {
 
     private String id;
-    private int nVCpu;
-    private int disk;
-    private int ram;
+    private String operatingSystem;
+    private int maxNVCpu;
+    private int maxDisk;
+    private int maxRam;
 
 }

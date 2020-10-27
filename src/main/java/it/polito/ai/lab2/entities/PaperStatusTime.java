@@ -18,7 +18,7 @@ public class PaperStatusTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private Long id;
 
     private Timestamp timestamp;
 
@@ -26,8 +26,8 @@ public class PaperStatusTime {
 
     private String content;
 
-    @ManyToOne
-    @JoinColumn("paperStatusTime_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="paper_id")
     private Paper paper;
 
 }
