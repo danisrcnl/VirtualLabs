@@ -52,16 +52,21 @@ public class NotificationServiceImpl implements NotificationService {
         System.out.println(liveTokens);
         System.out.println(Timestamp.valueOf(localDateTime));
 
-        if(!liveTokens.contains(t))
+        if(!liveTokens.contains(t)) {
+            List<Token> teamTokens = tokenRepository.findAllByTeamId(teamId);
+            for(Token teamToken : teamTokens)
+                tokenRepository.delete(teamToken);
+            tokenRepository.flush();
+            teamService.evictTeam(teamId);
             return false;
+        }
 
         tokenRepository.delete(t);
         tokenRepository.flush();
 
-        if(!tokenRepository.findAllByTeamId(teamId).isEmpty())
-            return false;
+        if(tokenRepository.findAllByTeamId(teamId).isEmpty())
+            teamService.activateTeam(teamId);
 
-        teamService.activateTeam(teamId);
         return true;
     }
 

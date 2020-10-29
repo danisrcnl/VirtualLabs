@@ -27,7 +27,7 @@ public class Teacher {
 
     private String photoPath;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {/*CascadeType.PERSIST, CascadeType.MERGE*/ CascadeType.ALL})
     @JoinTable(name="teacher_course", joinColumns = @JoinColumn(name="teacher_id"),
             inverseJoinColumns = @JoinColumn(name="course_name"))
     private List<Course> courses;
