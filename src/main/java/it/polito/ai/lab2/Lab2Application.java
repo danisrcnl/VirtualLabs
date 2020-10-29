@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 @SpringBootApplication
 public class Lab2Application {
@@ -68,8 +69,7 @@ public class Lab2Application {
             @Override
             public void run(String... args) throws Exception {
 
-
-
+                teamService.getTeamForCourse("Applicazioni Internet");
             }
         };
     }

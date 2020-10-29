@@ -19,7 +19,7 @@ public class Token {
     @Id
     private String id;
 
-    private Long teamId;
+    private String teamId;
 
     private Timestamp expiryDate;
 }

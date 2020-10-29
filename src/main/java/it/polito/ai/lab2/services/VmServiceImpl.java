@@ -45,6 +45,7 @@ public class VmServiceImpl implements VmService {
 
         if(!teamRepository.existsById(teamName))
             throw new TeamNotFoundException(teamName);
+/* controllo meglio se spostato su endpoint */
 
         if(teamService.getUsedNVCpuForTeam(teamName) + vm.getNVCpu() >
                 teamRepository.getOne(teamName).getCourse().getVmModel().getMaxNVCpu())
@@ -57,6 +58,9 @@ public class VmServiceImpl implements VmService {
         if(teamService.getUsedRamForTeam(teamName) + vm.getRam() >
                 teamRepository.getOne(teamName).getCourse().getVmModel().getMaxRam())
             throw new VmServiceException("You exceeded ram space limit");
+
+/* controllo meglio se spostato su endpoint */
+
 
         Vm v = modelMapper.map(vm, Vm.class);
         vmRepository.save(v);

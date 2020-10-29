@@ -42,6 +42,7 @@ public class TeamServiceImpl implements TeamService {
     @Autowired
     ModelMapper modelMapper;
 
+
     @Override
     public boolean addCourse(CourseDTO course) {
         Course c = modelMapper.map(course, Course.class);
@@ -361,10 +362,13 @@ public class TeamServiceImpl implements TeamService {
         for (String memberId : memberIds) {
             if(!availableIds.contains(memberId))
                 throw new TeamServiceException();
-            team.addMember(studentRepository.getOne(memberId));
         }
 
+        for(String memberId : memberIds)
+            team.addMember(studentRepository.getOne(memberId));
+
         Team t = teamRepository.save(team);
+
 
         return modelMapper.map(t, TeamDTO.class);
     }

@@ -64,7 +64,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public Long addPaper(PaperDTO paper, Long teamId, Long assignmentId) throws
+    public Long addPaper(PaperDTO paper, String teamId, Long assignmentId) throws
             AssignmentNotFoundException, TeamNotFoundException {
 
         if(!teamRepository.existsById(teamId))
@@ -113,7 +113,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public List<PaperDTO> getPapersForTeam(Long teamId) throws TeamNotFoundException {
+    public List<PaperDTO> getPapersForTeam(String teamId) throws TeamNotFoundException {
         if(!teamRepository.existsById(teamId))
             throw new TeamNotFoundException(teamId.toString());
         return teamRepository

@@ -40,7 +40,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public boolean confirm(String token) {
 
-        Long teamId;
+        String teamId;
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris"));
 
         if(!tokenRepository.existsById(token))
@@ -68,7 +68,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public boolean reject(String token) {
 
-        Long teamId;
+        String teamId;
 
         if(!tokenRepository.existsById(token))
             return false;
@@ -84,12 +84,12 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void notifyTeam(TeamDTO dto, List<String> memberIds) {
+    public void notifyTeam(String teamName, List<String> memberIds) {
 
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris")).plusHours(1);
 
         Token t = Token.builder()
-                .teamId(dto.getId())
+                .teamId(teamName)
                 .expiryDate(Timestamp.valueOf(localDateTime))
                 .build();
 
@@ -102,7 +102,7 @@ public class NotificationServiceImpl implements NotificationService {
             String confirmLink = rootLink.getHref() + "/confirm/" + id;
             String rejectLink = rootLink.getHref() + "/reject/" + id;
             String message = "Ciao s" + memberId + "@studenti.polito.it, questo è un messaggio generato per gli " +
-                    "utenti del team " + dto.getName() + "!" + System.lineSeparator() +
+                    "utenti del team " + teamName + "!" + System.lineSeparator() +
                     "Clicca qui per confermare l'invito:" + System.lineSeparator()
                     + confirmLink + System.lineSeparator() + "Clicca qui per rifiutare l'invito:" +
                     System.lineSeparator() + rejectLink;
