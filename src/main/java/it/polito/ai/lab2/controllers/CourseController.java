@@ -27,7 +27,6 @@ public class CourseController {
     @Autowired
     TeamService teamService;
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping({"", "/"})
     public List<CourseDTO> all() {
         return teamService
@@ -37,7 +36,6 @@ public class CourseController {
                 .collect(Collectors.toList());
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{name}")
     public CourseDTO getOne(@PathVariable String name) throws ResponseStatusException {
         Optional<CourseDTO> course = teamService.getCourse(name);
@@ -47,7 +45,6 @@ public class CourseController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, name);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{name}/enrolled")
     public List<StudentDTO> enrolledStudents(@PathVariable String name) throws ResponseStatusException {
         List<StudentDTO> enrolled;
@@ -62,7 +59,6 @@ public class CourseController {
                 .collect(Collectors.toList());
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping({"", "/"})
     public CourseDTO addCourse(@RequestBody CourseDTO courseDTO) throws ResponseStatusException {
         if(teamService.addCourse(courseDTO))
@@ -82,7 +78,6 @@ public class CourseController {
         return enrolledStudents(name);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("{name}/enrollMany")
     public List<StudentDTO> enrollMany(@PathVariable String name, @RequestParam("file") MultipartFile multipartFile)
                                                             throws UnsupportedMediaTypeStatusException {

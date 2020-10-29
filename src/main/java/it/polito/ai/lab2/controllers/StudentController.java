@@ -20,7 +20,6 @@ public class StudentController {
     @Autowired
     TeamService teamService;
 
-    @PreAuthorize("hasRole('USER')")
     @GetMapping({"/", ""})
     public List<StudentDTO> all() {
         return teamService
@@ -30,7 +29,7 @@ public class StudentController {
                 .collect(Collectors.toList());
     }
 
-    @PreAuthorize("hasRole('USER')")
+
     @GetMapping("/{id}")
     public StudentDTO getOne(@PathVariable String id) throws ResponseStatusException {
         Optional<StudentDTO> student = teamService.getStudent(id);
@@ -40,7 +39,7 @@ public class StudentController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, id);
     }
 
-    @PreAuthorize("hasRole('USER')")
+
     @PostMapping({"", "/"})
     public StudentDTO addStudent(@RequestBody StudentDTO studentDTO) throws ResponseStatusException {
         if(teamService.addStudent(studentDTO))

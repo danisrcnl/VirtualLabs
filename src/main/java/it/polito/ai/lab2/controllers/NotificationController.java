@@ -17,7 +17,6 @@ public class NotificationController {
 
     @GetMapping("/confirm/{tokenId}")
     public String confirm(@PathVariable String tokenId) {
-        System.out.println("ingresso metodo controller"); // da eliminare
         if(notificationService.confirm(tokenId))
             return "redirect:/notification/confirmation/success";
         else return "redirect:/notification/confirmation/failure";

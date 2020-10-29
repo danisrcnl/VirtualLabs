@@ -24,7 +24,7 @@ public class TeacherController {
     @Autowired
     TeamService teamService;
 
-    @PreAuthorize("hasRole('USER')")
+
     @GetMapping({"", "/"})
     public List<TeacherDTO> all() {
         return teamService
@@ -34,7 +34,7 @@ public class TeacherController {
                 .collect(Collectors.toList());
     }
 
-    @PreAuthorize("hasRole('USER')")
+    //@PreAuthorize("hasRole('USER')")
     @GetMapping("/{id}")
     public TeacherDTO getOne(@PathVariable String id) throws ResponseStatusException {
         Optional<TeacherDTO> teacher = teamService.getTeacher(id);

@@ -1,14 +1,4 @@
 package it.polito.ai.lab2;
-import it.polito.ai.lab2.controllers.NotificationController;
-import it.polito.ai.lab2.dataStructures.PaperStatus;
-import it.polito.ai.lab2.dtos.*;
-import it.polito.ai.lab2.entities.Course;
-import it.polito.ai.lab2.entities.Token;
-import it.polito.ai.lab2.entities.User;
-import it.polito.ai.lab2.repositories.CourseRepository;
-import it.polito.ai.lab2.repositories.TeacherRepository;
-import it.polito.ai.lab2.repositories.TokenRepository;
-import it.polito.ai.lab2.repositories.UserRepository;
 import it.polito.ai.lab2.services.AssignmentService;
 import it.polito.ai.lab2.services.NotificationService;
 import it.polito.ai.lab2.services.TeamService;
@@ -23,15 +13,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
 @SpringBootApplication
 public class Lab2Application {
@@ -69,11 +51,12 @@ public class Lab2Application {
             @Override
             public void run(String... args) throws Exception {
 
-                teamService.getTeamForCourse("Applicazioni Internet");
             }
         };
     }
 
-    public static void main(String[] args) { SpringApplication.run(Lab2Application.class, args); }
+    public static void main(String[] args) {
+        SpringApplication.run(Lab2Application.class, args);
+    }
 
 }
