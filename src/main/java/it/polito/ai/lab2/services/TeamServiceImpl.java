@@ -2,10 +2,7 @@ package it.polito.ai.lab2.services;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
-import it.polito.ai.lab2.dtos.CourseDTO;
-import it.polito.ai.lab2.dtos.StudentDTO;
-import it.polito.ai.lab2.dtos.TeacherDTO;
-import it.polito.ai.lab2.dtos.TeamDTO;
+import it.polito.ai.lab2.dtos.*;
 import it.polito.ai.lab2.entities.*;
 import it.polito.ai.lab2.repositories.CourseRepository;
 import it.polito.ai.lab2.repositories.StudentRepository;
@@ -359,6 +356,7 @@ public class TeamServiceImpl implements TeamService {
                 .stream()
                 .map(StudentDTO::getId)
                 .collect(Collectors.toList());
+        System.out.println(availableIds);
         for (String memberId : memberIds) {
             if(!availableIds.contains(memberId))
                 throw new TeamServiceException();
@@ -447,5 +445,18 @@ public class TeamServiceImpl implements TeamService {
                 .stream()
                 .map(vm -> vm.getRam())
                 .reduce(0, Integer :: sum);
+    }
+
+    @Override
+    public List<VmDTO> getVmsForStudent(String studentId) throws StudentNotFoundException {
+        if(!studentRepository.existsById(studentId))
+            throw new StudentNotFoundException(studentId);
+
+        return studentRepository
+                .getOne(studentId)
+                .getVms()
+                .stream()
+                .map(vm -> modelMapper.map(vm, VmDTO.class))
+                .collect(Collectors.toList());
     }
 }

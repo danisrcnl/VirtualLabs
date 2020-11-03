@@ -1,9 +1,6 @@
 package it.polito.ai.lab2.services;
 
-import it.polito.ai.lab2.dtos.CourseDTO;
-import it.polito.ai.lab2.dtos.StudentDTO;
-import it.polito.ai.lab2.dtos.TeacherDTO;
-import it.polito.ai.lab2.dtos.TeamDTO;
+import it.polito.ai.lab2.dtos.*;
 
 import java.io.Reader;
 import java.util.List;
@@ -85,4 +82,6 @@ public interface TeamService {
     int getUsedDiskForTeam(String teamName);
 
     int getUsedRamForTeam(String teamName);
+
+    List<VmDTO> getVmsForStudent(String studentId);
 }

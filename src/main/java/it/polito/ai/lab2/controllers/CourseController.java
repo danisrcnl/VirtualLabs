@@ -67,7 +67,6 @@ public class CourseController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, courseDTO.getName());
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping({"/{name}/enrollOne"})
     public List<StudentDTO> enrollOne(@PathVariable String name, @RequestBody StudentDTO studentDTO) throws ResponseStatusException {
         Optional<CourseDTO> course = teamService.getCourse(name);

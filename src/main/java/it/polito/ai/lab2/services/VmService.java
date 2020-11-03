@@ -1,5 +1,6 @@
 package it.polito.ai.lab2.services;
 
+import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.dtos.VmDTO;
 import it.polito.ai.lab2.dtos.VmModelDTO;
 
@@ -23,6 +24,8 @@ public interface VmService {
     void deleteVm(Long id);
 
     boolean addOwner(Long vmId, String studentId);
+
+    List<StudentDTO> getOwnersForVm(Long vmId);
 
 
 

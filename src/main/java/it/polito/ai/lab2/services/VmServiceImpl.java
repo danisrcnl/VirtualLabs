@@ -1,6 +1,7 @@
 package it.polito.ai.lab2.services;
 
 import it.polito.ai.lab2.dataStructures.VmStatus;
+import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.dtos.TeamDTO;
 import it.polito.ai.lab2.dtos.VmDTO;
 import it.polito.ai.lab2.dtos.VmModelDTO;
@@ -63,6 +64,7 @@ public class VmServiceImpl implements VmService {
 
 
         Vm v = modelMapper.map(vm, Vm.class);
+        v.setTeam(teamRepository.getOne(teamName));
         vmRepository.save(v);
         vmRepository.flush();
         return v.getId();
@@ -142,6 +144,19 @@ public class VmServiceImpl implements VmService {
     }
 
     @Override
+    public List<StudentDTO> getOwnersForVm(Long vmId) throws VmNotFoundException {
+        if(!vmRepository.existsById(vmId))
+            throw new VmNotFoundException(vmId.toString());
+
+        return vmRepository
+                .getOne(vmId)
+                .getOwners()
+                .stream()
+                .map(s -> modelMapper.map(s, StudentDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public Long addVmModelForCourse(VmModelDTO vmModel, String courseName) throws CourseNotFoundException {
         if(!courseRepository.existsById(courseName))
             throw new CourseNotFoundException(courseName);
@@ -152,6 +167,7 @@ public class VmServiceImpl implements VmService {
         vmModelRepository.flush();
 
         VmModel m = modelMapper.map(vmModel, VmModel.class);
+        courseRepository.getOne(courseName).setVmModel(m);
         vmModelRepository.save(m);
         vmModelRepository.flush();
         return m.getId();

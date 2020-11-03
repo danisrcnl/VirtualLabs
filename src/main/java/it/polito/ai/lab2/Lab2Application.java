@@ -1,4 +1,7 @@
 package it.polito.ai.lab2;
+import it.polito.ai.lab2.dtos.*;
+import it.polito.ai.lab2.repositories.CourseRepository;
+import it.polito.ai.lab2.repositories.VmModelRepository;
 import it.polito.ai.lab2.services.AssignmentService;
 import it.polito.ai.lab2.services.NotificationService;
 import it.polito.ai.lab2.services.TeamService;
@@ -13,6 +16,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 @SpringBootApplication
@@ -45,7 +50,7 @@ public class Lab2Application {
     }
 
     @Bean
-    CommandLineRunner runner (VmService vmService, TeamService teamService,
+    CommandLineRunner runner (VmModelRepository vmModelRepository, CourseRepository courseRepository, VmService vmService, TeamService teamService,
                               AssignmentService assignmentService, NotificationService notificationService) {
         return new CommandLineRunner() {
             @Override
