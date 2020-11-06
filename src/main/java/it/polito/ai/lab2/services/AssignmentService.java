@@ -30,7 +30,7 @@ public interface AssignmentService {
 
     List<PaperDTO> getAllPapers();
 
-    void ratePaper(Long paperId, int mark);
+    boolean ratePaper(Long paperId, int mark);
 
     String initializePaperStatus(Long paperId);
 

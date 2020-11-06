@@ -16,6 +16,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -55,7 +58,6 @@ public class Lab2Application {
         return new CommandLineRunner() {
             @Override
             public void run(String... args) throws Exception {
-
             }
         };
     }
