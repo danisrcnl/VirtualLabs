@@ -91,4 +91,11 @@ public class CourseController {
         return enrolledStudents(name);
     }
 
+    @PostMapping("{name}/editName")
+    public CourseDTO editName(@PathVariable String name, @RequestBody String newName) {
+        System.out.println(name + " " + newName);
+        teamService.editCourseName(name, newName);
+        return ModelHelper.enrich(teamService.getCourse(newName).get());
+    }
+
 }

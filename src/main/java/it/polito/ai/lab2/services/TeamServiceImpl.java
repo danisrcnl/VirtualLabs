@@ -208,10 +208,26 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public void editCourseName(String courseName, String newName) throws CourseNotFoundException {
+
+        System.out.println("1 step");
+
+        if(!courseRepository.existsById(courseName))
+            throw new CourseNotFoundException(courseName);
+
+        System.out.println("2 step");
+
+        courseRepository
+                .getOne(courseName)
+                .setName(newName);
+
+        System.out.println("3 step");
+    }
+
+    @Override
     public List<Boolean> addAll(List<StudentDTO> students) {
         List<Boolean> successes = new ArrayList<Boolean>();
-        for(int i = 0; i<students.size(); i++)
-            successes.add(addStudent(students.get(i)));
+        for (StudentDTO student : students) successes.add(addStudent(student));
         return successes;
     }
 
@@ -220,10 +236,10 @@ public class TeamServiceImpl implements TeamService {
         List<Boolean> successes = new ArrayList<Boolean>();
         if(!courseRepository.existsById(courseName))
             throw new CourseNotFoundException(courseName);
-        for(int i = 0; i<studentIds.size(); i++) {
+        for (String studentId : studentIds) {
             try {
-                successes.add(addStudentToCourse(studentIds.get(i), courseName));
-            } catch(StudentNotFoundException e) {
+                successes.add(addStudentToCourse(studentId, courseName));
+            } catch (StudentNotFoundException e) {
                 successes.add(false);
             }
         }
@@ -241,8 +257,7 @@ public class TeamServiceImpl implements TeamService {
 
         List<String> Ids = new ArrayList<String>();
 
-        for(int i = 0; i<students.size(); i++)
-            Ids.add(students.get(i).getId());
+        for (StudentDTO student : students) Ids.add(student.getId());
 
         return enrollAll(Ids, courseName);
     }
