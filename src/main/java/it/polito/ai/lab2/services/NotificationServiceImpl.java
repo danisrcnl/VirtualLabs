@@ -89,9 +89,9 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void notifyTeam(String teamName, List<String> memberIds) {
+    public void notifyTeam(String teamName, List<String> memberIds, int hours) {
 
-        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris")).plusHours(1);
+        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris")).plusHours(hours);
 
         Token t = Token.builder()
                 .teamId(teamName)

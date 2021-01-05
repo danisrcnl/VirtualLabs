@@ -9,5 +9,5 @@ public interface NotificationService {
     void sendMessage(String address, String subject, String body);
     boolean confirm(String token);
     boolean reject(String token);
-    void notifyTeam(String teamName, List<String> memberIds);
+    void notifyTeam(String teamName, List<String> memberIds, int hours);
 }
