@@ -1,0 +1,33 @@
+
+<form [formGroup] = "myForm">
+  <div>
+  <label for="cars">Quale corso vuoi modificare?</label>
+  <select formControlName ="selcourse" [(ngModel)]="selectedcourse">
+  
+    <option *ngFor = "let course of courses" [ngValue] = "course" >
+      {{course.name}}
+    </option>
+      
+    </select>
+    
+
+   <mat-form-field>
+     <input matInput placeholder="Modifica Nome" formControlName = "newname" [(ngModel)]="newname">
+   </mat-form-field>
+   
+
+
+   <button (click) = "modifyname()"> Invia </button>
+   <button (click) = "delete()"> Cancella corso </button>
+   <button (click) = "close()"> Chiudi </button>
+  </div>
+
+  <div>
+
+    <label for="cars">Crea corso : </label>
+    <mat-form-field>
+      <input matInput placeholder="Inserisci Nome" formControlName = "coursename" [(ngModel)]="coursename">
+    </mat-form-field>
+    <button (click) = "createcourse()"> Crea </button>
+  </div>
+  </form>
