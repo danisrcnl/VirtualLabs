@@ -18,6 +18,9 @@ import java.util.List;
 public class Team {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    int id;
+
     private String name;
 
     private int status;

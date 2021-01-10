@@ -18,13 +18,13 @@ public interface AssignmentService {
 
 
 
-    Long addPaper(PaperDTO paper, String teamId, Long assignmentId);
+    Long addPaper(PaperDTO paper, String courseName, String teamName, Long assignmentId);
 
     boolean linkPaperToAssignment(Long paperId, Long assignmentId);
 
     Optional<PaperDTO> getPaper(Long id);
 
-    List<PaperDTO> getPapersForTeam(String teamId);
+    List<PaperDTO> getPapersForTeam(String courseName, String teamName);
 
     List<PaperDTO> getPapersForAssignment(Long id);
 

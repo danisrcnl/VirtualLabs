@@ -248,19 +248,37 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void activateTeam(String teamId) throws TeamNotFoundException {
-        if(!teamRepository.existsById(teamId))
-            throw new TeamNotFoundException(teamId.toString());
+    public void activateTeamById(int id) throws TeamNotFoundException {
+        if(!teamRepository.existsById(id))
+            throw new TeamNotFoundException(id);
 
-        teamRepository.getOne(teamId).setStatus(1);
+        teamRepository.getOne(id).setStatus(1);
     }
 
     @Override
-    public void evictTeam(String teamId) throws TeamNotFoundException {
-        if(!teamRepository.existsById(teamId))
-            throw new TeamNotFoundException(teamId.toString());
+    public void activateTeam(String courseName, String teamName) throws TeamNotFoundException {
+        Team t = teamRepository.getTeamByCourseAndName(courseName, teamName);
+        if(t == null)
+            throw new TeamNotFoundException(teamName);
 
-        Team t = teamRepository.getOne(teamId);
+        t.setStatus(1);
+    }
+
+    @Override
+    public void evictTeamById(int id) throws TeamNotFoundException {
+        if(!teamRepository.existsById(id))
+            throw new TeamNotFoundException(id);
+
+        teamRepository.delete(teamRepository.getOne(id));
+        teamRepository.flush();
+    }
+
+    @Override
+    public void evictTeam(String courseName, String teamName) throws TeamNotFoundException {
+        Team t = teamRepository.getTeamByCourseAndName(courseName, teamName);
+        if(t == null)
+            throw new TeamNotFoundException(teamName);
+
         teamRepository.delete(t);
         teamRepository.flush();
     }
@@ -322,11 +340,11 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public List<StudentDTO> getMembers(String teamId) throws TeamNotFoundException {
-        if(!teamRepository.existsById(teamId))
-            throw new TeamNotFoundException(teamId.toString());
-        return teamRepository
-                .getOne(teamId)
+    public List<StudentDTO> getMembers(String courseName, String teamName) throws TeamNotFoundException {
+        Team t = teamRepository.getTeamByCourseAndName(courseName, teamName);
+        if(t == null)
+            throw new TeamNotFoundException(teamName);
+        return t
                 .getMembers()
                 .stream()
                 .map(s -> modelMapper.map(s, StudentDTO.class))
@@ -334,7 +352,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public TeamDTO proposeTeam(String courseName, String name, List<String> memberIds)
+    public TeamDTO proposeTeam(String courseName, String teamName, List<String> memberIds)
         throws CourseNotFoundException, StudentNotFoundException, TeamServiceException {
 
         Team team;
@@ -343,11 +361,11 @@ public class TeamServiceImpl implements TeamService {
         if(!courseRepository.existsById(courseName))
             throw new CourseNotFoundException(courseName);
 
-        if(teamRepository.existsById(name))
-            throw new TeamServiceException("This name has been already chosen");
+        if(teamRepository.getTeamByCourseAndName(courseName, teamName) != null)
+            throw new TeamServiceException("Name" + teamName + "has been already chosen for course " + courseName);
 
         team = Team.builder()
-                .name(name)
+                .name(teamName)
                 .members(members)
                 .build();
         team.setCourse(courseRepository.getOne(courseName));
@@ -409,12 +427,12 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public int getUsedNVCpuForTeam(String teamName) throws TeamNotFoundException {
-        if(!teamRepository.existsById(teamName))
+    public int getUsedNVCpuForTeam(String courseName, String teamName) throws TeamNotFoundException {
+        Team t = teamRepository.getTeamByCourseAndName(courseName, teamName);
+        if(t == null)
             throw new TeamNotFoundException(teamName);
 
-        return teamRepository
-                .getOne(teamName)
+        return t
                 .getVms()
                 .stream()
                 .map(vm -> vm.getNVCpu())
@@ -422,12 +440,12 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public int getUsedDiskForTeam(String teamName) throws TeamNotFoundException {
-        if(!teamRepository.existsById(teamName))
-        throw new TeamNotFoundException(teamName);
+    public int getUsedDiskForTeam(String courseName, String teamName) throws TeamNotFoundException {
+        Team t = teamRepository.getTeamByCourseAndName(courseName, teamName);
+        if(t == null)
+            throw new TeamNotFoundException(teamName);
 
-        return teamRepository
-                .getOne(teamName)
+        return t
                 .getVms()
                 .stream()
                 .map(vm -> vm.getDisk())
@@ -435,12 +453,12 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public int getUsedRamForTeam(String teamName) throws TeamNotFoundException {
-        if(!teamRepository.existsById(teamName))
+    public int getUsedRamForTeam(String courseName, String teamName) throws TeamNotFoundException {
+        Team t = teamRepository.getTeamByCourseAndName(courseName, teamName);
+        if(t == null)
             throw new TeamNotFoundException(teamName);
 
-        return teamRepository
-                .getOne(teamName)
+        return t
                 .getVms()
                 .stream()
                 .map(vm -> vm.getRam())
@@ -458,5 +476,14 @@ public class TeamServiceImpl implements TeamService {
                 .stream()
                 .map(vm -> modelMapper.map(vm, VmDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public int getTeamId(String courseName, String teamName) throws TeamNotFoundException {
+        if(teamRepository.getTeamByCourseAndName(courseName, teamName) == null)
+            throw new TeamNotFoundException(teamName);
+        return teamRepository
+                .getTeamByCourseAndName(courseName, teamName)
+                .getId();
     }
 }

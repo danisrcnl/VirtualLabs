@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface VmService {
 
-    Long addVmToTeam(VmDTO vm, String teamName);
+    Long addVmToTeam(VmDTO vm, String courseName, String teamName);
 
     Optional<VmDTO> getVm(Long id);
 

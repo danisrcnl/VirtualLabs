@@ -51,9 +51,12 @@ public interface TeamService {
 
     List<Boolean> addAll(List<StudentDTO> students);
 
-    void activateTeam(String teamId);
+    void activateTeamById(int id);
 
-    void evictTeam(String teamId);
+    void activateTeam(String courseName, String teamName);
+
+    void evictTeamById(int id);
+    void evictTeam(String courseName, String teamName);
 
     List<CourseDTO> getTeacherCourses(String teacherId);
 
@@ -67,9 +70,11 @@ public interface TeamService {
 
     TeamDTO getTeamForStudent(String studentId);
 
-    List<StudentDTO> getMembers(String teamId);
+    List<StudentDTO> getMembers(String courseName, String teamName);
 
-    TeamDTO proposeTeam(String courseId, String name, List<String> memberIds);
+    TeamDTO proposeTeam(String courseName, String teamName, List<String> memberIds);
+
+    int getTeamId(String courseName, String teamName);
 
     List<TeamDTO> getTeamForCourse(String courseName);
 
@@ -77,11 +82,11 @@ public interface TeamService {
 
     List<StudentDTO> getAvailableStudents(String courseName);
 
-    int getUsedNVCpuForTeam(String teamName); // ultimi tre metodi da testare
+    int getUsedNVCpuForTeam(String courseName, String teamName); // ultimi tre metodi da testare
 
-    int getUsedDiskForTeam(String teamName);
+    int getUsedDiskForTeam(String courseName, String teamName);
 
-    int getUsedRamForTeam(String teamName);
+    int getUsedRamForTeam(String courseName, String teamName);
 
     List<VmDTO> getVmsForStudent(String studentId);
 }

@@ -40,14 +40,13 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public boolean confirm(String token) {
 
-        String teamId;
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris"));
 
         if(!tokenRepository.existsById(token))
             return false;
 
         Token t = tokenRepository.getOne(token);
-        teamId = t.getTeamId();
+        int teamId = t.getTeamId();
         List<Token> liveTokens = tokenRepository.findAllByExpiryBefore(Timestamp.valueOf(localDateTime));
         System.out.println(liveTokens);
         System.out.println(Timestamp.valueOf(localDateTime));
@@ -57,7 +56,7 @@ public class NotificationServiceImpl implements NotificationService {
             for(Token teamToken : teamTokens)
                 tokenRepository.delete(teamToken);
             tokenRepository.flush();
-            teamService.evictTeam(teamId);
+            teamService.evictTeamById(teamId);
             return false;
         }
 
@@ -65,7 +64,7 @@ public class NotificationServiceImpl implements NotificationService {
         tokenRepository.flush();
 
         if(tokenRepository.findAllByTeamId(teamId).isEmpty())
-            teamService.activateTeam(teamId);
+            teamService.activateTeamById(teamId);
 
         return true;
     }
@@ -73,28 +72,26 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public boolean reject(String token) {
 
-        String teamId;
-
         if(!tokenRepository.existsById(token))
             return false;
 
         Token t = tokenRepository.getOne(token);
-        teamId = t.getTeamId();
+        int teamId = t.getTeamId();
         List<Token> teamTokens = tokenRepository.findAllByTeamId(teamId);
         for(Token teamToken : teamTokens)
             tokenRepository.delete(teamToken);
         tokenRepository.flush();
-        teamService.evictTeam(teamId);
+        teamService.evictTeamById(teamId);
         return true;
     }
 
     @Override
-    public void notifyTeam(String teamName, List<String> memberIds, int hours) {
+    public void notifyTeam(String courseName, String teamName, List<String> memberIds, int hours) {
 
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris")).plusHours(hours);
 
         Token t = Token.builder()
-                .teamId(teamName)
+                .teamId(teamService.getTeamId(courseName, teamName))
                 .expiryDate(Timestamp.valueOf(localDateTime))
                 .build();
 

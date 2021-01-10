@@ -64,16 +64,16 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public Long addPaper(PaperDTO paper, String teamId, Long assignmentId) throws
+    public Long addPaper(PaperDTO paper, String courseName, String teamName, Long assignmentId) throws
             AssignmentNotFoundException, TeamNotFoundException {
 
-        if(!teamRepository.existsById(teamId))
-            throw new TeamNotFoundException(teamId.toString());
+        if(teamRepository.getTeamByCourseAndName(courseName, teamName) == null)
+            throw new TeamNotFoundException(teamName);
         if(!assignmentRepository.existsById(assignmentId))
             throw new AssignmentNotFoundException(assignmentId.toString());
 
         Paper p = modelMapper.map(paper, Paper.class);
-        p.setTeam(teamRepository.getOne(teamId));
+        p.setTeam(teamRepository.getTeamByCourseAndName(courseName, teamName));
         p.setAssignment(assignmentRepository.getOne(assignmentId));
 
         paperRepository.save(p);
@@ -113,11 +113,11 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public List<PaperDTO> getPapersForTeam(String teamId) throws TeamNotFoundException {
-        if(!teamRepository.existsById(teamId))
-            throw new TeamNotFoundException(teamId.toString());
+    public List<PaperDTO> getPapersForTeam(String courseName, String teamName) throws TeamNotFoundException {
+        if(teamRepository.getTeamByCourseAndName(courseName, teamName) == null)
+            throw new TeamNotFoundException(teamName);
         return teamRepository
-                .getOne(teamId)
+                .getTeamByCourseAndName(courseName, teamName)
                 .getPapers()
                 .stream()
                 .map(p -> modelMapper.map(p, PaperDTO.class))

@@ -42,29 +42,29 @@ public class VmServiceImpl implements VmService {
     TeamService teamService;
 
     @Override
-    public Long addVmToTeam(VmDTO vm, String teamName) throws TeamNotFoundException, VmServiceException {
+    public Long addVmToTeam(VmDTO vm, String courseName, String teamName) throws TeamNotFoundException, VmServiceException {
 
-        if(!teamRepository.existsById(teamName))
+        if(teamRepository.getTeamByCourseAndName(courseName, teamName) == null)
             throw new TeamNotFoundException(teamName);
 /* controllo meglio se spostato su endpoint */
 
-        if(teamService.getUsedNVCpuForTeam(teamName) + vm.getNVCpu() >
-                teamRepository.getOne(teamName).getCourse().getVmModel().getMaxNVCpu())
+        if(teamService.getUsedNVCpuForTeam(courseName, teamName) + vm.getNVCpu() >
+                teamRepository.getTeamByCourseAndName(courseName, teamName).getCourse().getVmModel().getMaxNVCpu())
             throw new VmServiceException("You exceeded Virtual CPU limit");
 
-        if(teamService.getUsedDiskForTeam(teamName) + vm.getDisk() >
-                teamRepository.getOne(teamName).getCourse().getVmModel().getMaxDisk())
+        if(teamService.getUsedDiskForTeam(courseName, teamName) + vm.getDisk() >
+                teamRepository.getTeamByCourseAndName(courseName, teamName).getCourse().getVmModel().getMaxDisk())
             throw new VmServiceException("You exceeded disk space limit");
 
-        if(teamService.getUsedRamForTeam(teamName) + vm.getRam() >
-                teamRepository.getOne(teamName).getCourse().getVmModel().getMaxRam())
+        if(teamService.getUsedRamForTeam(courseName, teamName) + vm.getRam() >
+                teamRepository.getTeamByCourseAndName(courseName, teamName).getCourse().getVmModel().getMaxRam())
             throw new VmServiceException("You exceeded ram space limit");
 
 /* controllo meglio se spostato su endpoint */
 
 
         Vm v = modelMapper.map(vm, Vm.class);
-        v.setTeam(teamRepository.getOne(teamName));
+        v.setTeam(teamRepository.getTeamByCourseAndName(courseName, teamName));
         vmRepository.save(v);
         vmRepository.flush();
         return v.getId();

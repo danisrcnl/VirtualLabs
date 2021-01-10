@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class TeamDTO {
 
-    private Long id;
+    private int id;
     private String name;
     private int status;
 }
