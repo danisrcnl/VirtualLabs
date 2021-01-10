@@ -1,0 +1,106 @@
+.mat-drawer-content {
+    position: relative;
+    z-index: 1;
+    
+    height: 100%;
+    width: 200%;
+    overflow: auto;
+    text-shadow: 0 0 black;
+  }
+  .content{
+    
+    width: 100%;
+    display: inline-block;
+  }
+   
+  
+    table {
+      width: 100%;
+      table-layout: fixed;
+    }
+  .mat-form-field {
+  
+    width: 70%;
+  }
+  
+  
+  .show {
+    
+    width: 70%;
+  }
+  .show2 {
+    border-collapse: collapse;
+    position: absolute;
+    top: 50px;
+    width: 25%;
+    table-layout: fixed;
+  }
+    .buttonrows {
+  
+      position: static;
+    }
+  
+    .insert {
+      position: static;
+      border: none;
+      border-bottom: 2px solid navy;
+      margin-bottom: 20px;
+      height: 20px;
+      width: 23%;
+      
+    }
+  
+    .add {
+  
+      position: relative;
+      height: 20px;
+      bottom: 60px;
+      left: 250px;
+    }
+  
+    .hide
+    {
+      visibility: hidden;
+    }
+    
+  
+    .form {
+      width: 100%;
+    }
+    .limiter {
+  width: 100%;
+  margin: 0 auto;
+}
+
+
+    
+.row {
+  
+  background: #fff;
+}
+
+.row.header {
+  color: #ffffff;
+  background: #6c7ae0;
+ 
+}
+
+.limiter td, .row.header td {
+  border: 1px solid #6c7ae0;
+  padding: 8px;
+}
+
+.show2  {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  width: 50%;
+  
+}
+
+.show2 td {
+  width: 3%;
+}
+
+.row tr:nth-child(even){background-color: rgb(243, 239, 239)};
+
