@@ -66,10 +66,7 @@ public class Team {
 
     public int addMember(Student student) {
         members.add(student);
-        /*
         student.getTeams().add(this);
-        */
-        student.setTeam(this);
         return members.indexOf(student);
     }
 

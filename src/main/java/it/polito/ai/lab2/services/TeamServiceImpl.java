@@ -330,13 +330,15 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public TeamDTO getTeamForStudent(String studentId) throws StudentNotFoundException {
+    public List<TeamDTO> getTeamsForStudent(String studentId) throws StudentNotFoundException {
         if(!studentRepository.existsById(studentId))
             throw new StudentNotFoundException(studentId);
-        return modelMapper
-                .map(studentRepository
-                    .getOne(studentId)
-                    .getTeam(), TeamDTO.class);
+        return studentRepository
+                .getOne(studentId)
+                .getTeams()
+                .stream()
+                .map(t -> modelMapper.map(t, TeamDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -352,6 +354,22 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public Boolean hasAlreadyATeamFor(String studentId, String courseName) throws StudentNotFoundException, CourseNotFoundException {
+        if(!studentRepository.existsById(studentId))
+            throw new StudentNotFoundException(studentId);
+        if(!courseRepository.existsById(courseName))
+            throw new CourseNotFoundException(courseName);
+        List<String> ids = this
+                .getStudentsInTeams(courseName)
+                .stream()
+                .map(StudentDTO :: getId)
+                .collect(Collectors.toList());
+        if(ids.contains(studentId))
+            return true;
+        return false;
+    }
+
+    @Override
     public TeamDTO proposeTeam(String courseName, String teamName, List<String> memberIds)
         throws CourseNotFoundException, StudentNotFoundException, TeamServiceException {
 
@@ -362,7 +380,7 @@ public class TeamServiceImpl implements TeamService {
             throw new CourseNotFoundException(courseName);
 
         if(teamRepository.getTeamByCourseAndName(courseName, teamName) != null)
-            throw new TeamServiceException("Name" + teamName + "has been already chosen for course " + courseName);
+            throw new TeamServiceException("Name " + teamName + " has been already chosen for course " + courseName);
 
         team = Team.builder()
                 .name(teamName)
@@ -377,11 +395,14 @@ public class TeamServiceImpl implements TeamService {
         System.out.println(availableIds);
         for (String memberId : memberIds) {
             if(!availableIds.contains(memberId))
-                throw new TeamServiceException();
+                throw new TeamServiceException("Student " + memberId + " has already a team for course " + courseName);
         }
 
-        for(String memberId : memberIds)
+        for(String memberId : memberIds) {
+            if(hasAlreadyATeamFor(memberId, courseName))
+                throw new TeamServiceException("Student " + " has already a team for course " + courseName);
             team.addMember(studentRepository.getOne(memberId));
+        }
 
         Team t = teamRepository.save(team);
 

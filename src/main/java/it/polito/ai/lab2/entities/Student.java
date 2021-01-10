@@ -35,9 +35,11 @@ public class Student {
         courses = new ArrayList<>();
     }
 
-    @ManyToOne
-    @JoinColumn(name="team")
-    private Team team;
+    @ManyToMany(mappedBy = "members")
+    private List<Team> teams;
+    {
+        teams = new ArrayList<>();
+    }
 
     public int addCourse (Course course) {
         courses.add(course);
@@ -55,5 +57,11 @@ public class Student {
         vms.add(vm);
         vm.getOwners().add(this);
         return vms.indexOf(vm);
+    }
+
+    public int addTeam (Team team) {
+        teams.add(team);
+        team.getMembers().add(this);
+        return teams.indexOf(team);
     }
 }

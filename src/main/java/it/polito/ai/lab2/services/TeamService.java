@@ -68,9 +68,11 @@ public interface TeamService {
 
     List<CourseDTO> getCourses(String studentId);
 
-    TeamDTO getTeamForStudent(String studentId);
+    List<TeamDTO> getTeamsForStudent(String studentId);
 
     List<StudentDTO> getMembers(String courseName, String teamName);
+
+    Boolean hasAlreadyATeamFor(String studentId, String courseName);
 
     TeamDTO proposeTeam(String courseName, String teamName, List<String> memberIds);
 
@@ -82,7 +84,7 @@ public interface TeamService {
 
     List<StudentDTO> getAvailableStudents(String courseName);
 
-    int getUsedNVCpuForTeam(String courseName, String teamName); // ultimi tre metodi da testare
+    int getUsedNVCpuForTeam(String courseName, String teamName);
 
     int getUsedDiskForTeam(String courseName, String teamName);
 
