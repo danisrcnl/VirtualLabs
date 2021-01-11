@@ -19,6 +19,8 @@ public class Token {
     @Id
     private String id;
 
+    private String studentId;
+
     private int teamId;
 
     private Timestamp expiryDate;

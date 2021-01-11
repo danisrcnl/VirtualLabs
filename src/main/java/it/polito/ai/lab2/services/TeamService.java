@@ -66,9 +66,13 @@ public interface TeamService {
 
     /* studente */
 
+    TeamDTO getTeam(String courseName, String teamName);
+
     List<CourseDTO> getCourses(String studentId);
 
     List<TeamDTO> getTeamsForStudent(String studentId);
+
+    List<StudentDTO> getMembersById(int id);
 
     List<StudentDTO> getMembers(String courseName, String teamName);
 

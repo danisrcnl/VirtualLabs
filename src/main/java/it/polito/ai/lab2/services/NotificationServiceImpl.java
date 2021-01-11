@@ -98,6 +98,7 @@ public class NotificationServiceImpl implements NotificationService {
         for(String memberId : memberIds) {
             String id = UUID.randomUUID().toString();
             t.setId(id);
+            t.setStudentId(memberId);
             tokenRepository.save(t);
             tokenRepository.flush();
             Link rootLink = linkTo(NotificationController.class).withSelfRel();
