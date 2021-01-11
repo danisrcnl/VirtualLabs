@@ -1,6 +1,9 @@
 package it.polito.ai.lab2.services;
 import it.polito.ai.lab2.controllers.NotificationController;
+import it.polito.ai.lab2.dataStructures.MemberStatus;
+import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.dtos.TeamDTO;
+import it.polito.ai.lab2.entities.TeamNotFoundException;
 import it.polito.ai.lab2.entities.Token;
 import it.polito.ai.lab2.repositories.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +16,10 @@ import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @Transactional
@@ -112,5 +117,30 @@ public class NotificationServiceImpl implements NotificationService {
             String receiver = "s" + memberId + "@studenti.polito.it";
             sendMessage(receiver, "Sei stato invitato a far parte di un team!", message);
         }
+    }
+
+    @Override
+    public List<MemberStatus> getMembersStatus(int teamId) throws TeamNotFoundException {
+        List<String> membersIds =
+                teamService
+                        .getMembersById(teamId)
+                        .stream()
+                        .map(StudentDTO::getId)
+                        .collect(Collectors.toList());
+        List<String> pending =
+                tokenRepository
+                        .findAllByTeamId(teamId)
+                        .stream()
+                        .map(Token::getStudentId)
+                        .collect(Collectors.toList());
+
+        List<MemberStatus> memberStatuses = new ArrayList<>();
+
+        for(String member : membersIds) {
+            MemberStatus memberStatus = MemberStatus.builder().studentId(member).build();
+            memberStatus.setHasAccepted(!pending.contains(member));
+            memberStatuses.add(memberStatus);
+        }
+        return memberStatuses;
     }
 }

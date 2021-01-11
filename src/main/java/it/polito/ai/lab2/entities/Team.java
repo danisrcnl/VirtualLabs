@@ -1,6 +1,5 @@
 package it.polito.ai.lab2.entities;
 
-import it.polito.ai.lab2.dataStructures.TeamId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
