@@ -1,6 +1,7 @@
 package it.polito.ai.lab2.controllers;
 
 import it.polito.ai.lab2.dataStructures.MemberStatus;
+import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.dtos.TeamDTO;
 import it.polito.ai.lab2.services.NotificationService;
 import it.polito.ai.lab2.services.TeamService;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/API/teams")
@@ -41,6 +43,15 @@ public class TeamController {
         return ModelHelper.enrich(
                 teamService
                 .getTeam(courseName, teamName));
+    }
+
+    @GetMapping("{courseName}/{teamName}/members")
+    public List<StudentDTO> getMembers(@PathVariable String courseName, @PathVariable String teamName) {
+        return teamService
+                .getMembers(courseName, teamName)
+                .stream()
+                .map(ModelHelper::enrich)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("{courseName}/{teamName}/membersStatus")
