@@ -68,6 +68,8 @@ public interface TeamService {
 
     TeamDTO getTeam(String courseName, String teamName);
 
+    TeamDTO getTeamById(int id);
+
     List<CourseDTO> getCourses(String studentId);
 
     List<TeamDTO> getTeamsForStudent(String studentId);
