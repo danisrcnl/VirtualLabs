@@ -6,10 +6,9 @@ import it.polito.ai.lab2.dtos.TeamDTO;
 import it.polito.ai.lab2.services.NotificationService;
 import it.polito.ai.lab2.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,7 +44,7 @@ public class TeamController {
                 .getTeam(courseName, teamName));
     }
 
-    @GetMapping("{courseName}/{teamName}/members")
+    @GetMapping("/{courseName}/{teamName}/members")
     public List<StudentDTO> getMembers(@PathVariable String courseName, @PathVariable String teamName) {
         return teamService
                 .getMembers(courseName, teamName)
@@ -54,10 +53,25 @@ public class TeamController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("{courseName}/{teamName}/membersStatus")
+    @GetMapping("/{courseName}/{teamName}/membersStatus")
     public List<MemberStatus> getMembersStatus(@PathVariable String courseName, @PathVariable String teamName) {
         int id = teamService.getTeamId(courseName, teamName);
         return notificationService.getMembersStatus(id);
+    }
+
+    @PostMapping("/{courseName}/add")
+    public TeamDTO addTeam(@PathVariable String courseName, @RequestBody String teamName,
+                           @RequestBody List<String> memberIds, @RequestBody int hours) throws ResponseStatusException{
+        try {
+            teamService.proposeTeam(courseName, teamName, memberIds);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, teamName);
+        }
+        notificationService.notifyTeam(courseName, teamName, memberIds, hours);
+        return ModelHelper.enrich(
+                        teamService
+                        .getTeam(courseName, teamName)
+                );
     }
 
 }
