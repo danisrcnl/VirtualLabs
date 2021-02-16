@@ -15,6 +15,9 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { Routes, RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { StudentsContComponent } from './students-cont.component';
 import { PageNotFoundComponentComponent } from '../page-not-found-component/page-not-found-component.component';
+import { Proposal } from '../model/proposal.model';
+import { Team } from '../model/team.model';
+import { MemberStatus } from '../model/memberstatus.model';
 
 
   @Component({
@@ -36,9 +39,11 @@ export class StudentsComponent implements OnInit {
 
     @Output() timeoutValue = new EventEmitter <Number>();
 
+
     enrolledstudents : Student[];
     compagni : Student[];
     groupid : number;
+    teams : Team[];
 
     private tablevalue : boolean;
 
@@ -78,6 +83,13 @@ export class StudentsComponent implements OnInit {
     {
       this.groupid = val;
     }
+    
+    @Input ('teams')
+    set Teams (val : Team[])
+    {
+      this.teams = val;
+    }
+
    ngOnChanges (changes: SimpleChanges) {
 
 
@@ -93,8 +105,6 @@ export class StudentsComponent implements OnInit {
       this.compagniclass.show2 = false;
     }
 
-    console.log(changes);
-
   
    }
 
@@ -106,7 +116,6 @@ export class StudentsComponent implements OnInit {
     @Input ('dataSource')
     dataSource = new MatTableDataSource<Student>(this.enrolledStudents);
 
-
     
     @Input('studenti') 
     studenti : Student [];
@@ -117,6 +126,7 @@ export class StudentsComponent implements OnInit {
         
     selection = new SelectionModel<Student>(true, []);
     students : Student [];
+    members : MemberStatus[] = new Array<MemberStatus>();
   
     public dataSource2 = new MatTableDataSource<Student>(this.Compagni);
    
@@ -134,6 +144,7 @@ export class StudentsComponent implements OnInit {
     public tableclasses = { "hide" : false, "show" : false  }
     public compagniclass = { "hide" : false, "show2" : false }
     public groupclasses = { "hide" :true }
+    
     
 constructor (private router : Router, private activeRoute: ActivatedRoute, private fb: FormBuilder) {
 
@@ -168,15 +179,14 @@ this.hreff = this.router.url;
   
      this.enrolledstudents = Object.assign(this.enrolledstudents);
      this.dataSource = new MatTableDataSource<Student> (this.enrolledstudents);
-
-     console.log (this.dataSource.data);
      this.compagni = Object.assign (this.compagni);
      this.dataSource2 = new MatTableDataSource<Student> (this.compagni);
-     console.log(this.dataSource2.data);
       this.filteredOptions = this.mycontrol.valueChanges.pipe(
         startWith(''),
         map (studenti => this._filter(studenti)));   
-        
+
+
+    
       }
 
      
@@ -252,12 +262,21 @@ this.hreff = this.router.url;
       
    
    this.students = this.selection.selected; 
-   console.log (this.selection.selected);
    this.selection.clear();
-   this.invitestudentEvent.emit(this.students);
    this.timeoutValue.emit(this.timeout);
    this.groupName.emit(this.groupname);
+   this.invitestudentEvent.emit(this.students);
 
+  }
+
+  accept()
+  {
+
+  }
+
+  reject ()
+  {
+    
   }
 
   

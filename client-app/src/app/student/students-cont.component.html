@@ -1,16 +1,17 @@
-   <app-students 
+   <app-students
     [tablevalue] ="tabvalue"
-    [studenti] ="studenti" 
+    [studenti] ="studenti"
     [enrolledstudents] ="enrolledstudents"
     [dataSource] ="dataSource"
     [compagni] ="compagni"
     [groupid] = "groupid"
+    [teams] = "teamsinconstruction"
     (groupName) = "groupname($event)"
     (timeoutValue) = "timeout($event)"
-    (invitestudentEvent) = "receiveinvitation($event)" 
+    (invitestudentEvent) = "receiveinvitation($event)"
     (addstudentEvent) = "receivestudent($event)"
     (removestudentsEvent) = "receivearray($event)"
-    (invitestudentEvent) = "receiveinvitation($event)"
+ 
     >
     </app-students>
-    
+

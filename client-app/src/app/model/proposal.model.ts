@@ -3,6 +3,7 @@ export interface Proposal {
 
     id : String,
     teamname : String,
-    timeout : Number
+    timeout : Number,
+    proposer : String,
     courseId: Number
 }

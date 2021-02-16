@@ -37,6 +37,7 @@ export class LoginDialogComponent implements OnInit {
 
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+        console.log(this.returnUrl);
     }
 
     // convenience getter for easy access to form fields
@@ -50,6 +51,8 @@ export class LoginDialogComponent implements OnInit {
 
         // stop here if form is invalid
         if (this.loginForm.invalid) {
+
+            console.log("Login invalid");
             return;
         }
 

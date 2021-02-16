@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import { StudentService } from 'src/app/services/student.service';
-import { Course } from 'src/app/course.model';
+import { Course } from 'src/app/model/course.model';
 import { MatDialog } from '@angular/material/dialog';
+import { CourseService } from 'src/app/services/course.service';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class SubjectdialogComponent implements OnInit {
   courses : Course[] = new Array<Course>();
 
 
-  constructor(private fb: FormBuilder,private studentservice : StudentService, public dialog:MatDialog) {
+  constructor(private fb: FormBuilder,private studentservice : StudentService, private courseservice : CourseService, public dialog:MatDialog) {
 
 
     var newcourses = new Object();
@@ -57,7 +58,7 @@ modifyname()
     {
       this.courses[i].name = this.newname;
       this.courses[i].path = str;
-      this.studentservice.editname(this.courses[i],i);
+      this.courseservice.editname(this.courses[i],i);
      
     }
   }
@@ -75,7 +76,7 @@ var a = <Course> {};
  var str = a.path;
 str = str.replace(/\s+/g, '-').toLowerCase(); console.log(str);
 a.path = 'teacher/course' + '/' + str;
- this.studentservice.createcourse(a);
+ this.courseservice.createcourse(a);
 
 }
 
@@ -87,7 +88,7 @@ a.path = 'teacher/course' + '/' + str;
     if (this.courses[i].name == this.selectedcourse.name)
     {
       this.courses[i].name = this.newname;
-      this.studentservice.deletecourse(this.courses[i],i);
+      this.courseservice.deletecourse(this.courses[i],i);
      
     }
   }

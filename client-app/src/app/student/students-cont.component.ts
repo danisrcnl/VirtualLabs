@@ -9,11 +9,15 @@ import {MatTableDataSource} from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import {StudentService} from 'src/app/services/student.service'
 import {FormControl, Validators} from '@angular/forms';
-import { Course } from '../course.model';
+import { Course } from '../model/course.model';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Student } from './student.model';
-import { Proposal } from '../proposal.model';
+import { Proposal } from '../model/proposal.model';
+import { Team } from '../model/team.model';
+import { Student_Team } from '../model/student_team.model';
+import { MemberStatus } from '../model/memberstatus.model';
+import { TeamService } from '../services/team.service';
 
 @Component({
   selector: 'app-students-cont',
@@ -22,30 +26,43 @@ import { Proposal } from '../proposal.model';
 })
 export class StudentsContComponent implements OnInit {
 
+  teamsinconstruction : Team[] = new Array<Team>();
   studenti: Student[] = new Array<Student>();
   compagni: Student[] = new Array<Student>();
   tabvalue : boolean;
-  groupName : String = "";
-  timeoutValue : number;
+ 
   proposals : Proposal[] = new Array <Proposal>();
   enrolledstudents : Student[] = new Array<Student>();
   studenteaggiunto : Student;
   darimuovere : Student[] =new Array<Student>();
-  dainvitare : Student[] =new Array<Student>();
+  
   dataSource = new MatTableDataSource<Student>(this.enrolledstudents);
   selection = new SelectionModel<Student>(true, []);
   courses$ : Observable <Course[]>;
-  
+  student_team : Student_Team[] = new Array<Student_Team>();
   id2: number;
   groupid : number;
   courseid : number;
   href : string ="";
   courses: Course[];
-  cacca : "cccc";
+  courseName : String = "";
+
+  //variabili per invito Team 
+  
+  dainvitare : Student[] = new Array<Student>();
+  groupName : String = "";
+  timeoutValue : number;
+
+  //variabili per caricare la tabella con le proposte di Team
+  studentid : String;
+  students : Student[] = new Array<Student>(); //da qua ricavo poi nome e cognome degli studenti  
+  membersStatus : MemberStatus[] = new Array<MemberStatus>(); //da qua controllo se lo studente ha accettato o ancora no la proposta 
+  teams : Team[] = new Array<Team>();
+
   @ViewChild(StudentsComponent)
   studentsComponent: StudentsComponent
   
-  constructor (private studentservice : StudentService, private router: Router, private activeRoute: ActivatedRoute) {
+  constructor (private studentservice : StudentService, private teamservice : TeamService, private router: Router, private activeRoute: ActivatedRoute) {
     
     
     this.activeRoute.paramMap.subscribe(params => {
@@ -58,27 +75,32 @@ export class StudentsContComponent implements OnInit {
       this.enrolledstudents = [];
       
       
+     //chiamata alla funzione 
 
+
+      
 
       this.studentservice.getcourse().subscribe(data => {console.log (data)
         data.forEach(s => {
         
     
          s.path = '/student/' + s.path + '/students';
-           console.log (s.path);
-          console.log(this.href);
+           
            if (s.path == this.href)
            {
           
              id = s.id;
-            
+             this.courseName = s.name;
             }
-    
+        
         })});
 
-
-    
-      
+      this.teamservice.getTeamsById(matricola).subscribe (teams1 => {
+        teams1.forEach (s => {
+          this.teams.push(s);
+        })
+      })
+              
     
         
         this.studentservice.getenrolledStudents().subscribe(receivedstudents=>{
@@ -131,24 +153,27 @@ export class StudentsContComponent implements OnInit {
            this.tabvalue = false;
          }
 
-         console.log(this.tabvalue);
+        this.studentservice.getproposals().subscribe(propos => {
+          propos.forEach (s => {
+            this.proposals.push(s);
+          })
 
-
-
-
-    
-          this.dataSource = new MatTableDataSource<Student>(this.enrolledstudents);
-    
+        })
+          this.dataSource = new MatTableDataSource<Student>(this.enrolledstudents);  
+          
+        
   })
-      this.studenti = [];
-      this.enrolledstudents = [];
+
+    
 })};
+
+
 
 
 
 ngOnChanges (changes: SimpleChanges)
 {
-  
+  this.teamservice.addTeam(this.courseName,this.groupName,this.dainvitare,this.timeoutValue);
 }
   
 
@@ -162,7 +187,10 @@ ngOnChanges (changes: SimpleChanges)
     });
   
     this.courses$ = this.studentservice.getcourse();
-    
+
+
+   
+
 
   }
 
@@ -204,13 +232,11 @@ ngOnChanges (changes: SimpleChanges)
       this.dataSource = new MatTableDataSource<Student>(this.enrolledstudents);
   }
 
-   receiveinvitation($event)
-   {
-  this.dainvitare = $event;
-  console.log(this.dainvitare);
-  
-   }
-   
+
+
+
+   //eventi per invito team 
+
    groupname ($event)
    {
     this.groupName = $event;
@@ -219,9 +245,22 @@ ngOnChanges (changes: SimpleChanges)
 
    timeout($event)
    {
-   this.timeoutValue = $event;
-   console.log(this.timeoutValue);
+    this.timeoutValue = $event;
+    console.log(this.timeoutValue);
    }
+
+
+   receiveinvitation($event)
+   {
+    this.dainvitare = $event;
+    this.teamservice.addTeam(this.courseName,this.groupName,this.dainvitare,this.timeoutValue);
+  
+   }
+   
+   //eventi per mostrare la tabella con le proposte di team 
+   
+   
+
 
   }
 

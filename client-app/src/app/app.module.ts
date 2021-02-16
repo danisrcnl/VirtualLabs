@@ -29,7 +29,6 @@ import {LoginDialogComponent} from './auth/login-dialog.component';
 import { AuthModule } from './auth/auth.module';
 import { RegisterComponent } from './auth/register/register.component';
 import { SubjectdialogComponent } from './teacher/subjectdialog/subjectdialog.component';
-import { SubjectdialogComponent2} from './student/subjectdialog/subjectdialog.component';
 import { StudentsContComponent } from './student/students-cont.component';
 import {TeacherComponent} from './teacher/teacher.component';
 import {VmsContcomponentComponent2} from './student/vms-contcomponent.component';
@@ -56,7 +55,6 @@ import { LimitDialogComponent } from './student/limit-dialog.component';
     StudentsContComponent,
     TeacherComponent,
     AppComponentStudent,
-    SubjectdialogComponent2,
     AppComponentTeacher
   ],
   imports: [

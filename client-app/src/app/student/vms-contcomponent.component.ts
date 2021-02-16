@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Group } from '../group.model';
+import { Group } from '../model/group.model';
 import { StudentService } from '../services/student.service';
-import { Vms } from '../vms.model';
+import { Vms } from '../assets/vms.model';
 
 @Component({
   selector: 'app-vms-contcomponent',
