@@ -127,6 +127,8 @@ export class StudentsComponent implements OnInit {
     selection = new SelectionModel<Student>(true, []);
     students : Student [];
     members : MemberStatus[] = new Array<MemberStatus>();
+
+    
   
     public dataSource2 = new MatTableDataSource<Student>(this.Compagni);
    

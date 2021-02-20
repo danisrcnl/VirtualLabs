@@ -25,8 +25,10 @@
             <div *ngIf="f.password.errors.required">Password richiesta</div>
         </div>
         <button class="btn1">Login</button>
+       
     </form>
         <p class="message">Non sei registrato? <button (click)="openregister()" class="btn1">Registrati</button></p>
+        <button (click)="logout()" class="btn1">Logout</button>
   </div>
   
 </html>

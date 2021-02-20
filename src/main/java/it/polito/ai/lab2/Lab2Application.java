@@ -1,8 +1,6 @@
 package it.polito.ai.lab2;
 import it.polito.ai.lab2.dtos.*;
-import it.polito.ai.lab2.entities.Course;
-import it.polito.ai.lab2.entities.Student;
-import it.polito.ai.lab2.entities.Team;
+import it.polito.ai.lab2.entities.*;
 import it.polito.ai.lab2.repositories.*;
 import it.polito.ai.lab2.services.AssignmentService;
 import it.polito.ai.lab2.services.NotificationService;
@@ -56,10 +54,12 @@ public class Lab2Application {
 
     @Bean
     CommandLineRunner runner (VmModelRepository vmModelRepository, CourseRepository courseRepository, VmService vmService, TeamService teamService,
-                              AssignmentService assignmentService, TeamRepository teamRepository, StudentRepository studentRepository, UserRepository userRepository, NotificationService notificationService) {
+                              AssignmentService assignmentService, TeacherRepository teacherRepository,TeamRepository teamRepository, StudentRepository studentRepository, UserRepository userRepository, NotificationService notificationService) {
         return new CommandLineRunner() {
             @Override
             public void run(String... args) throws Exception {
+
+
 
 
             }

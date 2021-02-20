@@ -15,6 +15,7 @@ import {TeacherComponent} from './teacher/teacher.component';
 import { AppComponentStudent } from './student/app.component';
 import { AppComponentTeacher } from './teacher/app.component';
 import { VmsContcomponentComponent2 } from './student/vms-contcomponent.component';
+import { Role } from './auth/models/role';
 export const routes: Routes = [
 
   
@@ -50,7 +51,10 @@ component : HomeComponentComponent
       { path: "students", component: TeacherContComponent}
     
       
-  ]}]}]}
+  ]}]}],
+  canActivate : [AuthGuard],
+  data: {roles : [Role.Teacher]}
+}
 ,
 
 {
@@ -65,7 +69,11 @@ component : HomeComponentComponent
       { path: "students", component: StudentsContComponent}
     
     ]}]}],
-     runGuardsAndResolvers: 'always'
+   
+   canActivate : [AuthGuard],
+  data: {roles : [Role.Student]},
+     
+  runGuardsAndResolvers: 'always'
    
 
 },

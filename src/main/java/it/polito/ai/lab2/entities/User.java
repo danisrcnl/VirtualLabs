@@ -33,6 +33,9 @@ public class User implements UserDetails {
     @NotEmpty
     private String password;
 
+    @NotEmpty
+    private String role;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
