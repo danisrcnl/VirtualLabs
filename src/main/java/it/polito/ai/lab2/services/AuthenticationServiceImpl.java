@@ -4,7 +4,12 @@ import it.polito.ai.lab2.entities.User;
 import it.polito.ai.lab2.entities.UserExistingException;
 import it.polito.ai.lab2.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
+@Transactional
+@Service
 public class AuthenticationServiceImpl implements AuthenticationService{
 
     @Autowired
