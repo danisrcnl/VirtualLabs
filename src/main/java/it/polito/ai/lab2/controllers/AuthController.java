@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -43,6 +44,9 @@ public class AuthController {
     @Autowired
     TeamService teamService;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @PostMapping("/signin")
     public ResponseEntity signin(@RequestBody AuthenticationRequest data) {
         try {
@@ -65,7 +69,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public void signup(@RequestBody SignUpRequest signUpRequest) {
-        authenticationService.addUser(signUpRequest.getEmail(), signUpRequest.getPassword());
+        authenticationService.addUser(signUpRequest.getEmail(), passwordEncoder.encode(signUpRequest.getPassword()));
         StudentDTO studentDTO = StudentDTO
                 .builder()
                 .name(signUpRequest.getLastName())
