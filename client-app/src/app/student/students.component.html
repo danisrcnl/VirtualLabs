@@ -6,11 +6,11 @@
     <router-outlet></router-outlet>
 
    </div>
-   
+
    <div [ngClass] = "tableclasses">
    <table [ngClass] = "tableclasses">
         <h1>Elenco studenti iscritti al corso</h1>
-        
+
         <table mat-table [dataSource]= "dataSource" class="studenti">
           <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>
@@ -50,10 +50,10 @@
 
 
   <tr mat-header-row *matHeaderRowDef = "displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> 
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
    </table>
-       
+
       </table>
 <div>
 <form [formGroup] = "myForm" (ngSubmit)="sendinvite()">
@@ -61,7 +61,7 @@
   <input type="text" formControlName = "groupname" [(ngModel)]="groupname">
   <label for = "timeout" id = "timeout"> Timeout: </label>
   <select formControlName="timeout" [(ngModel)]="timeout" id ="timeout">
-  <option value= "1"> 1 ora  </option> 
+  <option value= "1"> 1 ora  </option>
   <option value= "3"> 3 ore  </option>
   <option value= "6"> 6 ore  </option>
   <option value= "12"> 12 ore </option>
@@ -74,23 +74,35 @@
 </div>
 
 <div class="limiter">
-  <table >
-    <div class="row header">
-      <tr>
-        <td *ngFor="let column of headers1">
-          {{column}}
-        </td>
-      </tr>
-    </div>
+  <table>
+    <h1> Proposte in attesa</h1>
+  <ng-container *ngFor="let team of teams">
+ <tr><td><h2>{{team.name}}</h2></td></tr>
+<tr>
+  <th>Matricola</th>
+  <th>Nome</th>
+  <th>Cognome</th>
+  <th>Accettato</th>
+</tr>
+<tr *ngFor = "let memberss of members">
+<i *ngIf = "memberss.teamid == team.id"> {{memberss.studentid}} {{memberss.nome}}
+  {{memberss.cognome}} {{memberss.accettato}}
+</i>
+<button mat-raised-button (click)="accept()"> Accetta </button>
+<button mat-raised-button (click)="reject()"> Rifiuta </button>
+</tr>
 
-    <div class="row">
-      <tr *ngFor="let row of students">
-        <td *ngFor="let column of headers">
-          {{row[column]}}
-        </td>
-      </tr>
-    </div>
 
+  </ng-container>
+
+    <!--<div class="row">
+        <td *ngFor="let student of enrolledstudents">
+          <i *ngIf="student.team.includes(team.id)"> {{student.name}}</i>
+          
+        </td>
+      
+    </div>
+  -->
   </table>
 </div>
 
@@ -98,9 +110,9 @@
 
 
 
-  
+
 </div>
-    
+
 
       <div class="limiter">
         <table [ngClass]="compagniclass">
@@ -112,7 +124,7 @@
            </td>
          </tr>
         </div>
-         
+
           <div class = "row">
           <tr *ngFor="let row of compagni">
             <td *ngFor="let column of headers">
@@ -120,6 +132,6 @@
             </td>
           </tr>
           </div>
-    
+
           </table>
       </div>

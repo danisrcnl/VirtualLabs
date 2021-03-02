@@ -4,7 +4,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { Routes } from '@angular/router';
 import { Observable } from 'rxjs';
 import { LoginDialogComponent } from '../auth/login-dialog.component';
-import { Course } from '../course.model';
+import { Course } from '../model/course.model';
 import { SidenavService } from '../services/sidenav.service';
 import { StudentService } from '../services/student.service';
 import { StudentsContComponent } from '../student/students-cont.component';

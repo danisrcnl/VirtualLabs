@@ -6,7 +6,7 @@ import { VmsContcomponentComponent } from './teacher/vms-contcomponent.component
 import { StudentsContComponent } from './student/students-cont.component';
 import {MatDialog} from '@angular/material/dialog';
 import { LoginDialogComponent } from './auth/login-dialog.component';
-import { Course } from './course.model';
+import { Course } from './model/course.model';
 import { SubjectdialogComponent } from './teacher/subjectdialog/subjectdialog.component';
 import { StudentService } from './services/student.service';
 import { Observable } from 'rxjs';

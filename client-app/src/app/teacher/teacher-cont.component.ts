@@ -8,7 +8,7 @@ import {MatTableDataSource} from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import {StudentService} from 'src/app/services/student.service'
 import {FormControl, Validators} from '@angular/forms';
-import { Course } from '../course.model';
+import { Course } from '../model/course.model';
 import { ActivatedRoute } from '@angular/router';
 import { TeacherComponent } from './teacher.component';
 

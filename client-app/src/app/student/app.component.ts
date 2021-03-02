@@ -4,12 +4,11 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Course } from '../course.model';
+import { Course } from '../model/course.model';
 import { MatDialog } from '@angular/material/dialog';
 import { StudentService } from '../services/student.service';
 import { StudentsContComponent } from './students-cont.component';
 import { LoginDialogComponent } from '../auth/login-dialog.component';
-import { SubjectdialogComponent2 } from './subjectdialog/subjectdialog.component';
 import { SidenavService } from '../services/sidenav.service';
 
 
@@ -64,10 +63,6 @@ constructor (public dialog:MatDialog, private studentservice: StudentService, pr
      width: '600px',});
    }
 
-
-   openmodDialog() {
-     this.dialog.open (SubjectdialogComponent2);
-   }
   
 }
 
