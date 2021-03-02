@@ -1,9 +1,13 @@
 package it.polito.ai.lab2.controllers;
 
 
+import it.polito.ai.lab2.dataStructures.SignUpRequest;
+import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.repositories.UserRepository;
 import it.polito.ai.lab2.security.AuthenticationRequest;
 import it.polito.ai.lab2.security.JwtTokenProvider;
+import it.polito.ai.lab2.services.AuthenticationService;
+import it.polito.ai.lab2.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -31,11 +35,19 @@ public class AuthController {
     JwtTokenProvider jwtTokenProvider;
 
     @Autowired
+    AuthenticationService authenticationService;
+
+    @Autowired
     UserRepository users;
+
+    @Autowired
+    TeamService teamService;
 
     @PostMapping("/signin")
     public ResponseEntity signin(@RequestBody AuthenticationRequest data) {
         try {
+            System.out.println(data.getUsername());
+            System.out.println(data.getPassword());
             String username = data.getUsername();
             System.out.println(username);
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
@@ -53,5 +65,20 @@ public class AuthController {
         }
 
 
+    }
+
+    @PostMapping("/signup")
+    public void signup(@RequestBody SignUpRequest signUpRequest) {
+        authenticationService.addUser(signUpRequest.getEmail(), signUpRequest.getPassword());
+        StudentDTO studentDTO = StudentDTO
+                .builder()
+                .name(signUpRequest.getLastName())
+                .firstName(signUpRequest.getFirstName())
+                .email(signUpRequest.getEmail())
+                .photoPath("")
+                .id(signUpRequest.getId())
+                .build();
+
+        teamService.addStudent(studentDTO);
     }
 }
