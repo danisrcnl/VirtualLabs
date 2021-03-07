@@ -23,7 +23,7 @@ public class TeamController {
     @Autowired
     NotificationService notificationService;
 
-    @GetMapping("/{courseName}")
+    @GetMapping("/course/{courseName}")
     public List<TeamDTO> all(@PathVariable String courseName) {
         return teamService
                 .getTeamForCourse(courseName);
