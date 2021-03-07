@@ -530,6 +530,32 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public List<VmDTO> getVmsForTeam(String courseName, String teamName) throws TeamNotFoundException {
+        Team t = teamRepository.getTeamByCourseAndName(courseName, teamName);
+        if(t == null)
+            throw new TeamNotFoundException(teamName);
+
+        return t
+                .getVms()
+                .stream()
+                .map(vm -> modelMapper.map(vm, VmDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<VmDTO> getVmsForTeamById(int id) throws TeamNotFoundException {
+        if(!teamRepository.existsById(id))
+            throw new TeamNotFoundException(id);
+
+        return teamRepository
+                .getOne(id)
+                .getVms()
+                .stream()
+                .map(vm -> modelMapper.map(vm, VmDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public int getTeamId(String courseName, String teamName) throws TeamNotFoundException {
         if(teamRepository.getTeamByCourseAndName(courseName, teamName) == null)
             throw new TeamNotFoundException(teamName);

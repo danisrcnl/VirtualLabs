@@ -97,4 +97,8 @@ public interface TeamService {
     int getUsedRamForTeam(String courseName, String teamName);
 
     List<VmDTO> getVmsForStudent(String studentId);
+
+    List<VmDTO> getVmsForTeam(String courseName, String teamName);
+
+    List<VmDTO> getVmsForTeamById(int id);
 }
