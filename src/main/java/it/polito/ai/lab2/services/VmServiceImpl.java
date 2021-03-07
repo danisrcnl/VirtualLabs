@@ -162,9 +162,11 @@ public class VmServiceImpl implements VmService {
             throw new CourseNotFoundException(courseName);
 
         VmModel existing = courseRepository.getOne(courseName).getVmModel();
-        if(existing != null)
+        if(existing != null) {
+            courseRepository.getOne(courseName).setVmModel(null);
             vmModelRepository.delete(existing);
-        vmModelRepository.flush();
+            vmModelRepository.flush();
+        }
 
         VmModel m = modelMapper.map(vmModel, VmModel.class);
         courseRepository.getOne(courseName).setVmModel(m);
