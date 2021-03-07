@@ -174,6 +174,14 @@ public class VmServiceImpl implements VmService {
     }
 
     @Override
+    public Optional<VmModelDTO> getVmModelForCourse(String courseName) throws CourseNotFoundException {
+        if(!courseRepository.existsById(courseName))
+            throw new CourseNotFoundException(courseName);
+        VmModel v = vmModelRepository.getVmModelByCourse(courseName);
+        return Optional.ofNullable(modelMapper.map(v, VmModelDTO.class));
+    }
+
+    @Override
     public Optional<VmModelDTO> getVmModel(Long id) {
         VmModel v = vmModelRepository.getOne(id);
         return Optional.ofNullable(modelMapper.map(v, VmModelDTO.class));

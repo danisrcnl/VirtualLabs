@@ -31,6 +31,8 @@ public interface VmService {
 
     Long addVmModelForCourse(VmModelDTO vmModel, String courseName);
 
+    Optional<VmModelDTO> getVmModelForCourse(String courseName);
+
     Optional<VmModelDTO> getVmModel(Long id);
 
     List<VmModelDTO> getAllVmModels();
