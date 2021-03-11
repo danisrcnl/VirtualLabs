@@ -1,9 +1,6 @@
 package it.polito.ai.lab2.controllers;
 
-import it.polito.ai.lab2.dtos.CourseDTO;
-import it.polito.ai.lab2.dtos.StudentDTO;
-import it.polito.ai.lab2.dtos.TeacherDTO;
-import it.polito.ai.lab2.dtos.TeamDTO;
+import it.polito.ai.lab2.dtos.*;
 import org.springframework.hateoas.Link;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
@@ -33,5 +30,11 @@ public class ModelHelper {
         Link link = linkTo(methodOn(TeamController.class).getOne(teamDTO.getId())).withSelfRel();
         teamDTO.add(link);
         return teamDTO;
+    }
+
+    public static VmDTO enrich(VmDTO vmDTO) {
+        Link link = linkTo(methodOn(TeamController.class).getOne(vmDTO.getId())).withSelfRel();
+        vmDTO.add(link);
+        return vmDTO;
     }
 }
