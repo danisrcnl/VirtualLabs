@@ -84,7 +84,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public Optional<TeacherDTO> getTeacher(String teacherId) {
         if(!teacherRepository.existsById(teacherId))
-            return Optional.ofNullable(null);
+            return Optional.empty();
         Teacher t = teacherRepository.getOne(teacherId);
         return Optional.ofNullable(modelMapper.map(t, TeacherDTO.class));
     }

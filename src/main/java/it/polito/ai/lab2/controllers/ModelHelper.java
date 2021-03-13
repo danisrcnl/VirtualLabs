@@ -33,7 +33,7 @@ public class ModelHelper {
     }
 
     public static VmDTO enrich(VmDTO vmDTO) {
-        Link link = linkTo(methodOn(TeamController.class).getOne(vmDTO.getId())).withSelfRel();
+        Link link = linkTo(methodOn(VmController.class).getOne(vmDTO.getId())).withSelfRel();
         vmDTO.add(link);
         return vmDTO;
     }

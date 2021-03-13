@@ -11,7 +11,7 @@ import org.springframework.hateoas.RepresentationModel;
 @Builder
 @Data
 public class VmDTO extends RepresentationModel<VmDTO> {
-    private int id;
+    private Long id;
     private int nVCpu;
     private int disk;
     private int ram;

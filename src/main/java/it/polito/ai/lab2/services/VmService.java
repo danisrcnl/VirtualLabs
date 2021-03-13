@@ -29,6 +29,8 @@ public interface VmService {
 
     List<StudentDTO> getOwnersForVm(Long vmId);
 
+    Optional<VmDTO> setVmResources(Long id, VmDTO vmDTO);
+
 
 
     Long addVmModelForCourse(VmModelDTO vmModel, String courseName);

@@ -165,6 +165,33 @@ public class VmServiceImpl implements VmService {
     }
 
     @Override
+    public Optional<VmDTO> setVmResources(Long id, VmDTO vmDTO) {
+        if(!vmRepository.existsById(id))
+            return Optional.empty();
+
+        Vm vm = vmRepository.getOne(id);
+        String courseName = vm.getTeam().getCourse().getName();
+        String teamName = vm.getTeam().getName();
+
+        if(teamService.getUsedNVCpuForTeam(courseName, teamName) + vm.getNVCpu() >
+                teamRepository.getTeamByCourseAndName(courseName, teamName).getCourse().getVmModel().getMaxNVCpu())
+            throw new VmServiceException("You exceeded Virtual CPU limit");
+
+        if(teamService.getUsedDiskForTeam(courseName, teamName) + vm.getDisk() >
+                teamRepository.getTeamByCourseAndName(courseName, teamName).getCourse().getVmModel().getMaxDisk())
+            throw new VmServiceException("You exceeded disk space limit");
+
+        if(teamService.getUsedRamForTeam(courseName, teamName) + vm.getRam() >
+                teamRepository.getTeamByCourseAndName(courseName, teamName).getCourse().getVmModel().getMaxRam())
+            throw new VmServiceException("You exceeded ram space limit");
+
+        vm.setNVCpu(vmDTO.getNVCpu());
+        vm.setDisk(vmDTO.getDisk());
+        vm.setRam(vmDTO.getRam());
+        return Optional.ofNullable(modelMapper.map(vm, VmDTO.class));
+    }
+
+    @Override
     public Long addVmModelForCourse(VmModelDTO vmModel, String courseName) throws CourseNotFoundException {
         if(!courseRepository.existsById(courseName))
             throw new CourseNotFoundException(courseName);
