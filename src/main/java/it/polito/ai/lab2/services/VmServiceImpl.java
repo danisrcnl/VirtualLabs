@@ -86,6 +86,14 @@ public class VmServiceImpl implements VmService {
     }
 
     @Override
+    public List<VmDTO> getVmsByCourse(String courseName) throws CourseNotFoundException{
+        if(!courseRepository.existsById(courseName))
+            throw new CourseNotFoundException(courseName);
+        return vmRepository
+                .getVmsForCourse(courseName);
+    }
+
+    @Override
     public void startVm(Long id) throws VmNotFoundException {
         if(!vmRepository.existsById(id))
             throw new VmNotFoundException(id.toString());

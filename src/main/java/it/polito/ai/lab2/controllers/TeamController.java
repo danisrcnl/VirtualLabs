@@ -26,7 +26,10 @@ public class TeamController {
     @GetMapping("/course/{courseName}")
     public List<TeamDTO> all(@PathVariable String courseName) {
         return teamService
-                .getTeamForCourse(courseName);
+                .getTeamForCourse(courseName)
+                .stream()
+                .map(ModelHelper :: enrich)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")

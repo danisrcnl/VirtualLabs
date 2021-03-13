@@ -15,6 +15,8 @@ public interface VmService {
 
     List<VmDTO> getAllVms();
 
+    List<VmDTO> getVmsByCourse(String courseName);
+
     void startVm(Long id);
 
     void shutDownVm(Long id);
