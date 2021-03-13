@@ -4,14 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Data
-public class TeamDTO {
+public class TeamDTO  extends RepresentationModel<TeamDTO> {
 
-    private Long id;
+    private int id;
     private String name;
     private int status;
 }

@@ -1,6 +1,5 @@
 package it.polito.ai.lab2.entities;
 
-import it.polito.ai.lab2.dataStructures.TeamId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +17,9 @@ import java.util.List;
 public class Team {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    int id;
+
     private String name;
 
     private int status;
@@ -63,10 +65,7 @@ public class Team {
 
     public int addMember(Student student) {
         members.add(student);
-        /*
         student.getTeams().add(this);
-        */
-        student.setTeam(this);
         return members.indexOf(student);
     }
 

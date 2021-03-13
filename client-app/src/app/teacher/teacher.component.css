@@ -1,0 +1,59 @@
+.mat-drawer-content {
+    position: relative;
+    z-index: 1;
+    
+    height: 100%;
+    width: 200%;
+    overflow: auto;
+    text-shadow: 0 0 black;
+  }
+  .content{
+    
+    width: 100%;
+    display: inline-block;
+  }
+   
+  
+    table {
+      width: 100%;
+      
+    }
+  .mat-form-field {
+  
+    width: 70%;
+  }
+  
+  
+  .studenti {
+  
+    width: 70%;
+  }
+    .buttonrows {
+  
+      position: static;
+    }
+  
+    .insert {
+      position: static;
+      border: none;
+      border-bottom: 2px solid navy;
+      margin-bottom: 20px;
+      height: 20px;
+      width: 23%;
+      
+    }
+  
+    .add {
+  
+      position: relative;
+      height: 22px;
+      bottom: 75px;
+      left: 310px;
+    }
+  
+    
+  
+    .form {
+      width: 100%;
+    }
+    

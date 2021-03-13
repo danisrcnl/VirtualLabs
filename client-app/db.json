@@ -1,0 +1,235 @@
+{
+  "students": [
+    {
+      "id": "2",
+      "serial": "s267653",
+      "name": "Buffa",
+      "firstname": "Federico",
+      "groupId": 1,
+      "courseId": 0
+    },
+    {
+      "id": "1",
+      "serial": "s267652",
+      "name": "Pizzul",
+      "firstname": "Bruno",
+      "groupId": 2,
+      "courseId": 0
+    },
+    {
+      "id": "3",
+      "serial": "s267654",
+      "name": "Le",
+      "firstname": "Canestrell",
+      "groupId": 2,
+      "courseId": 1
+    },
+    {
+      "id": "4",
+      "serial": "s267655",
+      "name": "Gianni",
+      "firstname": "Morandi",
+      "groupId": 2,
+      "courseId": 1
+    },
+    {
+      "id": "5",
+      "serial": "s267656",
+      "name": "Maurizio",
+      "firstname": "Rossi",
+      "groupId": 0,
+      "courseId": 0
+    },
+    {
+      "id": "6",
+      "serial": "s267657",
+      "name": "Gianni",
+      "firstname": "Dindi",
+      "groupId": 0,
+      "courseId": 0
+    },
+    {
+      "id": "7",
+      "serial": "s267658",
+      "name": "Tazio",
+      "firstname": "Nuvolari",
+      "groupId": 0,
+      "courseId": 1
+    },
+    {
+      "id": "8",
+      "serial": "s267659",
+      "name": "Valentino",
+      "firstname": "Rossi",
+      "groupId": 0,
+      "courseId": 1
+    },
+    {
+      "id": "9",
+      "serial": "s267660",
+      "name": "Ismael",
+      "firstname": "Bennacer",
+      "groupId": 0,
+      "courseId": 1
+    }
+    ,
+    {
+      "id": "10",
+      "serial": "s267661",
+      "name": "Davide",
+      "firstname": "Calabria",
+      "groupId": 0,
+      "courseId": 1
+    }
+    ,
+    {
+      "id": "11",
+      "serial": "s267662",
+      "name": "Theo",
+      "firstname": "Hernandez",
+      "groupId": 0,
+      "courseId": 0
+    },
+    {
+      "id": "12",
+      "serial": "s267663",
+      "name": "Gigio",
+      "firstname": "Donnarumma",
+      "groupId": 0,
+      "courseId": 0
+    }
+
+  ],
+  "courses": [
+    {
+      "id": 0,
+      "name": "Applicazioni Internet",
+      "path": "course/applicazioni-internet"
+    },
+    {
+      "id": 1,
+      "name": "Programmazione di Sistema",
+      "path": "course/programmazione-di-sistema"
+
+    }
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "name": "Attori",
+      "courseId": 0
+    },
+    {
+      "id": 2,
+      "name": "Telecronisti",
+      "courseId": 1
+    },
+    {
+      "id": 3,
+      "name": "Cantanti",
+      "courseId": 0
+    },
+    {
+      "id": 4,
+      "name": "Presentatori TV",
+      "courseId": 1
+    },
+
+    {
+      "id": 5,
+      "name": "Operatori TV",
+      "courseId": 1
+
+    },
+
+    {
+      "id": 6,
+      "name": "Stagisti",
+      "courseId":0
+
+    }
+  ],
+
+
+
+  "proposals": [
+
+   {
+     "id": "A000",
+     "teamname" : "Stagisti",
+     "timeout" : 3,
+     "courseId":0
+    },
+    {
+     "id": "A001",
+     "teamname" : "Stagisti",
+     "timeout" : 3,
+     "courseId" : 1
+    }
+
+
+  ],
+
+  "vms": [
+    {
+      "id": "1",
+      "owner": "S267652",
+      "stato": "Attiva",
+      "groupId": 1,
+      "courseId": 0,
+      "disksize": 1,
+      "ramsize": 2048,
+      "vcpu": 2
+    },
+    {
+      "id": "2",
+      "owner": "S267653",
+      "stato": "Spenta",
+      "groupId": 3,
+      "courseId": 0,
+      "disksize": 1,
+      "ramsize": 4096,
+      "vcpu": 1
+    },
+    {
+      "id": "3",
+      "owner": "S267654",
+      "stato": "Spenta",
+      "groupId": 2,
+      "courseId": 1,
+      "disksize": 2,
+      "ramsize": 2048,
+      "vcpu": 1
+    },
+    {
+      "id": "4",
+      "owner": "S267652",
+      "stato": "Spenta",
+      "groupId": 1,
+      "courseId": 0,
+      "disksize": 2,
+      "ramsize": 2048,
+      "vcpu": 1
+    },
+    {
+      "id": "5",
+      "owner": "S267655",
+      "stato": "Spenta",
+      "groupId": 3,
+      "courseId": 0,
+      "disksize": 2,
+      "ramsize": 2048,
+      "vcpu": 1
+    },
+    {
+      "id": "6",
+      "owner": "S267651",
+      "stato": "Spenta",
+      "groupId": 1,
+      "courseId": 1,
+      "disksize": 2,
+      "ramsize": 2048,
+      "vcpu": 1
+    }
+  ]
+}

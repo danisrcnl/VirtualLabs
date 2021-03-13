@@ -1,0 +1,137 @@
+   <div>
+    <nav mat-tab-nav-bar>
+      <a mat-tab-link [routerLink] ="[href]" routerLinkActive = "active">Gruppi</a>
+      <a mat-tab-link [routerLink] = "[href2]" routerLinkActive = "active">Vms</a>
+    </nav>
+    <router-outlet></router-outlet>
+
+   </div>
+
+   <div [ngClass] = "tableclasses">
+   <table [ngClass] = "tableclasses">
+        <h1>Elenco studenti iscritti al corso</h1>
+
+        <table mat-table [dataSource]= "dataSource" class="studenti">
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()"
+                            >
+              </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null"
+                            [checked]="selection.isSelected(row)"
+                            >
+              </mat-checkbox>
+            </td>
+          </ng-container>
+
+
+
+        <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let student"> {{student.name}} </td>
+  </ng-container>
+
+  <!-- First Name Column -->
+  <ng-container matColumnDef="firstname">
+    <th mat-header-cell *matHeaderCellDef> Firstname </th>
+    <td mat-cell *matCellDef="let student"> {{student.firstname}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="serial">
+    <th mat-header-cell *matHeaderCellDef> Matricola </th>
+    <td mat-cell *matCellDef="let student"> {{student.serial}} </td>
+  </ng-container>
+
+
+  <tr mat-header-row *matHeaderRowDef = "displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+   </table>
+
+      </table>
+<div>
+<form [formGroup] = "myForm" (ngSubmit)="sendinvite()">
+  <label for="groupname">Nome gruppo: </label>
+  <input type="text" formControlName = "groupname" [(ngModel)]="groupname">
+  <label for = "timeout" id = "timeout"> Timeout: </label>
+  <select formControlName="timeout" [(ngModel)]="timeout" id ="timeout">
+  <option value= "1"> 1 ora  </option>
+  <option value= "3"> 3 ore  </option>
+  <option value= "6"> 6 ore  </option>
+  <option value= "12"> 12 ore </option>
+  <option value= "24"> 24 ore</option>
+  </select>
+<button style="color:black;" type="submit" class="propose"> Invita </button>
+</form>
+
+
+</div>
+
+<div class="limiter">
+  <table>
+    <h1> Proposte in attesa</h1>
+  <ng-container *ngFor="let team of teams">
+ <tr><td><h2>{{team.name}}</h2></td></tr>
+<tr>
+  <th>Matricola</th>
+  <th>Nome</th>
+  <th>Cognome</th>
+  <th>Accettato</th>
+</tr>
+<tr *ngFor = "let memberss of members">
+<i *ngIf = "memberss.teamid == team.id"> {{memberss.studentid}} {{memberss.nome}}
+  {{memberss.cognome}} {{memberss.accettato}}
+</i>
+<button mat-raised-button (click)="accept()"> Accetta </button>
+<button mat-raised-button (click)="reject()"> Rifiuta </button>
+</tr>
+
+
+  </ng-container>
+
+    <!--<div class="row">
+        <td *ngFor="let student of enrolledstudents">
+          <i *ngIf="student.team.includes(team.id)"> {{student.name}}</i>
+          
+        </td>
+      
+    </div>
+  -->
+  </table>
+</div>
+
+
+
+
+
+
+</div>
+
+
+      <div class="limiter">
+        <table [ngClass]="compagniclass">
+          <h1>Gruppo {{groupid}}</h1>
+          <div class = "row header">
+          <tr>
+           <td *ngFor = "let column of headers1">
+             {{column}}
+           </td>
+         </tr>
+        </div>
+
+          <div class = "row">
+          <tr *ngFor="let row of compagni">
+            <td *ngFor="let column of headers">
+              {{row[column]}}
+            </td>
+          </tr>
+          </div>
+
+          </table>
+      </div>

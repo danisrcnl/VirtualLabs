@@ -1,6 +1,9 @@
 package it.polito.ai.lab2.services;
 import it.polito.ai.lab2.controllers.NotificationController;
+import it.polito.ai.lab2.dataStructures.MemberStatus;
+import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.dtos.TeamDTO;
+import it.polito.ai.lab2.entities.TeamNotFoundException;
 import it.polito.ai.lab2.entities.Token;
 import it.polito.ai.lab2.repositories.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +16,10 @@ import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @Transactional
@@ -31,7 +36,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void sendMessage(String address, String subject, String body) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setTo("kribos3@hotmail.it");
+        simpleMailMessage.setTo(address);
         simpleMailMessage.setSubject(subject);
         simpleMailMessage.setText(body);
         javaMailSender.send(simpleMailMessage);
@@ -40,14 +45,13 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public boolean confirm(String token) {
 
-        String teamId;
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris"));
 
         if(!tokenRepository.existsById(token))
             return false;
 
         Token t = tokenRepository.getOne(token);
-        teamId = t.getTeamId();
+        int teamId = t.getTeamId();
         List<Token> liveTokens = tokenRepository.findAllByExpiryBefore(Timestamp.valueOf(localDateTime));
         System.out.println(liveTokens);
         System.out.println(Timestamp.valueOf(localDateTime));
@@ -57,7 +61,7 @@ public class NotificationServiceImpl implements NotificationService {
             for(Token teamToken : teamTokens)
                 tokenRepository.delete(teamToken);
             tokenRepository.flush();
-            teamService.evictTeam(teamId);
+            teamService.evictTeamById(teamId);
             return false;
         }
 
@@ -65,7 +69,7 @@ public class NotificationServiceImpl implements NotificationService {
         tokenRepository.flush();
 
         if(tokenRepository.findAllByTeamId(teamId).isEmpty())
-            teamService.activateTeam(teamId);
+            teamService.activateTeamById(teamId);
 
         return true;
     }
@@ -73,34 +77,33 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public boolean reject(String token) {
 
-        String teamId;
-
         if(!tokenRepository.existsById(token))
             return false;
 
         Token t = tokenRepository.getOne(token);
-        teamId = t.getTeamId();
+        int teamId = t.getTeamId();
         List<Token> teamTokens = tokenRepository.findAllByTeamId(teamId);
         for(Token teamToken : teamTokens)
             tokenRepository.delete(teamToken);
         tokenRepository.flush();
-        teamService.evictTeam(teamId);
+        teamService.evictTeamById(teamId);
         return true;
     }
 
     @Override
-    public void notifyTeam(String teamName, List<String> memberIds) {
+    public void notifyTeam(String courseName, String teamName, List<String> memberIds, int hours) {
 
-        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris")).plusHours(1);
+        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris")).plusHours(hours);
 
         Token t = Token.builder()
-                .teamId(teamName)
+                .teamId(teamService.getTeamId(courseName, teamName))
                 .expiryDate(Timestamp.valueOf(localDateTime))
                 .build();
 
         for(String memberId : memberIds) {
             String id = UUID.randomUUID().toString();
             t.setId(id);
+            t.setStudentId(memberId);
             tokenRepository.save(t);
             tokenRepository.flush();
             Link rootLink = linkTo(NotificationController.class).withSelfRel();
@@ -114,5 +117,30 @@ public class NotificationServiceImpl implements NotificationService {
             String receiver = "s" + memberId + "@studenti.polito.it";
             sendMessage(receiver, "Sei stato invitato a far parte di un team!", message);
         }
+    }
+
+    @Override
+    public List<MemberStatus> getMembersStatus(int teamId) throws TeamNotFoundException {
+        List<String> membersIds =
+                teamService
+                        .getMembersById(teamId)
+                        .stream()
+                        .map(StudentDTO::getId)
+                        .collect(Collectors.toList());
+        List<String> pending =
+                tokenRepository
+                        .findAllByTeamId(teamId)
+                        .stream()
+                        .map(Token::getStudentId)
+                        .collect(Collectors.toList());
+
+        List<MemberStatus> memberStatuses = new ArrayList<>();
+
+        for(String member : membersIds) {
+            MemberStatus memberStatus = MemberStatus.builder().studentId(member).build();
+            memberStatus.setHasAccepted(!pending.contains(member));
+            memberStatuses.add(memberStatus);
+        }
+        return memberStatuses;
     }
 }
