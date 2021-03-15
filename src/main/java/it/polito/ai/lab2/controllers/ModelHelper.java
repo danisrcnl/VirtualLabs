@@ -37,4 +37,10 @@ public class ModelHelper {
         vmDTO.add(link);
         return vmDTO;
     }
+
+    public static VmModelDTO enrich(VmModelDTO vmModelDTO) {
+        Link link = linkTo(methodOn(VmController.class).getVmModel(vmModelDTO.getId())).withSelfRel();
+        vmModelDTO.add(link);
+        return vmModelDTO;
+    }
 }

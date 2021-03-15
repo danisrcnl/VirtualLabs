@@ -38,6 +38,24 @@ public class VmController {
         }
     }
 
+    @GetMapping("/courses/{courseName}/getVmModel")
+    public VmModelDTO getVmModel(@PathVariable Long id) throws ResponseStatusException {
+        Optional<VmModelDTO> outcome = vmService.getVmModel(id);
+        if(outcome.isPresent())
+            return ModelHelper.enrich(outcome.get());
+        else
+            throw new ResponseStatusException(HttpStatus.CONFLICT, id.toString());
+    }
+
+    @GetMapping("/courses/{courseName}/getVmModelOfCourse")
+    public VmModelDTO getVmModelOfCourse(@PathVariable String courseName) throws ResponseStatusException {
+        Optional<VmModelDTO> outcome = vmService.getVmModelForCourse(courseName);
+        if(outcome.isPresent())
+            return ModelHelper.enrich(outcome.get());
+        else
+            throw new ResponseStatusException(HttpStatus.CONFLICT, courseName);
+    }
+
     @GetMapping("/teams/{teamId}")
     public List<VmDTO> getVmsForTeam (@PathVariable int teamId) throws ResponseStatusException {
         try {
@@ -58,16 +76,17 @@ public class VmController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, String.valueOf(vmId));
         return ModelHelper.enrich(vmDTO.get());
     }
-/*
-    @PostMapping("/{courseName}/setVmModel")
+
+    @PostMapping("/courses/{courseName}/setVmModel")
     public VmModelDTO setVmModel (@PathVariable String courseName, @RequestBody VmModelDTO vmModelDTO) {
         try {
-
+            vmService.addVmModelForCourse(vmModelDTO, courseName);
         } catch (Exception e) {
-
+            throw new ResponseStatusException(HttpStatus.CONFLICT, courseName);
         }
+        return ModelHelper.enrich(vmModelDTO);
     }
-*/
+
     @PostMapping("/{vmId}/setResources")
     public VmDTO setResources (@PathVariable Long vmId, @RequestBody VmDTO vmDTO) throws ResponseStatusException {
         Optional<VmDTO> outcome = Optional.empty();
