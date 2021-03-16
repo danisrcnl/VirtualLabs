@@ -61,7 +61,6 @@ public class Lab2Application {
             @Override
             public void run(String... args) throws Exception {
 
-
             }
         };
     }
