@@ -1,5 +1,6 @@
 package it.polito.ai.lab2.controllers;
 
+import it.polito.ai.lab2.dataStructures.VmStatus;
 import it.polito.ai.lab2.dtos.VmDTO;
 import it.polito.ai.lab2.dtos.VmModelDTO;
 import it.polito.ai.lab2.services.TeamService;
@@ -92,8 +93,12 @@ public class VmController {
         Optional<VmDTO> outcome;
         try {
             outcome = vmService.setVmResources(vmDTO);
-            if(outcome.isPresent())
-                return ModelHelper.enrich(outcome.get());
+            if(outcome.isPresent()) {
+                if(outcome.get().getVmStatus().equals(VmStatus.OFF))
+                    return ModelHelper.enrich(outcome.get());
+                else
+                    throw new ResponseStatusException(HttpStatus.CONFLICT, vmDTO.getId().toString());
+            }
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, vmDTO.getId().toString());
         }
