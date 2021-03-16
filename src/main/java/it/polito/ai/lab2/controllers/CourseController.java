@@ -60,9 +60,15 @@ public class CourseController {
     }
 
     @PostMapping({"", "/"})
-    public CourseDTO addCourse(@RequestBody CourseDTO courseDTO) throws ResponseStatusException {
-        if(teamService.addCourse(courseDTO))
+    public CourseDTO addCourse(@RequestBody CourseDTO courseDTO, @RequestBody String teacherId) throws ResponseStatusException {
+        if(teamService.addCourse(courseDTO)) {
+            try {
+                teamService.addTeacherToCourse(teacherId, courseDTO.getName());
+            } catch (Exception e) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, teacherId);
+            }
             return ModelHelper.enrich(courseDTO);
+        }
         else
             throw new ResponseStatusException(HttpStatus.CONFLICT, courseDTO.getName());
     }
