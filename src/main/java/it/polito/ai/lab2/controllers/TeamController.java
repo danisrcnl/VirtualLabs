@@ -1,6 +1,7 @@
 package it.polito.ai.lab2.controllers;
 
 import it.polito.ai.lab2.dataStructures.MemberStatus;
+import it.polito.ai.lab2.dataStructures.UsedResources;
 import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.dtos.TeamDTO;
 import it.polito.ai.lab2.services.NotificationService;
@@ -64,7 +65,7 @@ public class TeamController {
 
     @PostMapping("/{courseName}/add")
     public TeamDTO addTeam(@PathVariable String courseName, @RequestBody String teamName,
-                           @RequestBody List<String> memberIds, @RequestBody int hours) throws ResponseStatusException{
+                           @RequestBody List<String> memberIds, @RequestBody int hours) throws ResponseStatusException {
         try {
             teamService.proposeTeam(courseName, teamName, memberIds);
         } catch (Exception e) {
@@ -75,6 +76,22 @@ public class TeamController {
                         teamService
                         .getTeam(courseName, teamName)
                 );
+    }
+
+    @GetMapping("/{courseName}/{teamName}/getUsedResources")
+    public UsedResources getUsedResources (@PathVariable String courseName, @PathVariable String teamName)
+            throws ResponseStatusException {
+        try {
+            teamService.getTeam(courseName, teamName);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, teamName);
+        }
+        UsedResources usedResources = new UsedResources(
+                teamService.getUsedNVCpuForTeam(courseName, teamName),
+                teamService.getUsedRamForTeam(courseName, teamName),
+                teamService.getUsedDiskForTeam(courseName, teamName)
+        );
+        return usedResources;
     }
 
 }
