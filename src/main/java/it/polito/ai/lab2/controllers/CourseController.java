@@ -1,5 +1,6 @@
 package it.polito.ai.lab2.controllers;
 
+import it.polito.ai.lab2.dataStructures.CourseWithTeacher;
 import it.polito.ai.lab2.dtos.CourseDTO;
 import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.dtos.TeacherDTO;
@@ -61,18 +62,18 @@ public class CourseController {
     }
 
     @PostMapping({"", "/"})
-    public CourseDTO addCourse(@RequestBody CourseDTO courseDTO, @RequestBody String teacherId)
+    public CourseDTO addCourse(@RequestBody CourseWithTeacher courseWithTeacher)
             throws ResponseStatusException {
-        if(teamService.addCourse(courseDTO)) {
+        if(teamService.addCourse(courseWithTeacher.getCourseDTO())) {
             try {
-                teamService.addTeacherToCourse(teacherId, courseDTO.getName());
+                teamService.addTeacherToCourse(courseWithTeacher.getTeacherId(), courseWithTeacher.getCourseDTO().getName());
             } catch (Exception e) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, teacherId);
+                throw new ResponseStatusException(HttpStatus.CONFLICT, courseWithTeacher.getTeacherId());
             }
-            return ModelHelper.enrich(courseDTO);
+            return ModelHelper.enrich(courseWithTeacher.getCourseDTO());
         }
         else
-            throw new ResponseStatusException(HttpStatus.CONFLICT, courseDTO.getName());
+            throw new ResponseStatusException(HttpStatus.CONFLICT, courseWithTeacher.getCourseDTO().getName());
     }
 
     @GetMapping("/{courseName}/addTeacher/{teacherId}")
