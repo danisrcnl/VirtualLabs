@@ -87,7 +87,7 @@ public class CourseController {
                 .getTeachersForCourse(courseName)
                 .stream()
                 .map(ModelHelper :: enrich)
-                .collect(Collectors.toList());         
+                .collect(Collectors.toList());
     }
 
     @PostMapping({"/{name}/enrollOne"})
