@@ -89,7 +89,7 @@ public class VmController {
 
     @PostMapping("/{vmId}/setResources")
     public VmDTO setResources (@PathVariable Long vmId, @RequestBody VmDTO vmDTO) throws ResponseStatusException {
-        Optional<VmDTO> outcome = Optional.empty();
+        Optional<VmDTO> outcome;
         try {
             outcome = vmService.setVmResources(vmId, vmDTO);
             if(outcome.isPresent())
@@ -98,6 +98,32 @@ public class VmController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, vmId.toString());
         }
             throw new ResponseStatusException(HttpStatus.CONFLICT, vmId.toString());
+    }
+
+    @GetMapping("/{vmId}/changeState/{command}")
+    public VmDTO changeState (@PathVariable Long vmId, @PathVariable String command) {
+        try {
+            vmService.getVm(vmId);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, vmId.toString());
+        }
+
+        switch (command) {
+            case "start" :
+                vmService.startVm(vmId);
+                return ModelHelper.enrich(vmService.getVm(vmId).get());
+            case "shutDown" :
+                vmService.shutDownVm(vmId);
+                return ModelHelper.enrich(vmService.getVm(vmId).get());
+            case "freeze" :
+                vmService.freezeVm(vmId);
+                return ModelHelper.enrich(vmService.getVm(vmId).get());
+            case "delete" :
+                vmService.deleteVm(vmId);
+                return VmDTO.builder().build();
+            default:
+                return VmDTO.builder().build();
+        }
     }
 
 }

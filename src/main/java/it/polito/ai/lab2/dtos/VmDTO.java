@@ -1,5 +1,6 @@
 package it.polito.ai.lab2.dtos;
 
+import it.polito.ai.lab2.dataStructures.VmStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,4 +16,5 @@ public class VmDTO extends RepresentationModel<VmDTO> {
     private int nVCpu;
     private int disk;
     private int ram;
+    private VmStatus vmStatus;
 }
