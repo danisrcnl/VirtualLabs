@@ -142,6 +142,19 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public List<CourseDTO> getCoursesForTeacher(String teacherId) throws TeacherNotFoundException {
+        if(!teacherRepository.existsById(teacherId))
+            throw new TeacherNotFoundException(teacherId);
+
+        return teacherRepository
+                .getOne(teacherId)
+                .getCourses()
+                .stream()
+                .map(t -> modelMapper.map(t, CourseDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public boolean addStudentToCourse(String studentId, String courseName) throws CourseNotFoundException, StudentNotFoundException {
         if(!courseRepository.existsById(courseName))
             throw new CourseNotFoundException(courseName);

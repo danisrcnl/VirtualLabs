@@ -50,6 +50,8 @@ public interface TeamService {
 
     List<TeacherDTO> getTeachersForCourse(String courseName);
 
+    List<CourseDTO> getCoursesForTeacher(String teacherId);
+
 
     List<Boolean> addAll(List<StudentDTO> students);
 
