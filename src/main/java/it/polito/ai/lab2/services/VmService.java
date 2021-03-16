@@ -29,7 +29,7 @@ public interface VmService {
 
     List<StudentDTO> getOwnersForVm(Long vmId);
 
-    Optional<VmDTO> setVmResources(Long id, VmDTO vmDTO);
+    Optional<VmDTO> setVmResources(VmDTO vmDTO);
 
 
 

@@ -165,11 +165,11 @@ public class VmServiceImpl implements VmService {
     }
 
     @Override
-    public Optional<VmDTO> setVmResources(Long id, VmDTO vmDTO) {
-        if(!vmRepository.existsById(id))
+    public Optional<VmDTO> setVmResources(VmDTO vmDTO) {
+        if(!vmRepository.existsById(vmDTO.getId()))
             return Optional.empty();
 
-        Vm vm = vmRepository.getOne(id);
+        Vm vm = vmRepository.getOne(vmDTO.getId());
         String courseName = vm.getTeam().getCourse().getName();
         String teamName = vm.getTeam().getName();
 

@@ -87,17 +87,17 @@ public class VmController {
         return ModelHelper.enrich(vmModelDTO);
     }
 
-    @PostMapping("/{vmId}/setResources")
-    public VmDTO setResources (@PathVariable Long vmId, @RequestBody VmDTO vmDTO) throws ResponseStatusException {
+    @PostMapping("/setResources")
+    public VmDTO setResources (@RequestBody VmDTO vmDTO) throws ResponseStatusException {
         Optional<VmDTO> outcome;
         try {
-            outcome = vmService.setVmResources(vmId, vmDTO);
+            outcome = vmService.setVmResources(vmDTO);
             if(outcome.isPresent())
-                return outcome.get();
+                return ModelHelper.enrich(outcome.get());
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, vmId.toString());
+            throw new ResponseStatusException(HttpStatus.CONFLICT, vmDTO.getId().toString());
         }
-            throw new ResponseStatusException(HttpStatus.CONFLICT, vmId.toString());
+            throw new ResponseStatusException(HttpStatus.CONFLICT, vmDTO.getId().toString());
     }
 
     @GetMapping("/{vmId}/changeState/{command}")
