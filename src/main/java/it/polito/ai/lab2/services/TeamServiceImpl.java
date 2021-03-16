@@ -223,20 +223,24 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void editCourseName(String courseName, String newName) throws CourseNotFoundException {
+    public void deleteCourse(String courseName) throws CourseNotFoundException {
+        if(!courseRepository.existsById(courseName))
+            throw new CourseNotFoundException(courseName);
 
-        System.out.println("1 step");
+        Course c = courseRepository.getOne(courseName);
+        courseRepository.delete(c);
+        courseRepository.flush();
+    }
+
+    @Override
+    public void editCourseName(String courseName, String newName) throws CourseNotFoundException {
 
         if(!courseRepository.existsById(courseName))
             throw new CourseNotFoundException(courseName);
 
-        System.out.println("2 step");
-
         courseRepository
                 .getOne(courseName)
                 .setName(newName);
-
-        System.out.println("3 step");
     }
 
     @Override

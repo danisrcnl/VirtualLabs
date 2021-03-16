@@ -24,6 +24,8 @@ public interface TeamService {
 
     void disableCourse(String courseName);
 
+    void deleteCourse(String courseName);
+
     void editCourseName(String courseName, String newName);
 
     List<Boolean> enrollAll(List<String> studentIds, String courseName);

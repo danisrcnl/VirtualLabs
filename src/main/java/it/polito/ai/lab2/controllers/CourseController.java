@@ -91,7 +91,8 @@ public class CourseController {
     }
 
     @PostMapping({"/{name}/enrollOne"})
-    public List<StudentDTO> enrollOne(@PathVariable String name, @RequestBody StudentDTO studentDTO) throws ResponseStatusException {
+    public List<StudentDTO> enrollOne(@PathVariable String name, @RequestBody StudentDTO studentDTO)
+            throws ResponseStatusException {
         Optional<CourseDTO> course = teamService.getCourse(name);
         if(!course.isPresent())
             throw new ResponseStatusException(HttpStatus.CONFLICT, name);
@@ -114,11 +115,25 @@ public class CourseController {
         return enrolledStudents(name);
     }
 
-    @PostMapping("{name}/editName")
-    public CourseDTO editName(@PathVariable String name, @RequestBody String newName) {
-        System.out.println(name + " " + newName);
-        teamService.editCourseName(name, newName);
+    @PostMapping("/{name}/editName")
+    public CourseDTO editName(@PathVariable String name, @RequestBody String newName) throws ResponseStatusException {
+        try {
+            teamService.editCourseName(name, newName);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, name);
+        }
         return ModelHelper.enrich(teamService.getCourse(newName).get());
+    }
+
+    @GetMapping("/{courseName}/delete")
+    public List<CourseDTO> delete (@PathVariable String courseName) throws ResponseStatusException {
+        try {
+            teamService.deleteCourse(courseName);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, courseName);
+        }
+
+        return teamService.getAllCourses();
     }
 
 }
