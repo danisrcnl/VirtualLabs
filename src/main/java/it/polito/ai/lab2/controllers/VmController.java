@@ -38,7 +38,7 @@ public class VmController {
         }
     }
 
-    @GetMapping("/courses/{courseName}/getVmModel")
+    @GetMapping("/{id}/getVmModel")
     public VmModelDTO getVmModel(@PathVariable Long id) throws ResponseStatusException {
         Optional<VmModelDTO> outcome = vmService.getVmModel(id);
         if(outcome.isPresent())
