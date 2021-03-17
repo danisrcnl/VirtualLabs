@@ -47,4 +47,18 @@ public class StudentController {
         else
             throw new ResponseStatusException(HttpStatus.CONFLICT, studentDTO.getId());
     }
+
+    @GetMapping("/{id}/getCourses")
+    public List<CourseDTO> getStudentCourses (@PathVariable String id) throws ResponseStatusException {
+        List<CourseDTO> studentCourses;
+        try {
+            studentCourses = teamService.getCoursesForStudent(id);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, id);
+        }
+        return studentCourses
+                .stream()
+                .map(ModelHelper :: enrich)
+                .collect(Collectors.toList());
+    }
 }
