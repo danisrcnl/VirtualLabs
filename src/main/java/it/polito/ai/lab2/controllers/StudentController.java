@@ -2,6 +2,7 @@ package it.polito.ai.lab2.controllers;
 
 import it.polito.ai.lab2.dtos.CourseDTO;
 import it.polito.ai.lab2.dtos.StudentDTO;
+import it.polito.ai.lab2.dtos.TeamDTO;
 import it.polito.ai.lab2.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,6 +58,20 @@ public class StudentController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, id);
         }
         return studentCourses
+                .stream()
+                .map(ModelHelper :: enrich)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/{id}/getTeams")
+    public List<TeamDTO> getStudentTeams (@PathVariable String id) throws ResponseStatusException {
+        List<TeamDTO> studentTeams;
+        try {
+            studentTeams = teamService.getTeamsForStudent(id);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, id);
+        }
+        return studentTeams
                 .stream()
                 .map(ModelHelper :: enrich)
                 .collect(Collectors.toList());
