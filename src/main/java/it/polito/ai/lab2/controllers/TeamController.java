@@ -1,6 +1,7 @@
 package it.polito.ai.lab2.controllers;
 
 import it.polito.ai.lab2.dataStructures.MemberStatus;
+import it.polito.ai.lab2.dataStructures.TeamRequest;
 import it.polito.ai.lab2.dataStructures.UsedResources;
 import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.dtos.TeamDTO;
@@ -64,8 +65,11 @@ public class TeamController {
     }
 
     @PostMapping("/{courseName}/add")
-    public TeamDTO addTeam(@PathVariable String courseName, @RequestBody String teamName,
-                           @RequestBody List<String> memberIds, @RequestBody int hours) throws ResponseStatusException {
+    public TeamDTO addTeam(@PathVariable String courseName, @RequestBody TeamRequest teamRequest) throws ResponseStatusException {
+        String teamName = teamRequest.getTeamName();
+        List<String> memberIds = teamRequest.getMemberIds();
+        int hours = teamRequest.getHours();
+
         try {
             teamService.proposeTeam(courseName, teamName, memberIds);
         } catch (Exception e) {
