@@ -64,6 +64,7 @@ public interface TeamService {
     void activateTeam(String courseName, String teamName);
 
     void evictTeamById(int id);
+
     void evictTeam(String courseName, String teamName);
 
     List<CourseDTO> getTeacherCourses(String teacherId);

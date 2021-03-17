@@ -83,8 +83,7 @@ public class TeamController {
     }
 
     @GetMapping("/{courseName}/{teamName}/getUsedResources")
-    public UsedResources getUsedResources (@PathVariable String courseName, @PathVariable String teamName)
-            throws ResponseStatusException {
+    public UsedResources getUsedResources (@PathVariable String courseName, @PathVariable String teamName) throws ResponseStatusException {
         try {
             teamService.getTeam(courseName, teamName);
         } catch (Exception e) {
