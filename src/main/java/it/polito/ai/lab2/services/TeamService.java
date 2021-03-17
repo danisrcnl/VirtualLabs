@@ -10,104 +10,106 @@ public interface TeamService {
 
     /* corso */
 
-    boolean addCourse(CourseDTO course);
+    boolean addCourse (CourseDTO course);
 
-    Optional<CourseDTO> getCourse(String name);
+    Optional<CourseDTO> getCourse (String name);
 
-    List<CourseDTO> getAllCourses();
+    List<CourseDTO> getAllCourses ();
 
-    boolean addStudentToCourse(String studentId, String courseName);
+    boolean addStudentToCourse (String studentId, String courseName);
 
-    boolean addTeacherToCourse(String teacherId, String courseName);
+    boolean addTeacherToCourse (String teacherId, String courseName);
 
-    void enableCourse(String courseName);
+    void enableCourse (String courseName);
 
-    void disableCourse(String courseName);
+    void disableCourse (String courseName);
 
-    void deleteCourse(String courseName);
+    void deleteCourse (String courseName);
 
-    void editCourseName(String courseName, String newName);
+    void editCourseName (String courseName, String newName);
 
-    List<Boolean> enrollAll(List<String> studentIds, String courseName);
+    List<Boolean> enrollAll (List<String> studentIds, String courseName);
 
-    List<Boolean> addAndEnroll(Reader r, String courseName);
+    List<Boolean> addAndEnroll (Reader r, String courseName);
 
     /* studente */
 
-    boolean addStudent(StudentDTO student);
+    boolean addStudent (StudentDTO student);
 
-    Optional<StudentDTO> getStudent(String studentId);
+    Optional<StudentDTO> getStudent (String studentId);
 
-    List<StudentDTO> getAllStudents();
+    List<StudentDTO> getAllStudents ();
 
-    List<StudentDTO> getEnrolledStudents(String courseName);
+    List<StudentDTO> getEnrolledStudents (String courseName);
 
     /* docente */
 
-    boolean addTeacher(TeacherDTO teacher);
+    boolean addTeacher (TeacherDTO teacher);
 
-    Optional<TeacherDTO> getTeacher(String teacherId);
+    Optional<TeacherDTO> getTeacher (String teacherId);
 
-    List<TeacherDTO> getAllTeachers();
+    List<TeacherDTO> getAllTeachers ();
 
-    List<TeacherDTO> getTeachersForCourse(String courseName);
+    List<TeacherDTO> getTeachersForCourse (String courseName);
 
-    List<CourseDTO> getCoursesForTeacher(String teacherId);
+    List<CourseDTO> getCoursesForTeacher (String teacherId);
 
-    List<CourseDTO> getCoursesForStudent(String studentId);
+    List<CourseDTO> getCoursesForStudent (String studentId);
 
 
-    List<Boolean> addAll(List<StudentDTO> students);
+    List<Boolean> addAll (List<StudentDTO> students);
 
-    void activateTeamById(int id);
+    void activateTeamById (int id);
 
-    void activateTeam(String courseName, String teamName);
+    void activateTeam (String courseName, String teamName);
 
-    void evictTeamById(int id);
+    void evictTeamById (int id);
 
-    void evictTeam(String courseName, String teamName);
+    void evictTeam (String courseName, String teamName);
 
-    List<CourseDTO> getTeacherCourses(String teacherId);
+    List<CourseDTO> getTeacherCourses (String teacherId);
 
-    void setMinForCourse(int value, String courseName);
+    void setMinForCourse (int value, String courseName);
 
-    void setMaxForCourse(int value, String courseName);
+    void setMaxForCourse (int value, String courseName);
 
     /* studente */
 
-    TeamDTO getTeam(String courseName, String teamName);
+    TeamDTO getTeam (String courseName, String teamName);
 
-    TeamDTO getTeamById(int id);
+    TeamDTO getTeamById (int id);
 
-    List<CourseDTO> getCourses(String studentId);
+    List<CourseDTO> getCourses (String studentId);
 
-    List<TeamDTO> getTeamsForStudent(String studentId);
+    List<TeamDTO> getTeamsForStudent (String studentId);
 
-    List<StudentDTO> getMembersById(int id);
+    List<StudentDTO> getMembersById (int id);
 
-    List<StudentDTO> getMembers(String courseName, String teamName);
+    List<StudentDTO> getMembers (String courseName, String teamName);
 
-    Boolean hasAlreadyATeamFor(String studentId, String courseName);
+    Boolean hasAlreadyATeamFor (String studentId, String courseName);
 
-    TeamDTO proposeTeam(String courseName, String teamName, List<String> memberIds);
+    TeamDTO proposeTeam (String courseName, String teamName, List<String> memberIds);
 
-    int getTeamId(String courseName, String teamName);
+    int getTeamId (String courseName, String teamName);
 
-    List<TeamDTO> getTeamForCourse(String courseName);
+    List<TeamDTO> getTeamForCourse (String courseName);
 
-    List<StudentDTO> getStudentsInTeams(String courseName);
+    List<StudentDTO> getStudentsInTeams (String courseName);
 
-    List<StudentDTO> getAvailableStudents(String courseName);
+    List<StudentDTO> getAvailableStudents (String courseName);
 
-    int getUsedNVCpuForTeam(String courseName, String teamName);
+    int getUsedNVCpuForTeam (String courseName, String teamName);
 
-    int getUsedDiskForTeam(String courseName, String teamName);
+    int getUsedDiskForTeam (String courseName, String teamName);
 
-    int getUsedRamForTeam(String courseName, String teamName);
+    int getUsedRamForTeam (String courseName, String teamName);
 
-    List<VmDTO> getVmsForStudent(String studentId);
+    List<VmDTO> getVmsForStudent (String studentId);
 
-    List<VmDTO> getVmsForTeam(String courseName, String teamName);
+    List<VmDTO> getVmsForTeam (String courseName, String teamName);
 
-    List<VmDTO> getVmsForTeamById(int id);
+    List<VmDTO> getVmsForTeamById (int id);
+
+    UnknownUserDTO getDetailsFromUsername (String username);
 }

@@ -603,6 +603,11 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public UnknownUserDTO getDetailsFromUsername(String username) {
+        return null;
+    }
+
+    @Override
     public int getTeamId(String courseName, String teamName) throws TeamNotFoundException {
         if(teamRepository.getTeamByCourseAndName(courseName, teamName) == null)
             throw new TeamNotFoundException(teamName);
