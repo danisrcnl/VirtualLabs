@@ -137,4 +137,13 @@ public class CourseController {
         return teamService.getAllCourses();
     }
 
+    @GetMapping("/{courseName}/getAvailableStudents")
+    public List<StudentDTO> getAvailableStudents (@PathVariable String courseName) {
+        return teamService
+                .getAvailableStudents(courseName)
+                .stream()
+                .map(ModelHelper :: enrich)
+                .collect(Collectors.toList());
+    }
+
 }
