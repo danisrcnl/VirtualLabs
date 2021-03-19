@@ -95,6 +95,8 @@ public interface TeamService {
 
     List<TeamDTO> getTeamForCourse (String courseName);
 
+    List<TeamDTO> getStudentTeamInCourse (String id, String courseName);
+
     List<StudentDTO> getStudentsInTeams (String courseName);
 
     List<StudentDTO> getAvailableStudents (String courseName);
