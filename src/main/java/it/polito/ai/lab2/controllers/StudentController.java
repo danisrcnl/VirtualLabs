@@ -7,6 +7,7 @@ import it.polito.ai.lab2.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -71,6 +72,21 @@ public class StudentController {
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, id);
         }
+        return studentTeams
+                .stream()
+                .map(ModelHelper :: enrich)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/{id}/{courseName}/getTeam")
+    public List<TeamDTO> getStudentTeamForCourse (@PathVariable String id, @PathVariable String courseName) throws ResponseStatusException {
+        List<TeamDTO> studentTeams;
+        try {
+            studentTeams = teamService.getStudentTeamInCourse(id, courseName);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, id);
+        }
+
         return studentTeams
                 .stream()
                 .map(ModelHelper :: enrich)
