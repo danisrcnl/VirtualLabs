@@ -6,7 +6,7 @@ import { PageNotFoundComponentComponent } from '../page-not-found-component/page
 import { VmsContcomponentComponent } from './vms-contcomponent.component';
 import {MatTableDataSource} from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
-import {StudentService} from 'src/app/services/student.service'
+import {StudentService} from 'app/services/student.service'
 import {FormControl, Validators} from '@angular/forms';
 import { Course } from '../model/course.model';
 import { ActivatedRoute } from '@angular/router';

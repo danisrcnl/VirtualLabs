@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { User } from '../user';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from 'app/services/user.service';
 import { AuthenticationService } from '../authentication.service';
 import { AlertService } from '../authservices/alert.service';
 import { AuthService } from '../authservices/auth.service';

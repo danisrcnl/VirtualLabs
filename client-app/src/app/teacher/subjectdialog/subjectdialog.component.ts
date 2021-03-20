@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import { StudentService } from 'src/app/services/student.service';
-import { Course } from 'src/app/model/course.model';
+import { StudentService } from 'app/services/student.service';
+import { Course } from 'app/model/course.model';
 import { MatDialog } from '@angular/material/dialog';
-import { CourseService } from 'src/app/services/course.service';
+import { CourseService } from 'app/services/course.service';
 import { element } from 'protractor';
-import { CourseDTO } from 'src/app/model/courseDTO.model';
-import { TeacherService } from 'src/app/services/teacher.service';
+import { CourseDTO } from 'app/model/courseDTO.model';
+import { TeacherService } from 'app/services/teacher.service';
 import { first } from 'rxjs/operators';
 
 

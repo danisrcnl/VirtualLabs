@@ -6,13 +6,12 @@ import { Course } from '../model/course.model';
 import { find, catchError, tap } from 'rxjs/operators';
 import { Vms } from '../assets/vms.model';
 import { Group } from '../model/group.model';
-import { environment } from 'src/environments/environment';
 import { User } from '../auth/user';
 import { Studentreturn } from '../auth/models/studentreturn';
-import { config } from 'src/app/config';
 import { Proposal } from '../model/proposal.model';
 import { CourseDTO } from '../model/courseDTO.model';
 import { StudentDTO} from '../model/studentDTO.model';
+import { environment } from 'environments/environment';
 
 
 
