@@ -11,6 +11,7 @@ import { User } from '../auth/user';
 import { Studentreturn } from '../auth/models/studentreturn';
 import { config } from 'src/app/config';
 import { Proposal } from '../model/proposal.model';
+import { CourseDTO } from '../model/courseDTO.model';
 
 
 
@@ -80,6 +81,18 @@ private courseSubject :Subject<Course[]>;
 createproposalteam(groupname,students,timeout) {
 return this.http.post<any>(`${config.apiUrl}/proposeteam`, {groupname,students,timeout})
 
+}
+
+getStudentCourses (studentId) : Observable <CourseDTO[]>{
+
+  let params1 = new HttpParams().set('studentId',studentId);
+  return this.http.get<any>(`${environment.apiUrlstudent}/${studentId}/getCourses`);
+ }
+
+
+getStudentTeams (studentId)
+{
+  return this.http.get<any>(`${environment.apiUrlstudent}/${studentId}/getTeams`);
 }
 
 getproposals() : Observable <Proposal[]>

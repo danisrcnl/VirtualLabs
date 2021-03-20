@@ -16,15 +16,7 @@ constructor (private authenticationService : AuthenticationService, private rout
 canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const currentUser = this.authenticationService.currentUserValue;
     if (currentUser) {
-      console.log(route.data.roles);
         // logged in so return true
-          {
-              if (route.data.roles && route.data.roles.indexOf(currentUser.role) === -1) {
-                this.router.navigate(['/']);
-                return false;
-              }
-          }  
-
         return true;
     }
 

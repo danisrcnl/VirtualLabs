@@ -23,7 +23,7 @@ import { HomeComponentComponent } from './home-component/home-component.componen
 import { PageNotFoundComponentComponent } from './page-not-found-component/page-not-found-component.component';
 import { VmsContcomponentComponent } from './teacher/vms-contcomponent.component';
 import { StudentService } from './services/student.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {MatDialogModule} from '@angular/material/dialog';
 import {LoginDialogComponent} from './auth/login-dialog.component';
 import { AuthModule } from './auth/auth.module';
@@ -37,6 +37,8 @@ import { AppComponentTeacher } from './teacher/app.component';
 import { VmscomponentComponent2} from './student/vmscomponentstudent';
 import { VmscomponentComponent } from './teacher/vmscomponent.component';
 import { LimitDialogComponent } from './student/limit-dialog.component';
+import { JwtInterceptor } from './auth/interceptor/jwt.interceptor';
+import { ErrorInterceptor } from './auth/interceptor/error.interceptor';
 
 
 @NgModule({
@@ -81,7 +83,11 @@ import { LimitDialogComponent } from './student/limit-dialog.component';
   
   ],
 
-  providers: [StudentService],
+  providers: [
+     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    
+    StudentService],
   bootstrap: [AppComponent],
   entryComponents : [LoginDialogComponent]
 })

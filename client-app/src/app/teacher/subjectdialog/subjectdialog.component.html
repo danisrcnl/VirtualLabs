@@ -12,15 +12,24 @@
     </select>
   </div>
 
+    <div>
    <mat-form-field>
-     <input matInput placeholder="Modifica Nome" formControlName = "newname" [(ngModel)]="newname">
+     <input matInput placeholder="Max studenti" formControlName = "maxstud" [(ngModel)]="maxstud">
    </mat-form-field>
-   
+    <mat-form-field>
+      <input matInput placeholder="Min studenti" formControlName="minstud" [(ngModel)]="minstud">
+    </mat-form-field>
+  </div>
 
 
-   <button (click) = "modifyname()"> Invia </button>
    <button (click) = "delete()"> Cancella corso </button>
    <button (click) = "close()"> Chiudi </button>
+  </div>
+
+  <div>
+    <input type="checkbox" id="enable" name="enable" formControlName="enabled" [(ngModel)]="enabled">
+    <label for="enable">Enabled</label> 
+    <button (click)="check()"> Invia </button>
   </div>
 
   <div>
@@ -29,6 +38,18 @@
     <mat-form-field>
       <input matInput placeholder="Inserisci Nome" formControlName = "coursename" [(ngModel)]="coursename">
     </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Max studenti" formControlName="maxstud2" [(ngModel)]="maxstud2">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Min studenti" formControlName="minstud2" [(ngModel)]="minstud2">
+    </mat-form-field>
+  <input type="checkbox" id="enabled2" name="enabled2" formControlName="enabled2" [(ngModel)]="enabled2">
+  <label for="enabled2">Enabled</label>
+    <mat-form-field>
+      <input matInput placeholder="Acronimo" formControlName="acronym" [(ngModel)]="acronym">
+    </mat-form-field>
+
     <button (click) = "createcourse()"> Crea </button>
   </div>
   </form>

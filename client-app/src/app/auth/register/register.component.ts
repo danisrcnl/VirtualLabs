@@ -7,6 +7,7 @@ import { User } from '../user';
 import { UserService } from 'src/app/services/user.service';
 import { AuthenticationService } from '../authentication.service';
 import { AlertService } from '../authservices/alert.service';
+import { AuthService } from '../authservices/auth.service';
 
 @Component({ templateUrl: 'register.component.html',
 styleUrls: ['register.component.css']})
@@ -21,11 +22,12 @@ export class RegisterComponent implements OnInit {
         private authenticationService: AuthenticationService,
         private userService: UserService,
         private alertService: AlertService,
-        private matDialog : MatDialog
+        private matDialog : MatDialog,
+        private authService: AuthService
     ) {
         // redirect to home if already logged in
         if (this.authenticationService.currentUserValue) {
-            this.router.navigate(['/']);
+           // this.router.navigate(['/']);
         }
     }
 
@@ -54,7 +56,7 @@ export class RegisterComponent implements OnInit {
         }
 
         this.loading = true;
-        this.userService.register(this.registerForm.value)
+        this.authService.signup(this.f.nome.value,this.f.cognome.value,this.f.matricola.value,this.f.email.value,this.f.password.value)
             .pipe(first())
             .subscribe(
                 data => {

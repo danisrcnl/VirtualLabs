@@ -11,6 +11,8 @@ import { User } from '../auth/user';
 import { Studentreturn } from '../auth/models/studentreturn';
 import { config } from 'src/app/config';
 import { Proposal } from '../model/proposal.model';
+import { CourseDTO } from '../model/courseDTO.model';
+import { StudentDTO} from '../model/studentDTO.model';
 
 
 
@@ -34,6 +36,29 @@ private _url4 : string = "http://localhost:4000/groups";
 private _url5 : string = "http://localhost:4000/proposals";
 
 
+ getAllCourses() {
+
+  return this.http.get<CourseDTO[]>(`${environment.apiUrlcourse}/`);
+
+ }
+
+ getenrolledStudents(name : string) {
+
+ let params1 = new HttpParams().set('name',name);
+ return this.http.get<StudentDTO[]>(`${environment.apiUrlcourse}/${name}/enrolled`,{params : params1});
+ }
+
+ addCourse (courseDTO,teacherId) {
+
+  // let params1 = new HttpParams().set('courseDTO',courseDTO).append('teacherId',teacherId);
+  return this.http.post<any>(`${environment.apiUrlcourse}/`,{courseDTO,teacherId});
+ }
+
+
+
+
+
+
 courses$ : Observable<Course[]>;
 private courseSubject :Subject<Course[]>;
 
@@ -50,7 +75,7 @@ private courseSubject :Subject<Course[]>;
     return this.refresh$;
 
   }
-   
+
 editname (course: Course,i: string) : Observable <Course>
 {
   console.log(course.name);

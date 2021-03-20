@@ -4,7 +4,7 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MatTableModule} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
 import {FormBuilder, FormControl,FormGroup,Validators } from '@angular/forms';
-import {Observable } from 'rxjs';
+import {Observable, zip } from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormsModule,ReactiveFormsModule} from '@angular/forms';
@@ -18,6 +18,8 @@ import { PageNotFoundComponentComponent } from '../page-not-found-component/page
 import { Proposal } from '../model/proposal.model';
 import { Team } from '../model/team.model';
 import { MemberStatus } from '../model/memberstatus.model';
+import { StudentDTO } from '../model/studentDTO.model';
+import { Console } from 'console';
 
 
   @Component({
@@ -33,7 +35,7 @@ export class StudentsComponent implements OnInit {
     
     @Output() removestudentsEvent = new EventEmitter<Student[]>();
 
-    @Output() invitestudentEvent = new EventEmitter<Student[]>();
+    @Output() invitestudentEvent = new EventEmitter<String[]>();
 
     @Output() groupName = new EventEmitter <String>();
 
@@ -44,6 +46,31 @@ export class StudentsComponent implements OnInit {
     compagni : Student[];
     groupid : number;
     teams : Team[];
+    displayedColumns: string[] = ['select','name','firstname','serial'];
+    headers = ['id','name','firstName'];
+    headers1 = ['Serial','Name','Firstname'];
+        
+    selection = new SelectionModel<Student>(true, []);
+    students : Student [];
+    studentsIds : String[] = []; 
+    members : MemberStatus[] = new Array<MemberStatus>();
+  
+    public dataSource2 = new MatTableDataSource<Student>(this.Compagni);
+   
+    mycontrol = new FormControl();
+    filteredOptions = new Observable<Student[]>();
+    myForm : FormGroup;
+    timeout : number;
+    public groupname : string = "";
+    public href :string ="";
+    public href2 : string ="";
+    public hreff : string ="";
+    public subject : string ="";
+    public value : boolean;
+    public value1 : boolean;
+    public tableclasses = { "hide" : false, "show" : false  }
+    public compagniclass = { "hide" : false, "show2" : false }
+    public groupclasses = { "hide" :true }
 
     private tablevalue : boolean;
 
@@ -120,32 +147,7 @@ export class StudentsComponent implements OnInit {
     @Input('studenti') 
     studenti : Student [];
     
-    displayedColumns: string[] = ['select','name','firstname','serial'];
-    headers = ['serial','name','firstname'];
-    headers1 = ['Serial','Name','Firstname'];
-        
-    selection = new SelectionModel<Student>(true, []);
-    students : Student [];
-    members : MemberStatus[] = new Array<MemberStatus>();
-
-    
   
-    public dataSource2 = new MatTableDataSource<Student>(this.Compagni);
-   
-    mycontrol = new FormControl();
-    filteredOptions = new Observable<Student[]>();
-    myForm : FormGroup;
-    timeout : number;
-    public groupname : string = "";
-    public href :string ="";
-    public href2 : string ="";
-    public hreff : string ="";
-    public subject : string ="";
-    public value : boolean;
-    public value1 : boolean;
-    public tableclasses = { "hide" : false, "show" : false  }
-    public compagniclass = { "hide" : false, "show2" : false }
-    public groupclasses = { "hide" :true }
     
     
 constructor (private router : Router, private activeRoute: ActivatedRoute, private fb: FormBuilder) {
@@ -182,6 +184,7 @@ this.hreff = this.router.url;
      this.enrolledstudents = Object.assign(this.enrolledstudents);
      this.dataSource = new MatTableDataSource<Student> (this.enrolledstudents);
      this.compagni = Object.assign (this.compagni);
+     console.log(this.compagni);
      this.dataSource2 = new MatTableDataSource<Student> (this.compagni);
       this.filteredOptions = this.mycontrol.valueChanges.pipe(
         startWith(''),
@@ -267,7 +270,14 @@ this.hreff = this.router.url;
    this.selection.clear();
    this.timeoutValue.emit(this.timeout);
    this.groupName.emit(this.groupname);
-   this.invitestudentEvent.emit(this.students);
+   
+   this.students.forEach(x => {
+
+   this.studentsIds.push(x.id.toString());
+   })
+   console.log(this.students);
+   console.log(this.studentsIds);
+   this.invitestudentEvent.emit(this.studentsIds);
 
   }
 

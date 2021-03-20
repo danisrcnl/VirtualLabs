@@ -1,6 +1,6 @@
 import { Component,ViewChild,OnInit,EventEmitter,Output, ElementRef, Input } from '@angular/core';
 import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, Router } from '@angular/router';
 import { TeacherComponent } from './teacher/teacher.component';
 import { VmsContcomponentComponent } from './teacher/vms-contcomponent.component';
 import { StudentsContComponent } from './student/students-cont.component';
@@ -16,6 +16,7 @@ import { User } from './auth/user';
 import { Studentreturn } from './auth/models/studentreturn';
 import { AppComponentStudent } from './student/app.component';
 import { SidenavService } from './services/sidenav.service';
+import { AuthService } from './auth/authservices/auth.service';
 
 
 
@@ -30,13 +31,20 @@ export class AppComponent implements OnInit {
   courses$ : Observable <Course[]>;
   studs$ : Observable <Studentreturn[]>;
   courses : Course[] = new Array<Course>();
+  currentUser : User;
+  isLogin : boolean = true;
   private _url2: string = "http://localhost:3000/courses";
   
 @ViewChild ('sidenav') public sidenav: MatSidenav;
 
 
-constructor (public dialog:MatDialog, private studentservice: StudentService, private sidenavService: SidenavService ) {
+constructor (public dialog:MatDialog, private studentservice: StudentService, private sidenavService: SidenavService, private authService: AuthService, private router: Router) {
+
+
+  this.authService.currentUser.subscribe (x => this.currentUser = x);
+  
 }
+
 
 
   
@@ -47,6 +55,14 @@ constructor (public dialog:MatDialog, private studentservice: StudentService, pr
   
   
   ngOnInit(){
+
+    if(this.currentUser)
+    {
+      console.log("loggato");
+      this.isLogin = false;
+    }
+    else
+    console.log ("sloggato");
 
     
     this.studentservice._refresh$.subscribe(()=> {
@@ -97,7 +113,14 @@ console.log(this.studs$);
    openmodDialog() {
      this.dialog.open (SubjectdialogComponent);
    }
-  
+
+   logout()
+    {
+        this.isLogin = true;
+        this.authService.logout();
+        this.router.navigate (["/"]);
+    }
+
 }
 
 

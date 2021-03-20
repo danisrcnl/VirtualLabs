@@ -18,6 +18,11 @@ import { Team } from '../model/team.model';
 import { Student_Team } from '../model/student_team.model';
 import { MemberStatus } from '../model/memberstatus.model';
 import { TeamService } from '../services/team.service';
+import { CourseService } from '../services/course.service';
+import { StudentDTO } from '../model/studentDTO.model';
+import { AuthService } from '../auth/authservices/auth.service';
+import { User } from '../auth/user';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-students-cont',
@@ -27,16 +32,16 @@ import { TeamService } from '../services/team.service';
 export class StudentsContComponent implements OnInit {
 
   teamsinconstruction : Team[] = new Array<Team>();
-  studenti: Student[] = new Array<Student>();
-  compagni: Student[] = new Array<Student>();
+  studenti: StudentDTO[] = new Array<StudentDTO>();
+  compagni: StudentDTO[] = new Array<StudentDTO>();
   tabvalue : boolean;
  
   proposals : Proposal[] = new Array <Proposal>();
-  enrolledstudents : Student[] = new Array<Student>();
-  studenteaggiunto : Student;
-  darimuovere : Student[] =new Array<Student>();
+  enrolledstudents : StudentDTO[] = new Array<StudentDTO>();
+  studenteaggiunto : StudentDTO;
+  darimuovere : StudentDTO[] =new Array<StudentDTO>();
   
-  dataSource = new MatTableDataSource<Student>(this.enrolledstudents);
+  dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);
   selection = new SelectionModel<Student>(true, []);
   courses$ : Observable <Course[]>;
   student_team : Student_Team[] = new Array<Student_Team>();
@@ -46,41 +51,60 @@ export class StudentsContComponent implements OnInit {
   href : string ="";
   courses: Course[];
   courseName : String = "";
-
+  
+  //variabili dell'User
+  currentUser : User;
+  studentId : String;
   //variabili per invito Team 
   
   dainvitare : Student[] = new Array<Student>();
   groupName : String = "";
   timeoutValue : number;
+  error : '';
 
   //variabili per caricare la tabella con le proposte di Team
-  studentid : String;
+  studentid : string;
   students : Student[] = new Array<Student>(); //da qua ricavo poi nome e cognome degli studenti  
   membersStatus : MemberStatus[] = new Array<MemberStatus>(); //da qua controllo se lo studente ha accettato o ancora no la proposta 
   teams : Team[] = new Array<Team>();
+  temp :string;
+  teams$ : Observable <Team[]>;
+  teams2 : Team[] = new Array<Team>();
 
   @ViewChild(StudentsComponent)
   studentsComponent: StudentsComponent
   
-  constructor (private studentservice : StudentService, private teamservice : TeamService, private router: Router, private activeRoute: ActivatedRoute) {
+  constructor (private courseService : CourseService, private route: ActivatedRoute, private studentservice : StudentService, private teamservice : TeamService, private router: Router, private activeRoute: ActivatedRoute, private authService: AuthService) {
     
+
+    //prendo l'username dell'user loggato 
+
+    this.authService.currentUser.subscribe (x => this.currentUser = x);
+    this.studentId = this.currentUser.username.split("@")[0];
     
     this.activeRoute.paramMap.subscribe(params => {
 
 
       this.href = this.router.url;
       let id = 0;
-      let matricola = "s267656";
+      
       this.studenti = [];
       this.enrolledstudents = [];
       
       
      //chiamata alla funzione 
 
+       this.route.queryParams.subscribe(params => { this.temp = params.name});
 
+       this.temp.replace('%20', " ");
+       console.log (this.temp);
+
+    });
       
+      
+     
 
-      this.studentservice.getcourse().subscribe(data => {console.log (data)
+      /*this.studentservice.getcourse().subscribe(data => {console.log (data)
         data.forEach(s => {
         
     
@@ -94,64 +118,75 @@ export class StudentsContComponent implements OnInit {
             }
         
         })});
-
-      this.teamservice.getTeamsById(matricola).subscribe (teams1 => {
-        teams1.forEach (s => {
-          this.teams.push(s);
-        })
-      })
+*/
+    
               
     
         
-        this.studentservice.getenrolledStudents().subscribe(receivedstudents=>{
+        this.courseService.getenrolledStudents(this.temp).subscribe(receivedstudents=>{
         receivedstudents.forEach(s => {
 
-          if(s.groupId == 0 && s.courseId==id) 
-    
-          { 
+          
           
             this.enrolledstudents.push(s);
     
-          }
-          else {this.studenti.push(s);
                   
-          this.dataSource = new MatTableDataSource<Student>(this.enrolledstudents);
+          this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);
           this.studentsComponent.updateFilteredOptions();
   
           }
-        
-         if (s.serial == matricola)
-         {
-          this.groupid = s.groupId;
-          this.courseid = s.courseId;
-
-         }
-
           
+        ) 
         
          });
 
+         console.log(this.enrolledstudents);
+      
+    
 
-         this.studentservice.getenrolledStudents().subscribe(receivedstudents=>{
+         this.courseService.getenrolledStudents(this.temp).subscribe(receivedstudents=>{
         receivedstudents.forEach(s => {
 
-          if (s.groupId == this.groupid && s.courseId == this.courseid)
-          {
+         
+          
             this.compagni.push(s);
-          }
+          
 
         })
         
          });
 
-         if(this.groupid!=0)
+         console.log(this.compagni);
+
+         
+        //prendo i team dello studente 
+
+        this.teams$ = this.studentservice.getStudentTeams(this.studentId);
+
+        this.teams$.subscribe (teamss => {
+
+          teamss.forEach ( t => {
+
+            this.teams2.push(t);
+
+          })
+        });
+
+        console.log(this.teams2);
+        console.log(this.teams2[0]);
+
+    
+         if(this.teams2[0]) //se lo studente fa parte già di un gruppo setta tabvalue a true e mostra la tabella con il suo gruppo 
          {
            this.tabvalue = true;
+           console.log("length 0");
          }
          else
-         {
-           this.tabvalue = false;
-         }
+         
+           {this.tabvalue = false;
+           }
+
+           console.log(this.tabvalue);
 
         this.studentservice.getproposals().subscribe(propos => {
           propos.forEach (s => {
@@ -159,14 +194,11 @@ export class StudentsContComponent implements OnInit {
           })
 
         })
-          this.dataSource = new MatTableDataSource<Student>(this.enrolledstudents);  
+          //this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);  
           
-        
-  })
 
-    
-})};
 
+  };
 
 
 
@@ -179,9 +211,29 @@ ngOnChanges (changes: SimpleChanges)
 
   ngOnInit() {   
 
+    this.authService.currentUser.subscribe(u => {
+      this.studentid = u.username;
+
+    })
+
+//console.log (this.studentid);
+this.studentid = this.studentid.substring(0,7);
+//console.log(this.studentid);
 
 
-    this.studentservice._refresh$.subscribe(()=> {
+
+
+console.log(this.courseService.getenrolledStudents(this.temp).subscribe(student => {
+
+  student.forEach ( s => {
+    this.compagni.push(s);
+  })
+
+}));
+
+console.log(this.compagni);
+
+    this.courseService._refresh$.subscribe(()=> {
 
       this.courses$ = this.studentservice.getcourse();
     });
@@ -216,7 +268,7 @@ ngOnChanges (changes: SimpleChanges)
       let index: number = this.studenti.findIndex(d => d === item);
       this.studenti.splice(index,1)});}
       console.log(this.studenti);
-    this.dataSource = new MatTableDataSource<Student>(this.enrolledstudents);
+    this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);
     
   }
 
@@ -224,12 +276,11 @@ ngOnChanges (changes: SimpleChanges)
     this.darimuovere = $event;
     this.darimuovere.forEach(item => {
       let index: number = this.enrolledstudents.findIndex(d => d === item);
-      console.log(this.enrolledstudents.findIndex(d => d === item));
       console.log (this.enrolledstudents);
       this.enrolledstudents.splice(index,1);
       if (!this.studenti.includes(item))
       this.studenti.push(item);});
-      this.dataSource = new MatTableDataSource<Student>(this.enrolledstudents);
+      this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);
   }
 
 
@@ -253,7 +304,9 @@ ngOnChanges (changes: SimpleChanges)
    receiveinvitation($event)
    {
     this.dainvitare = $event;
-    this.teamservice.addTeam(this.courseName,this.groupName,this.dainvitare,this.timeoutValue);
+    this.teamservice.addTeam(this.temp,this.groupName,this.dainvitare,this.timeoutValue).pipe
+    (first()).subscribe(data => {console.log(data)}, error => {this.error =error});
+    
   
    }
    

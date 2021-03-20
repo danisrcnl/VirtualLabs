@@ -1,6 +1,6 @@
 import { Component,ViewChild,OnInit,EventEmitter,Output, ElementRef, Input } from '@angular/core';
 import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, Router, ActivatedRoute } from '@angular/router';
 
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -10,6 +10,11 @@ import { StudentService } from '../services/student.service';
 import { StudentsContComponent } from './students-cont.component';
 import { LoginDialogComponent } from '../auth/login-dialog.component';
 import { SidenavService } from '../services/sidenav.service';
+import { CourseService } from '../services/course.service';
+import { CourseDTO } from '../model/courseDTO.model';
+import { map } from 'rxjs/operators';
+import { AuthService } from '../auth/authservices/auth.service';
+import { User } from '../auth/user';
 
 
 
@@ -22,11 +27,18 @@ import { SidenavService } from '../services/sidenav.service';
   })
 export class AppComponentStudent implements OnInit {
 
-  courses$ : Observable <Course[]>;
-  courses : Course[] = new Array<Course>();
+  courses$ : Observable <CourseDTO[]>;
+  courses : CourseDTO[] = new Array<CourseDTO>();
+  paths : Map<CourseDTO,String> = new Map<any,any>();
+  temp : string;
+  currentUser : User;
+  studentId : string;
+  
   private _url2: string = "http://localhost:3000/courses";
   
-constructor (public dialog:MatDialog, private studentservice: StudentService, private sidenavService: SidenavService) {
+constructor (private route: ActivatedRoute,private authService : AuthService, private courseService: CourseService, public dialog:MatDialog, private studentservice: StudentService, private sidenavService: SidenavService, private router: Router) {
+
+this.authService.currentUser.subscribe (x => this.currentUser = x);
 
 }
 
@@ -42,13 +54,42 @@ constructor (public dialog:MatDialog, private studentservice: StudentService, pr
   
   ngOnInit(){
 
+ 
+   this.studentId = this.currentUser.username.split("@")[0];
+    
+   
     
     this.studentservice._refresh$.subscribe(()=> {
 
-      this.courses$ = this.studentservice.getcourse();
+      this.courses$ = this.studentservice.getStudentCourses(this.studentId);
+      //this.courses$ = this.courseService.getAllCourses();
     });
   
-    this.courses$ = this.studentservice.getcourse();
+    this.courses$ = this.studentservice.getStudentCourses(this.studentId);
+    //this.courses$ = this.courseService.getAllCourses();
+
+    this.courses$.subscribe( coursess => {
+
+      coursess.forEach (c => {
+
+        this.courses.push(c);
+      })
+for (let i=0 ;i< this.courses.length; i++)
+    {
+      
+      this.courses.forEach (c => {
+
+        this.temp = c.name.toLowerCase().split(' ').join('-');
+        console.log (this.temp);
+        c.path = this.temp;
+      })
+
+    }
+    })
+
+    
+
+    console.log(this.courses);
 
     this.sidenavService.setSidenav(this.sidenav);
   }

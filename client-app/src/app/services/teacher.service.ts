@@ -26,27 +26,24 @@ const httpOptions = {
   providedIn: 'root'
 })
 
+export class TeacherService {
 
-export class TeamService {
-
-
-    constructor(private http: HttpClient ) {
+constructor(private http: HttpClient ) {
    }
 
- addTeam(courseName,teamName,memberIds,hours) {
+ private refresh$ = new Subject <void>();
 
-   return this.http.post<any>(`${environment.apiUrlteam}/${courseName}/add`,{courseName,teamName,memberIds,hours});
+  get _refresh$ () {
+    return this.refresh$;
+
+  }
+
+getCourseforTeacher(teacherId) {
+
+   let params1 = new HttpParams().set('teacherId',teacherId);
+    return this.http.get<any>(`${environment.apiUrlteacher}/${teacherId}/getCourses`,{params : params1});
+
  }
 
-
-
- getMembersStatus(courseName :string, teamName :string) : Observable <MemberStatus[]>
- 
- {
-     let params1 = new HttpParams().set('coursename',courseName).append('teamname',teamName);
-     return this.http.get<any>(`${environment.apiUrlteam}/getMembersStatus`, {params : params1});
- }
-
- 
 
 }

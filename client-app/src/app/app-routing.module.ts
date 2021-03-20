@@ -9,13 +9,12 @@ import { PageNotFoundComponentComponent } from './page-not-found-component/page-
 import {MatTabsModule} from '@angular/material/tabs';
 import { RegisterComponent } from './auth/register/register.component';
 import { LoginDialogComponent } from './auth/login-dialog.component';
-import { AuthGuard } from './_helpers/auth.guard'
+//import { AuthGuard } from './_helpers/auth.guard'
 import { HomeComponentComponent } from './home-component/home-component.component';
 import {TeacherComponent} from './teacher/teacher.component';
 import { AppComponentStudent } from './student/app.component';
 import { AppComponentTeacher } from './teacher/app.component';
 import { VmsContcomponentComponent2 } from './student/vms-contcomponent.component';
-import { Role } from './auth/models/role';
 export const routes: Routes = [
 
   
@@ -51,10 +50,7 @@ component : HomeComponentComponent
       { path: "students", component: TeacherContComponent}
     
       
-  ]}]}],
-  canActivate : [AuthGuard],
-  data: {roles : [Role.Teacher]}
-}
+  ]}]}]}
 ,
 
 {
@@ -69,11 +65,7 @@ component : HomeComponentComponent
       { path: "students", component: StudentsContComponent}
     
     ]}]}],
-   
-   canActivate : [AuthGuard],
-  data: {roles : [Role.Student]},
-     
-  runGuardsAndResolvers: 'always'
+     runGuardsAndResolvers: 'always'
    
 
 },
