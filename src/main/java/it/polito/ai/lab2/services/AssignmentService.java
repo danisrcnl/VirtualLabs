@@ -17,6 +17,7 @@ public interface AssignmentService {
     List<AssignmentDTO> getAllAssignments();
 
 
+    List<AssignmentDTO> getCourseAssignments(String courseName);
 
     Long addPaper(PaperDTO paper, String courseName, String teamName, Long assignmentId);
 

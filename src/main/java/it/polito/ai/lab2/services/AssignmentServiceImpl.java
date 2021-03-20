@@ -5,10 +5,7 @@ import it.polito.ai.lab2.dtos.AssignmentDTO;
 import it.polito.ai.lab2.dtos.PaperDTO;
 import it.polito.ai.lab2.dtos.PaperStatusTimeDTO;
 import it.polito.ai.lab2.entities.*;
-import it.polito.ai.lab2.repositories.AssignmentRepository;
-import it.polito.ai.lab2.repositories.PaperRepository;
-import it.polito.ai.lab2.repositories.PaperStatusTimeRepository;
-import it.polito.ai.lab2.repositories.TeamRepository;
+import it.polito.ai.lab2.repositories.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +35,9 @@ public class AssignmentServiceImpl implements AssignmentService {
     TeamRepository teamRepository;
 
     @Autowired
+    CourseRepository courseRepository;
+
+    @Autowired
     ModelMapper modelMapper;
 
     @Override
@@ -58,6 +58,20 @@ public class AssignmentServiceImpl implements AssignmentService {
     public List<AssignmentDTO> getAllAssignments() {
         return assignmentRepository
                 .findAll()
+                .stream()
+                .map(a -> modelMapper.map(a, AssignmentDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AssignmentDTO> getCourseAssignments(String courseName) throws CourseNotFoundException {
+
+        if(!courseRepository.existsById(courseName))
+            throw new CourseNotFoundException(courseName);
+
+        return courseRepository
+                .getOne(courseName)
+                .getAssignments()
                 .stream()
                 .map(a -> modelMapper.map(a, AssignmentDTO.class))
                 .collect(Collectors.toList());
