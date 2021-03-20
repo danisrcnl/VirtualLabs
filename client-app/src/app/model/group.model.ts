@@ -1,7 +1,0 @@
-export interface Group {
-
-    id: number;
-    name: string;
-    courseId : number;
-    
-    }
