@@ -41,6 +41,12 @@ public class Student {
         teams = new ArrayList<>();
     }
 
+    @OneToMany(mappedBy = "student")
+    private List<Paper> papers;
+    {
+        papers = new ArrayList<>();
+    }
+
     public int addCourse (Course course) {
         courses.add(course);
         course.getStudents().add(this);

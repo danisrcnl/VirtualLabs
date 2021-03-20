@@ -28,8 +28,8 @@ public class Paper {
     private int mark;
 
     @ManyToOne
-    @JoinColumn(name="team")
-    private Team team;
+    @JoinColumn(name="student")
+    private Student student;
 
     @ManyToOne
     @JoinColumn(name="assignment")
