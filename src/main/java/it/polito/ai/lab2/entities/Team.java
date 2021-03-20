@@ -37,12 +37,6 @@ public class Team {
     }
 
     @OneToMany(mappedBy = "team")
-    private List<Paper> papers;
-    {
-        papers = new ArrayList<>();
-    }
-
-    @OneToMany(mappedBy = "team")
     private List<Vm> vms;
     {
         vms = new ArrayList<>();
