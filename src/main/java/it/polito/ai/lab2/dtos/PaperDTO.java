@@ -17,5 +17,6 @@ public class PaperDTO extends RepresentationModel<PaperDTO> {
     private String content;
     private PaperStatus currentStatus;
     private int mark;
+    private boolean editable;
 
 }
