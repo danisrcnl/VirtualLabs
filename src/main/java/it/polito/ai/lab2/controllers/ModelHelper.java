@@ -43,4 +43,16 @@ public class ModelHelper {
         vmModelDTO.add(link);
         return vmModelDTO;
     }
+
+    public static AssignmentDTO enrich(AssignmentDTO assignmentDTO) {
+        Link link = linkTo(methodOn(AssignmentController.class).getOne(assignmentDTO.getId())).withSelfRel();
+        assignmentDTO.add(link);
+        return assignmentDTO;
+    }
+
+    public static PaperDTO enrich(PaperDTO paperDTO) {
+        Link link = linkTo(methodOn(AssignmentController.class).getPaper(paperDTO.getId())).withSelfRel();
+        paperDTO.add(link);
+        return paperDTO;
+    }
 }
