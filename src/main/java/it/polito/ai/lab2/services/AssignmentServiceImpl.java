@@ -90,6 +90,7 @@ public class AssignmentServiceImpl implements AssignmentService {
             throw new AssignmentNotFoundException(assignmentId.toString());
 
         Paper p = modelMapper.map(paper, Paper.class);
+        p.setEditable(true);
         p.setStudent(studentRepository.getOne(studentId));
         p.setAssignment(assignmentRepository.getOne(assignmentId));
 
