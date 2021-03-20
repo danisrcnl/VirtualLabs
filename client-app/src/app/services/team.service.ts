@@ -34,15 +34,11 @@ export class TeamService {
    }
 
  addTeam(courseName,teamName,memberIds,hours) {
-   return this.http.post<any>(`${environment.apiUrlteam}/{courseName}/add`,{courseName,teamName,memberIds,hours});
+
+   return this.http.post<any>(`${environment.apiUrlteam}/${courseName}/add`,{courseName,teamName,memberIds,hours});
  }
 
- 
- getTeamsById(studentid :string) : Observable <Team[]>
- {
-     let params1 = new HttpParams().set('teamId',studentid);
-     return this.http.get<any>(`${environment.apiUrlteam}/getTeamsById`, {params: params1});
- }
+
 
  getMembersStatus(courseName :string, teamName :string) : Observable <MemberStatus[]>
  
