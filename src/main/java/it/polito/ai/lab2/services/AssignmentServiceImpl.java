@@ -35,6 +35,9 @@ public class AssignmentServiceImpl implements AssignmentService {
     TeamRepository teamRepository;
 
     @Autowired
+    StudentRepository studentRepository;
+
+    @Autowired
     CourseRepository courseRepository;
 
     @Autowired
@@ -78,16 +81,16 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public Long addPaper(PaperDTO paper, String courseName, String teamName, Long assignmentId) throws
-            AssignmentNotFoundException, TeamNotFoundException {
+    public Long addPaper(PaperDTO paper, String courseName, String studentId, Long assignmentId) throws
+            AssignmentNotFoundException, StudentNotFoundException {
 
-        if(teamRepository.getTeamByCourseAndName(courseName, teamName) == null)
-            throw new TeamNotFoundException(teamName);
+        if(!studentRepository.existsById(studentId))
+            throw new StudentNotFoundException(studentId);
         if(!assignmentRepository.existsById(assignmentId))
             throw new AssignmentNotFoundException(assignmentId.toString());
 
         Paper p = modelMapper.map(paper, Paper.class);
-        p.setTeam(teamRepository.getTeamByCourseAndName(courseName, teamName));
+        p.setStudent(studentRepository.getOne(studentId));
         p.setAssignment(assignmentRepository.getOne(assignmentId));
 
         paperRepository.save(p);
@@ -127,11 +130,11 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public List<PaperDTO> getPapersForTeam(String courseName, String teamName) throws TeamNotFoundException {
-        if(teamRepository.getTeamByCourseAndName(courseName, teamName) == null)
-            throw new TeamNotFoundException(teamName);
-        return teamRepository
-                .getTeamByCourseAndName(courseName, teamName)
+    public List<PaperDTO> getPapersForStudent(String courseName, String studentId) throws StudentNotFoundException {
+        if(!studentRepository.existsById(studentId))
+            throw new StudentNotFoundException(studentId);
+        return studentRepository
+                .getOne(studentId)
                 .getPapers()
                 .stream()
                 .map(p -> modelMapper.map(p, PaperDTO.class))
