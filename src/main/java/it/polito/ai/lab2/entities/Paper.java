@@ -27,7 +27,7 @@ public class Paper {
 
     private int mark;
 
-    private boolean editable;
+    private boolean editable = true;
 
     @ManyToOne
     @JoinColumn(name="student")
