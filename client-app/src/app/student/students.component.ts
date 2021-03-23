@@ -62,6 +62,7 @@ export class StudentsComponent implements OnInit {
     filteredOptions = new Observable<Student[]>();
     myForm : FormGroup;
     timeout : number;
+    teamName : string ="";
     public groupname : string = "";
     public href :string ="";
     public href2 : string ="";
@@ -109,12 +110,14 @@ export class StudentsComponent implements OnInit {
     }
 
 
-    @Input ('groupid')
-    set Groupid (val : number)
+    @Input ('teamName')
+    set Groupid (name : string)
     {
-      this.groupid = val;
+      this.teamName = name;
     }
     
+
+
     @Input ('teams')
     set Teams (val : Team[])
     {
