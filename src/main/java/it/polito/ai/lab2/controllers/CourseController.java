@@ -42,7 +42,7 @@ public class CourseController {
         if(course.isPresent())
             return ModelHelper.enrich(course.get());
         else
-            throw new ResponseStatusException(HttpStatus.CONFLICT, name);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Course " + name + " doesn't exist");
     }
 
     @GetMapping("/{name}/enrolled")
@@ -51,7 +51,7 @@ public class CourseController {
         try {
             enrolled = teamService.getEnrolledStudents(name);
         } catch(CourseNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, name);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
         return enrolled
                 .stream()
@@ -66,7 +66,7 @@ public class CourseController {
             try {
                 teamService.addTeacherToCourse(courseWithTeacher.getTeacherId(), courseWithTeacher.getCourseDTO().getName());
             } catch (Exception e) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, courseWithTeacher.getTeacherId());
+                throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
             }
             return ModelHelper.enrich(courseWithTeacher.getCourseDTO());
         }
@@ -80,7 +80,7 @@ public class CourseController {
         try {
             teamService.addTeacherToCourse(teacherId, courseName);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, teacherId);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
         return teamService
                 .getTeachersForCourse(courseName)
@@ -94,9 +94,9 @@ public class CourseController {
             throws ResponseStatusException {
         Optional<CourseDTO> course = teamService.getCourse(name);
         if(!course.isPresent())
-            throw new ResponseStatusException(HttpStatus.CONFLICT, name);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Course " + name + " doesn't exist");
         if(!teamService.addStudentToCourse(studentDTO.getId(), name))
-            throw new ResponseStatusException(HttpStatus.CONFLICT, studentDTO.getId());
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Couldn't enroll student");
         return enrolledStudents(name);
     }
 
@@ -119,7 +119,7 @@ public class CourseController {
         try {
             teamService.editCourseName(name, newName);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, name);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
         return ModelHelper.enrich(teamService.getCourse(newName).get());
     }
@@ -129,7 +129,7 @@ public class CourseController {
         try {
             teamService.deleteCourse(courseName);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, courseName);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
 
         return teamService.getAllCourses();
