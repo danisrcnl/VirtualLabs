@@ -168,23 +168,35 @@ export class StudentsContComponent implements OnInit {
           teamss.forEach ( t => {
 
             this.teams2.push(t);
+            
 
           })
-        });
 
-        console.log(this.teams2);
-        console.log(this.teams2[0]);
-
-    
-         if(this.teams2[0]) //se lo studente fa parte già di un gruppo setta tabvalue a true e mostra la tabella con il suo gruppo 
+          if(this.teams2.length > 0)
+            
+               //se lo studente fa parte già di un gruppo setta tabvalue a true e mostra la tabella con il suo gruppo 
          {
            this.tabvalue = true;
-           console.log("length 0");
+           console.log("length maggiore 0");
          }
          else
          
            {this.tabvalue = false;
            }
+            
+        }
+        
+      
+
+        
+        
+        
+        ); 
+        
+        console.log(this.teams2.length);
+
+    
+        
 
            console.log(this.tabvalue);
 
@@ -303,11 +315,11 @@ console.log(this.compagni);
 
    receiveinvitation($event)
    {
+    
     this.dainvitare = $event;
     this.teamservice.addTeam(this.temp,this.groupName,this.dainvitare,this.timeoutValue).pipe
     (first()).subscribe(data => {console.log(data)}, error => {this.error =error});
-    
-  
+
    }
    
    //eventi per mostrare la tabella con le proposte di team 

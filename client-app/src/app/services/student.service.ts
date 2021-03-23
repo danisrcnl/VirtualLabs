@@ -92,7 +92,12 @@ getStudentCourses (studentId) : Observable <CourseDTO[]>{
 
 getStudentTeams (studentId)
 {
-  return this.http.get<any>(`${environment.apiUrlstudent}/${studentId}/getTeams`);
+  return this.http.get<any>(`${environment.apiUrlvms}/${studentId}/getTeams`);
+}
+
+getVmsTeam (teamId)
+{
+  return this.http.get<any>(`${environment.apiUrlvms}/teams/${teamId}`);
 }
 
 getproposals() : Observable <Proposal[]>
