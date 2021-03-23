@@ -144,4 +144,58 @@ public class CourseController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/{courseName}/setMin/{value}")
+    public CourseDTO setMin (@PathVariable String courseName, @PathVariable int value) throws ResponseStatusException {
+
+        try {
+            teamService.setMinForCourse(value, courseName);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
+
+        return ModelHelper.enrich(
+            teamService
+            .getCourse(courseName)
+            .get()
+        );
+    }
+
+    @GetMapping("/{courseName}/setMax/{value}")
+    public CourseDTO setMax (@PathVariable String courseName, @PathVariable int value) throws ResponseStatusException {
+
+        try {
+            teamService.setMaxForCourse(value, courseName);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
+
+        return ModelHelper.enrich(
+                teamService
+                        .getCourse(courseName)
+                        .get()
+        );
+    }
+
+    @GetMapping("/{courseName}/setMin/{value}")
+    public CourseDTO setEnabled (@PathVariable String courseName, @PathVariable Boolean value) throws ResponseStatusException {
+
+        if(!(value.equals(true) || value.equals(false)))
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Bad input");
+
+        try {
+            if(value)
+                teamService.enableCourse(courseName);
+            else
+                teamService.disableCourse(courseName);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
+
+        return ModelHelper.enrich(
+                teamService
+                        .getCourse(courseName)
+                        .get()
+        );
+    }
+
 }
