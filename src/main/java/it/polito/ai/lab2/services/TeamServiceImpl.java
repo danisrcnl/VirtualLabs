@@ -448,7 +448,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public TeamDTO proposeTeam(String courseName, String teamName, List<String> memberIds)
-        throws CourseNotFoundException, StudentNotFoundException, TeamServiceException {
+        throws TeamServiceException {
 
         Team team;
         List<Student> members = new ArrayList<>();
@@ -459,17 +459,21 @@ public class TeamServiceImpl implements TeamService {
         if(teamRepository.getTeamByCourseAndName(courseName, teamName) != null)
             throw new TeamServiceException("Name " + teamName + " has been already chosen for course " + courseName);
 
+        Course c = courseRepository.getOne(courseName);
+        if(memberIds.size() > c.getMax() || memberIds.size() < c.getMin())
+            throw new TeamServiceException("Be sure team is into the chosen min/max range");
+
         team = Team.builder()
                 .name(teamName)
                 .members(members)
                 .build();
-        team.setCourse(courseRepository.getOne(courseName));
+        team.setCourse(c);
 
         List<String> availableIds = getAvailableStudents(courseName)
                 .stream()
                 .map(StudentDTO::getId)
                 .collect(Collectors.toList());
-        System.out.println(availableIds);
+
         for (String memberId : memberIds) {
             if(!availableIds.contains(memberId))
                 throw new TeamServiceException("Student " + memberId + " has already a team for course " + courseName);
