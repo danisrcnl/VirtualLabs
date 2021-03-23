@@ -172,6 +172,8 @@ export class StudentsContComponent implements OnInit {
 
           })
 
+          console.log(this.teams2.length);
+
           if(this.teams2.length > 0)
             
                //se lo studente fa parte già di un gruppo setta tabvalue a true e mostra la tabella con il suo gruppo 

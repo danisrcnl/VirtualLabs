@@ -92,7 +92,7 @@ getStudentCourses (studentId) : Observable <CourseDTO[]>{
 
 getStudentTeams (studentId)
 {
-  return this.http.get<any>(`${environment.apiUrlvms}/${studentId}/getTeams`);
+  return this.http.get<any>(`${environment.apiUrlstudent}/${studentId}/getTeams`);
 }
 
 getVmsTeam (teamId)
