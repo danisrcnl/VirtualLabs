@@ -176,7 +176,7 @@ public class CourseController {
         );
     }
 
-    @GetMapping("/{courseName}/setMin/{value}")
+    @GetMapping("/{courseName}/setEnabled/{value}")
     public CourseDTO setEnabled (@PathVariable String courseName, @PathVariable Boolean value) throws ResponseStatusException {
 
         if(!(value.equals(true) || value.equals(false)))
