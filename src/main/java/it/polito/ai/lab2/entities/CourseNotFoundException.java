@@ -5,7 +5,8 @@ import it.polito.ai.lab2.services.TeamServiceException;
 public class CourseNotFoundException extends TeamServiceException {
 
     public CourseNotFoundException(String courseName) {
-        System.out.println(courseName + " not found!");
+        this.setErrorMessage(courseName + " not found!");
+        System.out.println(this.getErrorMessage());
     }
 
 }

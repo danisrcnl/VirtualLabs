@@ -3,6 +3,7 @@ package it.polito.ai.lab2.controllers;
 import it.polito.ai.lab2.dataStructures.VmStatus;
 import it.polito.ai.lab2.dtos.VmDTO;
 import it.polito.ai.lab2.dtos.VmModelDTO;
+import it.polito.ai.lab2.services.AiException;
 import it.polito.ai.lab2.services.TeamService;
 import it.polito.ai.lab2.services.VmService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +35,8 @@ public class VmController {
                     .stream()
                     .map(ModelHelper :: enrich)
                     .collect(Collectors.toList());
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, courseName);
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
     }
 
@@ -45,7 +46,7 @@ public class VmController {
         if(outcome.isPresent())
             return ModelHelper.enrich(outcome.get());
         else
-            throw new ResponseStatusException(HttpStatus.CONFLICT, id.toString());
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Couldn't find any vmModel with id: " + id.toString());
     }
 
     @GetMapping("/courses/{courseName}/getVmModelOfCourse")
@@ -54,7 +55,7 @@ public class VmController {
         if(outcome.isPresent())
             return ModelHelper.enrich(outcome.get());
         else
-            throw new ResponseStatusException(HttpStatus.CONFLICT, courseName);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Couldn't find any VmModel for course: " + courseName);
     }
 
     @GetMapping("/teams/{teamId}")
@@ -65,8 +66,8 @@ public class VmController {
                     .stream()
                     .map(ModelHelper :: enrich)
                     .collect(Collectors.toList());
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, String.valueOf(teamId));
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
     }
 
@@ -82,8 +83,8 @@ public class VmController {
     public VmModelDTO setVmModel (@PathVariable String courseName, @RequestBody VmModelDTO vmModelDTO) {
         try {
             vmService.addVmModelForCourse(vmModelDTO, courseName);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, courseName);
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
         return ModelHelper.enrich(vmModelDTO);
     }
@@ -92,25 +93,25 @@ public class VmController {
     public VmDTO setResources (@RequestBody VmDTO vmDTO) throws ResponseStatusException {
         Optional<VmDTO> outcome;
         try {
-            outcome = vmService.setVmResources(vmDTO);
+            outcome = vmService.getVm(vmDTO.getId());
             if(outcome.isPresent()) {
                 if(outcome.get().getVmStatus().equals(VmStatus.OFF))
-                    return ModelHelper.enrich(outcome.get());
+                    outcome = vmService.setVmResources(vmDTO);
                 else
-                    throw new ResponseStatusException(HttpStatus.CONFLICT, vmDTO.getId().toString());
+                    throw new ResponseStatusException(HttpStatus.CONFLICT, "Couldn't find VM with id: " + vmDTO.getId());
             }
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, vmDTO.getId().toString());
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
-            throw new ResponseStatusException(HttpStatus.CONFLICT, vmDTO.getId().toString());
+        return ModelHelper.enrich(outcome.get());
     }
 
     @GetMapping("/{vmId}/changeState/{command}")
-    public VmDTO changeState (@PathVariable Long vmId, @PathVariable String command) {
+    public VmDTO changeState (@PathVariable Long vmId, @PathVariable String command) throws ResponseStatusException {
         try {
             vmService.getVm(vmId);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, vmId.toString());
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
 
         switch (command) {

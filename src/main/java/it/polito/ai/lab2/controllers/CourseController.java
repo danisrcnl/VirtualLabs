@@ -5,6 +5,7 @@ import it.polito.ai.lab2.dtos.CourseDTO;
 import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.dtos.TeacherDTO;
 import it.polito.ai.lab2.entities.CourseNotFoundException;
+import it.polito.ai.lab2.services.AiException;
 import it.polito.ai.lab2.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,7 +38,7 @@ public class CourseController {
     }
 
     @GetMapping("/{name}")
-    public CourseDTO getOne(@PathVariable String name) throws ResponseStatusException {
+    public CourseDTO getOne (@PathVariable String name) throws ResponseStatusException {
         Optional<CourseDTO> course = teamService.getCourse(name);
         if(course.isPresent())
             return ModelHelper.enrich(course.get());
@@ -46,12 +47,12 @@ public class CourseController {
     }
 
     @GetMapping("/{name}/enrolled")
-    public List<StudentDTO> enrolledStudents(@PathVariable String name) throws ResponseStatusException {
+    public List<StudentDTO> enrolledStudents (@PathVariable String name) throws ResponseStatusException {
         List<StudentDTO> enrolled;
         try {
             enrolled = teamService.getEnrolledStudents(name);
-        } catch(CourseNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch(AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
         return enrolled
                 .stream()
@@ -60,13 +61,13 @@ public class CourseController {
     }
 
     @PostMapping({"", "/"})
-    public CourseDTO addCourse(@RequestBody CourseWithTeacher courseWithTeacher)
+    public CourseDTO addCourse (@RequestBody CourseWithTeacher courseWithTeacher)
             throws ResponseStatusException {
         if(teamService.addCourse(courseWithTeacher.getCourseDTO())) {
             try {
                 teamService.addTeacherToCourse(courseWithTeacher.getTeacherId(), courseWithTeacher.getCourseDTO().getName());
-            } catch (Exception e) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+            } catch (AiException e) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
             }
             return ModelHelper.enrich(courseWithTeacher.getCourseDTO());
         }
@@ -79,8 +80,8 @@ public class CourseController {
             throws ResponseStatusException {
         try {
             teamService.addTeacherToCourse(teacherId, courseName);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
         return teamService
                 .getTeachersForCourse(courseName)
@@ -90,7 +91,7 @@ public class CourseController {
     }
 
     @PostMapping({"/{name}/enrollOne"})
-    public List<StudentDTO> enrollOne(@PathVariable String name, @RequestBody StudentDTO studentDTO)
+    public List<StudentDTO> enrollOne (@PathVariable String name, @RequestBody StudentDTO studentDTO)
             throws ResponseStatusException {
         Optional<CourseDTO> course = teamService.getCourse(name);
         if(!course.isPresent())
@@ -101,7 +102,7 @@ public class CourseController {
     }
 
     @PostMapping("{name}/enrollMany")
-    public List<StudentDTO> enrollMany(@PathVariable String name, @RequestParam("file") MultipartFile multipartFile)
+    public List<StudentDTO> enrollMany (@PathVariable String name, @RequestParam("file") MultipartFile multipartFile)
                                                             throws UnsupportedMediaTypeStatusException {
         if(!multipartFile.getContentType().equals("text/csv"))
             throw new UnsupportedMediaTypeStatusException(multipartFile.getContentType());
@@ -115,11 +116,11 @@ public class CourseController {
     }
 
     @PostMapping("/{name}/editName")
-    public CourseDTO editName(@PathVariable String name, @RequestBody String newName) throws ResponseStatusException {
+    public CourseDTO editName (@PathVariable String name, @RequestBody String newName) throws ResponseStatusException {
         try {
             teamService.editCourseName(name, newName);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
         return ModelHelper.enrich(teamService.getCourse(newName).get());
     }
@@ -128,8 +129,8 @@ public class CourseController {
     public List<CourseDTO> delete (@PathVariable String courseName) throws ResponseStatusException {
         try {
             teamService.deleteCourse(courseName);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
 
         return teamService.getAllCourses();
@@ -149,8 +150,8 @@ public class CourseController {
 
         try {
             teamService.setMinForCourse(value, courseName);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
 
         return ModelHelper.enrich(
@@ -165,8 +166,8 @@ public class CourseController {
 
         try {
             teamService.setMaxForCourse(value, courseName);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
 
         return ModelHelper.enrich(
@@ -187,8 +188,8 @@ public class CourseController {
                 teamService.enableCourse(courseName);
             else
                 teamService.disableCourse(courseName);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
 
         return ModelHelper.enrich(

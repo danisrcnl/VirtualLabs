@@ -5,6 +5,7 @@ import it.polito.ai.lab2.services.TeamServiceException;
 public class TeamAlreadyExistingException extends TeamServiceException {
 
     public TeamAlreadyExistingException(String msg) {
+        this.setErrorMessage(msg);
         System.out.println(msg);
     }
 

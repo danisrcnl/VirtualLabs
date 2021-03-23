@@ -4,6 +4,7 @@ package it.polito.ai.lab2.controllers;
 import it.polito.ai.lab2.dtos.CourseDTO;
 import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.dtos.TeacherDTO;
+import it.polito.ai.lab2.services.AiException;
 import it.polito.ai.lab2.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,7 +44,7 @@ public class TeacherController {
         if(teacher.isPresent())
             return ModelHelper.enrich(teacher.get());
         else
-            throw new ResponseStatusException(HttpStatus.CONFLICT, id);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Couldn't find teacher with id: " + id);
     }
 
     @GetMapping("/{id}/getCourses")
@@ -51,8 +52,8 @@ public class TeacherController {
         List<CourseDTO> teacherCourses;
         try {
             teacherCourses = teamService.getCoursesForTeacher(id);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, id);
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
         return teacherCourses
                 .stream()

@@ -5,6 +5,7 @@ import it.polito.ai.lab2.dataStructures.TeamRequest;
 import it.polito.ai.lab2.dataStructures.UsedResources;
 import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.dtos.TeamDTO;
+import it.polito.ai.lab2.services.AiException;
 import it.polito.ai.lab2.services.NotificationService;
 import it.polito.ai.lab2.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class TeamController {
     NotificationService notificationService;
 
     @GetMapping("/course/{courseName}")
-    public List<TeamDTO> all(@PathVariable String courseName) {
+    public List<TeamDTO> all (@PathVariable String courseName) {
         return teamService
                 .getTeamForCourse(courseName)
                 .stream()
@@ -35,32 +36,49 @@ public class TeamController {
     }
 
     @GetMapping("/{id}")
-    public TeamDTO getOne(@PathVariable int id) {
-        return ModelHelper.enrich(
-                teamService
-                .getTeamById(id));
+    public TeamDTO getOne (@PathVariable int id) throws ResponseStatusException {
+        TeamDTO teamDTO;
+        try {
+            teamDTO = teamService.getTeamById(id);
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+        }
+        return ModelHelper.enrich(teamDTO);
     }
 
     @GetMapping("/{courseName}/{teamName}")
-    public TeamDTO getOneByName(@PathVariable String courseName, @PathVariable String teamName) {
-        teamService.getTeamId(courseName, teamName);
-        return ModelHelper.enrich(
-                teamService
-                .getTeam(courseName, teamName));
+    public TeamDTO getOneByName(@PathVariable String courseName, @PathVariable String teamName) throws ResponseStatusException {
+        TeamDTO teamDTO;
+        try {
+            teamDTO = teamService.getTeam(courseName, teamName);
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+        }
+        return ModelHelper.enrich(teamDTO);
     }
 
     @GetMapping("/{courseName}/{teamName}/members")
-    public List<StudentDTO> getMembers(@PathVariable String courseName, @PathVariable String teamName) {
-        return teamService
-                .getMembers(courseName, teamName)
+    public List<StudentDTO> getMembers(@PathVariable String courseName, @PathVariable String teamName) throws ResponseStatusException {
+        List<StudentDTO> students;
+        try {
+            students = teamService.getMembers(courseName, teamName);
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+        }
+        return students
                 .stream()
                 .map(ModelHelper::enrich)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/{courseName}/{teamName}/membersStatus")
-    public List<MemberStatus> getMembersStatus(@PathVariable String courseName, @PathVariable String teamName) {
-        int id = teamService.getTeamId(courseName, teamName);
+    public List<MemberStatus> getMembersStatus(@PathVariable String courseName, @PathVariable String teamName) throws ResponseStatusException {
+        int id;
+        try {
+            id = teamService.getTeamId(courseName, teamName);
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+        }
         return notificationService.getMembersStatus(id);
     }
 
@@ -72,8 +90,8 @@ public class TeamController {
 
         try {
             teamService.proposeTeam(courseName, teamName, memberIds);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, teamName);
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
 
         notificationService.notifyTeam(courseName, teamName, memberIds, hours);
@@ -87,8 +105,8 @@ public class TeamController {
     public UsedResources getUsedResources (@PathVariable String courseName, @PathVariable String teamName) throws ResponseStatusException {
         try {
             teamService.getTeam(courseName, teamName);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, teamName);
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
         UsedResources usedResources = new UsedResources(
                 teamService.getUsedNVCpuForTeam(courseName, teamName),

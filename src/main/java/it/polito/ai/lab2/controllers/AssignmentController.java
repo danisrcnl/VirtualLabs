@@ -3,6 +3,7 @@ package it.polito.ai.lab2.controllers;
 import it.polito.ai.lab2.dtos.AssignmentDTO;
 import it.polito.ai.lab2.dtos.PaperDTO;
 import it.polito.ai.lab2.dtos.PaperStatusTimeDTO;
+import it.polito.ai.lab2.services.AiException;
 import it.polito.ai.lab2.services.AssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,7 +38,7 @@ public class AssignmentController {
         Optional<AssignmentDTO> outcome = assignmentService.getAssignment(id);
         if(outcome.isPresent())
             return ModelHelper.enrich(outcome.get());
-        throw new ResponseStatusException(HttpStatus.CONFLICT, id.toString());
+        throw new ResponseStatusException(HttpStatus.CONFLICT, "No assignments with id " + id.toString());
     }
 
     @GetMapping("/paper/{id}")
@@ -45,7 +46,7 @@ public class AssignmentController {
         Optional<PaperDTO> outcome = assignmentService.getPaper(id);
         if(outcome.isPresent())
             return ModelHelper.enrich(outcome.get());
-        throw new ResponseStatusException(HttpStatus.CONFLICT, id.toString());
+        throw new ResponseStatusException(HttpStatus.CONFLICT, "No papers with id " + id.toString());
     }
 
     @GetMapping("/{courseName}/getAssignments")
@@ -53,8 +54,8 @@ public class AssignmentController {
         List<AssignmentDTO> outcome;
         try {
             outcome = assignmentService.getCourseAssignments(courseName);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, courseName);
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
 
         return outcome
@@ -68,8 +69,8 @@ public class AssignmentController {
         List<PaperDTO> outcome;
         try {
             outcome = assignmentService.getPapersForAssignment(assignmentId);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, assignmentId.toString());
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
 
         return outcome
@@ -83,8 +84,8 @@ public class AssignmentController {
         List<PaperStatusTimeDTO> outcome;
         try {
             outcome = assignmentService.getPaperHistory(paperId);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, paperId.toString());
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
 
         return outcome;
