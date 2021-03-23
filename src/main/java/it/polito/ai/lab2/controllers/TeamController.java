@@ -75,6 +75,7 @@ public class TeamController {
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, teamName);
         }
+
         notificationService.notifyTeam(courseName, teamName, memberIds, hours);
         return ModelHelper.enrich(
                         teamService
