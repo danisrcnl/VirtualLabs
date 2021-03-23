@@ -95,6 +95,12 @@ getStudentTeams (studentId)
   return this.http.get<any>(`${environment.apiUrlstudent}/${studentId}/getTeams`);
 }
 
+getStudentCourseTeam (studentId,courseId)
+{
+  return this.http.get<any>(`${environment.apiUrlstudent}/${studentId}/${courseId}/getTeam`);
+}
+
+
 getVmsTeam (teamId)
 {
   return this.http.get<any>(`${environment.apiUrlvms}/teams/${teamId}`);

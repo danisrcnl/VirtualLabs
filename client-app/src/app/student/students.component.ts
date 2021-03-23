@@ -44,6 +44,7 @@ export class StudentsComponent implements OnInit {
 
     enrolledstudents : Student[];
     compagni : Student[];
+    compagniDTO : StudentDTO[];
     groupid : number;
     teams : Team[];
     displayedColumns: string[] = ['select','name','firstname','serial'];
@@ -55,7 +56,7 @@ export class StudentsComponent implements OnInit {
     studentsIds : String[] = []; 
     members : MemberStatus[] = new Array<MemberStatus>();
   
-    public dataSource2 = new MatTableDataSource<Student>(this.Compagni);
+    public dataSource2 = new MatTableDataSource<StudentDTO>(this.CompagniDTO);
    
     mycontrol = new FormControl();
     filteredOptions = new Observable<Student[]>();
@@ -99,11 +100,14 @@ export class StudentsComponent implements OnInit {
       this.groupclasses.hide = val;
     }
 
-    @Input ('compagni')
-    set Compagni (students : Student[])
+  
+
+    @Input ('compagniDTO')
+    set CompagniDTO (students : StudentDTO[])
     {
-      this.compagni = students;
+      this.compagniDTO = students;
     }
+
 
     @Input ('groupid')
     set Groupid (val : number)
@@ -170,6 +174,8 @@ const routeParams = this.activeRoute.snapshot.params;
 
 this.activeRoute.queryParams.subscribe (queryParams => {
 
+console.log (queryParams);
+
 });
 
 this.activeRoute.params.subscribe (routeParams => {
@@ -184,9 +190,9 @@ this.hreff = this.router.url;
   
      this.enrolledstudents = Object.assign(this.enrolledstudents);
      this.dataSource = new MatTableDataSource<Student> (this.enrolledstudents);
-     this.compagni = Object.assign (this.compagni);
-     console.log(this.compagni);
-     this.dataSource2 = new MatTableDataSource<Student> (this.compagni);
+     this.compagniDTO = Object.assign (this.compagniDTO);
+     console.log(this.compagniDTO);
+     this.dataSource2 = new MatTableDataSource<StudentDTO> (this.compagniDTO);
       this.filteredOptions = this.mycontrol.valueChanges.pipe(
         startWith(''),
         map (studenti => this._filter(studenti)));   

@@ -62,14 +62,18 @@ export class StudentsContComponent implements OnInit {
   timeoutValue : number;
   error : '';
 
+  //variabili per caricare la tabella con i componenti del gruppo 
+  compagniDTO : StudentDTO[] = new Array<StudentDTO>();
+
   //variabili per caricare la tabella con le proposte di Team
   studentid : string;
   students : Student[] = new Array<Student>(); //da qua ricavo poi nome e cognome degli studenti  
   membersStatus : MemberStatus[] = new Array<MemberStatus>(); //da qua controllo se lo studente ha accettato o ancora no la proposta 
   teams : Team[] = new Array<Team>();
-  temp :string;
+  courseId :string;
   teams$ : Observable <Team[]>;
   teams2 : Team[] = new Array<Team>();
+  teamName : String = "";
 
   @ViewChild(StudentsComponent)
   studentsComponent: StudentsComponent
@@ -94,10 +98,10 @@ export class StudentsContComponent implements OnInit {
       
      //chiamata alla funzione 
 
-       this.route.queryParams.subscribe(params => { this.temp = params.name});
+       this.route.queryParams.subscribe(params => { this.courseId = params.name});
 
-       this.temp.replace('%20', " ");
-       console.log (this.temp);
+       this.courseId.replace('%20', " ");
+       console.log (this.courseId);
 
     });
       
@@ -123,7 +127,7 @@ export class StudentsContComponent implements OnInit {
               
     
         
-        this.courseService.getenrolledStudents(this.temp).subscribe(receivedstudents=>{
+        this.courseService.getenrolledStudents(this.courseId).subscribe(receivedstudents=>{
         receivedstudents.forEach(s => {
 
           
@@ -144,36 +148,25 @@ export class StudentsContComponent implements OnInit {
       
     
 
-         this.courseService.getenrolledStudents(this.temp).subscribe(receivedstudents=>{
-        receivedstudents.forEach(s => {
-
          
-          
-            this.compagni.push(s);
-          
-
-        })
-        
-         });
 
          console.log(this.compagni);
 
          
         //prendo i team dello studente 
 
-        this.teams$ = this.studentservice.getStudentTeams(this.studentId);
+        this.teams$ = this.studentservice.getStudentCourseTeam(this.studentId,this.courseId);
 
         this.teams$.subscribe (teamss => {
 
           teamss.forEach ( t => {
 
             this.teams2.push(t);
-            
+            this.teamName = t.name;
 
           })
 
-          console.log(this.teams2.length);
-
+          
           if(this.teams2.length > 0)
             
                //se lo studente fa parte già di un gruppo setta tabvalue a true e mostra la tabella con il suo gruppo 
@@ -185,11 +178,17 @@ export class StudentsContComponent implements OnInit {
          
            {this.tabvalue = false;
            }
-            
+          
+           this.teamservice.getMembers(this.courseId,this.teamName).subscribe(members => {
+
+              members.forEach (m => {
+                this.compagniDTO.push(m);
+              })
+           })
         }
         
       
-
+        
         
         
         
@@ -237,13 +236,6 @@ this.studentid = this.studentid.substring(0,7);
 
 
 
-console.log(this.courseService.getenrolledStudents(this.temp).subscribe(student => {
-
-  student.forEach ( s => {
-    this.compagni.push(s);
-  })
-
-}));
 
 console.log(this.compagni);
 
@@ -319,7 +311,7 @@ console.log(this.compagni);
    {
     
     this.dainvitare = $event;
-    this.teamservice.addTeam(this.temp,this.groupName,this.dainvitare,this.timeoutValue).pipe
+    this.teamservice.addTeam(this.courseId,this.groupName,this.dainvitare,this.timeoutValue).pipe
     (first()).subscribe(data => {console.log(data)}, error => {this.error =error});
 
    }

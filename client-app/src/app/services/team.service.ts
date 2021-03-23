@@ -14,6 +14,7 @@ import { Proposal } from '../model/proposal.model';
 import { Team } from '../model/team.model';
 import { MemberStatus } from '../model/memberstatus.model';
 import { of } from 'rxjs/internal/observable/of';
+import { StudentDTO } from 'app/model/studentDTO.model';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -36,6 +37,13 @@ export class TeamService {
  addTeam(courseName,teamName,memberIds,hours) {
 
    return this.http.post<any>(`${environment.apiUrlteam}/${courseName}/add`,{courseName,teamName,memberIds,hours});
+ }
+
+
+getMembers(courseName,teamName)
+ 
+ {
+     return this.http.get<StudentDTO[]>(`${environment.apiUrlteam}/${courseName}/${teamName}/members`);
  }
 
 
