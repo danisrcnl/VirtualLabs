@@ -39,13 +39,13 @@ public class Course {
         teachers = new ArrayList<>();
     }
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
     private List<Team> teams;
     {
         teams = new ArrayList<>();
     }
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
     private List<Assignment> assignments;
     {
         assignments = new ArrayList<>();
@@ -56,7 +56,7 @@ public class Course {
     private VmModel vmModel;
 */
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.REMOVE)
     private VmModel vmModel;
 
 /*
@@ -73,6 +73,13 @@ public class Course {
         students.add(student);
         student.getCourses().add(this);
         return students.indexOf(student);
+    }
+
+    public void removeRelations () {
+        for (Student s : students)
+            s.getCourses().remove(this);
+        for (Teacher t : teachers)
+            t.getCourses().remove(this);
     }
 
     public int addTeacher (Teacher teacher) {

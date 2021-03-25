@@ -241,6 +241,7 @@ public class TeamServiceImpl implements TeamService {
             throw new CourseNotFoundException(courseName);
 
         Course c = courseRepository.getOne(courseName);
+        c.removeRelations();
         courseRepository.delete(c);
         courseRepository.flush();
     }
