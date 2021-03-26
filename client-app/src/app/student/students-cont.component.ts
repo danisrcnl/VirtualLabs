@@ -94,14 +94,19 @@ export class StudentsContComponent implements OnInit {
       
       this.studenti = [];
       this.enrolledstudents = [];
-      
+        
       
      //chiamata alla funzione 
 
-       this.route.queryParams.subscribe(params => { this.courseId = params.name});
-
+       this.route.queryParams.subscribe(params => { this.courseId = params.name
+      
+      
+      
        this.courseId.replace('%20', " ");
        console.log (this.courseId);
+       });
+
+      
 
     });
       

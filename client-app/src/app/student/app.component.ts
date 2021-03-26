@@ -34,7 +34,6 @@ export class AppComponentStudent implements OnInit {
   currentUser : User;
   studentId : string;
   
-  private _url2: string = "http://localhost:3000/courses";
   
 constructor (private route: ActivatedRoute,private authService : AuthService, private courseService: CourseService, public dialog:MatDialog, private studentservice: StudentService, private sidenavService: SidenavService, private router: Router) {
 

@@ -63,6 +63,8 @@ export class StudentsComponent implements OnInit {
     myForm : FormGroup;
     timeout : number;
     teamName : string ="";
+    paramname : string = "";
+    firstParam : string ="";
     public groupname : string = "";
     public href :string ="";
     public href2 : string ="";
@@ -179,14 +181,18 @@ this.activeRoute.queryParams.subscribe (queryParams => {
 
 console.log (queryParams);
 
+
+
 });
+
+this.firstParam = this.activeRoute.snapshot.queryParamMap.get('name');
 
 this.activeRoute.params.subscribe (routeParams => {
 this.hreff = this.router.url;
-  this.subject = this.hreff.substring(0,this.hreff.lastIndexOf('/'));
- 
-  this.href = this.hreff; console.log(this.href);
-   this.href2 = this.subject + '/vms';
+  this.subject = this.hreff.substring(0,this.hreff.lastIndexOf('?'));
+  this.hreff = this.hreff.substring(0,this.hreff.lastIndexOf('/'));
+  this.href = this.subject; console.log(this.href);
+   this.href2 = this.hreff + '/vms';
    console.log(this.href2);
 ;
 });
