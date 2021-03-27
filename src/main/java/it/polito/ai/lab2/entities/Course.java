@@ -50,25 +50,10 @@ public class Course {
     {
         assignments = new ArrayList<>();
     }
-/*
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "vmModel")
-    private VmModel vmModel;
-*/
 
     @OneToOne(cascade = CascadeType.REMOVE)
     private VmModel vmModel;
 
-/*
-    public void setVmModel(VmModel vmModel) {
-        if(vmModel == null)
-            this.vmModel = null;
-        else {
-            vmModel.setCourse(this);
-            this.vmModel = vmModel;
-        }
-    }
-*/
     public int addStudent (Student student) {
         students.add(student);
         student.getCourses().add(this);
