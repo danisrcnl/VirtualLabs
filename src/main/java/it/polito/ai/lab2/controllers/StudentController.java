@@ -4,6 +4,7 @@ import it.polito.ai.lab2.dtos.CourseDTO;
 import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.dtos.TeamDTO;
 import it.polito.ai.lab2.services.AiException;
+import it.polito.ai.lab2.services.StudentService;
 import it.polito.ai.lab2.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,9 +24,12 @@ public class StudentController {
     @Autowired
     TeamService teamService;
 
+    @Autowired
+    StudentService studentService;
+
     @GetMapping({"/", ""})
     public List<StudentDTO> all () {
-        return teamService
+        return studentService
                 .getAllStudents()
                 .stream()
                 .map(ModelHelper::enrich)
@@ -35,7 +39,7 @@ public class StudentController {
 
     @GetMapping("/{id}")
     public StudentDTO getOne (@PathVariable String id) throws ResponseStatusException {
-        Optional<StudentDTO> student = teamService.getStudent(id);
+        Optional<StudentDTO> student = studentService.getStudent(id);
         if(student.isPresent())
             return ModelHelper.enrich(student.get());
         else
@@ -45,7 +49,7 @@ public class StudentController {
 
     @PostMapping({"", "/"})
     public StudentDTO addStudent (@RequestBody StudentDTO studentDTO) throws ResponseStatusException {
-        if(teamService.addStudent(studentDTO))
+        if(studentService.addStudent(studentDTO))
             return ModelHelper.enrich(studentDTO);
         else
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Couldn't add student " + studentDTO.getId());
@@ -55,7 +59,7 @@ public class StudentController {
     public List<CourseDTO> getStudentCourses (@PathVariable String id) throws ResponseStatusException {
         List<CourseDTO> studentCourses;
         try {
-            studentCourses = teamService.getCoursesForStudent(id);
+            studentCourses = studentService.getCoursesForStudent(id);
         } catch (AiException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
@@ -69,7 +73,7 @@ public class StudentController {
     public List<TeamDTO> getStudentTeams (@PathVariable String id) throws ResponseStatusException {
         List<TeamDTO> studentTeams;
         try {
-            studentTeams = teamService.getTeamsForStudent(id);
+            studentTeams = studentService.getTeamsForStudent(id);
         } catch (AiException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }

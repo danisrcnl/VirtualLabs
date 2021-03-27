@@ -7,6 +7,7 @@ import it.polito.ai.lab2.repositories.UserRepository;
 import it.polito.ai.lab2.security.AuthenticationRequest;
 import it.polito.ai.lab2.security.JwtTokenProvider;
 import it.polito.ai.lab2.services.AuthenticationService;
+import it.polito.ai.lab2.services.StudentService;
 import it.polito.ai.lab2.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +46,9 @@ public class AuthController {
     TeamService teamService;
 
     @Autowired
+    StudentService studentService;
+
+    @Autowired
     PasswordEncoder passwordEncoder;
 
     @PostMapping("/signin")
@@ -79,6 +83,6 @@ public class AuthController {
                 .id(signUpRequest.getId())
                 .build();
 
-        teamService.addStudent(studentDTO);
+        studentService.addStudent(studentDTO);
     }
 }

@@ -48,26 +48,12 @@ public interface TeamService {
 
     List<TeamDTO> getTeamForCourse (String courseName);
 
-
-
-
-    /* studente */
-
-    boolean addStudent (StudentDTO student);
-
-    Optional<StudentDTO> getStudent (String studentId);
-
-    List<StudentDTO> getAllStudents ();
-
-    List<CourseDTO> getCoursesForStudent (String studentId);
-
-    List<Boolean> addAll (List<StudentDTO> students);
-
-    List<TeamDTO> getTeamsForStudent (String studentId);
-
     Boolean hasAlreadyATeamFor (String studentId, String courseName);
 
-    List<VmDTO> getVmsForStudent (String studentId);
+
+
+
+
 
 
 
