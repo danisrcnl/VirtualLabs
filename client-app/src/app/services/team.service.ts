@@ -34,9 +34,9 @@ export class TeamService {
     constructor(private http: HttpClient ) {
    }
 
- addTeam(courseName,teamName,memberIds,hours) {
+ addTeam(courseName,teamName,memberIds,creator,hours) {
 
-   return this.http.post<any>(`${environment.apiUrlteam}/${courseName}/add`,{courseName,teamName,memberIds,hours});
+   return this.http.post<any>(`${environment.apiUrlteam}/${courseName}/add`,{courseName,teamName,memberIds,creator,hours});
  }
 
 

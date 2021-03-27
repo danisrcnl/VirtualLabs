@@ -223,7 +223,7 @@ export class StudentsContComponent implements OnInit {
 
 ngOnChanges (changes: SimpleChanges)
 {
-  this.teamservice.addTeam(this.courseName,this.groupName,this.dainvitare,this.timeoutValue);
+  this.teamservice.addTeam(this.courseName,this.groupName,this.dainvitare,this.studentId,this.timeoutValue);
 }
   
 
@@ -241,7 +241,6 @@ this.studentid = this.studentid.substring(0,7);
 
 
 
-
 console.log(this.compagni);
 
     this.courseService._refresh$.subscribe(()=> {
@@ -253,6 +252,7 @@ console.log(this.compagni);
 
 
    
+
 
 
   }
@@ -316,7 +316,7 @@ console.log(this.compagni);
    {
     
     this.dainvitare = $event;
-    this.teamservice.addTeam(this.courseId,this.groupName,this.dainvitare,this.timeoutValue).pipe
+    this.teamservice.addTeam(this.courseId,this.groupName,this.dainvitare,this.studentId,this.timeoutValue).pipe
     (first()).subscribe(data => {console.log(data)}, error => {this.error =error});
 
    }

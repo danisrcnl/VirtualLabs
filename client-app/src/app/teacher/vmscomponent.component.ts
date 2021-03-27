@@ -19,55 +19,7 @@ export class VmscomponentComponent implements OnInit {
   constructor(public dialog: MatDialog, private studentservice: StudentService,private router: Router, private activeRoute: ActivatedRoute) 
   
   {
-    let id = 0;
-   
-
-      this.href = this.router.url;
-      this.studentservice.getcourse().subscribe(data => {console.log (data)
-        data.forEach(s => {
     
-         s.path = '/' + s.path + '/vms';
-     
-           if (s.path == this.href)
-           {
-         
-             id = s.id;
-            
-            }
-    
-        })});
-
-
-
-    this.studentservice.getvms().subscribe(data1 => {console.log(data1)
-    data1.forEach (s1 => {
-
- // console.log(s1.courseId);
-  //console.log(id);
-
-      if(s1.courseId == id)
-      {
-       this.vms.push(s1);
-      }
-
-    })
-    
-    })
-
-    this.studentservice.getgroups().subscribe(data1 => {console.log(data1)
-      data1.forEach (s1 => {
-  
-        if(s1.courseId == id)
-        {
-         this.groups.push(s1);
-        }
-  
-      })
-      
-      })
-
-  console.log(this.groups);
-  console.log (this.vms);
 
   }
 
