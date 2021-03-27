@@ -135,7 +135,7 @@ public class TeamServiceImpl implements TeamService {
             throw new TeamServiceException("Name " + teamName + " has been already chosen for course " + courseName);
 
         if(!memberIds.contains(creator))
-            throw new TeamServiceException("Creator is not in the list of members");
+            throw new TeamServiceException("Creator " + creator + " is not in the list of members");
 
         Course c = courseRepository.getOne(courseName);
         if(memberIds.size() > c.getMax() || memberIds.size() < c.getMin())
