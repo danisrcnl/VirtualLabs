@@ -68,13 +68,7 @@ public class TeamServiceImpl implements TeamService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public Optional<TeacherDTO> getTeacher(String teacherId) {
-        if(!teacherRepository.existsById(teacherId))
-            return Optional.empty();
-        Teacher t = teacherRepository.getOne(teacherId);
-        return Optional.ofNullable(modelMapper.map(t, TeacherDTO.class));
-    }
+
 
 
 
@@ -90,24 +84,9 @@ public class TeamServiceImpl implements TeamService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public boolean addTeacher(TeacherDTO teacher) {
-        Teacher t = modelMapper.map(teacher, Teacher.class);
-        if(teacherRepository.existsById(teacher.getId()))
-            return false;
-        teacherRepository.save(t);
-        teacherRepository.flush();
-        return true;
-    }
 
-    @Override
-    public List<TeacherDTO> getAllTeachers() {
-        return teacherRepository
-                .findAll()
-                .stream()
-                .map(t -> modelMapper.map(t, TeacherDTO.class))
-                .collect(Collectors.toList());
-    }
+
+
 
     @Override
     public List<TeacherDTO> getTeachersForCourse(String courseName) throws CourseNotFoundException {
@@ -121,18 +100,7 @@ public class TeamServiceImpl implements TeamService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<CourseDTO> getCoursesForTeacher(String teacherId) throws TeacherNotFoundException {
-        if(!teacherRepository.existsById(teacherId))
-            throw new TeacherNotFoundException(teacherId);
 
-        return teacherRepository
-                .getOne(teacherId)
-                .getCourses()
-                .stream()
-                .map(t -> modelMapper.map(t, CourseDTO.class))
-                .collect(Collectors.toList());
-    }
 
 
 

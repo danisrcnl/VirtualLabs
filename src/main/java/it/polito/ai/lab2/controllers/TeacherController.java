@@ -5,6 +5,7 @@ import it.polito.ai.lab2.dtos.CourseDTO;
 import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.dtos.TeacherDTO;
 import it.polito.ai.lab2.services.AiException;
+import it.polito.ai.lab2.services.TeacherService;
 import it.polito.ai.lab2.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,12 +26,12 @@ import java.util.stream.Collectors;
 public class TeacherController {
 
     @Autowired
-    TeamService teamService;
+    TeacherService teacherService;
 
 
     @GetMapping({"", "/"})
     public List<TeacherDTO> all () {
-        return teamService
+        return teacherService
                 .getAllTeachers()
                 .stream()
                 .map(ModelHelper::enrich)
@@ -40,7 +41,7 @@ public class TeacherController {
     //@PreAuthorize("hasRole('USER')")
     @GetMapping("/{id}")
     public TeacherDTO getOne (@PathVariable String id) throws ResponseStatusException {
-        Optional<TeacherDTO> teacher = teamService.getTeacher(id);
+        Optional<TeacherDTO> teacher = teacherService.getTeacher(id);
         if(teacher.isPresent())
             return ModelHelper.enrich(teacher.get());
         else
@@ -51,7 +52,7 @@ public class TeacherController {
     public List<CourseDTO> getTeacherCourses (@PathVariable String id) throws ResponseStatusException {
         List<CourseDTO> teacherCourses;
         try {
-            teacherCourses = teamService.getCoursesForTeacher(id);
+            teacherCourses = teacherService.getCoursesForTeacher(id);
         } catch (AiException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }

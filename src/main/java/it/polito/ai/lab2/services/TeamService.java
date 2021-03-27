@@ -56,21 +56,6 @@ public interface TeamService {
 
 
 
-
-
-    boolean addTeacher (TeacherDTO teacher);
-
-    Optional<TeacherDTO> getTeacher (String teacherId);
-
-    List<TeacherDTO> getAllTeachers ();
-
-    List<CourseDTO> getCoursesForTeacher (String teacherId);
-
-
-
-
-
-
     void activateTeamById (int id);
 
     void activateTeam (String courseName, String teamName);
