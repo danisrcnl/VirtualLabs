@@ -4,7 +4,7 @@ import it.polito.ai.lab2.dtos.AssignmentDTO;
 import it.polito.ai.lab2.dtos.PaperDTO;
 import it.polito.ai.lab2.dtos.PaperStatusTimeDTO;
 import it.polito.ai.lab2.services.AiException;
-import it.polito.ai.lab2.services.AssignmentService;
+import it.polito.ai.lab2.services.assignment.AssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;

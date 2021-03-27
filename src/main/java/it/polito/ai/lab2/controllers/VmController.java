@@ -4,15 +4,13 @@ import it.polito.ai.lab2.dataStructures.VmStatus;
 import it.polito.ai.lab2.dtos.VmDTO;
 import it.polito.ai.lab2.dtos.VmModelDTO;
 import it.polito.ai.lab2.services.AiException;
-import it.polito.ai.lab2.services.TeamService;
-import it.polito.ai.lab2.services.VmService;
+import it.polito.ai.lab2.services.team.TeamService;
+import it.polito.ai.lab2.services.vm.VmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

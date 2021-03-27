@@ -1,6 +1,6 @@
 package it.polito.ai.lab2.entities;
 
-import it.polito.ai.lab2.services.VmServiceException;
+import it.polito.ai.lab2.services.vm.VmServiceException;
 
 public class VmModelNotFoundException extends VmServiceException {
 

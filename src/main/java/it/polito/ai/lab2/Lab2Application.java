@@ -1,13 +1,9 @@
 package it.polito.ai.lab2;
-import it.polito.ai.lab2.dtos.*;
-import it.polito.ai.lab2.entities.Course;
-import it.polito.ai.lab2.entities.Student;
-import it.polito.ai.lab2.entities.Team;
 import it.polito.ai.lab2.repositories.*;
-import it.polito.ai.lab2.services.AssignmentService;
-import it.polito.ai.lab2.services.NotificationService;
-import it.polito.ai.lab2.services.TeamService;
-import it.polito.ai.lab2.services.VmService;
+import it.polito.ai.lab2.services.assignment.AssignmentService;
+import it.polito.ai.lab2.services.notification.NotificationService;
+import it.polito.ai.lab2.services.team.TeamService;
+import it.polito.ai.lab2.services.vm.VmService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -18,11 +14,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 @SpringBootApplication

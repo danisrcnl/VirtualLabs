@@ -1,6 +1,6 @@
 package it.polito.ai.lab2.entities;
 
-import it.polito.ai.lab2.services.AssignmentServiceException;
+import it.polito.ai.lab2.services.assignment.AssignmentServiceException;
 
 public class PaperNotFoundException extends AssignmentServiceException {
 

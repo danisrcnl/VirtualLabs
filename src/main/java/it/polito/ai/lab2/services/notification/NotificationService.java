@@ -1,4 +1,4 @@
-package it.polito.ai.lab2.services;
+package it.polito.ai.lab2.services.notification;
 
 import it.polito.ai.lab2.dataStructures.MemberStatus;
 import it.polito.ai.lab2.dtos.TeamDTO;

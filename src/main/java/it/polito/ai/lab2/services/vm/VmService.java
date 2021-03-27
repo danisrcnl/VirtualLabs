@@ -1,4 +1,4 @@
-package it.polito.ai.lab2.services;
+package it.polito.ai.lab2.services.vm;
 
 import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.dtos.VmDTO;

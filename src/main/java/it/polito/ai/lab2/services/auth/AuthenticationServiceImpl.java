@@ -1,4 +1,4 @@
-package it.polito.ai.lab2.services;
+package it.polito.ai.lab2.services.auth;
 
 import it.polito.ai.lab2.entities.User;
 import it.polito.ai.lab2.entities.UserExistingException;

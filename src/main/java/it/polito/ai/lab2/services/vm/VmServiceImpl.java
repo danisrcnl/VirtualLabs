@@ -1,12 +1,12 @@
-package it.polito.ai.lab2.services;
+package it.polito.ai.lab2.services.vm;
 
 import it.polito.ai.lab2.dataStructures.VmStatus;
 import it.polito.ai.lab2.dtos.StudentDTO;
-import it.polito.ai.lab2.dtos.TeamDTO;
 import it.polito.ai.lab2.dtos.VmDTO;
 import it.polito.ai.lab2.dtos.VmModelDTO;
 import it.polito.ai.lab2.entities.*;
 import it.polito.ai.lab2.repositories.*;
+import it.polito.ai.lab2.services.team.TeamService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

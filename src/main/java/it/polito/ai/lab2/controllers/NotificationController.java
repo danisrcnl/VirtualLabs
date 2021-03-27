@@ -1,6 +1,6 @@
 package it.polito.ai.lab2.controllers;
 
-import it.polito.ai.lab2.services.NotificationService;
+import it.polito.ai.lab2.services.notification.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,11 +1,11 @@
-package it.polito.ai.lab2.services;
+package it.polito.ai.lab2.services.notification;
 import it.polito.ai.lab2.controllers.NotificationController;
 import it.polito.ai.lab2.dataStructures.MemberStatus;
 import it.polito.ai.lab2.dtos.StudentDTO;
-import it.polito.ai.lab2.dtos.TeamDTO;
 import it.polito.ai.lab2.entities.TeamNotFoundException;
 import it.polito.ai.lab2.entities.Token;
 import it.polito.ai.lab2.repositories.TokenRepository;
+import it.polito.ai.lab2.services.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.mail.SimpleMailMessage;

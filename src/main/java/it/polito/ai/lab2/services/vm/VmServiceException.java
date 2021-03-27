@@ -1,4 +1,6 @@
-package it.polito.ai.lab2.services;
+package it.polito.ai.lab2.services.vm;
+
+import it.polito.ai.lab2.services.AiException;
 
 public class VmServiceException extends AiException {
 

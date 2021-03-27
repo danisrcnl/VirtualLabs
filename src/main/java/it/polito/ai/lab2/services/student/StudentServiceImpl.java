@@ -1,11 +1,10 @@
-package it.polito.ai.lab2.services;
+package it.polito.ai.lab2.services.student;
 
 
 import it.polito.ai.lab2.dtos.CourseDTO;
 import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.dtos.TeamDTO;
 import it.polito.ai.lab2.dtos.VmDTO;
-import it.polito.ai.lab2.entities.CourseNotFoundException;
 import it.polito.ai.lab2.entities.Student;
 import it.polito.ai.lab2.entities.StudentNotFoundException;
 import it.polito.ai.lab2.repositories.StudentRepository;

@@ -3,15 +3,12 @@ package it.polito.ai.lab2.controllers;
 import it.polito.ai.lab2.dtos.CourseDTO;
 import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.dtos.TeamDTO;
-import it.polito.ai.lab2.entities.Course;
 import it.polito.ai.lab2.services.AiException;
-import it.polito.ai.lab2.services.CourseService;
-import it.polito.ai.lab2.services.StudentService;
-import it.polito.ai.lab2.services.TeamService;
+import it.polito.ai.lab2.services.course.CourseService;
+import it.polito.ai.lab2.services.student.StudentService;
+import it.polito.ai.lab2.services.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 

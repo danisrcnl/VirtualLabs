@@ -1,23 +1,20 @@
-package it.polito.ai.lab2.services;
+package it.polito.ai.lab2.services.team;
 
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
 import it.polito.ai.lab2.dtos.*;
 import it.polito.ai.lab2.entities.*;
 import it.polito.ai.lab2.repositories.CourseRepository;
 import it.polito.ai.lab2.repositories.StudentRepository;
 import it.polito.ai.lab2.repositories.TeacherRepository;
 import it.polito.ai.lab2.repositories.TeamRepository;
+import it.polito.ai.lab2.services.course.CourseService;
+import it.polito.ai.lab2.services.student.StudentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
