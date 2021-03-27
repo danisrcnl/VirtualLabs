@@ -12,6 +12,6 @@ import java.util.List;
 public interface VmRepository extends JpaRepository<Vm, Long> {
 
     @Query("SELECT v FROM Vm v WHERE v.team.course.name=:courseName")
-    List<VmDTO> getVmsForCourse(String courseName);
+    List<Vm> getVmsForCourse(String courseName);
 
 }

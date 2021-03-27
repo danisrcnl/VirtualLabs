@@ -90,7 +90,10 @@ public class VmServiceImpl implements VmService {
         if(!courseRepository.existsById(courseName))
             throw new CourseNotFoundException(courseName);
         return vmRepository
-                .getVmsForCourse(courseName);
+                .getVmsForCourse(courseName)
+                .stream()
+                .map(v -> modelMapper.map(v, VmDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
