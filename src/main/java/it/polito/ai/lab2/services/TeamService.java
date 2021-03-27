@@ -32,6 +32,25 @@ public interface TeamService {
 
     List<Boolean> addAndEnroll (Reader r, String courseName);
 
+    List<StudentDTO> getEnrolledStudents (String courseName);
+
+    List<TeacherDTO> getTeachersForCourse (String courseName);
+
+    void setMinForCourse (int value, String courseName);
+
+    void setMaxForCourse (int value, String courseName);
+
+    List<TeamDTO> getStudentTeamInCourse (String id, String courseName);
+
+    List<StudentDTO> getStudentsInTeams (String courseName);
+
+    List<StudentDTO> getAvailableStudents (String courseName);
+
+    List<TeamDTO> getTeamForCourse (String courseName);
+
+
+
+
     /* studente */
 
     boolean addStudent (StudentDTO student);
@@ -40,9 +59,18 @@ public interface TeamService {
 
     List<StudentDTO> getAllStudents ();
 
-    List<StudentDTO> getEnrolledStudents (String courseName);
+    List<CourseDTO> getCoursesForStudent (String studentId);
 
-    /* docente */
+    List<Boolean> addAll (List<StudentDTO> students);
+
+    List<TeamDTO> getTeamsForStudent (String studentId);
+
+    Boolean hasAlreadyATeamFor (String studentId, String courseName);
+
+    List<VmDTO> getVmsForStudent (String studentId);
+
+
+
 
     boolean addTeacher (TeacherDTO teacher);
 
@@ -50,14 +78,12 @@ public interface TeamService {
 
     List<TeacherDTO> getAllTeachers ();
 
-    List<TeacherDTO> getTeachersForCourse (String courseName);
-
     List<CourseDTO> getCoursesForTeacher (String teacherId);
 
-    List<CourseDTO> getCoursesForStudent (String studentId);
 
 
-    List<Boolean> addAll (List<StudentDTO> students);
+
+
 
     void activateTeamById (int id);
 
@@ -67,39 +93,17 @@ public interface TeamService {
 
     void evictTeam (String courseName, String teamName);
 
-    List<CourseDTO> getTeacherCourses (String teacherId);
-
-    void setMinForCourse (int value, String courseName);
-
-    void setMaxForCourse (int value, String courseName);
-
-    /* studente */
-
     TeamDTO getTeam (String courseName, String teamName);
 
     TeamDTO getTeamById (int id);
-
-    List<CourseDTO> getCourses (String studentId);
-
-    List<TeamDTO> getTeamsForStudent (String studentId);
 
     List<StudentDTO> getMembersById (int id);
 
     List<StudentDTO> getMembers (String courseName, String teamName);
 
-    Boolean hasAlreadyATeamFor (String studentId, String courseName);
-
     TeamDTO proposeTeam (String courseName, String teamName, List<String> memberIds);
 
     int getTeamId (String courseName, String teamName);
-
-    List<TeamDTO> getTeamForCourse (String courseName);
-
-    List<TeamDTO> getStudentTeamInCourse (String id, String courseName);
-
-    List<StudentDTO> getStudentsInTeams (String courseName);
-
-    List<StudentDTO> getAvailableStudents (String courseName);
 
     int getUsedNVCpuForTeam (String courseName, String teamName);
 
@@ -107,11 +111,11 @@ public interface TeamService {
 
     int getUsedRamForTeam (String courseName, String teamName);
 
-    List<VmDTO> getVmsForStudent (String studentId);
-
     List<VmDTO> getVmsForTeam (String courseName, String teamName);
 
     List<VmDTO> getVmsForTeamById (int id);
+
+
 
     UnknownUserDTO getDetailsFromUsername (String username);
 }

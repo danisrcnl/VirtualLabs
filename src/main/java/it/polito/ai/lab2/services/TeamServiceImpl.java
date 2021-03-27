@@ -330,7 +330,7 @@ public class TeamServiceImpl implements TeamService {
         teamRepository.delete(t);
         teamRepository.flush();
     }
-
+/*
     @Override
     public List<CourseDTO> getTeacherCourses(String teacherId) throws TeacherNotFoundException {
         if(!teacherRepository.existsById(teacherId))
@@ -343,7 +343,7 @@ public class TeamServiceImpl implements TeamService {
                 .map(c -> modelMapper.map(c, CourseDTO.class))
                 .collect(Collectors.toList());
     }
-
+*/
     @Override
     public void setMinForCourse(int value, String courseName) throws CourseNotFoundException {
         if(!courseRepository.existsById(courseName))
@@ -381,7 +381,7 @@ public class TeamServiceImpl implements TeamService {
                 TeamDTO.class
         );
     }
-
+/*
     @Override
     public List<CourseDTO> getCourses(String studentId) throws StudentNotFoundException {
         if(!studentRepository.existsById(studentId))
@@ -394,7 +394,7 @@ public class TeamServiceImpl implements TeamService {
                 .map(c -> modelMapper.map(c, CourseDTO.class))
                 .collect(Collectors.toList());
     }
-
+*/
     @Override
     public List<TeamDTO> getTeamsForStudent(String studentId) throws StudentNotFoundException {
         if(!studentRepository.existsById(studentId))
