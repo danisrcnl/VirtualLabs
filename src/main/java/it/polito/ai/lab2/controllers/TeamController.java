@@ -89,11 +89,12 @@ public class TeamController {
     @PostMapping("/{courseName}/add")
     public TeamDTO addTeam(@PathVariable String courseName, @RequestBody TeamRequest teamRequest) throws ResponseStatusException {
         String teamName = teamRequest.getTeamName();
+        String creator = teamRequest.getCreator();
         List<String> memberIds = teamRequest.getMemberIds();
         int hours = teamRequest.getHours();
 
         try {
-            teamService.proposeTeam(courseName, teamName, memberIds);
+            teamService.proposeTeam(courseName, teamName, memberIds, creator);
         } catch (AiException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }

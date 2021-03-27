@@ -122,7 +122,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public TeamDTO proposeTeam(String courseName, String teamName, List<String> memberIds)
+    public TeamDTO proposeTeam(String courseName, String teamName, List<String> memberIds, String creator)
         throws TeamServiceException {
 
         Team team;
@@ -134,6 +134,9 @@ public class TeamServiceImpl implements TeamService {
         if(teamRepository.getTeamByCourseAndName(courseName, teamName) != null)
             throw new TeamServiceException("Name " + teamName + " has been already chosen for course " + courseName);
 
+        if(!memberIds.contains(creator))
+            throw new TeamServiceException("Creator is not in the list of members");
+
         Course c = courseRepository.getOne(courseName);
         if(memberIds.size() > c.getMax() || memberIds.size() < c.getMin())
             throw new TeamServiceException("Be sure team is into the chosen min/max range");
@@ -141,6 +144,7 @@ public class TeamServiceImpl implements TeamService {
         team = Team.builder()
                 .name(teamName)
                 .members(members)
+                .creator(creator)
                 .build();
         team.setCourse(c);
 

@@ -24,6 +24,8 @@ public class Team {
 
     private int status;
 
+    private String creator;
+
     @ManyToOne
     @JoinColumn(name="course_id")
     private Course course;

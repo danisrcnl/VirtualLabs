@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class TeamRequest {
     private String teamName;
+    private String creator;
     private List<String> memberIds;
     private int hours;
 }
