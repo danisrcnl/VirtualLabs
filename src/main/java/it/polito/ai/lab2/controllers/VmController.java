@@ -25,6 +25,16 @@ public class VmController {
     @Autowired
     TeamService teamService;
 
+    @PostMapping("/{courseName}/{teamName}")
+    public Long add (@PathVariable String courseName, @PathVariable String teamName, @RequestBody VmDTO vmDTO) throws ResponseStatusException {
+        try {
+            return vmService
+                    .addVmToTeam(vmDTO, courseName, teamName);
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+        }
+    }
+
     @GetMapping("/courses/{courseName}")
     public List<VmDTO> getVmsForCourse (@PathVariable String courseName) throws ResponseStatusException {
         try {
