@@ -3,7 +3,9 @@ package it.polito.ai.lab2.controllers;
 import it.polito.ai.lab2.dtos.CourseDTO;
 import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.dtos.TeamDTO;
+import it.polito.ai.lab2.entities.Course;
 import it.polito.ai.lab2.services.AiException;
+import it.polito.ai.lab2.services.CourseService;
 import it.polito.ai.lab2.services.StudentService;
 import it.polito.ai.lab2.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class StudentController {
 
     @Autowired
     TeamService teamService;
+
+    @Autowired
+    CourseService courseService;
 
     @Autowired
     StudentService studentService;
@@ -87,7 +92,7 @@ public class StudentController {
     public List<TeamDTO> getStudentTeamForCourse (@PathVariable String id, @PathVariable String courseName) throws ResponseStatusException {
         List<TeamDTO> studentTeams;
         try {
-            studentTeams = teamService.getStudentTeamInCourse(id, courseName);
+            studentTeams = courseService.getStudentTeamInCourse(id, courseName);
         } catch (AiException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }

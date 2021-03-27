@@ -6,6 +6,7 @@ import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.dtos.TeacherDTO;
 import it.polito.ai.lab2.entities.CourseNotFoundException;
 import it.polito.ai.lab2.services.AiException;
+import it.polito.ai.lab2.services.CourseService;
 import it.polito.ai.lab2.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,11 +27,11 @@ import java.util.stream.Collectors;
 public class CourseController {
 
     @Autowired
-    TeamService teamService;
+    CourseService courseService;
 
     @GetMapping({"", "/"})
     public List<CourseDTO> all() {
-        return teamService
+        return courseService
                 .getAllCourses()
                 .stream()
                 .map(ModelHelper::enrich)
@@ -39,7 +40,7 @@ public class CourseController {
 
     @GetMapping("/{name}")
     public CourseDTO getOne (@PathVariable String name) throws ResponseStatusException {
-        Optional<CourseDTO> course = teamService.getCourse(name);
+        Optional<CourseDTO> course = courseService.getCourse(name);
         if(course.isPresent())
             return ModelHelper.enrich(course.get());
         else
@@ -50,7 +51,7 @@ public class CourseController {
     public List<StudentDTO> enrolledStudents (@PathVariable String name) throws ResponseStatusException {
         List<StudentDTO> enrolled;
         try {
-            enrolled = teamService.getEnrolledStudents(name);
+            enrolled = courseService.getEnrolledStudents(name);
         } catch(AiException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
@@ -63,9 +64,9 @@ public class CourseController {
     @PostMapping({"", "/"})
     public CourseDTO addCourse (@RequestBody CourseWithTeacher courseWithTeacher)
             throws ResponseStatusException {
-        if(teamService.addCourse(courseWithTeacher.getCourseDTO())) {
+        if(courseService.addCourse(courseWithTeacher.getCourseDTO())) {
             try {
-                teamService.addTeacherToCourse(courseWithTeacher.getTeacherId(), courseWithTeacher.getCourseDTO().getName());
+                courseService.addTeacherToCourse(courseWithTeacher.getTeacherId(), courseWithTeacher.getCourseDTO().getName());
             } catch (AiException e) {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
             }
@@ -79,11 +80,11 @@ public class CourseController {
     public List<TeacherDTO> addTeacherToCourse (@PathVariable String courseName, @PathVariable String teacherId)
             throws ResponseStatusException {
         try {
-            teamService.addTeacherToCourse(teacherId, courseName);
+            courseService.addTeacherToCourse(teacherId, courseName);
         } catch (AiException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
-        return teamService
+        return courseService
                 .getTeachersForCourse(courseName)
                 .stream()
                 .map(ModelHelper :: enrich)
@@ -93,10 +94,10 @@ public class CourseController {
     @PostMapping({"/{name}/enrollOne"})
     public List<StudentDTO> enrollOne (@PathVariable String name, @RequestBody StudentDTO studentDTO)
             throws ResponseStatusException {
-        Optional<CourseDTO> course = teamService.getCourse(name);
+        Optional<CourseDTO> course = courseService.getCourse(name);
         if(!course.isPresent())
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Course " + name + " doesn't exist");
-        if(!teamService.addStudentToCourse(studentDTO.getId(), name))
+        if(!courseService.addStudentToCourse(studentDTO.getId(), name))
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Couldn't enroll student");
         return enrolledStudents(name);
     }
@@ -108,37 +109,37 @@ public class CourseController {
             throw new UnsupportedMediaTypeStatusException(multipartFile.getContentType());
         try {
             Reader reader = new BufferedReader(new InputStreamReader(multipartFile.getInputStream()));
-            teamService.addAndEnroll(reader, name);
+            courseService.addAndEnroll(reader, name);
         } catch(Exception e) {
             System.out.println("Exception generated in reader block");
         }
         return enrolledStudents(name);
     }
-
+/*
     @PostMapping("/{name}/editName")
     public CourseDTO editName (@PathVariable String name, @RequestBody String newName) throws ResponseStatusException {
         try {
-            teamService.editCourseName(name, newName);
+            courseService.editCourseName(name, newName);
         } catch (AiException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
-        return ModelHelper.enrich(teamService.getCourse(newName).get());
+        return ModelHelper.enrich(courseService.getCourse(newName).get());
     }
-
+*/
     @GetMapping("/{courseName}/delete")
     public List<CourseDTO> delete (@PathVariable String courseName) throws ResponseStatusException {
         try {
-            teamService.deleteCourse(courseName);
+            courseService.deleteCourse(courseName);
         } catch (AiException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
 
-        return teamService.getAllCourses();
+        return courseService.getAllCourses();
     }
 
     @GetMapping("/{courseName}/getAvailableStudents")
     public List<StudentDTO> getAvailableStudents (@PathVariable String courseName) {
-        return teamService
+        return courseService
                 .getAvailableStudents(courseName)
                 .stream()
                 .map(ModelHelper :: enrich)
@@ -149,13 +150,13 @@ public class CourseController {
     public CourseDTO setMin (@PathVariable String courseName, @PathVariable int value) throws ResponseStatusException {
 
         try {
-            teamService.setMinForCourse(value, courseName);
+            courseService.setMinForCourse(value, courseName);
         } catch (AiException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
 
         return ModelHelper.enrich(
-            teamService
+            courseService
             .getCourse(courseName)
             .get()
         );
@@ -165,13 +166,13 @@ public class CourseController {
     public CourseDTO setMax (@PathVariable String courseName, @PathVariable int value) throws ResponseStatusException {
 
         try {
-            teamService.setMaxForCourse(value, courseName);
+            courseService.setMaxForCourse(value, courseName);
         } catch (AiException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
 
         return ModelHelper.enrich(
-                teamService
+                courseService
                         .getCourse(courseName)
                         .get()
         );
@@ -185,15 +186,15 @@ public class CourseController {
 
         try {
             if(value)
-                teamService.enableCourse(courseName);
+                courseService.enableCourse(courseName);
             else
-                teamService.disableCourse(courseName);
+                courseService.disableCourse(courseName);
         } catch (AiException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
 
         return ModelHelper.enrich(
-                teamService
+                courseService
                         .getCourse(courseName)
                         .get()
         );

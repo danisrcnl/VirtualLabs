@@ -31,6 +31,9 @@ public class TeamServiceImpl implements TeamService {
     StudentService studentService;
 
     @Autowired
+    CourseService courseService;
+
+    @Autowired
     StudentRepository studentRepository;
 
     @Autowired
@@ -42,190 +45,6 @@ public class TeamServiceImpl implements TeamService {
     @Autowired
     ModelMapper modelMapper;
 
-
-    @Override
-    public boolean addCourse(CourseDTO course) {
-        Course c = modelMapper.map(course, Course.class);
-        if(courseRepository.existsById(course.getName()))
-            return false;
-        courseRepository.save(c);
-        courseRepository.flush();
-        return true;
-    }
-
-    @Override
-    public Optional<CourseDTO> getCourse(String name) {
-        Course c = courseRepository.getOne(name);
-        return Optional.ofNullable(modelMapper.map(c, CourseDTO.class));
-    }
-
-    @Override
-    public List<CourseDTO> getAllCourses() {
-        return courseRepository
-                .findAll()
-                .stream()
-                .map(c -> modelMapper.map(c, CourseDTO.class))
-                .collect(Collectors.toList());
-    }
-
-
-
-
-
-    @Override
-    public List<StudentDTO> getEnrolledStudents(String courseName) throws CourseNotFoundException {
-        if(!courseRepository.existsById(courseName))
-            throw new CourseNotFoundException(courseName);
-        return courseRepository
-                .getOne(courseName)
-                .getStudents()
-                .stream()
-                .map(s -> modelMapper.map(s, StudentDTO.class))
-                .collect(Collectors.toList());
-    }
-
-
-
-
-
-    @Override
-    public List<TeacherDTO> getTeachersForCourse(String courseName) throws CourseNotFoundException {
-        if(!courseRepository.existsById(courseName))
-            throw new CourseNotFoundException(courseName);
-        return courseRepository
-                .getOne(courseName)
-                .getTeachers()
-                .stream()
-                .map(t -> modelMapper.map(t, TeacherDTO.class))
-                .collect(Collectors.toList());
-    }
-
-
-
-
-
-    @Override
-    public boolean addStudentToCourse(String studentId, String courseName) throws CourseNotFoundException, StudentNotFoundException {
-        if(!courseRepository.existsById(courseName))
-            throw new CourseNotFoundException(courseName);
-        if(!studentRepository.existsById(studentId))
-            throw new StudentNotFoundException(studentId);
-
-        List<Student> students = courseRepository
-                .getOne(courseName)
-                .getStudents();
-
-        for (Student student : students) {
-            if (student.getId().equals(studentId))
-                return false;
-        }
-
-        courseRepository
-                .getOne(courseName)
-                .addStudent(studentRepository.getOne(studentId));
-
-        return true;
-    }
-
-    @Override
-    public boolean addTeacherToCourse(String teacherId, String courseName) throws CourseNotFoundException, TeacherNotFoundException {
-
-        if(!courseRepository.existsById(courseName))
-            throw new CourseNotFoundException(courseName);
-        if(!teacherRepository.existsById(teacherId))
-            throw new TeacherNotFoundException(teacherId);
-
-        List<Teacher> teachers = courseRepository
-                .getOne(courseName)
-                .getTeachers();
-
-        for(Teacher teacher : teachers) {
-            if(teacher.getId().equals(teacherId))
-                return false;
-        }
-
-        courseRepository
-                .getOne(courseName)
-                .addTeacher(teacherRepository.getOne(teacherId));
-
-        return true;
-
-    }
-
-    @Override
-    public void enableCourse(String courseName) throws CourseNotFoundException {
-        if(!courseRepository.existsById(courseName))
-            throw new CourseNotFoundException(courseName);
-
-        courseRepository
-                .getOne(courseName)
-                .setEnabled(true);
-    }
-
-    @Override
-    public void disableCourse(String courseName) throws CourseNotFoundException {
-        if(!courseRepository.existsById(courseName))
-            throw new CourseNotFoundException(courseName);
-
-        courseRepository
-                .getOne(courseName)
-                .setEnabled(false);
-    }
-
-    @Override
-    public void deleteCourse(String courseName) throws CourseNotFoundException {
-        if(!courseRepository.existsById(courseName))
-            throw new CourseNotFoundException(courseName);
-
-        Course c = courseRepository.getOne(courseName);
-        c.removeRelations();
-        courseRepository.delete(c);
-        courseRepository.flush();
-    }
-
-    @Override
-    public void editCourseName(String courseName, String newName) throws CourseNotFoundException {
-
-        if(!courseRepository.existsById(courseName))
-            throw new CourseNotFoundException(courseName);
-
-        courseRepository
-                .getOne(courseName)
-                .setName(newName);
-    }
-
-
-
-    @Override
-    public List<Boolean> enrollAll(List<String> studentIds, String courseName) throws CourseNotFoundException, StudentNotFoundException {
-        List<Boolean> successes = new ArrayList<Boolean>();
-        if(!courseRepository.existsById(courseName))
-            throw new CourseNotFoundException(courseName);
-        for (String studentId : studentIds) {
-            try {
-                successes.add(addStudentToCourse(studentId, courseName));
-            } catch (StudentNotFoundException e) {
-                successes.add(false);
-            }
-        }
-        return successes;
-    }
-
-    public List<Boolean> addAndEnroll(Reader r, String courseName) {
-        CsvToBean<StudentDTO> csvToBean = new CsvToBeanBuilder(r)
-                .withType(StudentDTO.class)
-                .withIgnoreLeadingWhiteSpace(true)
-                .build();
-
-        List<StudentDTO> students = csvToBean.parse();
-        studentService.addAll(students);
-
-        List<String> Ids = new ArrayList<String>();
-
-        for (StudentDTO student : students) Ids.add(student.getId());
-
-        return enrollAll(Ids, courseName);
-    }
 
     @Override
     public void activateTeamById(int id) throws TeamNotFoundException {
@@ -262,39 +81,6 @@ public class TeamServiceImpl implements TeamService {
         teamRepository.delete(t);
         teamRepository.flush();
     }
-/*
-    @Override
-    public List<CourseDTO> getTeacherCourses(String teacherId) throws TeacherNotFoundException {
-        if(!teacherRepository.existsById(teacherId))
-            throw new TeacherNotFoundException(teacherId);
-
-        return teacherRepository
-                .getOne(teacherId)
-                .getCourses()
-                .stream()
-                .map(c -> modelMapper.map(c, CourseDTO.class))
-                .collect(Collectors.toList());
-    }
-*/
-    @Override
-    public void setMinForCourse(int value, String courseName) throws CourseNotFoundException {
-        if(!courseRepository.existsById(courseName))
-            throw new CourseNotFoundException(courseName);
-
-        courseRepository
-                .getOne(courseName)
-                .setMin(value);
-    }
-
-    @Override
-    public void setMaxForCourse(int value, String courseName) throws CourseNotFoundException {
-        if(!courseRepository.existsById(courseName))
-            throw new CourseNotFoundException(courseName);
-
-        courseRepository
-                .getOne(courseName)
-                .setMax(value);
-    }
 
     @Override
     public TeamDTO getTeam(String courseName, String teamName) throws CourseNotFoundException, TeamNotFoundException {
@@ -313,21 +99,6 @@ public class TeamServiceImpl implements TeamService {
                 TeamDTO.class
         );
     }
-/*
-    @Override
-    public List<CourseDTO> getCourses(String studentId) throws StudentNotFoundException {
-        if(!studentRepository.existsById(studentId))
-            throw new StudentNotFoundException(studentId);
-
-        return studentRepository
-                .getOne(studentId)
-                .getCourses()
-                .stream()
-                .map(c -> modelMapper.map(c, CourseDTO.class))
-                .collect(Collectors.toList());
-    }
-*/
-
 
     @Override
     public List<StudentDTO> getMembersById(int id) throws TeamNotFoundException {
@@ -353,8 +124,6 @@ public class TeamServiceImpl implements TeamService {
                 .collect(Collectors.toList());
     }
 
-
-
     @Override
     public TeamDTO proposeTeam(String courseName, String teamName, List<String> memberIds)
         throws TeamServiceException {
@@ -378,7 +147,7 @@ public class TeamServiceImpl implements TeamService {
                 .build();
         team.setCourse(c);
 
-        List<String> availableIds = getAvailableStudents(courseName)
+        List<String> availableIds = courseService.getAvailableStudents(courseName)
                 .stream()
                 .map(StudentDTO::getId)
                 .collect(Collectors.toList());
@@ -389,7 +158,7 @@ public class TeamServiceImpl implements TeamService {
         }
 
         for(String memberId : memberIds) {
-            if(hasAlreadyATeamFor(memberId, courseName))
+            if(courseService.hasAlreadyATeamFor(memberId, courseName))
                 throw new TeamServiceException("Student " + " has already a team for course " + courseName);
             team.addMember(studentRepository.getOne(memberId));
         }
@@ -398,61 +167,6 @@ public class TeamServiceImpl implements TeamService {
 
 
         return modelMapper.map(t, TeamDTO.class);
-    }
-
-    @Override
-    public List<TeamDTO> getTeamForCourse(String courseName) throws CourseNotFoundException {
-        if(!courseRepository.existsById(courseName))
-            throw new CourseNotFoundException(courseName);
-
-        return courseRepository
-                .getOne(courseName)
-                .getTeams()
-                .stream()
-                .map(t -> modelMapper.map(t, TeamDTO.class))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<TeamDTO> getStudentTeamInCourse(String id, String courseName) throws CourseNotFoundException, StudentNotFoundException {
-
-        if(!courseRepository.existsById(courseName))
-            throw new CourseNotFoundException(courseName);
-
-        if(!studentRepository.existsById(id))
-            throw new StudentNotFoundException(id);
-
-        return studentRepository
-                .getOne(id)
-                .getTeams()
-                .stream()
-                .filter(t -> t.getCourse().getName().equals(courseName))
-                .map(t -> modelMapper.map(t, TeamDTO.class))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<StudentDTO> getStudentsInTeams(String courseName) throws CourseNotFoundException {
-        if(!courseRepository.existsById(courseName))
-            throw new CourseNotFoundException(courseName);
-
-        return courseRepository
-                .getStudentsInTeams(courseName)
-                .stream()
-                .map(s -> modelMapper.map(s, StudentDTO.class))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<StudentDTO> getAvailableStudents(String courseName) throws CourseNotFoundException {
-        if(!courseRepository.existsById(courseName))
-            throw new CourseNotFoundException(courseName);
-
-        return courseRepository
-                .getStudentsNotInTeams(courseName)
-                .stream()
-                .map(s -> modelMapper.map(s, StudentDTO.class))
-                .collect(Collectors.toList());
     }
 
     @Override
@@ -494,21 +208,7 @@ public class TeamServiceImpl implements TeamService {
                 .reduce(0, Integer :: sum);
     }
 
-    @Override
-    public Boolean hasAlreadyATeamFor(String studentId, String courseName) throws StudentNotFoundException, CourseNotFoundException {
-        if(!studentRepository.existsById(studentId))
-            throw new StudentNotFoundException(studentId);
-        if(!courseRepository.existsById(courseName))
-            throw new CourseNotFoundException(courseName);
-        List<String> ids = this
-                .getStudentsInTeams(courseName)
-                .stream()
-                .map(StudentDTO :: getId)
-                .collect(Collectors.toList());
-        if(ids.contains(studentId))
-            return true;
-        return false;
-    }
+
 
     @Override
     public List<VmDTO> getVmsForTeam(String courseName, String teamName) throws TeamNotFoundException {
@@ -534,11 +234,6 @@ public class TeamServiceImpl implements TeamService {
                 .stream()
                 .map(vm -> modelMapper.map(vm, VmDTO.class))
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public UnknownUserDTO getDetailsFromUsername(String username) {
-        return null;
     }
 
     @Override

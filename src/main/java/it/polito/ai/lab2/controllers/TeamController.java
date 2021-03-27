@@ -6,6 +6,7 @@ import it.polito.ai.lab2.dataStructures.UsedResources;
 import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.dtos.TeamDTO;
 import it.polito.ai.lab2.services.AiException;
+import it.polito.ai.lab2.services.CourseService;
 import it.polito.ai.lab2.services.NotificationService;
 import it.polito.ai.lab2.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,12 @@ public class TeamController {
     @Autowired
     NotificationService notificationService;
 
+    @Autowired
+    CourseService courseService;
+
     @GetMapping("/course/{courseName}")
     public List<TeamDTO> all (@PathVariable String courseName) {
-        return teamService
+        return courseService
                 .getTeamForCourse(courseName)
                 .stream()
                 .map(ModelHelper :: enrich)

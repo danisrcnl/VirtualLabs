@@ -8,54 +8,6 @@ import java.util.Optional;
 
 public interface TeamService {
 
-    /* corso */
-
-    boolean addCourse (CourseDTO course);
-
-    Optional<CourseDTO> getCourse (String name);
-
-    List<CourseDTO> getAllCourses ();
-
-    boolean addStudentToCourse (String studentId, String courseName);
-
-    boolean addTeacherToCourse (String teacherId, String courseName);
-
-    void enableCourse (String courseName);
-
-    void disableCourse (String courseName);
-
-    void deleteCourse (String courseName);
-
-    void editCourseName (String courseName, String newName);
-
-    List<Boolean> enrollAll (List<String> studentIds, String courseName);
-
-    List<Boolean> addAndEnroll (Reader r, String courseName);
-
-    List<StudentDTO> getEnrolledStudents (String courseName);
-
-    List<TeacherDTO> getTeachersForCourse (String courseName);
-
-    void setMinForCourse (int value, String courseName);
-
-    void setMaxForCourse (int value, String courseName);
-
-    List<TeamDTO> getStudentTeamInCourse (String id, String courseName);
-
-    List<StudentDTO> getStudentsInTeams (String courseName);
-
-    List<StudentDTO> getAvailableStudents (String courseName);
-
-    List<TeamDTO> getTeamForCourse (String courseName);
-
-    Boolean hasAlreadyATeamFor (String studentId, String courseName);
-
-
-
-
-
-
-
     void activateTeamById (int id);
 
     void activateTeam (String courseName, String teamName);
@@ -85,8 +37,4 @@ public interface TeamService {
     List<VmDTO> getVmsForTeam (String courseName, String teamName);
 
     List<VmDTO> getVmsForTeamById (int id);
-
-
-
-    UnknownUserDTO getDetailsFromUsername (String username);
 }
