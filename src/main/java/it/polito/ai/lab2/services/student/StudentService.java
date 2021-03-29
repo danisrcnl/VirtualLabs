@@ -23,4 +23,6 @@ public interface StudentService {
     List<TeamDTO> getTeamsForStudent (String studentId);
 
     List<VmDTO> getVmsForStudent (String studentId);
+
+    void linkToUser (String studentId, String userId);
 }

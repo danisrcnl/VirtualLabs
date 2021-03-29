@@ -16,4 +16,6 @@ public interface TeacherService {
 
     List<CourseDTO> getCoursesForTeacher (String teacherId);
 
+    void linkToUser (String teacherId, String userId);
+
 }

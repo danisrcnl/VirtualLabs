@@ -5,9 +5,9 @@ import it.polito.ai.lab2.dtos.CourseDTO;
 import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.dtos.TeamDTO;
 import it.polito.ai.lab2.dtos.VmDTO;
-import it.polito.ai.lab2.entities.Student;
-import it.polito.ai.lab2.entities.StudentNotFoundException;
+import it.polito.ai.lab2.entities.*;
 import it.polito.ai.lab2.repositories.StudentRepository;
+import it.polito.ai.lab2.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +27,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     StudentRepository studentRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Override
     public boolean addStudent(StudentDTO student) {
@@ -96,6 +99,21 @@ public class StudentServiceImpl implements StudentService {
                 .stream()
                 .map(vm -> modelMapper.map(vm, VmDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void linkToUser(String studentId, String userId) throws StudentNotFoundException, UserNotFoundException {
+        if(!studentRepository.existsById(studentId))
+            throw new StudentNotFoundException(studentId);
+        if(!userRepository.findByUsername(userId).isPresent())
+            throw new UserNotFoundException(userId);
+        User u = userRepository.findByUsername(userId).get();
+        Student s = studentRepository.getOne(studentId);
+        s.setUser(u);
+        u.setTeacher(null);
+        u.setStudent(s);
+        userRepository.flush();
+        studentRepository.flush();
     }
 
 }

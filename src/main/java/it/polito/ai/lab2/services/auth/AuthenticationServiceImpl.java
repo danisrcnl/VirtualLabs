@@ -2,11 +2,13 @@ package it.polito.ai.lab2.services.auth;
 
 import it.polito.ai.lab2.entities.User;
 import it.polito.ai.lab2.entities.UserExistingException;
+import it.polito.ai.lab2.entities.UserNotFoundException;
 import it.polito.ai.lab2.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -23,5 +25,13 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         u.setUsername(username);
         u.setPassword(password);
         userRepository.save(u);
+    }
+
+    @Override
+    public void deleteUser(String username) throws UserNotFoundException {
+        Optional<User> u = userRepository.findByUsername(username);
+        if(!u.isPresent())
+            throw new UserNotFoundException(username);
+        userRepository.delete(u.get());
     }
 }

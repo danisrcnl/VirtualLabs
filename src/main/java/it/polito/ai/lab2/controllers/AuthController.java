@@ -3,12 +3,14 @@ package it.polito.ai.lab2.controllers;
 
 import it.polito.ai.lab2.dataStructures.SignUpRequest;
 import it.polito.ai.lab2.dtos.StudentDTO;
+import it.polito.ai.lab2.dtos.TeacherDTO;
 import it.polito.ai.lab2.repositories.UserRepository;
 import it.polito.ai.lab2.security.AuthenticationRequest;
 import it.polito.ai.lab2.security.JwtTokenProvider;
 import it.polito.ai.lab2.services.AiException;
 import it.polito.ai.lab2.services.auth.AuthenticationService;
 import it.polito.ai.lab2.services.student.StudentService;
+import it.polito.ai.lab2.services.teacher.TeacherService;
 import it.polito.ai.lab2.services.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,6 +53,9 @@ public class AuthController {
     StudentService studentService;
 
     @Autowired
+    TeacherService teacherService;
+
+    @Autowired
     PasswordEncoder passwordEncoder;
 
     @PostMapping("/signin")
@@ -82,16 +87,40 @@ public class AuthController {
         } catch (AiException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
-        StudentDTO studentDTO = StudentDTO
-                .builder()
-                .name(signUpRequest.getLastName())
-                .firstName(signUpRequest.getFirstName())
-                .email(signUpRequest.getEmail())
-                .photoPath("")
-                .id(signUpRequest.getId())
-                .build();
+        if (signUpRequest.getEmail().charAt(0) == 's') {
+            StudentDTO studentDTO = StudentDTO
+                    .builder()
+                    .name(signUpRequest.getLastName())
+                    .firstName(signUpRequest.getFirstName())
+                    .email(signUpRequest.getEmail())
+                    .photoPath("")
+                    .id(signUpRequest.getId())
+                    .build();
+            try {
+                studentService.addStudent(studentDTO);
+            } catch (AiException e) {
+                authenticationService.deleteUser(signUpRequest.getEmail());
+                throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+            }
+            studentService.linkToUser(signUpRequest.getId(), signUpRequest.getEmail());
+        } else if (signUpRequest.getEmail().charAt(0) == 'd') {
+            TeacherDTO teacherDTO = TeacherDTO
+                    .builder()
+                    .name(signUpRequest.getLastName())
+                    .firstName(signUpRequest.getFirstName())
+                    .email(signUpRequest.getEmail())
+                    .photoPath("")
+                    .id(signUpRequest.getId())
+                    .build();
 
-        studentService.addStudent(studentDTO);
+            try {
+                teacherService.addTeacher(teacherDTO);
+            } catch (AiException e) {
+                authenticationService.deleteUser(signUpRequest.getEmail());
+                throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+            }
+            teacherService.linkToUser(signUpRequest.getId(), signUpRequest.getEmail());
+        }
     }
 
     private Boolean regEx (String email, String id) {
