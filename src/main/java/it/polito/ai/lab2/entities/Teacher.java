@@ -35,6 +35,10 @@ public class Teacher {
         courses = new ArrayList<>();
     }
 
+    @OneToOne(mappedBy = "teacher")
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public int addCourse (Course course) {
         courses.add(course);
         course.getTeachers().add(this);

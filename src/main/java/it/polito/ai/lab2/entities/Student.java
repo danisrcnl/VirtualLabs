@@ -59,6 +59,10 @@ public class Student {
         vms = new ArrayList<>();
     }
 
+    @OneToOne(mappedBy = "student")
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public int addVm(Vm vm) {
         vms.add(vm);
         vm.getOwners().add(this);
