@@ -6,10 +6,12 @@ import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.repositories.UserRepository;
 import it.polito.ai.lab2.security.AuthenticationRequest;
 import it.polito.ai.lab2.security.JwtTokenProvider;
+import it.polito.ai.lab2.services.AiException;
 import it.polito.ai.lab2.services.auth.AuthenticationService;
 import it.polito.ai.lab2.services.student.StudentService;
 import it.polito.ai.lab2.services.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +20,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -71,8 +74,14 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public void signup(@RequestBody SignUpRequest signUpRequest) {
-        authenticationService.addUser(signUpRequest.getEmail(), passwordEncoder.encode(signUpRequest.getPassword()));
+    public void signup(@RequestBody SignUpRequest signUpRequest) throws ResponseStatusException {
+        if (!regEx(signUpRequest.getEmail(), signUpRequest.getId()))
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Provided email has not the desired format");
+        try {
+            authenticationService.addUser(signUpRequest.getEmail(), passwordEncoder.encode(signUpRequest.getPassword()));
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+        }
         StudentDTO studentDTO = StudentDTO
                 .builder()
                 .name(signUpRequest.getLastName())
@@ -83,5 +92,28 @@ public class AuthController {
                 .build();
 
         studentService.addStudent(studentDTO);
+    }
+
+    private Boolean regEx (String email, String id) {
+        Boolean isTeacher = false;
+        if (email.charAt(0) != 's' && email.charAt(0) != 'd')
+            return false;
+        if (email.charAt(0) == 'd')
+            isTeacher = true;
+        String[] strings = email.split("@");
+        if (strings.length != 2)
+            return false;
+        String encodedId = "";
+        for (int i = 1; i < strings[0].length(); i++)
+            encodedId += strings[0].charAt(i);
+        if(encodedId.length() != 6)
+            return false;
+        if (!id.equals(encodedId))
+            return false;
+        if (!(strings[1].equals("polito.it") || strings[1].equals("studenti.polito.it")))
+            return false;
+        if(isTeacher && strings[1].equals("studenti.polito.it"))
+            return false;
+        return true;
     }
 }
