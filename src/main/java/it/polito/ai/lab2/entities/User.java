@@ -33,7 +33,6 @@ public class User implements UserDetails {
     @NotEmpty
     private String password;
 
-    @NotEmpty
     private Boolean active;
 
     @ElementCollection(fetch = FetchType.EAGER)
