@@ -21,7 +21,11 @@ public class Token {
 
     private String studentId;
 
+    private Long userId;
+
     private int teamId;
 
     private Timestamp expiryDate;
+
+    private Boolean isTeam;
 }

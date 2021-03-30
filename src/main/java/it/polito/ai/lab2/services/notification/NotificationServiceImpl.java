@@ -4,7 +4,10 @@ import it.polito.ai.lab2.dataStructures.MemberStatus;
 import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.entities.TeamNotFoundException;
 import it.polito.ai.lab2.entities.Token;
+import it.polito.ai.lab2.entities.User;
+import it.polito.ai.lab2.entities.UserNotFoundException;
 import it.polito.ai.lab2.repositories.TokenRepository;
+import it.polito.ai.lab2.repositories.UserRepository;
 import it.polito.ai.lab2.services.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
@@ -32,6 +35,8 @@ public class NotificationServiceImpl implements NotificationService {
     TeamService teamService;
     @Autowired
     TokenRepository tokenRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @Override
     public void sendMessage(String address, String subject, String body) {
@@ -53,8 +58,6 @@ public class NotificationServiceImpl implements NotificationService {
         Token t = tokenRepository.getOne(token);
         int teamId = t.getTeamId();
         List<Token> liveTokens = tokenRepository.findAllByExpiryBefore(Timestamp.valueOf(localDateTime));
-        System.out.println(liveTokens);
-        System.out.println(Timestamp.valueOf(localDateTime));
 
         if(!liveTokens.contains(t)) {
             List<Token> teamTokens = tokenRepository.findAllByTeamId(teamId);
@@ -91,13 +94,14 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void notifyTeam(String courseName, String teamName, List<String> memberIds, int hours) {
+    public void notifyTeam (String courseName, String teamName, List<String> memberIds, int hours) {
 
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris")).plusHours(hours);
 
         Token t = Token.builder()
                 .teamId(teamService.getTeamId(courseName, teamName))
                 .expiryDate(Timestamp.valueOf(localDateTime))
+                .isTeam(true)
                 .build();
 
         for(String memberId : memberIds) {
@@ -115,8 +119,56 @@ public class NotificationServiceImpl implements NotificationService {
                     + confirmLink + System.lineSeparator() + "Clicca qui per rifiutare l'invito:" +
                     System.lineSeparator() + rejectLink;
             String receiver = "s" + memberId + "@studenti.polito.it";
-            sendMessage(receiver, "Sei stato invitato a far parte di un team!", message);
+            String subject = "[VirtualLabs] Sei stato invitato a far parte di un team!";
+            sendMessage(receiver, subject, message);
         }
+    }
+
+    @Override
+    public void notifyUser (Long userId) throws UserNotFoundException {
+
+        if(!userRepository.existsById(userId))
+            throw new UserNotFoundException(userId.toString());
+        User u = userRepository.getOne(userId);
+
+        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris")).plusHours(24);
+
+        String id = UUID.randomUUID().toString();
+        Token t = Token.builder()
+                .id(id)
+                .userId(userId)
+                .expiryDate(Timestamp.valueOf(localDateTime))
+                .isTeam(false)
+                .build();
+        tokenRepository.save(t);
+        tokenRepository.flush();
+
+        Link rootLink = linkTo(NotificationController.class).withSelfRel();
+        String confirmLink = rootLink.getHref() + "/register/confirm/" + id;
+        String message = "Ciao " + u.getUsername() + "! Grazie per esserti iscritto, trovi qui sotto il link " +
+                " per confermare la tua iscrizione:" + System.lineSeparator() + confirmLink + System.lineSeparator() +
+                System.lineSeparator() + "Se non sei stato tu a effettuare questa operazione, ti invitiamo ad ignorare la mail.";
+        String receiver = u.getUsername();
+        String subject = "[VirtualLabs] Conferma registrazione";
+        sendMessage(receiver, subject, message);
+    }
+
+    @Override
+    public boolean confirmUser(String token) throws UserNotFoundException {
+        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris"));
+
+        if(!tokenRepository.existsById(token))
+            return false;
+
+        Token t = tokenRepository.getOne(token);
+        List<Token> liveTokens = tokenRepository.findAllByExpiryBefore(Timestamp.valueOf(localDateTime));
+        if(!liveTokens.contains(t))
+            return false;
+        Long userId = t.getUserId();
+        if(!userRepository.existsById(userId))
+            throw new UserNotFoundException(userId.toString());
+        userRepository.getOne(userId).setActive(true);
+        return true;
     }
 
     @Override

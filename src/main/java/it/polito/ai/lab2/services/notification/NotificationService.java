@@ -7,9 +7,11 @@ import java.util.List;
 
 public interface NotificationService {
 
-    void sendMessage(String address, String subject, String body);
-    boolean confirm(String token);
-    boolean reject(String token);
-    void notifyTeam(String courseName, String teamName, List<String> memberIds, int hours);
-    List<MemberStatus> getMembersStatus(int teamId);
+    void sendMessage (String address, String subject, String body);
+    boolean confirm (String token);
+    boolean reject (String token);
+    void notifyTeam (String courseName, String teamName, List<String> memberIds, int hours);
+    void notifyUser (Long userId);
+    boolean confirmUser (String token);
+    List<MemberStatus> getMembersStatus (int teamId);
 }
