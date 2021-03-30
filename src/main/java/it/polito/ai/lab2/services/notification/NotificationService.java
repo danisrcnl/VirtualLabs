@@ -11,7 +11,7 @@ public interface NotificationService {
     boolean confirm (String token);
     boolean reject (String token);
     void notifyTeam (String courseName, String teamName, List<String> memberIds, int hours);
-    void notifyUser (Long userId);
+    void notifyUser (String email);
     boolean confirmUser (String token);
     List<MemberStatus> getMembersStatus (int teamId);
 }

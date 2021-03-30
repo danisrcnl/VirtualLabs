@@ -22,6 +22,13 @@ public class NotificationController {
         else return "redirect:/notification/confirmation/failure";
     }
 
+    @GetMapping("/register/confirm/{tokenId}")
+    public String confirmSignUp (@PathVariable String tokenId) {
+        if(notificationService.confirmUser(tokenId))
+            return "redirect:/notification/confirmation/success";
+        else return "redirect:/notification/confirmation/success";
+    }
+
     @GetMapping("/reject/{tokenId}")
     public String reject(@PathVariable String tokenId) {
         if(notificationService.reject(tokenId))

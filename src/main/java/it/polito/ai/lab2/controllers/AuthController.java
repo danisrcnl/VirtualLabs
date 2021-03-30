@@ -9,6 +9,7 @@ import it.polito.ai.lab2.security.AuthenticationRequest;
 import it.polito.ai.lab2.security.JwtTokenProvider;
 import it.polito.ai.lab2.services.AiException;
 import it.polito.ai.lab2.services.auth.AuthenticationService;
+import it.polito.ai.lab2.services.notification.NotificationService;
 import it.polito.ai.lab2.services.student.StudentService;
 import it.polito.ai.lab2.services.teacher.TeacherService;
 import it.polito.ai.lab2.services.team.TeamService;
@@ -57,6 +58,9 @@ public class AuthController {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    NotificationService notificationService;
 
     @PostMapping("/signin")
     public ResponseEntity signin(@RequestBody AuthenticationRequest data) {
@@ -121,6 +125,7 @@ public class AuthController {
             }
             teacherService.linkToUser(signUpRequest.getId(), signUpRequest.getEmail());
         }
+        notificationService.notifyUser(signUpRequest.getEmail());
     }
 
     private Boolean regEx (String email, String id) {

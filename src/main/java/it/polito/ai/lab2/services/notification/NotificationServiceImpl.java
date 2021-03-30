@@ -125,11 +125,12 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void notifyUser (Long userId) throws UserNotFoundException {
+    public void notifyUser (String email) throws UserNotFoundException {
 
-        if(!userRepository.existsById(userId))
-            throw new UserNotFoundException(userId.toString());
-        User u = userRepository.getOne(userId);
+        if(!userRepository.findByUsername(email).isPresent())
+            throw new UserNotFoundException(email);
+        User u = userRepository.findByUsername(email).get();
+        Long userId = u.getId();
 
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris")).plusHours(24);
 
