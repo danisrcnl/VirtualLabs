@@ -43,8 +43,13 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Optional<StudentDTO> getStudent(String studentId) {
-        Student s = studentRepository.getOne(studentId);
-        return Optional.ofNullable(modelMapper.map(s, StudentDTO.class));
+        if(studentRepository.existsById(studentId))
+            return Optional.ofNullable(
+                    modelMapper
+                            .map(studentRepository
+                                    .getOne(studentId), StudentDTO.class));
+        else
+            return Optional.empty();
     }
 
     @Override

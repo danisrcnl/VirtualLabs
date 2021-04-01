@@ -53,6 +53,8 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Optional<CourseDTO> getCourse(String name) {
+        if(!courseRepository.existsById(name))
+            return Optional.empty();
         Course c = courseRepository.getOne(name);
         return Optional.ofNullable(modelMapper.map(c, CourseDTO.class));
     }
