@@ -25,6 +25,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -109,6 +110,7 @@ public class AuthController {
                 }
             }
             studentService.linkToUser(signUpRequest.getId(), signUpRequest.getEmail());
+            authenticationService.setPrivileges(signUpRequest.getEmail(), Arrays.asList("ROLE_STUDENT"));
         } else if (signUpRequest.getEmail().charAt(0) == 'd') {
             TeacherDTO teacherDTO = TeacherDTO
                     .builder()
@@ -126,6 +128,7 @@ public class AuthController {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
             }
             teacherService.linkToUser(signUpRequest.getId(), signUpRequest.getEmail());
+            authenticationService.setPrivileges(signUpRequest.getEmail(), Arrays.asList("ROLE_TEACHER"));
         }
         notificationService.notifyUser(signUpRequest.getEmail());
     }
