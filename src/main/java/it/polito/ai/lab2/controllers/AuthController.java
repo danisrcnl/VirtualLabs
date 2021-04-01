@@ -92,19 +92,21 @@ public class AuthController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
         if (signUpRequest.getEmail().charAt(0) == 's') {
-            StudentDTO studentDTO = StudentDTO
-                    .builder()
-                    .name(signUpRequest.getLastName())
-                    .firstName(signUpRequest.getFirstName())
-                    .email(signUpRequest.getEmail())
-                    .photoPath("")
-                    .id(signUpRequest.getId())
-                    .build();
-            try {
-                studentService.addStudent(studentDTO);
-            } catch (AiException e) {
-                authenticationService.deleteUser(signUpRequest.getEmail());
-                throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+            if (!studentService.getStudent(signUpRequest.getId()).isPresent()) {
+                StudentDTO studentDTO = StudentDTO
+                        .builder()
+                        .name(signUpRequest.getLastName())
+                        .firstName(signUpRequest.getFirstName())
+                        .email(signUpRequest.getEmail())
+                        .photoPath("")
+                        .id(signUpRequest.getId())
+                        .build();
+                try {
+                    studentService.addStudent(studentDTO);
+                } catch (AiException e) {
+                    authenticationService.deleteUser(signUpRequest.getEmail());
+                    throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+                }
             }
             studentService.linkToUser(signUpRequest.getId(), signUpRequest.getEmail());
         } else if (signUpRequest.getEmail().charAt(0) == 'd') {
