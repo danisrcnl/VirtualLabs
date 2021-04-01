@@ -5,6 +5,7 @@ import it.polito.ai.lab2.services.team.TeamServiceException;
 public class UserExistingException extends TeamServiceException {
 
     public UserExistingException (String username) {
-        System.out.println("User " + username + " already existing");
+        this.setErrorMessage("User " + username + " already exists");
+        System.out.println(this.getErrorMessage());
     }
 }
