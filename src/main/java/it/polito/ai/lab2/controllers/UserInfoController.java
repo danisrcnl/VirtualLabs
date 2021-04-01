@@ -19,12 +19,20 @@ public class UserInfoController {
     @GetMapping("/me")
     public ResponseEntity currentUser(@AuthenticationPrincipal UserDetails userDetails){
         HashMap<Object, Object> model = new HashMap<>();
+        Boolean isTeacher = false;
         model.put("username", userDetails.getUsername());
         model.put("roles", userDetails.getAuthorities()
                 .stream()
                 .map(a -> ((GrantedAuthority) a).getAuthority())
                 .collect(toList())
         );
+        if(userDetails.getAuthorities()
+                .stream()
+                .map(a -> ((GrantedAuthority) a).getAuthority())
+                .collect(toList())
+                .contains("ROLE_TEACHER"))
+            isTeacher = true;
+        model.put("isTeacher", isTeacher);
         return ok(model);
     }
 }
