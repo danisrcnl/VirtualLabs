@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Transactional
@@ -34,5 +35,13 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         if(!u.isPresent())
             throw new UserNotFoundException(username);
         userRepository.delete(u.get());
+    }
+
+    @Override
+    public void setPrivileges(String username, List<String> roles) throws UserNotFoundException {
+        Optional<User> u = userRepository.findByUsername(username);
+        if(!u.isPresent())
+            throw new UserNotFoundException(username);
+        u.get().setRoles(roles);
     }
 }
