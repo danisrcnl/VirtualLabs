@@ -14,6 +14,7 @@ export class LoginDialogComponent implements OnInit {
     loading = false;
     submitted = false;
     returnUrl: string;
+    isTeacher : boolean;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -56,15 +57,33 @@ export class LoginDialogComponent implements OnInit {
             return;
         }
 
+      
+
         this.loading = true;
         this.authService.login(this.f.username.value, this.f.password.value)
             .pipe(first())
             .subscribe(
                 data => {
-                    console.log(this.returnUrl);
+
+                     this.authService.info().pipe(first()).subscribe(
+                    
+                    
+                    data => {this.isTeacher = data.isTeacher;
+
+                         if (this.isTeacher == false)
                     this.router.navigate([this.returnUrl + 'student'], {queryParams: {user: this.f.username.value}});
+                    else
+                    this.router.navigate([this.returnUrl + 'teacher'], {queryParams: {user: this.f.username.value}});
                     console.log(this.returnUrl);
                     this.matDialog.closeAll();
+       },
+                 error => {
+                    this.loading = false;
+       }
+       );
+                    console.log(this.returnUrl);
+                    
+                   
                 },
                 error => {
                     this.alertService.error(error);

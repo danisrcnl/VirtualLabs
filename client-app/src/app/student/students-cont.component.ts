@@ -84,7 +84,7 @@ export class StudentsContComponent implements OnInit {
     //prendo l'username dell'user loggato 
 
     this.authService.currentUser.subscribe (x => this.currentUser = x);
-    this.studentId = this.currentUser.username.split("@")[0];
+    this.studentId = this.currentUser.username.split("@")[0].substring(1,7);
     
     this.activeRoute.paramMap.subscribe(params => {
 

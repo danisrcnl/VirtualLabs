@@ -42,9 +42,16 @@ export class AuthService {
         
     }
     
-    signup(id,firstName,lastName,email,password) {
+    signup(firstName,lastName,id,email,password) {
 
         return this.http.post<any>(`${config.apiUrl}/auth/signup`, {id,firstName,lastName,email,password});
+    }
+
+
+    info() {
+
+    return this.http.get<any>(`${config.apiUrl}/me`)
+
     }
 
 
