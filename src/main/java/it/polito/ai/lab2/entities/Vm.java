@@ -41,6 +41,12 @@ public class Vm {
     @JoinColumn(name="team")
     private Team team;
 
+    public void removeRelations () {
+        for (Student s : owners)
+          s.getVms().remove(this);
+        team.getVms().remove(this);
+    }
+
     public int addOwner(Student student) {
         owners.add(student);
         student.getVms().add(this);

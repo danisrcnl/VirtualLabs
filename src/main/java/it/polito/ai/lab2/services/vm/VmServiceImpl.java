@@ -127,6 +127,9 @@ public class VmServiceImpl implements VmService {
     public void deleteVm(Long id) throws VmNotFoundException {
         if(!vmRepository.existsById(id))
             throw new VmNotFoundException(id.toString());
+        vmRepository
+                .getOne(id)
+                .removeRelations();
         vmRepository.deleteById(id);
         vmRepository.flush();
     }
