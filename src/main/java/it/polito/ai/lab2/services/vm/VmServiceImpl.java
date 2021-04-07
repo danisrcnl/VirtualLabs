@@ -42,7 +42,7 @@ public class VmServiceImpl implements VmService {
     TeamService teamService;
 
     @Override
-    public Long addVmToTeam(VmDTO vm, String courseName, String teamName) throws TeamNotFoundException, VmServiceException {
+    public Long addVmToTeam(VmDTO vm, String courseName, String teamName, String creator) throws TeamNotFoundException, VmServiceException {
 
         if(teamRepository.getTeamByCourseAndName(courseName, teamName) == null)
             throw new TeamNotFoundException(teamName);
@@ -62,9 +62,15 @@ public class VmServiceImpl implements VmService {
                 teamRepository.getTeamByCourseAndName(courseName, teamName).getCourse().getVmModel().getMaxRam())
             throw new VmServiceException("You exceeded ram space limit");
 
+        if(!studentRepository.existsById(creator))
+            throw new StudentNotFoundException("Creator has an invalid identifier (" + creator + ")");
+
+
+        Student creator_entity = studentRepository.getOne(creator);
 
         Vm v = modelMapper.map(vm, Vm.class);
         v.setTeam(teamRepository.getTeamByCourseAndName(courseName, teamName));
+        v.setCreator(creator_entity);
         vmRepository.save(v);
         vmRepository.flush();
         return v.getId();

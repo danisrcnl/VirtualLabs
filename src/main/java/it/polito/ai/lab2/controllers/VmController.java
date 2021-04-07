@@ -1,6 +1,7 @@
 package it.polito.ai.lab2.controllers;
 
 import it.polito.ai.lab2.dataStructures.VmStatus;
+import it.polito.ai.lab2.dataStructures.VmSubmission;
 import it.polito.ai.lab2.dtos.VmDTO;
 import it.polito.ai.lab2.dtos.VmModelDTO;
 import it.polito.ai.lab2.services.AiException;
@@ -26,10 +27,10 @@ public class VmController {
     TeamService teamService;
 
     @PostMapping("/{courseName}/{teamName}")
-    public Long add (@PathVariable String courseName, @PathVariable String teamName, @RequestBody VmDTO vmDTO) throws ResponseStatusException {
+    public Long add (@PathVariable String courseName, @PathVariable String teamName, @RequestBody VmSubmission vmSubmission) throws ResponseStatusException {
         try {
             return vmService
-                    .addVmToTeam(vmDTO, courseName, teamName);
+                    .addVmToTeam(vmSubmission.getVmDTO(), courseName, teamName, vmSubmission.getCreator());
         } catch (AiException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
