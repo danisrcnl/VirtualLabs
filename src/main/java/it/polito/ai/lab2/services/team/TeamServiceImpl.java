@@ -144,7 +144,6 @@ public class TeamServiceImpl implements TeamService {
         team = Team.builder()
                 .name(teamName)
                 .members(members)
-                .creator(creator)
                 .build();
         team.setCourse(c);
 
@@ -163,6 +162,9 @@ public class TeamServiceImpl implements TeamService {
                 throw new TeamServiceException("Student " + " has already a team for course " + courseName);
             team.addMember(studentRepository.getOne(memberId));
         }
+
+        Student creator_entity = studentRepository.getOne(creator);
+        team.setCreator(creator_entity);
 
         Team t = teamRepository.save(team);
 
