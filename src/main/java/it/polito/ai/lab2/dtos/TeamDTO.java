@@ -15,5 +15,4 @@ public class TeamDTO  extends RepresentationModel<TeamDTO> {
     private int id;
     private String name;
     private int status;
-    private String creator;
 }
