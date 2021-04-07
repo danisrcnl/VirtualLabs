@@ -47,6 +47,18 @@ public class Student {
         papers = new ArrayList<>();
     }
 
+    @OneToMany(mappedBy = "vm_creator")
+    private List<Vm> createdVms;
+    {
+        createdVms = new ArrayList<>();
+    }
+
+    @OneToMany(mappedBy = "team_creator")
+    private List<Vm> createdTeams;
+    {
+        createdTeams = new ArrayList<>();
+    }
+
     public int addCourse (Course course) {
         courses.add(course);
         course.getStudents().add(this);

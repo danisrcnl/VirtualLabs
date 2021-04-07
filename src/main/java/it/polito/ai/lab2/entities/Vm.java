@@ -41,10 +41,15 @@ public class Vm {
     @JoinColumn(name="team")
     private Team team;
 
+    @ManyToOne
+    @JoinColumn(name="vm_creator")
+    private Student creator;
+
     public void removeRelations () {
         for (Student s : owners)
           s.getVms().remove(this);
         team.getVms().remove(this);
+        creator.getCreatedVms().remove(this);
     }
 
     public int addOwner(Student student) {

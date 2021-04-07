@@ -24,8 +24,6 @@ public class Team {
 
     private int status;
 
-    private String creator;
-
     @ManyToOne
     @JoinColumn(name="course_id")
     private Course course;
@@ -43,6 +41,10 @@ public class Team {
     {
         vms = new ArrayList<>();
     }
+
+    @ManyToOne
+    @JoinColumn(name="team_creator")
+    private Student creator;
 
     public void setCourse(Course course) {
         if(this.course == null){
