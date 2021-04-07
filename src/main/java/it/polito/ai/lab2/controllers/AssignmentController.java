@@ -7,10 +7,7 @@ import it.polito.ai.lab2.services.AiException;
 import it.polito.ai.lab2.services.assignment.AssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -31,6 +28,19 @@ public class AssignmentController {
                 .stream()
                 .map(ModelHelper :: enrich)
                 .collect(Collectors.toList());
+    }
+
+    @PostMapping("/{courseName}")
+    public void addAssignmentToCourse (@PathVariable String courseName, @RequestBody AssignmentDTO assignmentDTO) throws ResponseStatusException {
+
+        Long id = assignmentService.addAssignment(assignmentDTO);
+
+        try {
+            assignmentService.addAssignmentToCourse(id, courseName);
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+        }
+
     }
 
     @GetMapping("/{id}")
