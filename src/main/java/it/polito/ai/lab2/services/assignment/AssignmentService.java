@@ -12,6 +12,8 @@ public interface AssignmentService {
 
     Long addAssignment (AssignmentDTO assignment);
 
+    Boolean addAssignmentToCourse (Long assignmentId, String courseName);
+
     Optional<AssignmentDTO> getAssignment (Long id);
 
     List<AssignmentDTO> getAllAssignments ();

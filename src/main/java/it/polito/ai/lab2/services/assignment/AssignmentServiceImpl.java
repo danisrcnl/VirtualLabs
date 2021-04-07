@@ -52,6 +52,25 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
+    public Boolean addAssignmentToCourse(Long assignmentId, String courseName) {
+
+        if (!courseRepository.existsById(courseName))
+            return false;
+        if (!assignmentRepository.existsById(assignmentId))
+            return false;
+
+        courseRepository
+                .getOne(courseName)
+                .addAssignment(
+                        assignmentRepository
+                        .getOne(assignmentId)
+                );
+
+        return true;
+
+    }
+
+    @Override
     public Optional<AssignmentDTO> getAssignment(Long id) {
         Assignment a = assignmentRepository.getOne(id);
         return Optional.ofNullable(modelMapper.map(a, AssignmentDTO.class));
