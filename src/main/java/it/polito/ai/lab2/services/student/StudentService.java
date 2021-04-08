@@ -4,6 +4,7 @@ import it.polito.ai.lab2.dtos.CourseDTO;
 import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.dtos.TeamDTO;
 import it.polito.ai.lab2.dtos.VmDTO;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +15,7 @@ public interface StudentService {
 
     Optional<StudentDTO> getStudent (String studentId);
 
+    // @PreAuthorize("hasRole('ROLE_TEACHER')")
     List<StudentDTO> getAllStudents ();
 
     List<CourseDTO> getCoursesForStudent (String studentId);
