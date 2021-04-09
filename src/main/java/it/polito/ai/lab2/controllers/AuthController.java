@@ -153,6 +153,8 @@ public class AuthController {
             return false;
         if(isTeacher && strings[1].equals("studenti.polito.it"))
             return false;
+        if(!isTeacher && strings[1].equals("polito.it"))
+            return false;
         return true;
     }
 }
