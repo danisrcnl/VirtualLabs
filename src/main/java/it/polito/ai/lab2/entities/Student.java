@@ -47,13 +47,13 @@ public class Student {
         papers = new ArrayList<>();
     }
 
-    @OneToMany(mappedBy = "vm_creator")
+    @OneToMany(mappedBy = "creator")
     private List<Vm> createdVms;
     {
         createdVms = new ArrayList<>();
     }
 
-    @OneToMany(mappedBy = "team_creator")
+    @OneToMany(mappedBy = "creator")
     private List<Vm> createdTeams;
     {
         createdTeams = new ArrayList<>();
