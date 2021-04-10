@@ -27,7 +27,8 @@ export class AuthService {
                     console.log("dentro");
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('currentUser', JSON.stringify(user));
-                this.currentUserSubject.next(user); 
+                console.log(localStorage);
+                this.currentUserSubject.next(user);
             }
                 return user;
             }));
@@ -39,9 +40,9 @@ export class AuthService {
         localStorage.removeItem('currentUser');
         console.log(this.currentUser);
         this.currentUserSubject.next(null);
-        
+
     }
-    
+
     signup(firstName,lastName,id,email,password) {
 
         return this.http.post<any>(`${config.apiUrl}/auth/signup`, {id,firstName,lastName,email,password});
@@ -50,11 +51,10 @@ export class AuthService {
 
     info() {
 
-    return this.http.get<any>(`${config.apiUrl}/me`)
+    return this.http.get<any>(`${config.apiUrl}/me`);
 
     }
 
 
-    
+
 }
-    

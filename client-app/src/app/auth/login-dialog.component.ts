@@ -6,6 +6,7 @@ import { AuthService } from './authservices/auth.service';
 import { AlertService } from './authservices/alert.service';
 import { MatDialog } from '@angular/material/dialog';
 import { RegisterComponent } from './register/register.component';
+import { JwtInterceptor } from './interceptor/jwt.interceptor';
 
 @Component({ templateUrl: 'login-dialog.component.html' ,
 styleUrls: ['login-dialog.component.css']})
@@ -14,15 +15,17 @@ export class LoginDialogComponent implements OnInit {
     loading = false;
     submitted = false;
     returnUrl: string;
-    isTeacher : boolean;
-
+    isTeacher: boolean;
+    username : String;
+    data1 : any;
+    jwt : JwtInterceptor;
     constructor(
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
         private authService: AuthService,
         private alertService: AlertService,
-        private matDialog : MatDialog
+        private matDialog: MatDialog
     ) {
         // redirect to home if already logged in
         if (this.authService.currentUserValue) {
@@ -37,7 +40,7 @@ export class LoginDialogComponent implements OnInit {
         });
 
         // get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+        this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
         console.log(this.returnUrl);
     }
 
@@ -45,51 +48,63 @@ export class LoginDialogComponent implements OnInit {
     get f() { return this.loginForm.controls; }
 
     onSubmit() {
-        this.submitted = true;
+      this.submitted = true;
 
-        // reset alerts on submit
-        this.alertService.clear();
+      // reset alerts on submit
+      this.alertService.clear();
 
-        // stop here if form is invalid
-        if (this.loginForm.invalid) {
+      // stop here if form is invalid
+      if (this.loginForm.invalid) {
 
-            console.log("Login invalid");
-            return;
+        console.log('Login invalid');
+        return;
+      }
+
+      var dummy = Promise.resolve();
+      this.loading = true;
+
+
+
+      this.authService.login(this.f.username.value, this.f.password.value).subscribe
+      (
+        data => { console.log(data);
+        this.authService.info().subscribe(
+          data1 => {
+            this.isTeacher= data1.isTeacher;
+            if (this.isTeacher == false)
+        {
+          this.router.navigate([this.returnUrl + 'student'], {queryParams: {user: this.f.username.value}});
+          this.matDialog.closeAll();
         }
-
+        else 
+         this.router.navigate([this.returnUrl + 'teacher'], {queryParams: {user: this.f.username.value}});
+         this.matDialog.closeAll();
+      }
+        )}
+        )
+        
       
 
-        this.loading = true;
-        this.authService.login(this.f.username.value, this.f.password.value)
-            .pipe(first())
-            .subscribe(
-                data => {
 
-                     this.authService.info().pipe(first()).subscribe(
-                    
-                    
-                    data => {this.isTeacher = data.isTeacher;
+     /* this.authService.login(this.f.username.value, this.f.password.value).toPromise()
+      .then( data => console.log (data)).then( ()=> this.authService.info().toPromise()
+      .then(data => { this.isTeacher = data.isTeacher;
+       
+        if (this.isTeacher == false)
+        {
+          this.router.navigate([this.returnUrl + 'student'], {queryParams: {user: this.f.username.value}});
+          this.matDialog.closeAll();
+        }
+        else 
+         this.router.navigate([this.returnUrl + 'teacher'], {queryParams: {user: this.f.username.value}});
+         this.matDialog.closeAll();
+      }
+      )).catch(error => console.log('errore'));
+      
 
-                         if (this.isTeacher == false)
-                    this.router.navigate([this.returnUrl + 'student'], {queryParams: {user: this.f.username.value}});
-                    else
-                    this.router.navigate([this.returnUrl + 'teacher'], {queryParams: {user: this.f.username.value}});
-                    console.log(this.returnUrl);
-                    this.matDialog.closeAll();
-       },
-                 error => {
-                    this.loading = false;
-       }
-       );
-                    console.log(this.returnUrl);
-                    
-                   
-                },
-                error => {
-                    this.alertService.error(error);
-                    this.loading = false;
-                });
-    }
+    */
+  
+     }
 
     openregister() {
 

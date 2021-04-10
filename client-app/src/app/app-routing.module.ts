@@ -65,7 +65,7 @@ component : HomeComponentComponent
       { path: "students", component: StudentsContComponent}
     
     ]}]}],
-     runGuardsAndResolvers: 'always'
+     //runGuardsAndResolvers: 'always'
    
 
 },

@@ -57,11 +57,13 @@ export class RegisterComponent implements OnInit {
 
         this.loading = true;
         this.authService.signup(this.f.nome.value,this.f.cognome.value,this.f.matricola.value,this.f.email.value,this.f.password.value)
-            .pipe(first())
+
             .subscribe(
                 data => {
+                    console.log(data);
                     this.alertService.success('Registration successful', true);
-                    this.router.navigate(['/login']);
+                    this.matDialog.closeAll();
+                    this.router.navigate(['/auth/login']);
                 },
                 error => {
                     this.alertService.error(error);
