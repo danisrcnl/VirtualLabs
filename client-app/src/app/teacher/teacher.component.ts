@@ -49,7 +49,7 @@ export class TeacherComponent implements OnInit {
     @Input('studenti') 
     studenti : Student [];
     
-    displayedColumns: string[] = ['select','id','name','firstname','serial','group'];
+    displayedColumns: string[] = ['select','id','name','firstname'];
     selection = new SelectionModel<Student>(true, []);
     mycontrol = new FormControl();
     filteredOptions : Observable<Student[]>;

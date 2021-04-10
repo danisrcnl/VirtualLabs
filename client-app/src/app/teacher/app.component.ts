@@ -63,6 +63,7 @@ this.authService.currentUser.subscribe (x => this.currentUser = x);
 
         this.courses.push(c);
       })
+
 for (let i=0 ;i< this.courses.length; i++)
     {
       
@@ -74,6 +75,8 @@ for (let i=0 ;i< this.courses.length; i++)
       })
 
     }
+
+    
     })
 
     
