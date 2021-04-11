@@ -5,7 +5,7 @@
   <label for="cars">Quale corso vuoi modificare?</label>
   <select formControlName ="selcourse" [(ngModel)]="selectedcourse">
   
-    <option *ngFor = "let course of courses" [ngValue] = "course" >
+    <option *ngFor = "let course of courses$ | async" [ngValue] = "course" >
       {{course.name}}
     </option>
       
@@ -19,6 +19,10 @@
     <mat-form-field>
       <input matInput placeholder="Min studenti" formControlName="minstud" [(ngModel)]="minstud">
     </mat-form-field>
+<div mat-dialog-actions>
+  
+</div>
+
   </div>
 
 
@@ -36,20 +40,20 @@
 
     <label for="cars">Crea corso : </label>
     <mat-form-field>
-      <input matInput placeholder="Inserisci Nome" formControlName = "coursename" [(ngModel)]="coursename">
+      <input matInput placeholder="Inserisci Nome" formControlName = "coursename" [(ngModel)]="data.coursename">
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="Max studenti" formControlName="maxstud2" [(ngModel)]="maxstud2">
+      <input matInput placeholder="Max studenti" formControlName="maxstud2" [(ngModel)]="data.maxstud">
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="Min studenti" formControlName="minstud2" [(ngModel)]="minstud2">
+      <input matInput placeholder="Min studenti" formControlName="minstud2" [(ngModel)]="data.minstud">
     </mat-form-field>
-  <input type="checkbox" id="enabled2" name="enabled2" formControlName="enabled2" [(ngModel)]="enabled2">
+  <input type="checkbox" id="enabled2" name="enabled2" formControlName="enabled2" [(ngModel)]="data.enabled">
   <label for="enabled2">Enabled</label>
     <mat-form-field>
-      <input matInput placeholder="Acronimo" formControlName="acronym" [(ngModel)]="acronym">
+      <input matInput placeholder="Acronimo" formControlName="acronym" [(ngModel)]="data.acronym">
     </mat-form-field>
-
+<button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
     <button (click) = "createcourse()"> Crea </button>
   </div>
   </form>

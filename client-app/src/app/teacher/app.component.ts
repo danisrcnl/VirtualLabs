@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Routes } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -16,6 +16,13 @@ import { StudentsContComponent } from '../student/students-cont.component';
 import { VmsContcomponentComponent2 } from '../student/vms-contcomponent.component';
 import { SubjectdialogComponent } from './subjectdialog/subjectdialog.component';
 
+export interface DialogData {
+  acronym : string;
+  maxstud : number;
+  minstud : number;
+  coursename :string;
+  enabled : boolean;
+}
 
   @Component({
     selector: 'app-root-teacher',
@@ -30,8 +37,14 @@ export class AppComponentTeacher implements OnInit {
   temp : string;
   idteacher : String;
   currentUser : User;
+
+  acronym : string;
+  maxstud : number;
+  minstud : number;
+  coursename :string;
   
-constructor (public dialog:MatDialog,private authService: AuthService,private teacherService : TeacherService ,private courseService: CourseService, private sidenavService: SidenavService) {
+constructor (public dialog:MatDialog,private authService: AuthService,private teacherService : TeacherService ,private courseService: CourseService, private sidenavService: SidenavService,
+   public dialogRef : MatDialogRef<SubjectdialogComponent>, @Inject(MAT_DIALOG_DATA) public data : DialogData) {
 
 this.authService.currentUser.subscribe (x => this.currentUser = x);
 
@@ -97,8 +110,21 @@ for (let i=0 ;i< this.courses.length; i++)
 
 
    openmodDialog() {
-     this.dialog.open (SubjectdialogComponent);
+     const dialogRef = this.dialog.open (SubjectdialogComponent, {
+    data : {acronym : this.acronym, maxstud : this.maxstud, minstud : this.minstud, coursename : this.coursename}
+        
+     });
+
+
+dialogRef.afterClosed().subscribe( data => {
+
+  console.log(this.acronym);
+  console.log(data);
+})
+
    }
+
+  
   
 }
 

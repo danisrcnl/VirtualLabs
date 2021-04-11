@@ -24,7 +24,7 @@ import { PageNotFoundComponentComponent } from './page-not-found-component/page-
 import { VmsContcomponentComponent } from './teacher/vms-contcomponent.component';
 import { StudentService } from './services/student.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import {MatDialogModule} from '@angular/material/dialog';
+import {MatDialogModule, MatDialogRef, MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS} from '@angular/material/dialog';
 import {LoginDialogComponent} from './auth/login-dialog.component';
 import { AuthModule } from './auth/auth.module';
 import { RegisterComponent } from './auth/register/register.component';
@@ -86,8 +86,9 @@ import { ErrorInterceptor } from './auth/interceptor/error.interceptor';
   providers: [
      { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+        { provide: MAT_DIALOG_DATA, useValue: [] },
+        { provide : MatDialogRef, useValue: {}},],
     
-    StudentService],
   bootstrap: [AppComponent],
   entryComponents : [LoginDialogComponent]
 })

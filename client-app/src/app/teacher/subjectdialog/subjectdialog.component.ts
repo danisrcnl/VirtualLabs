@@ -1,13 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import { StudentService } from 'app/services/student.service';
 import { Course } from 'app/model/course.model';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { CourseService } from 'app/services/course.service';
 import { element } from 'protractor';
 import { CourseDTO } from 'app/model/courseDTO.model';
 import { TeacherService } from 'app/services/teacher.service';
 import { first } from 'rxjs/operators';
+import { AuthService } from 'app/auth/authservices/auth.service';
+import { User } from 'app/auth/user';
+import { Observable } from 'rxjs';
+import { DialogData } from '../app.component';
 
 
 @Component({
@@ -31,13 +35,17 @@ export class SubjectdialogComponent implements OnInit {
   minstud2 : number;
   enabled2 : boolean;
   courseDTO : CourseDTO = new CourseDTO();
+  courses$ : Observable <CourseDTO[]>;
+  currentUser : User;
   
-  
-  teacherId : string = "t000000";
+  teacherId : string ;
 
-  constructor(private fb: FormBuilder,private teacherService : TeacherService, private studentservice : StudentService, private courseservice : CourseService, public dialog:MatDialog) { 
+  constructor(private fb: FormBuilder,private teacherService : TeacherService, private studentservice : StudentService, private courseservice : CourseService, private authService : AuthService, public dialog:MatDialog,
+   @Inject(MAT_DIALOG_DATA) public data : DialogData
+   
+    ) { 
  
-    var newcourses = new Object();
+    this.authService.currentUser.subscribe (x => this.currentUser = x);
     
      }
 
@@ -60,7 +68,11 @@ export class SubjectdialogComponent implements OnInit {
 
    this.myForm.valueChanges.subscribe(console.log);
 
+    this.teacherId = this.currentUser.username.split("@")[0].substring(1,7);
+
   //this.studentservice.getcourse().subscribe(data => this.courses=data);
+
+  this.courses$ = this.teacherService.getCourseforTeacher(this.teacherId);
 
   this.teacherService.getCourseforTeacher(this.teacherId).subscribe(data => this.courses=data);
   
@@ -88,8 +100,21 @@ else
 this.courseDTO.enabled = false;
 
 
-this.courseservice.addCourse(this.courseDTO,this.teacherId).pipe(first())
-.subscribe(data => {console.log(data)}, error => {this.error = error});
+this.courseservice.addCourse(this.courseDTO,this.teacherId)
+.subscribe(
+  
+  data => {console.log(data);
+  this.courses$ = this.teacherService.getCourseforTeacher(this.teacherId);
+
+  this.dialog.closeAll();
+  
+}
+
+
+
+, error => {this.error = error});
+
+
 console.log(this.courseDTO);
 
 }
@@ -129,6 +154,8 @@ console.log (this.enabled);
  close (){
    
    this.dialog.closeAll();
+
+   console.log(this.data);
  }
 
 }

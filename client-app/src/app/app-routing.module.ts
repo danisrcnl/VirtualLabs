@@ -44,13 +44,13 @@ component : HomeComponentComponent
   
   { path: "course",  children: [
     
-      { path:":id",   children: [
+     
     
       { path: "vms", component: VmsContcomponentComponent } ,
       { path: "students", component: TeacherContComponent}
     
       
-  ]}]}]}
+  ]}]}
 ,
 
 {
