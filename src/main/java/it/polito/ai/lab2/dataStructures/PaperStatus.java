@@ -4,5 +4,6 @@ public enum PaperStatus {
     NULL,
     LETTO,
     CONSEGNATO,
-    RIVISTO
+    RIVISTO,
+    VALUTATO
 }
