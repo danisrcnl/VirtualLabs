@@ -193,6 +193,16 @@ public class AssignmentServiceImpl implements AssignmentService {
         paperRepository
                 .getOne(paperId)
                 .setMark(mark);
+
+        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris"));
+        Timestamp t = Timestamp.valueOf(localDateTime);
+        PaperStatusTimeDTO paperStatusTimeDTO = PaperStatusTimeDTO.builder()
+                .paperStatus(PaperStatus.VALUTATO)
+                .timestamp(t)
+                .content(paperRepository.getOne(paperId).getContent())
+                .build();
+
+        addPaperStatusTime(paperStatusTimeDTO, paperId);
         return true;
     }
 
@@ -303,8 +313,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public Long addPaperStatusTime(PaperStatusTimeDTO paperStatusTimeDTO, Long paperId) throws
-            PaperNotFoundException {
+    public Long addPaperStatusTime(PaperStatusTimeDTO paperStatusTimeDTO, Long paperId) throws PaperNotFoundException {
         if(!paperRepository.existsById(paperId))
             throw new PaperNotFoundException(paperId.toString());
         PaperStatusTime p = modelMapper.map(paperStatusTimeDTO, PaperStatusTime.class);
