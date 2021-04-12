@@ -216,6 +216,16 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
+    public void lockPaper(Long paperId) throws PaperNotFoundException {
+        if(!paperRepository.existsById(paperId))
+            throw new PaperNotFoundException(paperId.toString());
+
+        paperRepository
+                .getOne(paperId)
+                .setEditable(false);
+    }
+
+    @Override
     public String readPaper(Long paperId) throws PaperNotFoundException {
         if(!paperRepository.existsById(paperId))
             throw new PaperNotFoundException(paperId.toString());

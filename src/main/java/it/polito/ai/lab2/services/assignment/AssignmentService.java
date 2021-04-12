@@ -38,6 +38,8 @@ public interface AssignmentService {
 
     String initializePaperStatus (Long paperId);
 
+    void lockPaper (Long paperId);
+
     String readPaper (Long paperId);
 
     void reviewPaper (Long paperId);
