@@ -188,6 +188,8 @@ public class AssignmentServiceImpl implements AssignmentService {
             throw new PaperNotFoundException(paperId.toString());
         if(!paperRepository.getOne(paperId).getCurrentStatus().equals(PaperStatus.RIVISTO))
             return false;
+        if(paperRepository.getOne(paperId).getEditable())
+            return false;
         paperRepository
                 .getOne(paperId)
                 .setMark(mark);
