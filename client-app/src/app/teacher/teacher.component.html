@@ -22,8 +22,8 @@
         </mat-form-field>
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="saveobject($event)">
             
-            <mat-option *ngFor="let student of filteredOptions | async" [value]="student"> {{student.name}} {{student.firstname}} 
-              ({{student.serial}})
+            <mat-option *ngFor="let student of filteredOptions | async" [value]="student"> {{student.name}} {{student.firstName}} 
+              (s{{student.id}})
             </mat-option>
            
   

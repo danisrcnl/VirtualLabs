@@ -26,12 +26,26 @@ export class VmsContcomponentComponent2 implements OnInit {
    selectedegroups : Group[];
    public href :string ="";
    public href2 : string ="";
+    public hreff : string ="";
+        public subject : string ="";
    currentUser : User;
-   
+    firstParam : string ="";
   
    ngOnInit() {
 
+    this.firstParam = this.route.snapshot.queryParamMap.get('name');
 
+this.route.params.subscribe (routeParams => {
+this.hreff = this.router.url;
+  this.subject = this.hreff.substring(0,this.hreff.lastIndexOf('?'));
+  this.hreff = this.hreff.substring(0,this.hreff.lastIndexOf('/'));
+  this.href = this.subject; console.log(this.href);
+   this.href2 = this.hreff + '/students';
+   console.log(this.href2);
+;
+});
+
+   
     this.route.queryParams.subscribe(params => { this.courseId = params.name
       
       
@@ -40,6 +54,8 @@ export class VmsContcomponentComponent2 implements OnInit {
        console.log (this.courseId);
        });
     
+
+     
 
     this.vmService.getVmsByCourse(this.courseId).subscribe ( vmss => {
 
@@ -50,16 +66,7 @@ export class VmsContcomponentComponent2 implements OnInit {
 
     })
 
-     console.log(this.vmspercourse);
     
-  
-
-    this.studentservice.getgroups().subscribe (s => this.groups = s);
- 
- 
-
-    this.href = this.router.url;
-    this.href2 = this.href;
     
   }
 }

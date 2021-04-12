@@ -58,13 +58,11 @@ component : HomeComponentComponent
   component: AppComponentStudent, children: [
     
     {path: "course",  children: [
-
-     { path:":id",  children: [
     
       { path: "vms", component: VmsContcomponentComponent2 } ,
       { path: "students", component: StudentsContComponent}
     
-    ]}]}],
+    ]}],
      //runGuardsAndResolvers: 'always'
    
 

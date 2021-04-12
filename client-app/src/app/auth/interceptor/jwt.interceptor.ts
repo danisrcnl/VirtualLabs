@@ -21,10 +21,9 @@ export class JwtInterceptor implements HttpInterceptor {
                     Authorization: `Bearer ${currentUser.token}`
                 }
             });
-           console.log(isLoggedIn);
+          
         }else{
-        console.log("non loggato");
-        console.log(currentUser);
+       
         }
         return next.handle(request);
     }

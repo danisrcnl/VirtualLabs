@@ -8,6 +8,7 @@ import {Observable } from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { Routes, RouterModule, Router } from '@angular/router';
 import { PageNotFoundComponentComponent } from '../page-not-found-component/page-not-found-component.component';
+import { StudentDTO } from 'app/model/studentDTO.model';
 
 
   @Component({
@@ -20,39 +21,39 @@ export class TeacherComponent implements OnInit {
   
 
      
-    @Output() addstudentEvent = new EventEmitter<Student>();
+    @Output() addstudentEvent = new EventEmitter<StudentDTO>();
     
-    @Output() removestudentsEvent = new EventEmitter<Student[]>();
+    @Output() removestudentsEvent = new EventEmitter<StudentDTO[]>();
 
  
 
 
-    enrolledstudents : Student[];
+    enrolledstudents : StudentDTO[];
 
-    public get _enrolledstudents(): Student[] {
+    public get _enrolledstudents(): StudentDTO[] {
       return this.enrolledstudents;
     }
 
     @Input('enrolledstudents')
-    set enrolledStudents (students : Student[])
+    set enrolledStudents (students : StudentDTO[])
     {
         this.enrolledstudents = students;        
  
     }
     
     @Input ('dataSource')
-    dataSource = new MatTableDataSource<Student>(this.enrolledStudents);
+    dataSource = new MatTableDataSource<StudentDTO>(this.enrolledStudents);
 
     
     
     
     @Input('studenti') 
-    studenti : Student [];
+    studenti : StudentDTO [];
     
     displayedColumns: string[] = ['select','id','name','firstname'];
-    selection = new SelectionModel<Student>(true, []);
+    selection = new SelectionModel<StudentDTO>(true, []);
     mycontrol = new FormControl();
-    filteredOptions : Observable<Student[]>;
+    filteredOptions : Observable<StudentDTO[]>;
 
     public href :string ="";
     public href2 : string ="";
@@ -72,14 +73,11 @@ export class TeacherComponent implements OnInit {
 
 
      this.enrolledstudents = Object.assign(this.enrolledstudents);
-     this.dataSource = new MatTableDataSource<Student> (this.enrolledstudents);
+     this.dataSource = new MatTableDataSource<StudentDTO> (this.enrolledstudents);
       this.filteredOptions = this.mycontrol.valueChanges.pipe(
         startWith(''),
         map (studenti => this._filter(studenti)));    
 
-
-        console.log(this.studenti);
-        console.log(this.enrolledstudents);
         
       }
 
@@ -100,7 +98,7 @@ export class TeacherComponent implements OnInit {
     removeSelectedRows() {
       
       this.removestudentsEvent.emit(this.selection.selected);
-      this.selection = new SelectionModel<Student>(true, []);
+      this.selection = new SelectionModel<StudentDTO>(true, []);
       
       this.filteredOptions = this.mycontrol.valueChanges.pipe(
         startWith(''),
@@ -113,7 +111,7 @@ export class TeacherComponent implements OnInit {
   
   
   
-  private _filter(studente: string): Student [] {
+  private _filter(studente: string): StudentDTO [] {
   const filterValue = studente.toLowerCase();
   
   return this.studenti.filter(option => this.displayFn(option).toLowerCase().includes(filterValue));
@@ -121,26 +119,26 @@ export class TeacherComponent implements OnInit {
   }
   
   
-    displayFn(studente: Student): string {
-      return studente ? studente.name + ' ' + studente.firstname + ' '+ '(' + studente.serial + ')': undefined;
+    displayFn(studente: StudentDTO): string {
+      return studente ? studente.name + ' ' + studente.firstName + ' '+ '(' + studente.id + ')': undefined;
     }
   
-  studenteselezionato : Student;
+  studenteselezionato : StudentDTO;
   
   saveobject(event) {
     const selectedValue = event.option.value;
-    console.log(selectedValue);
+    
     
     this.studenteselezionato = Object.assign(selectedValue);
     
-  console.log(this.enrolledstudents);
+
   
   }
 
   addstudent() {
   
     this.addstudentEvent.emit(this.studenteselezionato);
-    console.log(this.studenti);
+  
 
   }
 

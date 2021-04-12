@@ -27,7 +27,7 @@
 
 
    <button (click) = "delete()"> Cancella corso </button>
-   <button (click) = "close()"> Chiudi </button>
+ 
   </div>
 
   <div>
@@ -40,20 +40,21 @@
 
     <label for="cars">Crea corso : </label>
     <mat-form-field>
-      <input matInput placeholder="Inserisci Nome" formControlName = "coursename" [(ngModel)]="data.coursename">
+      <input matInput placeholder="Inserisci Nome" formControlName = "coursename" [(ngModel)]="coursename">
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="Max studenti" formControlName="maxstud2" [(ngModel)]="data.maxstud">
+      <input matInput placeholder="Max studenti" formControlName="maxstud2" [(ngModel)]="maxstud2">
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="Min studenti" formControlName="minstud2" [(ngModel)]="data.minstud">
+      <input matInput placeholder="Min studenti" formControlName="minstud2" [(ngModel)]="minstud2">
     </mat-form-field>
-  <input type="checkbox" id="enabled2" name="enabled2" formControlName="enabled2" [(ngModel)]="data.enabled">
+  <input type="checkbox" id="enabled2" name="enabled2" formControlName="enabled2" [(ngModel)]="enabled2">
   <label for="enabled2">Enabled</label>
     <mat-form-field>
-      <input matInput placeholder="Acronimo" formControlName="acronym" [(ngModel)]="data.acronym">
+      <input matInput placeholder="Acronimo" formControlName="acronym" [(ngModel)]="acronym">
     </mat-form-field>
 <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
     <button (click) = "createcourse()"> Crea </button>
+    <div><button (click)="close()"> Chiudi </button></div>
   </div>
   </form>

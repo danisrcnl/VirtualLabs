@@ -79,7 +79,7 @@ for (let i=0 ;i< this.courses.length; i++)
       this.courses.forEach (c => {
 
         this.temp = c.name.toLowerCase().split(' ').join('-');
-        console.log (this.temp);
+      ;
         c.path = this.temp;
       })
 
@@ -88,7 +88,7 @@ for (let i=0 ;i< this.courses.length; i++)
 
     
 
-    console.log(this.courses);
+    
 
     this.sidenavService.setSidenav(this.sidenav);
   }

@@ -116,11 +116,13 @@ for (let i=0 ;i< this.courses.length; i++)
      });
 
 
-dialogRef.afterClosed().subscribe( data => {
+   dialogRef.afterClosed().subscribe( data => {
 
-  console.log(this.acronym);
-  console.log(data);
-})
+   console.log(this.acronym);
+   console.log(data);
+  })
+
+  
 
    }
 
