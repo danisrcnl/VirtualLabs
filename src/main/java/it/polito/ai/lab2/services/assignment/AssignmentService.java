@@ -36,17 +36,17 @@ public interface AssignmentService {
 
     boolean ratePaper (Long paperId, int mark);
 
-    String initializePaperStatus (Long paperId);
+    Boolean initializePaperStatus (Long paperId);
 
     void lockPaper (Long paperId);
 
-    String readPaper (Long paperId);
+    Boolean readPaper (Long paperId);
 
-    void reviewPaper (Long paperId);
+    Boolean reviewPaper (Long paperId);
 
-    void deliverPaper (Long paperId);
+    Boolean deliverPaper (Long paperId);
 
-    void setPaperContent (Long paperId, String content);
+    Boolean setPaperContent (Long paperId, String content);
 
 
     Long addPaperStatusTime (PaperStatusTimeDTO paperStatusTimeDTO, Long paperId);

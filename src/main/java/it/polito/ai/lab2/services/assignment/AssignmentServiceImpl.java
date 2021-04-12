@@ -197,9 +197,11 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public String initializePaperStatus(Long paperId) throws PaperNotFoundException {
+    public Boolean initializePaperStatus(Long paperId) throws PaperNotFoundException {
         if(!paperRepository.existsById(paperId))
             throw new PaperNotFoundException(paperId.toString());
+        if(!paperRepository.getOne(paperId).getEditable())
+            return false;
         Paper p = paperRepository.getOne(paperId);
         p.setCurrentStatus(PaperStatus.NULL);
 
@@ -212,7 +214,7 @@ public class AssignmentServiceImpl implements AssignmentService {
                 .build();
         addPaperStatusTime(paperStatusTimeDTO, paperId);
 
-        return p.getContent();
+        return true;
     }
 
     @Override
@@ -226,10 +228,12 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public String readPaper(Long paperId) throws PaperNotFoundException {
+    public Boolean readPaper(Long paperId) throws PaperNotFoundException {
         if(!paperRepository.existsById(paperId))
             throw new PaperNotFoundException(paperId.toString());
         Paper p = paperRepository.getOne(paperId);
+        if(!paperRepository.getOne(paperId).getEditable())
+            return false;
         p.setCurrentStatus(PaperStatus.LETTO);
 
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris"));
@@ -241,13 +245,15 @@ public class AssignmentServiceImpl implements AssignmentService {
                 .build();
         addPaperStatusTime(paperStatusTimeDTO, paperId);
 
-        return p.getContent();
+        return true;
     }
 
     @Override
-    public void reviewPaper(Long paperId) throws PaperNotFoundException {
+    public Boolean reviewPaper(Long paperId) throws PaperNotFoundException {
         if(!paperRepository.existsById(paperId))
             throw new PaperNotFoundException(paperId.toString());
+        if(!paperRepository.getOne(paperId).getEditable())
+            return false;
         Paper p = paperRepository.getOne(paperId);
         p.setCurrentStatus(PaperStatus.RIVISTO);
 
@@ -260,12 +266,15 @@ public class AssignmentServiceImpl implements AssignmentService {
                 .build();
         addPaperStatusTime(paperStatusTimeDTO, paperId);
 
+        return true;
     }
 
     @Override
-    public void deliverPaper(Long paperId) throws PaperNotFoundException {
+    public Boolean deliverPaper(Long paperId) throws PaperNotFoundException {
         if(!paperRepository.existsById(paperId))
             throw new PaperNotFoundException(paperId.toString());
+        if(!paperRepository.getOne(paperId).getEditable())
+            return false;
         Paper p = paperRepository.getOne(paperId);
         p.setCurrentStatus(PaperStatus.CONSEGNATO);
 
@@ -278,15 +287,19 @@ public class AssignmentServiceImpl implements AssignmentService {
                 .build();
         addPaperStatusTime(paperStatusTimeDTO, paperId);
 
+        return true;
     }
 
     @Override
-    public void setPaperContent(Long paperId, String content) throws PaperNotFoundException {
+    public Boolean setPaperContent(Long paperId, String content) throws PaperNotFoundException {
         if(!paperRepository.existsById(paperId))
             throw new PaperNotFoundException(paperId.toString());
+        if(!paperRepository.getOne(paperId).getEditable())
+            return false;
         paperRepository
                 .getOne(paperId)
                 .setContent(content);
+        return true;
     }
 
     @Override
