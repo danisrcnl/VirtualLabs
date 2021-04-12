@@ -183,7 +183,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public boolean ratePaper(Long paperId, int mark) throws PaperNotFoundException {
+    public Boolean ratePaper(Long paperId, int mark) throws PaperNotFoundException {
         if(!paperRepository.existsById(paperId))
             throw new PaperNotFoundException(paperId.toString());
         if(!paperRepository.getOne(paperId).getCurrentStatus().equals(PaperStatus.RIVISTO))

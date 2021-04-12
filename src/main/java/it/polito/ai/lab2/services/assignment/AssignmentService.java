@@ -34,7 +34,7 @@ public interface AssignmentService {
 
     List<PaperDTO> getAllPapers ();
 
-    boolean ratePaper (Long paperId, int mark);
+    Boolean ratePaper (Long paperId, int mark);
 
     Boolean initializePaperStatus (Long paperId);
 
