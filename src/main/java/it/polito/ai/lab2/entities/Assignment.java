@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +22,10 @@ public class Assignment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotEmpty
     private String creator;
 
+    @NotEmpty
     private String content;
 
     private Timestamp creationDate;
