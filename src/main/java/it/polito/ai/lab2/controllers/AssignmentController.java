@@ -188,6 +188,8 @@ public class AssignmentController {
 
     @GetMapping("/paper/{paperId}/rate/{mark}")
     public PaperDTO ratePaper (@PathVariable Long paperId, @PathVariable int mark) throws ResponseStatusException {
+        if (mark < 0 || mark > 30)
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Mark must be at least 0, no more than 30");
         try {
             if(!assignmentService.ratePaper(paperId, mark))
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "The paper can't be edited anymore");
