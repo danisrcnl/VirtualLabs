@@ -22,7 +22,7 @@ public interface AssignmentService {
 
     List<AssignmentDTO> getCourseAssignments (String courseName);
 
-    Long addPaper (PaperDTO paper, String courseName, String studentId, Long assignmentId);
+    Long addPaper (PaperDTO paper, String courseName, String studentId);
 
     boolean linkPaperToAssignment (Long paperId, Long assignmentId);
 

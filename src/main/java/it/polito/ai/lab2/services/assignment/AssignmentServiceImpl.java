@@ -100,18 +100,14 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public Long addPaper (PaperDTO paper, String courseName, String studentId, Long assignmentId) throws
-            AssignmentNotFoundException, StudentNotFoundException {
+    public Long addPaper (PaperDTO paper, String courseName, String studentId) throws StudentNotFoundException {
 
         if(!studentRepository.existsById(studentId))
             throw new StudentNotFoundException(studentId);
-        if(!assignmentRepository.existsById(assignmentId))
-            throw new AssignmentNotFoundException(assignmentId.toString());
 
         Paper p = modelMapper.map(paper, Paper.class);
         p.setEditable(true);
         p.setStudent(studentRepository.getOne(studentId));
-        p.setAssignment(assignmentRepository.getOne(assignmentId));
 
         paperRepository.save(p);
         paperRepository.flush();
