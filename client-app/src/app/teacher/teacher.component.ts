@@ -138,7 +138,7 @@ export class TeacherComponent implements OnInit {
   addstudent() {
   
     this.addstudentEvent.emit(this.studenteselezionato);
-  
+    this.studenteselezionato = null;
 
   }
 

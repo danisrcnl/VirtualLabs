@@ -107,6 +107,10 @@ export class TeacherContComponent implements OnInit {
       let index: number = this.studenti.findIndex(d => d === item);
       this.studenti.splice(index,1)});}
       console.log(this.studenti);
+      this.studentsComponent.updateFilteredOptions();
+      this.studentsComponent.selection.clear();
+      this.studentsComponent.studenteselezionato = null;
+    
     this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);
     
   }
@@ -120,6 +124,8 @@ export class TeacherContComponent implements OnInit {
       this.enrolledstudents.splice(index,1);
       if (!this.studenti.includes(item))
       this.studenti.push(item);});
+      console.log(this.studenti);
+      console.log(this.enrolledstudents);
       this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);
 
     

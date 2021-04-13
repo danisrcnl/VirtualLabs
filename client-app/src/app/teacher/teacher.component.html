@@ -17,7 +17,7 @@
             <mat-form-field class="formfield" appearance="fill">
               
           <input matInput [formControl] = "mycontrol" type="text" class="insert" placeholder="Aggiungi uno studente" [matAutocomplete]="auto"
-           
+           [(ngModel)] = "studenteselezionato"
           />
         </mat-form-field>
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="saveobject($event)">
