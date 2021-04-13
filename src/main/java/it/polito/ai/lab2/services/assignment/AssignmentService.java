@@ -34,8 +34,6 @@ public interface AssignmentService {
 
     List<PaperDTO> getAllPapers ();
 
-    Boolean ratePaper (Long paperId, int mark);
-
     Boolean initializePaperStatus (Long paperId);
 
     void lockPaper (Long paperId);
@@ -45,6 +43,8 @@ public interface AssignmentService {
     Boolean reviewPaper (Long paperId);
 
     Boolean deliverPaper (Long paperId);
+
+    Boolean ratePaper (Long paperId, int mark);
 
     Boolean setPaperContent (Long paperId, String content);
 
