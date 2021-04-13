@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,6 +35,10 @@ public class AssignmentController {
 
     @PostMapping("/{courseName}")
     public void addAssignmentToCourse (@PathVariable String courseName, @RequestBody AssignmentDTO assignmentDTO) throws ResponseStatusException {
+
+        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris"));
+        Timestamp t = Timestamp.valueOf(localDateTime);
+        assignmentDTO.setCreationDate(t);
 
         Long id = assignmentService.addAssignment(assignmentDTO);
 
