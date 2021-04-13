@@ -119,9 +119,15 @@ for (let i=0 ;i< this.courses.length; i++)
    dialogRef.afterClosed().subscribe( data => {
 
    console.log(data);
+
+   if(data != undefined)
+   {
+      this.courses$ = this.teacherService.getCourseforTeacher(this.idteacher);
+   }
   })
 
   
+
 
    }
 
