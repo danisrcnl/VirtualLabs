@@ -88,10 +88,10 @@ createcourse ()
 {
 
 
-this.courseDTO.acronym= this.acronym;
-this.courseDTO.name = this.coursename;
-this.courseDTO.min = this.minstud2;
-this.courseDTO.max = this.maxstud2;
+this.courseDTO.acronym= this.data.acronym;
+this.courseDTO.name = this.data.coursename;
+this.courseDTO.min = this.data.minstud;
+this.courseDTO.max = this.data.maxstud;
 
 if(this.enabled2)
 

@@ -111,14 +111,13 @@ for (let i=0 ;i< this.courses.length; i++)
 
    openmodDialog() {
      const dialogRef = this.dialog.open (SubjectdialogComponent, {
-    data : {acronym : this.acronym, maxstud : this.maxstud, minstud : this.minstud, coursename : this.coursename}
+     data : {acronym : this.acronym, maxstud : this.maxstud, minstud : this.minstud, coursename : this.coursename}
         
      });
 
-
+  
    dialogRef.afterClosed().subscribe( data => {
 
-   console.log(this.acronym);
    console.log(data);
   })
 
