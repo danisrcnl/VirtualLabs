@@ -74,6 +74,24 @@ public class AssignmentController {
                 .collect(Collectors.toList());
     }
 
+    @PostMapping("{courseName}/{assignmentId}/{studentId}/addPaper")
+    public PaperDTO addPaper (@RequestBody PaperDTO paperDTO, @PathVariable Long assignmentId, @PathVariable String courseName, @PathVariable String studentId)
+                throws ResponseStatusException {
+        Long paperId;
+        try {
+            paperId = assignmentService.addPaper(paperDTO, courseName, studentId);
+            assignmentService.linkPaperToAssignment(paperId, assignmentId);
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+        }
+
+        return ModelHelper.enrich(
+                assignmentService
+                .getPaper(paperId)
+                .get()
+        );
+    }
+
     @GetMapping("/{assignmentId}/getPapers")
     public List<PaperDTO> getAssignmentPapers (@PathVariable Long assignmentId) throws ResponseStatusException {
         List<PaperDTO> outcome;
