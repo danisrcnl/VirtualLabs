@@ -20,6 +20,7 @@ import { Team } from '../model/team.model';
 import { MemberStatus } from '../model/memberstatus.model';
 import { StudentDTO } from '../model/studentDTO.model';
 import { Console } from 'console';
+import { User } from 'app/auth/user';
 
 
   @Component({
@@ -31,9 +32,9 @@ import { Console } from 'console';
 export class StudentsComponent implements OnInit {
      
     
-    @Output() addstudentEvent = new EventEmitter<Student>();
+    @Output() addstudentEvent = new EventEmitter<StudentDTO>();
     
-    @Output() removestudentsEvent = new EventEmitter<Student[]>();
+    @Output() removestudentsEvent = new EventEmitter<StudentDTO[]>();
 
     @Output() invitestudentEvent = new EventEmitter<String[]>();
 
@@ -42,8 +43,8 @@ export class StudentsComponent implements OnInit {
     @Output() timeoutValue = new EventEmitter <Number>();
 
 
-    enrolledstudents : Student[];
-    compagni : Student[];
+    enrolledstudents : StudentDTO[];
+    compagni : StudentDTO[];
     compagniDTO : StudentDTO[];
     groupid : number;
     teams : Team[];
@@ -51,15 +52,15 @@ export class StudentsComponent implements OnInit {
     headers = ['id','name','firstName'];
     headers1 = ['Serial','Name','Firstname'];
         
-    selection = new SelectionModel<Student>(true, []);
-    students : Student [];
+    selection = new SelectionModel<StudentDTO>(true, []);
+    students : StudentDTO [];
     studentsIds : String[] = []; 
-    members : MemberStatus[] = new Array<MemberStatus>();
+    membersStatus : MemberStatus[] = new Array<MemberStatus>();
   
     public dataSource2 = new MatTableDataSource<StudentDTO>(this.CompagniDTO);
    
     mycontrol = new FormControl();
-    filteredOptions = new Observable<Student[]>();
+    filteredOptions = new Observable<StudentDTO[]>();
     myForm : FormGroup;
     timeout : number;
     teamName : string ="";
@@ -78,18 +79,25 @@ export class StudentsComponent implements OnInit {
 
     private tablevalue : boolean;
 
-    public get _enrolledstudents(): Student[] {
+    public get _enrolledstudents(): StudentDTO[] {
       return this.enrolledstudents;
     }
 
-    public get _compagni(): Student[] {
+    public get _compagni(): StudentDTO[] {
       return this.compagni;
     }
     @Input('enrolledstudents')
-    set enrolledStudents (students : Student[])
+    set enrolledStudents (students : StudentDTO[])
     {
         this.enrolledstudents = students;        
  
+    }
+
+
+    @Input('membersStatus')
+    set membersstatus (memberss : MemberStatus[])
+    {
+      this.membersStatus = memberss;
     }
 
     @Input('tablevalue')
@@ -150,12 +158,14 @@ export class StudentsComponent implements OnInit {
 
     
     @Input ('dataSource')
-    dataSource = new MatTableDataSource<Student>(this.enrolledStudents);
+    dataSource = new MatTableDataSource<StudentDTO>(this.enrolledStudents);
 
     
     @Input('studenti') 
-    studenti : Student [];
+    studenti : StudentDTO [];
     
+    @Input('currentStudent')
+    currentStudent : StudentDTO;
   
     
     
@@ -181,6 +191,9 @@ this.activeRoute.queryParams.subscribe (queryParams => {
 
 console.log (queryParams);
 
+console.log(this.membersStatus);
+
+
 
 
 });
@@ -198,7 +211,7 @@ this.hreff = this.router.url;
 });
   
      this.enrolledstudents = Object.assign(this.enrolledstudents);
-     this.dataSource = new MatTableDataSource<Student> (this.enrolledstudents);
+     this.dataSource = new MatTableDataSource<StudentDTO> (this.enrolledstudents);
      this.compagniDTO = Object.assign (this.compagniDTO);
      console.log(this.compagniDTO);
      this.dataSource2 = new MatTableDataSource<StudentDTO> (this.compagniDTO);
@@ -227,7 +240,7 @@ this.hreff = this.router.url;
     removeSelectedRows() {
       
       this.removestudentsEvent.emit(this.selection.selected);
-      this.selection = new SelectionModel<Student>(true, []);
+      this.selection = new SelectionModel<StudentDTO>(true, []);
       
       this.filteredOptions = this.mycontrol.valueChanges.pipe(
         startWith(''),
@@ -240,7 +253,7 @@ this.hreff = this.router.url;
   
   
   
-  private _filter(studente: string): Student [] {
+  private _filter(studente: string): StudentDTO [] {
   const filterValue = studente.toLowerCase();
   
   return this.studenti.filter(option => this.displayFn(option).toLowerCase().includes(filterValue));
@@ -248,11 +261,11 @@ this.hreff = this.router.url;
   }
   
   
-    displayFn(studente: Student): string {
-      return studente ? studente.name + ' ' + studente.firstname + ' '+ '(' + studente.serial + ')': undefined;
+    displayFn(studente: StudentDTO): string {
+      return studente ? studente.name + ' ' + studente.firstName + ' '+ '(' + studente.id + ')': undefined;
     }
   
-  studenteselezionato : Student;
+  studenteselezionato : StudentDTO;
   
   saveobject(event) {
     const selectedValue = event.option.value;
@@ -283,6 +296,7 @@ this.hreff = this.router.url;
       
    
    this.students = this.selection.selected; 
+   this.students.push(this.currentStudent);
    this.selection.clear();
    this.timeoutValue.emit(this.timeout);
    this.groupName.emit(this.groupname);
