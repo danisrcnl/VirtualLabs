@@ -74,7 +74,7 @@ public class AssignmentController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/{assignmentId}")
+    @GetMapping("/{assignmentId}/getPapers")
     public List<PaperDTO> getAssignmentPapers (@PathVariable Long assignmentId) throws ResponseStatusException {
         List<PaperDTO> outcome;
         try {
@@ -89,7 +89,7 @@ public class AssignmentController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/{courseName}/{studentId}")
+    @GetMapping("/{courseName}/{studentId}/getPapers")
     public List<PaperDTO> getStudentPapers (@PathVariable String courseName, @PathVariable String studentId) throws ResponseStatusException {
         List<PaperDTO> outcome;
         try {
