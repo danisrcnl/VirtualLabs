@@ -81,6 +81,7 @@ public class AssignmentController {
         try {
             paperId = assignmentService.addPaper(paperDTO, courseName, studentId);
             assignmentService.linkPaperToAssignment(paperId, assignmentId);
+            assignmentService.initializePaperStatus(paperId);
         } catch (AiException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
@@ -122,8 +123,103 @@ public class AssignmentController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/{paperId}/getHistory")
-    public List<PaperStatusTimeDTO> getPaperHistory (@PathVariable Long paperId) {
+    @GetMapping("/paper/{paperId}/lock")
+    public PaperDTO lockPaper (@PathVariable Long paperId) throws ResponseStatusException {
+        try {
+            assignmentService.lockPaper(paperId);
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+        }
+
+        return ModelHelper.enrich(
+                assignmentService
+                .getPaper(paperId)
+                .get()
+        );
+    }
+
+    @GetMapping("/paper/{paperId}/read")
+    public PaperDTO readPaper (@PathVariable Long paperId) throws ResponseStatusException {
+        try {
+            if(!assignmentService.readPaper(paperId))
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "The paper can't be edited anymore");
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+        }
+
+        return ModelHelper.enrich(
+                assignmentService
+                        .getPaper(paperId)
+                        .get()
+        );
+    }
+
+    @GetMapping("/paper/{paperId}/review")
+    public PaperDTO reviewPaper (@PathVariable Long paperId) throws ResponseStatusException {
+        try {
+            if(!assignmentService.reviewPaper(paperId))
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "The paper can't be edited anymore");
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+        }
+
+        return ModelHelper.enrich(
+                assignmentService
+                        .getPaper(paperId)
+                        .get()
+        );
+    }
+
+    @GetMapping("/paper/{paperId}/deliver")
+    public PaperDTO deliverPaper (@PathVariable Long paperId) throws ResponseStatusException {
+        try {
+            if(!assignmentService.deliverPaper(paperId))
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "The paper can't be edited anymore");
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+        }
+
+        return ModelHelper.enrich(
+                assignmentService
+                        .getPaper(paperId)
+                        .get()
+        );
+    }
+
+    @GetMapping("/paper/{paperId}/rate/{mark}")
+    public PaperDTO ratePaper (@PathVariable Long paperId, @PathVariable int mark) throws ResponseStatusException {
+        try {
+            if(!assignmentService.ratePaper(paperId, mark))
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "The paper can't be edited anymore");
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+        }
+
+        return ModelHelper.enrich(
+                assignmentService
+                        .getPaper(paperId)
+                        .get()
+        );
+    }
+
+    @PostMapping("/paper/{paperId}/setContent")
+    public PaperDTO deliverPaper (@PathVariable Long paperId, @RequestBody String content) throws ResponseStatusException {
+        try {
+            if(!assignmentService.setPaperContent(paperId, content))
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "The paper can't be edited anymore");
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+        }
+
+        return ModelHelper.enrich(
+                assignmentService
+                        .getPaper(paperId)
+                        .get()
+        );
+    }
+
+    @GetMapping("/paper/{paperId}/getHistory")
+    public List<PaperStatusTimeDTO> getPaperHistory (@PathVariable Long paperId) throws ResponseStatusException {
         List<PaperStatusTimeDTO> outcome;
         try {
             outcome = assignmentService.getPaperHistory(paperId);
