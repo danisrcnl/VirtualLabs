@@ -28,7 +28,7 @@ public interface AssignmentService {
 
     Optional<PaperDTO> getPaper (Long id);
 
-    List<PaperDTO> getPapersForStudent (String courseName, String studentId);
+    List<PaperDTO> getPapersForStudentCourse (String courseName, String studentId);
 
     List<PaperDTO> getPapersForAssignment (Long id);
 

@@ -74,11 +74,26 @@ public class AssignmentController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/{assignmentId}/getPapers")
+    @GetMapping("/{assignmentId}")
     public List<PaperDTO> getAssignmentPapers (@PathVariable Long assignmentId) throws ResponseStatusException {
         List<PaperDTO> outcome;
         try {
             outcome = assignmentService.getPapersForAssignment(assignmentId);
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+        }
+
+        return outcome
+                .stream()
+                .map(ModelHelper :: enrich)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/{courseName}/{studentId}")
+    public List<PaperDTO> getStudentPapers (@PathVariable String courseName, @PathVariable String studentId) throws ResponseStatusException {
+        List<PaperDTO> outcome;
+        try {
+            outcome = assignmentService.getPapersForStudentCourse(courseName, studentId);
         } catch (AiException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
@@ -100,4 +115,6 @@ public class AssignmentController {
 
         return outcome;
     }
+
+
 }
