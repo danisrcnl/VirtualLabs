@@ -34,16 +34,16 @@ export class TeamService {
     constructor(private http: HttpClient ) {
    }
 
- addTeam(courseName,teamName,memberIds,creator,hours) {
+ addTeam(courseName,teamName,memberIds,hours,creator) {
 
-   return this.http.post<any>(`${environment.apiUrlteam}/${courseName}/add`,{courseName,teamName,memberIds,creator,hours});
+   return this.http.post<any>(`${environment.apiUrlteam}/${courseName}/add`,{courseName,teamName,memberIds,hours,creator});
  }
 
 
 getMembers(courseName,teamName)
  
  {
-     return this.http.get<StudentDTO[]>(`${environment.apiUrlteam}/${courseName}/${teamName}/members`);
+     return this.http.get<MemberStatus[]>(`${environment.apiUrlteam}/${courseName}/${teamName}/membersStatus`);
  }
 
 
@@ -56,5 +56,6 @@ getMembers(courseName,teamName)
  }
 
  
+
 
 }

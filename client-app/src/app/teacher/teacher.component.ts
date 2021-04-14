@@ -6,7 +6,7 @@ import {SelectionModel} from '@angular/cdk/collections';
 import {FormControl,Validators } from '@angular/forms';
 import {Observable } from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
-import { Routes, RouterModule, Router } from '@angular/router';
+import { Routes, RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { PageNotFoundComponentComponent } from '../page-not-found-component/page-not-found-component.component';
 import { StudentDTO } from 'app/model/studentDTO.model';
 
@@ -59,8 +59,9 @@ export class TeacherComponent implements OnInit {
     public href2 : string ="";
     public hreff : string ="";
     public subject : string ="";
+    public firstParam : string ="";
     
-    constructor (private router : Router) {
+    constructor (private router : Router, private activeRoute: ActivatedRoute) {
 
     this.hreff = router.url;
     this.subject = this.hreff.substring(this.hreff.lastIndexOf('/')+1 );
@@ -71,6 +72,18 @@ export class TeacherComponent implements OnInit {
 
     ngOnInit() {
 
+
+      this.firstParam = this.activeRoute.snapshot.queryParamMap.get('name');
+
+this.activeRoute.params.subscribe (routeParams => {
+this.hreff = this.router.url;
+  this.subject = this.hreff.substring(0,this.hreff.lastIndexOf('?'));
+  this.hreff = this.hreff.substring(0,this.hreff.lastIndexOf('/'));
+  this.href = this.subject; console.log(this.href);
+   this.href2 = this.hreff + '/vms';
+   console.log(this.href2);
+;
+});
 
      this.enrolledstudents = Object.assign(this.enrolledstudents);
      this.dataSource = new MatTableDataSource<StudentDTO> (this.enrolledstudents);

@@ -12,6 +12,7 @@ import { Studentreturn } from '../auth/models/studentreturn';
 import { config } from 'app/config';
 import { Proposal } from '../model/proposal.model';
 import { CourseDTO } from '../model/courseDTO.model';
+import { StudentDTO } from 'app/model/studentDTO.model';
 
 
 
@@ -76,6 +77,11 @@ private courseSubject :Subject<Course[]>;
     return this.http.post<Student>(this._url, s, httpOptions);
   }
 
+
+getOne (studentId) : Observable <StudentDTO>
+{
+  return this.http.get<any>(`${environment.apiUrlstudent}/${studentId}`);
+}
 
 
 createproposalteam(groupname,students,timeout) {

@@ -190,7 +190,7 @@ const routeParams = this.activeRoute.snapshot.params;
 this.activeRoute.queryParams.subscribe (queryParams => {
 
 console.log (queryParams);
-
+console.log (this.teams);
 console.log(this.membersStatus);
 
 

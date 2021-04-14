@@ -23,6 +23,7 @@ import { StudentDTO } from '../model/studentDTO.model';
 import { AuthService } from '../auth/authservices/auth.service';
 import { User } from '../auth/user';
 import { first } from 'rxjs/operators';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-students-cont',
@@ -57,24 +58,30 @@ export class StudentsContComponent implements OnInit {
   studentId : String;
   //variabili per invito Team 
   
-  dainvitare : Student[] = new Array<Student>();
+  dainvitare : StudentDTO[] = new Array<StudentDTO>();
   groupName : String = "";
   timeoutValue : number;
   error : '';
 
   //variabili per caricare la tabella con i componenti del gruppo 
+  compagnicorso : MemberStatus[] = new Array <MemberStatus>();
   compagniDTO : StudentDTO[] = new Array<StudentDTO>();
 
   //variabili per caricare la tabella con le proposte di Team
   studentid : string;
   students : Student[] = new Array<Student>(); //da qua ricavo poi nome e cognome degli studenti  
   membersStatus : MemberStatus[] = new Array<MemberStatus>(); //da qua controllo se lo studente ha accettato o ancora no la proposta 
+  tempmember : MemberStatus;
   teams : Team[] = new Array<Team>();
   courseId :string;
   teams$ : Observable <Team[]>;
   teams2 : Team[] = new Array<Team>();
   teamName : String = "";
-
+  creator$ : Observable <StudentDTO>;
+  creator : StudentDTO;
+  currentStudent$ : Observable<StudentDTO>;
+  currentStudent : StudentDTO;
+  tempstudent : StudentDTO;
   @ViewChild(StudentsComponent)
   studentsComponent: StudentsComponent
   
@@ -83,8 +90,25 @@ export class StudentsContComponent implements OnInit {
 
     //prendo l'username dell'user loggato 
 
-    this.authService.currentUser.subscribe (x => this.currentUser = x);
-    this.studentId = this.currentUser.username.split("@")[0].substring(1,7);
+    
+
+    this.authService.currentUser.subscribe ( x => {this.currentUser = x;
+      this.studentId = this.currentUser.username.split("@")[0].substring(1,7);
+  
+  this.studentservice.getOne(this.studentId).subscribe(
+    s => {
+      this.currentStudent = s;
+    },
+    error => {
+      console.log("errore");
+    }
+  );
+    
+    });
+
+    
+    
+  
     
     this.activeRoute.paramMap.subscribe(params => {
 
@@ -132,11 +156,11 @@ export class StudentsContComponent implements OnInit {
               
     
         
-        this.courseService.getenrolledStudents(this.courseId).subscribe(receivedstudents=>{
+        this.courseService.getAvailableStudents(this.courseId).subscribe(receivedstudents=>{
         receivedstudents.forEach(s => {
 
           
-          
+            if (s.id!=this.studentId) 
             this.enrolledstudents.push(s);
     
                   
@@ -166,9 +190,14 @@ export class StudentsContComponent implements OnInit {
 
           teamss.forEach ( t => {
 
+            if(t.status==1){
             this.teams2.push(t);
             this.teamName = t.name;
-
+            }
+            else
+            {
+              this.teamsinconstruction.push(t);
+            }
           })
 
           
@@ -178,31 +207,80 @@ export class StudentsContComponent implements OnInit {
          {
            this.tabvalue = true;
            console.log("length maggiore 0");
-         }
-         else
+           this.teamservice.getMembers(this.courseId,this.teamName).subscribe(members => {
+         
+                 this.compagnicorso = members;
+
+                 console.log(this.compagnicorso);
+
+                 this.compagnicorso.forEach(
+                  c => {
+                  
+                  this.studentservice.getOne(c.studentId).subscribe(
+                   data => {this.compagniDTO.push(data)}
+                 );
+           })
+
+           
+           
+          }) }
+
+            
+           
+         
+         else{
          
            {this.tabvalue = false;
            }
           
-           this.teamservice.getMembers(this.courseId,this.teamName).subscribe(members => {
+           for (let i=0; i<this.teamsinconstruction.length; i++){
+           this.teamservice.getMembers(this.courseId,this.teamsinconstruction[i].name).subscribe(members => {
 
               members.forEach (m => {
-                this.compagniDTO.push(m);
-              })
+                
+                this.tempmember = m;
+                this.tempmember.teamid = this.teamsinconstruction[i].id;
+                this.membersStatus.push(this.tempmember);
+                this.tempmember = null;
+             
+              
            })
+
+           this.membersStatus.forEach(m => {
+
+            this.studentservice.getOne(m.studentId).subscribe(
+              s=> {
+                let indexitem = this.membersStatus.find(e => e.studentId == s.id);
+                if (indexitem)
+                {
+                  this.tempmember = this.membersStatus.find(e => e.studentId == s.id);
+                  this.tempmember.nome = s.name;
+                  this.tempmember.cognome = s.firstName;
+                 // this.membersStatus.push(this.tempmember);
+                }
+                
+                  
+                
+              }
+            )
+
+           })
+
+           console.log(this.membersStatus);
+          })
         }
         
-      
+         }
         
         
         
         
-        ); 
+      }); 
         
         console.log(this.teams2.length);
 
     
-        
+          
 
            console.log(this.tabvalue);
 
@@ -223,7 +301,8 @@ export class StudentsContComponent implements OnInit {
 
 ngOnChanges (changes: SimpleChanges)
 {
-  this.teamservice.addTeam(this.courseName,this.groupName,this.dainvitare,this.studentId,this.timeoutValue);
+
+  //this.teamservice.addTeam(this.courseName,this.groupName,this.dainvitare,this.timeoutValue,this.studentId);
 }
   
 
@@ -233,6 +312,9 @@ ngOnChanges (changes: SimpleChanges)
       this.studentid = u.username;
 
     })
+
+  
+    
 
 //console.log (this.studentid);
 this.studentid = this.studentid.substring(0,7);
@@ -316,8 +398,11 @@ console.log(this.compagni);
    {
     
     this.dainvitare = $event;
-    this.teamservice.addTeam(this.courseId,this.groupName,this.dainvitare,this.studentId,this.timeoutValue).pipe
-    (first()).subscribe(data => {console.log(data)}, error => {this.error =error});
+   
+         this.teamservice.addTeam(this.courseId,this.groupName,this.dainvitare,this.timeoutValue,this.studentId)
+        .subscribe(data => {console.log(data)}, error => {this.error =error});
+      
+
 
    }
    

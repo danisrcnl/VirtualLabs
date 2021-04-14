@@ -53,6 +53,11 @@ private _url5 : string = "http://localhost:4000/proposals";
   return this.http.post<any>(`${environment.apiUrlcourse}/`,{courseDTO,teacherId});
  }
 
+ getAvailableStudents(courseName : string) : Observable <StudentDTO[]>
+ {
+   return this.http.get<any>(`${environment.apiUrlcourse}/${courseName}/getAvailableStudents`);
+ }
+ 
 
 
 

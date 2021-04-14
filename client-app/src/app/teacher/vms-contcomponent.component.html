@@ -1,7 +1,7 @@
 <div>
     <nav mat-tab-nav-bar>
-      <a mat-tab-link routerLink ="../" routerLinkActive = "active">Studenti</a>
-      <a mat-tab-link routerLink = "../vms" routerLinkActive = "active">Vms</a>
+      <a mat-tab-link [routerLink]="[href2]" [queryParams]="{name : firstParam}" routerLinkActive="active">Studenti</a>
+      <a mat-tab-link [routerLink]="[href]" [queryParams]="{name : firstParam}" routerLinkActive="active">Vms</a>
     </nav>
     <router-outlet></router-outlet>
 

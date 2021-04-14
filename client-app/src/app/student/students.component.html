@@ -83,16 +83,21 @@
   <th>Cognome</th>
   <th>Accettato</th>
 </tr>
-<tr *ngFor = "let memberss of members">
-<i *ngIf = "memberss.teamid == team.id"> {{memberss.studentid}} {{memberss.nome}}
-  {{memberss.cognome}} {{memberss.accettato}}
+<tr *ngFor = "let memberss of membersStatus">
+<i *ngIf = "memberss.teamid == team.id"> 
+ <tr>
+  <th>{{memberss.studentId}}</th> 
+  <th>{{memberss.nome}}</th>
+  <th>{{memberss.cognome}}</th> 
+  <th>{{memberss.accettato}}</th>
+  </tr>
 </i>
 <button mat-raised-button (click)="accept()"> Accetta </button>
 <button mat-raised-button (click)="reject()"> Rifiuta </button>
-</tr>
+<tr>
 
+</ng-container>
 
-  </ng-container>
 
     <!--<div class="row">
         <td *ngFor="let student of enrolledstudents">
