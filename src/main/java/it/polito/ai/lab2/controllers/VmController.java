@@ -94,11 +94,13 @@ public class VmController {
 
     @PostMapping("/courses/{courseName}/setVmModel")
     public VmModelDTO setVmModel (@PathVariable String courseName, @RequestBody VmModelDTO vmModelDTO) {
+        Long id = null;
         try {
-            vmService.addVmModelForCourse(vmModelDTO, courseName);
+            id = vmService.addVmModelForCourse(vmModelDTO, courseName);
         } catch (AiException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
+        vmModelDTO.setId(id);
         return ModelHelper.enrich(vmModelDTO);
     }
 
