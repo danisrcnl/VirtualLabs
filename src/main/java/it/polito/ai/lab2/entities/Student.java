@@ -54,7 +54,7 @@ public class Student {
     }
 
     @OneToMany(mappedBy = "creator")
-    private List<Vm> createdTeams;
+    private List<Team> createdTeams;
     {
         createdTeams = new ArrayList<>();
     }
