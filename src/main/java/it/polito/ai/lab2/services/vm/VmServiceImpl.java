@@ -6,6 +6,7 @@ import it.polito.ai.lab2.dtos.VmDTO;
 import it.polito.ai.lab2.dtos.VmModelDTO;
 import it.polito.ai.lab2.entities.*;
 import it.polito.ai.lab2.repositories.*;
+import it.polito.ai.lab2.services.student.StudentService;
 import it.polito.ai.lab2.services.team.TeamService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,9 @@ public class VmServiceImpl implements VmService {
     @Autowired
     TeamService teamService;
 
+    @Autowired
+    StudentService studentService;
+
     @Override
     public Long addVmToTeam(VmDTO vm, String courseName, String teamName, String creator) throws TeamNotFoundException, VmServiceException {
 
@@ -73,7 +77,9 @@ public class VmServiceImpl implements VmService {
         if(!studentRepository.existsById(creator))
             throw new StudentNotFoundException("Creator has an invalid identifier (" + creator + ")");
 
-        if(!teamService.getMembers(courseName, teamName).contains(creator))
+        StudentDTO creatorStudent = studentService.getStudent(creator).get();
+
+        if(!teamService.getMembers(courseName, teamName).contains(creatorStudent))
             throw new StudentNotFoundException("Creator doesn't belong to team " + teamName);
 
 
