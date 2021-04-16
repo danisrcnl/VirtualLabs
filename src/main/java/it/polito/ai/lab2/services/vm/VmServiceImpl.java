@@ -73,6 +73,9 @@ public class VmServiceImpl implements VmService {
         if(!studentRepository.existsById(creator))
             throw new StudentNotFoundException("Creator has an invalid identifier (" + creator + ")");
 
+        if(!teamService.getMembers(courseName, teamName).contains(creator))
+            throw new StudentNotFoundException("Creator doesn't belong to team " + teamName);
+
 
         Student creator_entity = studentRepository.getOne(creator);
 
