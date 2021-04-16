@@ -99,6 +99,7 @@ public class TeamController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
 
+        memberIds.remove(creator);
         notificationService.notifyTeam(courseName, teamName, memberIds, hours);
         return ModelHelper.enrich(
                         teamService
