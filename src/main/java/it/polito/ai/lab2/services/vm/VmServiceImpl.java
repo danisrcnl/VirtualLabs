@@ -62,6 +62,14 @@ public class VmServiceImpl implements VmService {
                 teamRepository.getTeamByCourseAndName(courseName, teamName).getCourse().getVmModel().getMaxRam())
             throw new VmServiceException("You exceeded ram space limit");
 
+        if(teamService.getVmsForTeam(courseName, teamName).size() + 1 >
+                vmModelRepository.getVmModelByCourse(courseName).getMaxVmsForTeam())
+            throw new VmServiceException("You exceeded max number of allocated vms for team " + teamName);
+
+        if(vmRepository.getVmsForCourse(courseName).size() + 1 >
+                vmModelRepository.getVmModelByCourse(courseName).getMaxVmsForCourse())
+            throw new VmServiceException("You exceeded max number of allocated vms for course " + courseName);
+
         if(!studentRepository.existsById(creator))
             throw new StudentNotFoundException("Creator has an invalid identifier (" + creator + ")");
 

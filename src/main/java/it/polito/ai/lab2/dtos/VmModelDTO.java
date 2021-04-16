@@ -17,5 +17,7 @@ public class VmModelDTO extends RepresentationModel<VmModelDTO> {
     private int maxNVCpu;
     private int maxDisk;
     private int maxRam;
+    private int maxVmsForCourse;
+    private int maxVmsForTeam;
 
 }

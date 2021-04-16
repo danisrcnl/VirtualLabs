@@ -26,6 +26,10 @@ public class VmModel {
 
     private int maxRam;     // max ram a team can allocate
 
+    private int maxVmsForCourse;
+
+    private int maxVmsForTeam;
+
     /*
     @OneToOne(mappedBy = "vmModel")
     @JoinColumn(name = "course")
