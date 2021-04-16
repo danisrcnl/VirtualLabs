@@ -3,6 +3,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Group } from '../model/group.model';
 import { StudentService } from '../services/student.service';
 import { Vms } from '../assets/vms.model';
+import { vmModelDTO } from 'app/model/vmModelDTO.model';
+import { VmService } from 'app/services/vm.service';
+
+export interface DialogDataVm {
+  VPCU  : number;
+  RAM : number;
+  Disksize : number;
+  OperatingSystem : String;
+  ActiveVms :number;
+  TotalVms : number;
+}
 
 @Component({
   selector: 'app-vms-contcomponent',
@@ -11,7 +22,7 @@ import { Vms } from '../assets/vms.model';
 })
 export class VmsContcomponentComponent implements OnInit {
 
-  constructor(private studentservice : StudentService, private route: ActivatedRoute, private router : Router) { 
+  constructor(private studentservice : StudentService, private route: ActivatedRoute, private router : Router, private vmService : VmService) { 
 
     this.hreff = router.url;
     this.subject = this.hreff.substring(this.hreff.lastIndexOf('/')+1 );
@@ -24,6 +35,7 @@ export class VmsContcomponentComponent implements OnInit {
   
    
    vms : Vms[];
+   vmModel : vmModelDTO;
    groups : Group[];
    selectedegroups : Group[];
    public hreff : string ="";
@@ -37,6 +49,7 @@ export class VmsContcomponentComponent implements OnInit {
    ngOnInit() {
 
       this.firstParam = this.route.snapshot.queryParamMap.get('name');
+      console.log(this.firstParam);
 
 this.route.params.subscribe (routeParams => {
 this.hreff = this.router.url;
@@ -55,4 +68,12 @@ this.hreff = this.router.url;
    
     
   }
+
+  receivevmModel($event)
+    {
+      this.vmModel = $event;
+      console.log(this.vmModel);
+      this.vmService.setVmModel(this.vmModel,this.firstParam).subscribe(data => console.log(data));
+
+    }
 }

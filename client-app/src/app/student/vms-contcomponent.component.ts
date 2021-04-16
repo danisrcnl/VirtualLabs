@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from 'app/auth/authservices/auth.service';
 import { User } from 'app/auth/user';
 import { CourseService } from 'app/services/course.service';
+import { vmModelDTO } from 'app/model/vmModelDTO.model';
 
 @Component({
   selector: 'app-vms-contcomponent',
@@ -30,6 +31,7 @@ export class VmsContcomponentComponent2 implements OnInit {
         public subject : string ="";
    currentUser : User;
     firstParam : string ="";
+    vmModel : vmModelDTO;
   
    ngOnInit() {
 
@@ -67,6 +69,12 @@ this.hreff = this.router.url;
     })
 
     
+}
+    receivevmModel($event)
+    {
+      this.vmModel = $event;
+      console.log(this.vmModel);
+    }
     
-  }
+  
 }

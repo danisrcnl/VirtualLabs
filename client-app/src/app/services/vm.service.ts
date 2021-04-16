@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { User } from '../auth/user';
 import { Vms } from 'app/assets/vms.model';
 import { environment } from 'environments/environment';
+import { vmModelDTO } from 'app/model/vmModelDTO.model';
 
 
 
@@ -14,5 +15,10 @@ export class VmService {
     getVmsByCourse (courseName) {
 
         return this.http.get<Vms[]>(`${environment.apiUrlvms}/courses/${courseName}`);
+    }
+
+    setVmModel (vmModel:vmModelDTO,courseName)
+    {
+        return this.http.post<any>(`${environment.apiUrlvms}/courses/${courseName}/setVmModel`,vmModel);
     }
 }

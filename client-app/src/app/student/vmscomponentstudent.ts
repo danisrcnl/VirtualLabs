@@ -5,6 +5,7 @@ import { Group } from '../model/group.model';
 import { StudentService } from '../services/student.service';
 import { Vms } from '../assets/vms.model';
 import { LimitDialogComponent } from './limit-dialog.component';
+import { vmModelDTO } from 'app/model/vmModelDTO.model';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class VmscomponentComponent2 implements OnInit {
 
   @Input ('vmspercourse')
   vms : Vms[];
+  vmModel : vmModelDTO;
 
    
 

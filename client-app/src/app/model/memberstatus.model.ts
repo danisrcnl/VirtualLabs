@@ -1,7 +1,7 @@
-export interface  MemberStatus {
+export class MemberStatus {
 
-    studentId : String,
-    accettato : boolean,
+    studentId : String;
+    hasAccepted : boolean;
     teamid : Number;
     nome : String;
     cognome: String; 

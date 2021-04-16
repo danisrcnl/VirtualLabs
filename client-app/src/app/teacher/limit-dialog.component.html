@@ -4,39 +4,48 @@
         <div class="row">
           <div class="input-field col s12">
             
-            <input matInput type="text" id="VCPU" placeholder="VCPU" autocomplete="off" formControlName="VCPU" [(ngModel)]="VCPU">
+            <input matInput type="text" id="VCPU" placeholder="VCPU" autocomplete="off" formControlName="VCPU" [(ngModel)]="data.VCPU">
             {{alertVCPU}}
           </div>
         </div>
         <div class="row"> 
           <div class="input-field col s12">
             
-            <input matInput type="text" id="RAM" placeholder="RAM" formControlName="RAM" [(ngModel)]="RAM" >
+            <input matInput type="text" id="RAM" placeholder="RAM" formControlName="RAM" [(ngModel)]="data.RAM" >
             {{alertRAM}}
           </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
               
-              <input matInput type="text" id="Disksize" placeholder="Disksize" formControlName="Disksize" [(ngModel)]="Disksize" >
+              <input matInput type="text" id="Disksize" placeholder="Disksize" formControlName="Disksize" [(ngModel)]="data.Disksize" >
               {{alertDISKSIZE}}
             </div>
           </div>
           <div class="row">
             <div class="input-field col s12">
+          
+              <input matInput type="text" id="OperatingSystem" placeholder="Operating System" formControlName="OperatingSystem"
+                [(ngModel)]="data.OperatingSystem">
+              {{alertOperatingSystem}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
               
-              <input matInput type="text" id="ActiveVms" placeholder="ActiveVms" formControlName="ActiveVms" [(ngModel)]="ActiveVms" >
+              <input matInput type="text" id="ActiveVms" placeholder="ActiveVms" formControlName="ActiveVms" [(ngModel)]="data.ActiveVms" >
               {{alertACTIVEVMS}}
             </div>
           </div>
           <div class="row">
             <div class="input-field col s12">    
-              <input matInput type="text" id="TotalVms" placeholder="TotalVms" formControlName="TotalVms" [(ngModel)]="TotalVms">
+              <input matInput type="text" id="TotalVms" placeholder="TotalVms" formControlName="TotalVms" [(ngModel)]="data.TotalVms">
               {{alertTOTALVMS}}
             </div>
           </div>
           <div>
-        <button mat-raised-button color="primary" type="submit" class = "limit"> IMPOSTA LIMITI </button> 
+       
+        <button mat-raised-button [mat-dialog-close]="data" color="primary"  type="submit" class = "limit"> IMPOSTA LIMITI </button> 
         <button mat-raised-button color="primary" (click)="close()"> CLOSE </button>
 </div>
 </form>

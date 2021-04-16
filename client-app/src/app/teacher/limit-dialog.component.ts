@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Vms } from 'app/assets/vms.model';
 import {MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { Inject } from '@angular/core';
+import { DialogDataVm } from './vmscomponent.component';
 
 @Component({
   selector: 'app-limit-dialog',
@@ -32,7 +33,7 @@ export class LimitDialogComponent implements OnInit {
   vmstemp: Vms[];
   length : number;
   
-  constructor(private formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: Vms[], public dialog: MatDialog) {
+  constructor(private formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: DialogDataVm, public dialog: MatDialog) {
 
   }
 
@@ -42,6 +43,7 @@ export class LimitDialogComponent implements OnInit {
       VCPU: [''],
       RAM: [''],
       Disksize: [''],
+      OperatingSystem: [''],
       ActiveVms: [''],
       TotalVms: ['']
       
@@ -67,6 +69,12 @@ this.dialog.closeAll();
 
 
 setlimit() {
+
+
+  
+
+
+
   this.alertACTIVEVMS = "";
   this.alertDISKSIZE = "";
   this.alertRAM = "";

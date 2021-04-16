@@ -256,6 +256,8 @@ export class StudentsContComponent implements OnInit {
                   this.tempmember = this.membersStatus.find(e => e.studentId == s.id);
                   this.tempmember.nome = s.name;
                   this.tempmember.cognome = s.firstName;
+                
+                  console.log(this.tempmember);
                  // this.membersStatus.push(this.tempmember);
                 }
                 
