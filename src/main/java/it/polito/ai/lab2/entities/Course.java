@@ -1,9 +1,6 @@
 package it.polito.ai.lab2.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -51,6 +48,8 @@ public class Course {
         assignments = new ArrayList<>();
     }
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToOne(cascade = CascadeType.REMOVE)
     private VmModel vmModel;
 
