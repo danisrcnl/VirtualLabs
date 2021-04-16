@@ -66,10 +66,6 @@ public class VmServiceImpl implements VmService {
                 teamRepository.getTeamByCourseAndName(courseName, teamName).getCourse().getVmModel().getMaxRam())
             throw new VmServiceException("You exceeded ram space limit");
 
-        if(teamService.getVmsForTeam(courseName, teamName).size() + 1 >
-                vmModelRepository.getVmModelByCourse(courseName).getMaxVmsForTeam())
-            throw new VmServiceException("You exceeded max number of allocated vms for team " + teamName);
-
         if(vmRepository.getVmsForCourse(courseName).size() + 1 >
                 vmModelRepository.getVmModelByCourse(courseName).getMaxVmsForCourse())
             throw new VmServiceException("You exceeded max number of allocated vms for course " + courseName);
@@ -123,6 +119,22 @@ public class VmServiceImpl implements VmService {
     public void startVm(Long id) throws VmNotFoundException {
         if(!vmRepository.existsById(id))
             throw new VmNotFoundException(id.toString());
+
+        Course course = vmRepository
+                .getOne(id)
+                .getTeam()
+                .getCourse();
+
+        List<VmDTO> activeVms = vmRepository
+                .getVmsForCourse(course.getName())
+                .stream()
+                .filter(vm -> vm.getCurrentStatus().equals(VmStatus.ACTIVE))
+                .map(vm -> modelMapper.map(vm, VmDTO.class))
+                .collect(Collectors.toList());
+
+        if (activeVms.size() + 1 > course.getVmModel().getMaxActiveVms())
+            throw new VmServiceException("There are too many active vms for course " + course.getName());
+
         vmRepository
                 .getOne(id)
                 .setCurrentStatus(VmStatus.ACTIVE);

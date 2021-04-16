@@ -28,7 +28,7 @@ public class VmModel {
 
     private int maxVmsForCourse;
 
-    private int maxVmsForTeam;
+    private int maxActiveVms;
 
     /*
     @OneToOne(mappedBy = "vmModel")
