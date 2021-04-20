@@ -159,7 +159,7 @@ public class TeamServiceImpl implements TeamService {
 
         for(String memberId : memberIds) {
             if(courseService.hasAlreadyATeamFor(memberId, courseName))
-                throw new TeamServiceException("Student " + " has already a team for course " + courseName);
+                throw new TeamServiceException("Student " + memberId + " has already a team for course " + courseName);
             team.addMember(studentRepository.getOne(memberId));
         }
 
@@ -167,7 +167,6 @@ public class TeamServiceImpl implements TeamService {
         team.setCreator(creator_entity);
 
         Team t = teamRepository.save(team);
-
 
         return modelMapper.map(t, TeamDTO.class);
     }
