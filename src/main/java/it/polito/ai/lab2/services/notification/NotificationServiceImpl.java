@@ -85,12 +85,15 @@ public class NotificationServiceImpl implements NotificationService {
                 .stream()
                 .map(s -> s.getId())
                 .collect(Collectors.toList());
+        List<Token> deleted;
         for(String id : memberIds) {
             List<Token> studentTokens = tokenRepository.findAllByStudentId(id);
             for(Token tk : studentTokens) {
-                if (!(tk.getTeamId() == t.getTeamId())) {
+                if (tk.getTeamId() != t.getTeamId()) {
+                    deleted = tokenRepository.findAllByTeamId(tk.getTeamId());
                     teamService.evictTeamById(tk.getTeamId());
-                    tokenRepository.delete(tk);
+                    for (Token tkDel : deleted)
+                        tokenRepository.delete(tkDel);
                 }
             }
         }
