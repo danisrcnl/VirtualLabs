@@ -96,6 +96,7 @@ public class VmController {
     public VmModelDTO setVmModel (@PathVariable String courseName, @RequestBody VmModelDTO vmModelDTO) {
         Long id = null;
         try {
+            vmModelDTO.setId(null);
             id = vmService.addVmModelForCourse(vmModelDTO, courseName);
         } catch (AiException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
