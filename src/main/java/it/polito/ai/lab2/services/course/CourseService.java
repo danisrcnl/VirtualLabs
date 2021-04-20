@@ -50,4 +50,6 @@ public interface CourseService {
     List<TeamDTO> getTeamForCourse (String courseName);
 
     Boolean hasAlreadyATeamFor(String studentId, String courseName);
+
+    CourseDTO getTeamCourse (int teamId);
 }

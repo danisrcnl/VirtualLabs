@@ -10,6 +10,7 @@ import it.polito.ai.lab2.entities.*;
 import it.polito.ai.lab2.repositories.CourseRepository;
 import it.polito.ai.lab2.repositories.StudentRepository;
 import it.polito.ai.lab2.repositories.TeacherRepository;
+import it.polito.ai.lab2.repositories.TeamRepository;
 import it.polito.ai.lab2.services.student.StudentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     TeacherRepository teacherRepository;
+
+    @Autowired
+    TeamRepository teamRepository;
 
     @Override
     public boolean addCourse(CourseDTO course) {
@@ -317,5 +321,14 @@ public class CourseServiceImpl implements CourseService {
         if(ids.contains(studentId))
             return true;
         return false;
+    }
+
+    @Override
+    public CourseDTO getTeamCourse(int teamId) throws TeamNotFoundException {
+        if(!teamRepository.existsById(teamId))
+            throw new TeamNotFoundException(teamId);
+        return modelMapper.map(teamRepository
+                .getOne(teamId)
+                .getCourse(), CourseDTO.class);
     }
 }
