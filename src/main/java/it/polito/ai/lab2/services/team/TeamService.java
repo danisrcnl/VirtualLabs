@@ -1,6 +1,7 @@
 package it.polito.ai.lab2.services.team;
 
 import it.polito.ai.lab2.dtos.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.io.Reader;
 import java.util.List;

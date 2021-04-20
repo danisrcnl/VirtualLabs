@@ -6,6 +6,7 @@ import it.polito.ai.lab2.dtos.VmDTO;
 import it.polito.ai.lab2.dtos.VmModelDTO;
 import it.polito.ai.lab2.entities.*;
 import it.polito.ai.lab2.repositories.*;
+import it.polito.ai.lab2.services.student.StudentService;
 import it.polito.ai.lab2.services.team.TeamService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,9 @@ public class VmServiceImpl implements VmService {
     @Autowired
     TeamService teamService;
 
+    @Autowired
+    StudentService studentService;
+
     @Override
     public Long addVmToTeam(VmDTO vm, String courseName, String teamName, String creator) throws TeamNotFoundException, VmServiceException {
 
@@ -62,8 +66,17 @@ public class VmServiceImpl implements VmService {
                 teamRepository.getTeamByCourseAndName(courseName, teamName).getCourse().getVmModel().getMaxRam())
             throw new VmServiceException("You exceeded ram space limit");
 
+        if(vmRepository.getVmsForCourse(courseName).size() + 1 >
+                vmModelRepository.getVmModelByCourse(courseName).getMaxVmsForCourse())
+            throw new VmServiceException("You exceeded max number of allocated vms for course " + courseName);
+
         if(!studentRepository.existsById(creator))
             throw new StudentNotFoundException("Creator has an invalid identifier (" + creator + ")");
+
+        StudentDTO creatorStudent = studentService.getStudent(creator).get();
+
+        if(!teamService.getMembers(courseName, teamName).contains(creatorStudent))
+            throw new StudentNotFoundException("Creator doesn't belong to team " + teamName);
 
 
         Student creator_entity = studentRepository.getOne(creator);
@@ -106,6 +119,22 @@ public class VmServiceImpl implements VmService {
     public void startVm(Long id) throws VmNotFoundException {
         if(!vmRepository.existsById(id))
             throw new VmNotFoundException(id.toString());
+
+        Course course = vmRepository
+                .getOne(id)
+                .getTeam()
+                .getCourse();
+
+        List<VmDTO> activeVms = vmRepository
+                .getVmsForCourse(course.getName())
+                .stream()
+                .filter(vm -> vm.getCurrentStatus().equals(VmStatus.ACTIVE))
+                .map(vm -> modelMapper.map(vm, VmDTO.class))
+                .collect(Collectors.toList());
+
+        if (activeVms.size() + 1 > course.getVmModel().getMaxActiveVms())
+            throw new VmServiceException("There are too many active vms for course " + course.getName());
+
         vmRepository
                 .getOne(id)
                 .setCurrentStatus(VmStatus.ACTIVE);

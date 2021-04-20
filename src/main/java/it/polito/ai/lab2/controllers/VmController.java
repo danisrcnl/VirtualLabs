@@ -28,6 +28,8 @@ public class VmController {
 
     @PostMapping("/{courseName}/{teamName}")
     public Long add (@PathVariable String courseName, @PathVariable String teamName, @RequestBody VmSubmission vmSubmission) throws ResponseStatusException {
+        if (teamService.getTeam(courseName, teamName).getStatus() == 0)
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Team " + teamName + " is not active");
         try {
             return vmService
                     .addVmToTeam(vmSubmission.getVmDTO(), courseName, teamName, vmSubmission.getCreator());
@@ -69,6 +71,8 @@ public class VmController {
 
     @GetMapping("/teams/{teamId}")
     public List<VmDTO> getVmsForTeam (@PathVariable int teamId) throws ResponseStatusException {
+        if (teamService.getTeamById(teamId).getStatus() == 0)
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Team " + teamId + " is not active");
         try {
             return teamService
                     .getVmsForTeamById(teamId)
@@ -90,11 +94,13 @@ public class VmController {
 
     @PostMapping("/courses/{courseName}/setVmModel")
     public VmModelDTO setVmModel (@PathVariable String courseName, @RequestBody VmModelDTO vmModelDTO) {
+        Long id = null;
         try {
-            vmService.addVmModelForCourse(vmModelDTO, courseName);
+            id = vmService.addVmModelForCourse(vmModelDTO, courseName);
         } catch (AiException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
+        vmModelDTO.setId(id);
         return ModelHelper.enrich(vmModelDTO);
     }
 

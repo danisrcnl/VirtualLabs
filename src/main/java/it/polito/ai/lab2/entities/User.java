@@ -1,9 +1,6 @@
 package it.polito.ai.lab2.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -42,6 +39,8 @@ public class User implements UserDetails {
     @OneToOne(cascade = CascadeType.REMOVE)
     private Teacher teacher;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToOne(cascade = CascadeType.REMOVE)
     private Student student;
 

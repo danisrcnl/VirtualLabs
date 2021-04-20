@@ -2,12 +2,11 @@ package it.polito.ai.lab2.services.notification;
 import it.polito.ai.lab2.controllers.NotificationController;
 import it.polito.ai.lab2.dataStructures.MemberStatus;
 import it.polito.ai.lab2.dtos.StudentDTO;
-import it.polito.ai.lab2.entities.TeamNotFoundException;
-import it.polito.ai.lab2.entities.Token;
-import it.polito.ai.lab2.entities.User;
-import it.polito.ai.lab2.entities.UserNotFoundException;
+import it.polito.ai.lab2.dtos.TeacherDTO;
+import it.polito.ai.lab2.entities.*;
 import it.polito.ai.lab2.repositories.TokenRepository;
 import it.polito.ai.lab2.repositories.UserRepository;
+import it.polito.ai.lab2.services.student.StudentService;
 import it.polito.ai.lab2.services.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
@@ -37,11 +36,13 @@ public class NotificationServiceImpl implements NotificationService {
     TokenRepository tokenRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    StudentService studentService;
 
     @Override
     public void sendMessage(String address, String subject, String body) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setTo("kribos3@hotmail.it");
+        simpleMailMessage.setTo("ideagraphicdesign.lecce@gmail.com");
         simpleMailMessage.setSubject(subject);
         simpleMailMessage.setText(body);
         javaMailSender.send(simpleMailMessage);
@@ -110,10 +111,13 @@ public class NotificationServiceImpl implements NotificationService {
             t.setStudentId(memberId);
             tokenRepository.save(t);
             tokenRepository.flush();
+
+            String name = studentService.getStudent(memberId).get().getFirstName();
+
             Link rootLink = linkTo(NotificationController.class).withSelfRel();
             String confirmLink = rootLink.getHref() + "/confirm/" + id;
             String rejectLink = rootLink.getHref() + "/reject/" + id;
-            String message = "Ciao s" + memberId + "@studenti.polito.it, questo è un messaggio generato per gli " +
+            String message = "Ciao " + name + ", questo è un messaggio generato per gli " +
                     "utenti del team " + teamName + "!" + System.lineSeparator() +
                     "Clicca qui per confermare l'invito:" + System.lineSeparator()
                     + confirmLink + System.lineSeparator() + "Clicca qui per rifiutare l'invito:" +
@@ -144,9 +148,15 @@ public class NotificationServiceImpl implements NotificationService {
         tokenRepository.save(t);
         tokenRepository.flush();
 
+        Teacher teacher = u.getTeacher();
+        Student student = u.getStudent();
+        String name = "";
+        if (teacher != null) name = teacher.getFirstName();
+        if (student != null) name = student.getFirstName();
+
         Link rootLink = linkTo(NotificationController.class).withSelfRel();
         String confirmLink = rootLink.getHref() + "/register/confirm/" + id;
-        String message = "Ciao " + u.getUsername() + "! Grazie per esserti iscritto, trovi qui sotto il link " +
+        String message = "Ciao " + name + "! Grazie per esserti iscritto, trovi qui sotto il link " +
                 " per confermare la tua iscrizione:" + System.lineSeparator() + confirmLink + System.lineSeparator() +
                 System.lineSeparator() + "Se non sei stato tu a effettuare questa operazione, ti invitiamo ad ignorare la mail.";
         String receiver = u.getUsername();
