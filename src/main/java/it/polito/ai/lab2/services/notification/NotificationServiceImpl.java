@@ -77,6 +77,9 @@ public class NotificationServiceImpl implements NotificationService {
         tokenRepository.delete(t);
         tokenRepository.flush();
 
+        if(tokenRepository.findAllByTeamId(teamId).isEmpty())
+            teamService.activateTeamById(teamId);
+
         List<String> memberIds = teamService
                 .getMembersById(t.getTeamId())
                 .stream()
@@ -85,13 +88,12 @@ public class NotificationServiceImpl implements NotificationService {
         for(String id : memberIds) {
             List<Token> studentTokens = tokenRepository.findAllByStudentId(id);
             for(Token tk : studentTokens) {
-                teamService.evictTeamById(tk.getTeamId());
-                tokenRepository.delete(tk);
+                if (!(tk.getTeamId() == t.getTeamId())) {
+                    teamService.evictTeamById(tk.getTeamId());
+                    tokenRepository.delete(tk);
+                }
             }
         }
-
-        if(tokenRepository.findAllByTeamId(teamId).isEmpty())
-            teamService.activateTeamById(teamId);
 
         return true;
     }
