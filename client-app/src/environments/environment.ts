@@ -6,6 +6,7 @@ export const environment = {
   apiUrlcourse: 'http://localhost:8080/API/courses',
   apiUrlstudent: 'http://localhost:8080/API/students',
   apiUrlteacher: 'http://localhost:8080/API/teachers',
-  apiUrlvms: 'http://localhost:8080/API/vms'
+  apiUrlvms: 'http://localhost:8080/API/vms',
+  apiUrlnotification: 'http://localhost:8080/API/notification'
 };
 

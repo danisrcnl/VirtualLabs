@@ -92,8 +92,10 @@
   <th>{{memberss.hasAccepted}}</th>
   </tr>
 </i>
+<div *ngIf = "memberss.studentId == currentStudent.id">
 <button mat-raised-button (click)="accept()"> Accetta </button>
 <button mat-raised-button (click)="reject()"> Rifiuta </button>
+</div>
 <tr>
 
 </ng-container>

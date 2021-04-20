@@ -1,16 +1,10 @@
 
-<table *ngFor="let group of groups">
-	<tr>
-		<td>{{group.name}}</td>
-        <td>-</td>
-        <button mat-raised-button (click)="openlimitdialog()"> Imposta Limiti </button>
-	</tr>
-	<tr *ngFor="let vmss of vms ">
-        <i *ngIf="vmss.groupId == group.id">  {{ vmss.owner }} {{vmss.stato}} </i>
+ <tr *ngFor="let vmss of vmsperteam">
+        <i>{{ vmss.owner }} {{vmss.stato}} </i>
 		<td></td>
         <td> </td>
         
 	</tr>
-</table>
+
 
 

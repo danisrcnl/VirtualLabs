@@ -286,12 +286,7 @@ export class StudentsContComponent implements OnInit {
 
            console.log(this.tabvalue);
 
-        this.studentservice.getproposals().subscribe(propos => {
-          propos.forEach (s => {
-            this.proposals.push(s);
-          })
-
-        })
+        
           //this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);  
           
 

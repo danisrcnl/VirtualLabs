@@ -4,7 +4,7 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject, Subject} from 'rxjs';
 import { Course } from '../model/course.model';
 import { find, catchError, tap } from 'rxjs/operators';
-import { Vms } from '../assets/vms.model';
+import { Vms } from '../model/vms.model';
 import { Group } from '../model/group.model';
 import { User } from '../auth/user';
 import { Studentreturn } from '../auth/models/studentreturn';

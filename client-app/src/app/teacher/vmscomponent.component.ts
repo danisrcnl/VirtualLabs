@@ -1,19 +1,20 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Group } from '../model/group.model';
 import { StudentService } from '../services/student.service';
-import { Vms } from '../assets/vms.model';
+import { Vms } from '../model/vms.model';
 import { LimitDialogComponent } from './limit-dialog.component';
 import { vmModelDTO } from 'app/model/vmModelDTO.model';
 import { StudentDTO } from 'app/model/studentDTO.model';
 
 
 export interface DialogDataVm {
-  VPCU  : number;
+  VCPU  : number;
   RAM : number;
   Disksize : number;
   ActiveVms :number;
+  OperatingSystem: String;
   TotalVms : number;
 }
 
@@ -24,10 +25,30 @@ export interface DialogDataVm {
 })
 export class VmscomponentComponent implements OnInit {
 
+
+  displayedColumns: string[] = ['maxNVCpu', 'maxDisk', 'maxRam', 'operatingSystem','maxVmsForCourse','maxActiveForCourse'];
+  
+
    @Output() addvmModelEvent = new EventEmitter<vmModelDTO>();
   
   href : string ="";
-  vmModel : vmModelDTO = new vmModelDTO();
+  vmModel : vmModelDTO;
+  datasource;
+  vmarray : vmModelDTO[] = new Array<vmModelDTO>();
+
+  @Input('vmModel')
+  set vmmodel (model : vmModelDTO)
+  {
+    this.vmModel = model;
+    this.vmarray.push(this.vmModel);
+    
+    
+  }
+
+
+ 
+
+
   vms : Vms[] = [];
   groups : Group[] = [];
   constructor(public dialog: MatDialog, private studentservice: StudentService,private router: Router, private activeRoute: ActivatedRoute,
@@ -40,6 +61,7 @@ export class VmscomponentComponent implements OnInit {
 
   ngOnInit(){
 
+   console.log(this.vmarray);
 
   }
 
@@ -66,7 +88,7 @@ export class VmscomponentComponent implements OnInit {
       
       this.vmModel.maxNVCpu = data.VCPU;
       this.vmModel.maxRam = data.RAM;
-      this.vmModel.maxActiveForCourse = data.ActiveVms;
+      this.vmModel.maxVmsForTeam = data.ActiveVms;
       this.vmModel.maxDisk = data.Disksize;
       this.vmModel.operatingSystem = data.OperatingSystem;
       this.vmModel.maxVmsForCourse= data.TotalVms;

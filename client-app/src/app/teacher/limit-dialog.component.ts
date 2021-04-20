@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Vms } from 'app/assets/vms.model';
+import { Vms } from 'app/model/vms.model';
 import {MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { Inject } from '@angular/core';
 import { DialogDataVm } from './vmscomponent.component';
@@ -24,6 +24,7 @@ export class LimitDialogComponent implements OnInit {
   alertTOTALVMS : string = "";
   TOTALVMS : number = 0;
   alertDISKSIZE : string = "";
+  alertOperatingSystem : string = "";
   DISKSIZE : number = 0;
   VCPU: number;
   RAM: number;

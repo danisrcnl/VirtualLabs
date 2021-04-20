@@ -5,6 +5,6 @@ export class vmModelDTO {
     maxRam : number;
     operatingSystem : String;
     maxVmsForCourse : number; 
-    maxActiveForCourse : number
+    maxVmsForTeam : number
 
 }

@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Group } from '../model/group.model';
 import { StudentService } from '../services/student.service';
-import { Vms } from '../assets/vms.model';
+import { Vms } from '../model/vms.model';
 import { LimitDialogComponent } from './limit-dialog.component';
 import { vmModelDTO } from 'app/model/vmModelDTO.model';
 
@@ -16,10 +16,17 @@ import { vmModelDTO } from 'app/model/vmModelDTO.model';
 export class VmscomponentComponent2 implements OnInit {
   href : string ="";
   //vms : Vms[] = new Array<Vms>();
-  groups : Group[] = [];
+  
+  vmsperteam : Vms[];
 
-  @Input ('vmspercourse')
-  vms : Vms[];
+  @Input ('vmsperteam')
+  set Vms (vmss: Vms[])
+  {
+    this.vmsperteam = vmss;
+  }
+ 
+
+
   vmModel : vmModelDTO;
 
    
@@ -34,7 +41,7 @@ export class VmscomponentComponent2 implements OnInit {
 
   ngOnInit(){
 
-    console.log(this.vms);
+    console.log(this.vmsperteam);
 
 
   }
@@ -45,7 +52,7 @@ export class VmscomponentComponent2 implements OnInit {
     this.dialog.open (LimitDialogComponent, { height: '300px',
     width: '400px',
     data : {
-      dataKey: this.vms
+      dataKey: this.vmsperteam
   
     }
   

@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Group } from '../model/group.model';
 import { StudentService } from '../services/student.service';
-import { Vms } from '../assets/vms.model';
+import { Vms } from '../model/vms.model';
 import { vmModelDTO } from 'app/model/vmModelDTO.model';
 import { VmService } from 'app/services/vm.service';
 
 export interface DialogDataVm {
-  VPCU  : number;
+  VCPU  : number;
   RAM : number;
   Disksize : number;
   OperatingSystem : String;
@@ -36,6 +36,7 @@ export class VmsContcomponentComponent implements OnInit {
    
    vms : Vms[];
    vmModel : vmModelDTO;
+   vmModel2 : vmModelDTO;
    groups : Group[];
    selectedegroups : Group[];
    public hreff : string ="";
@@ -48,21 +49,28 @@ export class VmsContcomponentComponent implements OnInit {
   
    ngOnInit() {
 
-      this.firstParam = this.route.snapshot.queryParamMap.get('name');
-      console.log(this.firstParam);
+     this.firstParam = this.route.snapshot.queryParamMap.get('name');
+     console.log(this.firstParam);
 
-this.route.params.subscribe (routeParams => {
-this.hreff = this.router.url;
-  this.subject = this.hreff.substring(0,this.hreff.lastIndexOf('?'));
-  this.hreff = this.hreff.substring(0,this.hreff.lastIndexOf('/'));
-  this.href = this.subject; console.log(this.href);
-   this.href2 = this.hreff + '/students';
-   console.log(this.href2);
+     this.route.params.subscribe (routeParams => {
+     this.hreff = this.router.url;
+     this.subject = this.hreff.substring(0,this.hreff.lastIndexOf('?'));
+     this.hreff = this.hreff.substring(0,this.hreff.lastIndexOf('/'));
+     this.href = this.subject; console.log(this.href);
+     this.href2 = this.hreff + '/students';
+     console.log(this.href2);
 ;
 });
 
-    this.studentservice.getvms().subscribe(data => this.vms = data);
-    this.studentservice.getgroups().subscribe (s => this.groups = s);
+    
+
+    this.vmService.getVmModelforCourse(this.firstParam).subscribe(data => {
+
+    this.vmModel = data;
+    console.log(this.vmModel);
+   })
+
+
  
  
    
@@ -72,8 +80,10 @@ this.hreff = this.router.url;
   receivevmModel($event)
     {
       this.vmModel = $event;
+      this.vmModel2 = $event;
       console.log(this.vmModel);
-      this.vmService.setVmModel(this.vmModel,this.firstParam).subscribe(data => console.log(data));
+      console.log(this.vmModel2);
+      this.vmService.setVmModel(this.vmModel2,this.firstParam).subscribe(data => console.log(data));
 
     }
 }

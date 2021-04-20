@@ -1,4 +1,16 @@
 
+<div *ngIf = "vmModel">
+<h1> Il vmModel ha i seguenti parametri: </h1>
+<p> maxNVCpu = {{vmModel.maxNVCpu}}</p>
+<p> maxDisk = {{vmModel.maxDisk}}</p>
+<p> maxRam = {{vmModel.maxRam}}</p>
+<p> operatingSystem = {{vmModel.operatingSystem}}</p>
+<p> maxVmsForCourse = {{vmModel.maxVmsForCourse}}</p>
+<p> maxVmsForTeam = {{vmModel.maxVmsForTeam}}</p>
+</div>
+
+
+
 <button class="btn2" mat-raised-button (click)="openlimitdialog()"> Imposta Vm Model 
 
 </button>
