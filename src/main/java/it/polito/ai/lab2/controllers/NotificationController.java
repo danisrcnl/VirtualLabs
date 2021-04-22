@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/notification")
 public class NotificationController {
@@ -21,10 +23,17 @@ public class NotificationController {
             return "redirect:/notification/confirmation/success";
         else return "redirect:/notification/confirmation/failure";
     }
-/*
-    @GetMapping("/confirm/{studentId}/{teamId}")
-    public Boolean confirm ()
-*/
+
+    @GetMapping("/confirm/{teamId}/{studentId}")
+    public String confirmTeamMember (@PathVariable int teamId, @PathVariable String studentId) {
+        Optional<String> token = notificationService.getMemberToken(teamId, studentId);
+        if (!token.isPresent())
+            return "redirect:/notification/confirmation/failure";
+        if (notificationService.confirm(token.get()))
+            return "redirect:/notification/confirmation/success";
+        else return "redirect:/notification/confirmation/failure";
+    }
+
     @GetMapping("/register/confirm/{tokenId}")
     public String confirmSignUp (@PathVariable String tokenId) {
         if(notificationService.confirmUser(tokenId))

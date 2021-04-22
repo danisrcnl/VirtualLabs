@@ -1,9 +1,9 @@
 package it.polito.ai.lab2.services.notification;
 
 import it.polito.ai.lab2.dataStructures.MemberStatus;
-import it.polito.ai.lab2.dtos.TeamDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface NotificationService {
 
@@ -14,4 +14,5 @@ public interface NotificationService {
     void notifyUser (String email);
     boolean confirmUser (String token);
     List<MemberStatus> getMembersStatus (int teamId);
+    Optional<String> getMemberToken (int teamId, String studentId);
 }

@@ -2,7 +2,6 @@ package it.polito.ai.lab2.services.notification;
 import it.polito.ai.lab2.controllers.NotificationController;
 import it.polito.ai.lab2.dataStructures.MemberStatus;
 import it.polito.ai.lab2.dtos.StudentDTO;
-import it.polito.ai.lab2.dtos.TeacherDTO;
 import it.polito.ai.lab2.entities.*;
 import it.polito.ai.lab2.repositories.TokenRepository;
 import it.polito.ai.lab2.repositories.UserRepository;
@@ -21,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -44,7 +44,7 @@ public class NotificationServiceImpl implements NotificationService {
     CourseService courseService;
 
     @Override
-    public void sendMessage(String address, String subject, String body) {
+    public void sendMessage (String address, String subject, String body) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setTo("ideagraphicdesign.lecce@gmail.com");
         simpleMailMessage.setSubject(subject);
@@ -53,11 +53,11 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public boolean confirm(String token) {
+    public boolean confirm (String token) {
 
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris"));
 
-        if(!tokenRepository.existsById(token))
+        if (!tokenRepository.existsById(token))
             return false;
 
         Token t = tokenRepository.getOne(token);
@@ -65,7 +65,7 @@ public class NotificationServiceImpl implements NotificationService {
         int teamId = t.getTeamId();
         List<Token> liveTokens = tokenRepository.findAllByExpiryBefore(Timestamp.valueOf(localDateTime));
 
-        if(!liveTokens.contains(t) || courseService.hasAlreadyATeamFor(t.getStudentId(), courseService.getTeamCourse(t.getTeamId()).getName())) {
+        if (!liveTokens.contains(t) || courseService.hasAlreadyATeamFor(t.getStudentId(), courseService.getTeamCourse(t.getTeamId()).getName())) {
             List<Token> teamTokens = tokenRepository.findAllByTeamId(teamId);
             for(Token teamToken : teamTokens)
                 tokenRepository.delete(teamToken);
@@ -77,7 +77,7 @@ public class NotificationServiceImpl implements NotificationService {
         tokenRepository.delete(t);
         tokenRepository.flush();
 
-        if(tokenRepository.findAllByTeamId(teamId).isEmpty())
+        if (tokenRepository.findAllByTeamId(teamId).isEmpty())
             teamService.activateTeamById(teamId);
 
         List<String> memberIds = teamService
@@ -86,9 +86,9 @@ public class NotificationServiceImpl implements NotificationService {
                 .map(s -> s.getId())
                 .collect(Collectors.toList());
         List<Token> deleted;
-        for(String id : memberIds) {
+        for (String id : memberIds) {
             List<Token> studentTokens = tokenRepository.findAllByStudentId(id);
-            for(Token tk : studentTokens) {
+            for (Token tk : studentTokens) {
                 if (tk.getTeamId() != t.getTeamId()) {
                     deleted = tokenRepository.findAllByTeamId(tk.getTeamId());
                     teamService.evictTeamById(tk.getTeamId());
@@ -102,9 +102,9 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public boolean reject(String token) {
+    public boolean reject (String token) {
 
-        if(!tokenRepository.existsById(token))
+        if (!tokenRepository.existsById(token))
             return false;
 
         Token t = tokenRepository.getOne(token);
@@ -154,7 +154,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void notifyUser (String email) throws UserNotFoundException {
 
-        if(!userRepository.findByUsername(email).isPresent())
+        if (!userRepository.findByUsername(email).isPresent())
             throw new UserNotFoundException(email);
         User u = userRepository.findByUsername(email).get();
         Long userId = u.getId();
@@ -188,18 +188,18 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public boolean confirmUser(String token) throws UserNotFoundException {
+    public boolean confirmUser (String token) throws UserNotFoundException {
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris"));
 
-        if(!tokenRepository.existsById(token))
+        if (!tokenRepository.existsById(token))
             return false;
 
         Token t = tokenRepository.getOne(token);
         List<Token> liveTokens = tokenRepository.findAllByExpiryBefore(Timestamp.valueOf(localDateTime));
-        if(!liveTokens.contains(t))
+        if (!liveTokens.contains(t))
             return false;
         Long userId = t.getUserId();
-        if(!userRepository.existsById(userId))
+        if (!userRepository.existsById(userId))
             throw new UserNotFoundException(userId.toString());
         userRepository.getOne(userId).setActive(true);
         return true;
@@ -222,11 +222,21 @@ public class NotificationServiceImpl implements NotificationService {
 
         List<MemberStatus> memberStatuses = new ArrayList<>();
 
-        for(String member : membersIds) {
+        for (String member : membersIds) {
             MemberStatus memberStatus = MemberStatus.builder().studentId(member).build();
             memberStatus.setHasAccepted(!pending.contains(member));
             memberStatuses.add(memberStatus);
         }
         return memberStatuses;
+    }
+
+    @Override
+    public Optional<String> getMemberToken(int teamId, String studentId) {
+        List<Token> teamTokens = new ArrayList<>(tokenRepository.findAllByTeamId(teamId));
+        for (Token tk : teamTokens) {
+            if (tk.getStudentId().equals(studentId))
+                return Optional.ofNullable(tk.getId());
+        }
+        return Optional.empty();
     }
 }
