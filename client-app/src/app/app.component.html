@@ -14,6 +14,7 @@
 <mat-icon class="login">login</mat-icon><i class="fas fa-sign-in-alt"></i>
 <a routerLink="/login"><span class="title"></span></a>
 <a *ngIf="currentUser"> Benvenuto {{currentUser.username}}</a>
+<!--<a *ngIf="currentUser"> Benvenuto {{currentStudent.name}} {{currentStudent.firstName}} {{(currentStudent.id)}}</a>-->
 <button  class="btn1" mat-raised-button (click)="openDialog()" *ngIf="!currentUser">Login </button>
 <button *ngIf="currentUser" class="btn1" mat-raised-button (click)="logout()"> Logout </button>
 

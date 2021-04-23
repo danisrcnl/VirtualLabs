@@ -472,27 +472,21 @@ console.log(this.compagni);
                
                data1.forEach(t => {
                   
-                  this.membersarray.push(t);
-                })
-               }
-              
-             )
-              
-            
-              for(let i=0;i<this.membersarray.length;i++) {
-             this.ms.firstName = this.membersarray[i].firstName;
-                  this.ms.lastName = this.membersarray[i].lastName;
-                  this.ms.studentId = this.membersarray[i].studentId;
-                  this.ms.hasAccepted = this.membersarray[i].hasAccepted;
-                  this.ms.isCreator = this.membersarray[i].isCreator;
-                  this.ms.teamid = data.id;  
-                  console.log(this.ms);
+                if(t.teamid==null){
+                  this.ms = t;
+                  this.ms.teamid = data.id;
                   this.membersStatus.push(this.ms);
-                  console.log(this.membersStatus);
-              }
+                  console.log(t);
+               }})
+                console.log(this.membersarray.length);
              
               console.log(this.membersStatus);
               this.compagnidigruppo$ = of(this.membersStatus);
+               }
+              )
+              
+            
+             
             
              
             }
