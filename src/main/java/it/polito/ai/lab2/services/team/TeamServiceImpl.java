@@ -239,6 +239,17 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public String getCreator(int id) throws TeamNotFoundException {
+        if (!teamRepository.existsById(id))
+            throw new TeamNotFoundException(id);
+
+        return teamRepository
+                .getOne(id)
+                .getCreator()
+                .getId();
+    }
+
+    @Override
     public int getTeamId(String courseName, String teamName) throws TeamNotFoundException {
         if(teamRepository.getTeamByCourseAndName(courseName, teamName) == null)
             throw new TeamNotFoundException(teamName);

@@ -53,4 +53,7 @@ public interface TeamService {
 
     // @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_TEAM_' + #id + '_MEMBER')")
     List<VmDTO> getVmsForTeamById (int id);
+
+    // @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_TEAM_' + #id + '_MEMBER')")
+    String getCreator (int id);
 }
