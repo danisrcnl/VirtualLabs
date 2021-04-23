@@ -38,15 +38,20 @@ export class StudentsComponent implements OnInit {
 
     @Output() invitestudentEvent = new EventEmitter<String[]>();
 
+    @Output() confirmrequestEventmatricola = new EventEmitter<String>();
+
+    @Output() confirmrequestEventteamid = new EventEmitter<number>();
+
     @Output() groupName = new EventEmitter <String>();
 
     @Output() timeoutValue = new EventEmitter <Number>();
 
-
+    compagnidigruppo$ : Observable<StudentDTO[]>;
     enrolledstudents : StudentDTO[];
     compagni : StudentDTO[];
     compagniDTO : StudentDTO[];
     groupid : number;
+    teams$ : Observable <Team[]>;
     teams : Team[];
     displayedColumns: string[] = ['select','name','firstname','serial'];
     headers = ['id','name','firstName'];
@@ -56,7 +61,7 @@ export class StudentsComponent implements OnInit {
     students : StudentDTO [];
     studentsIds : String[] = []; 
     membersStatus : MemberStatus[] = new Array<MemberStatus>();
-  
+    
     public dataSource2 = new MatTableDataSource<StudentDTO>(this.CompagniDTO);
    
     mycontrol = new FormControl();
@@ -93,6 +98,12 @@ export class StudentsComponent implements OnInit {
  
     }
 
+    @Input('compagnidigruppo$')
+    set Compagnidigruppo (comp : Observable<StudentDTO[]>)
+    {
+      this.compagnidigruppo$ = comp;
+      console.log(this.compagnidigruppo$);
+    }
 
     @Input('membersStatus')
     set membersstatus (memberss : MemberStatus[])
@@ -126,6 +137,11 @@ export class StudentsComponent implements OnInit {
       this.teamName = name;
     }
     
+    @Input ('teams$')
+    set Teams$ (val: Observable<Team[]>)
+    {
+      this.teams$ = val;
+    }
 
 
     @Input ('teams')
@@ -136,6 +152,7 @@ export class StudentsComponent implements OnInit {
 
    ngOnChanges (changes: SimpleChanges) {
 
+    
 
     this.tableclasses.hide = changes.tableValue.currentValue;
     this.tableclasses.show = !changes.tableValue.currentValue;;
@@ -193,7 +210,9 @@ console.log (queryParams);
 console.log (this.teams);
 console.log(this.membersStatus);
 
-
+this.teams$.subscribe(data => {
+  console.log(data);
+})
 
 
 });
@@ -312,12 +331,14 @@ this.hreff = this.router.url;
 
   }
 
-  accept()
+  accept(matricola,teamid)
   {
-
+      console.log(matricola,teamid);
+      this.confirmrequestEventmatricola.emit(matricola);
+      this.confirmrequestEventteamid.emit(teamid);
   }
 
-  reject ()
+  reject (matricola,teamid)
   {
     
   }

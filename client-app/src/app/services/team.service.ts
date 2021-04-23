@@ -43,7 +43,7 @@ export class TeamService {
 getMembers(courseName,teamName)
  
  {
-     return this.http.get<MemberStatus[]>(`${environment.apiUrlteam}/${courseName}/${teamName}/membersStatus`);
+     return this.http.get<any>(`${environment.apiUrlteam}/${courseName}/${teamName}/membersStatus`);
  }
 
 

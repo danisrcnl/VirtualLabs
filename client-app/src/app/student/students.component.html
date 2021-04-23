@@ -75,7 +75,7 @@
 <div class="limiter">
   <table>
     <h1> Proposte in attesa</h1>
-  <ng-container *ngFor="let team of teams">
+  <ng-container *ngFor="let team of teams$ | async">
  <tr><td><h2>{{team.name}}</h2></td></tr>
 <tr>
   <th>Matricola</th>
@@ -83,20 +83,21 @@
   <th>Cognome</th>
   <th>Accettato</th>
 </tr>
-<tr *ngFor = "let memberss of membersStatus">
+<tr *ngFor = "let memberss of compagnidigruppo$ | async">
 <i *ngIf = "memberss.teamid == team.id"> 
  <tr>
   <th>{{memberss.studentId}}</th> 
-  <th>{{memberss.nome}}</th>
-  <th>{{memberss.cognome}}</th> 
+  <th>{{memberss.firstName}}</th>
+  <th>{{memberss.lastName}}</th> 
   <th>{{memberss.hasAccepted}}</th>
+  <th>{{memberss.isCreator}}</th>
   </tr>
-</i>
+
 <div *ngIf = "memberss.studentId == currentStudent.id">
-<button mat-raised-button (click)="accept()"> Accetta </button>
-<button mat-raised-button (click)="reject()"> Rifiuta </button>
+<button mat-raised-button (click)="accept(memberss.teamid,memberss.studentId)"> Accetta </button>
+<button mat-raised-button (click)="reject(memberss.teamid,memberss.studentId)"> Rifiuta </button>
 </div>
-<tr>
+</i>
 
 </ng-container>
 

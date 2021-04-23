@@ -29,15 +29,16 @@ export class VmscomponentComponent implements OnInit {
   displayedColumns: string[] = ['maxNVCpu', 'maxDisk', 'maxRam', 'operatingSystem','maxVmsForCourse','maxActiveForCourse'];
   
 
-   @Output() addvmModelEvent = new EventEmitter<vmModelDTO>();
+   @Output() addvmModel2Event = new EventEmitter<vmModelDTO>();
   
   href : string ="";
+  vmModel2 : vmModelDTO = new vmModelDTO;
   vmModel : vmModelDTO;
   datasource;
   vmarray : vmModelDTO[] = new Array<vmModelDTO>();
 
   @Input('vmModel')
-  set vmmodel (model : vmModelDTO)
+  set vmmodel2 (model : vmModelDTO)
   {
     this.vmModel = model;
     this.vmarray.push(this.vmModel);
@@ -86,14 +87,14 @@ export class VmscomponentComponent implements OnInit {
    if(data != undefined)
    {
       
-      this.vmModel.maxNVCpu = data.VCPU;
-      this.vmModel.maxRam = data.RAM;
-      this.vmModel.maxVmsForTeam = data.ActiveVms;
-      this.vmModel.maxDisk = data.Disksize;
-      this.vmModel.operatingSystem = data.OperatingSystem;
-      this.vmModel.maxVmsForCourse= data.TotalVms;
+      this.vmModel2.maxNVCpu = data.VCPU;
+      this.vmModel2.maxRam = data.RAM;
+      this.vmModel2.maxActiveVms = data.ActiveVms;
+      this.vmModel2.maxDisk = data.Disksize;
+      this.vmModel2.operatingSystem = data.OperatingSystem;
+      this.vmModel2.maxVmsForCourse= data.TotalVms;
 
-      this.addvmModelEvent.emit (this.vmModel);
+      this.addvmModel2Event.emit (this.vmModel2);
 
    }
   })

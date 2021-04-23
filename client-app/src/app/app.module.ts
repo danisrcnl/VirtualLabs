@@ -39,6 +39,8 @@ import { VmscomponentComponent } from './teacher/vmscomponent.component';
 import { LimitDialogComponent } from './student/limit-dialog.component';
 import { JwtInterceptor } from './auth/interceptor/jwt.interceptor';
 import { ErrorInterceptor } from './auth/interceptor/error.interceptor';
+import { Popup } from './student/popup/popup.component';
+
 
 
 @NgModule({
@@ -57,7 +59,8 @@ import { ErrorInterceptor } from './auth/interceptor/error.interceptor';
     StudentsContComponent,
     TeacherComponent,
     AppComponentStudent,
-    AppComponentTeacher
+    AppComponentTeacher,
+    Popup
   ],
   imports: [
     BrowserModule,

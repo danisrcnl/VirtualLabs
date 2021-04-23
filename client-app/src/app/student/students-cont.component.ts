@@ -11,7 +11,7 @@ import {StudentService} from 'app/services/student.service'
 import {FormControl, Validators} from '@angular/forms';
 import { Course } from '../model/course.model';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Student } from './student.model';
 import { Proposal } from '../model/proposal.model';
 import { Team } from '../model/team.model';
@@ -24,6 +24,16 @@ import { AuthService } from '../auth/authservices/auth.service';
 import { User } from '../auth/user';
 import { first } from 'rxjs/operators';
 import { ThrowStmt } from '@angular/compiler';
+import { NotificationService } from 'app/services/notification.service';
+import { MatDialog } from '@angular/material/dialog';
+import { Popup } from './popup/popup.component';
+
+ export interface DialogPopup{
+
+  animal:string;
+  name: string;
+ }
+
 
 @Component({
   selector: 'app-students-cont',
@@ -33,6 +43,7 @@ import { ThrowStmt } from '@angular/compiler';
 export class StudentsContComponent implements OnInit {
 
   teamsinconstruction : Team[] = new Array<Team>();
+  teamsinconstruction$ : Observable<Team[]>;
   studenti: StudentDTO[] = new Array<StudentDTO>();
   compagni: StudentDTO[] = new Array<StudentDTO>();
   tabvalue : boolean;
@@ -45,6 +56,7 @@ export class StudentsContComponent implements OnInit {
   dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);
   selection = new SelectionModel<Student>(true, []);
   courses$ : Observable <Course[]>;
+  membersarray : MemberStatus[] = new Array<MemberStatus>();
   student_team : Student_Team[] = new Array<Student_Team>();
   id2: number;
   groupid : number;
@@ -63,20 +75,27 @@ export class StudentsContComponent implements OnInit {
   timeoutValue : number;
   error : '';
 
+  //variabili per la conferma del Team
+  matricola : String;
+
   //variabili per caricare la tabella con i componenti del gruppo 
   compagnicorso : MemberStatus[] = new Array <MemberStatus>();
   compagniDTO : StudentDTO[] = new Array<StudentDTO>();
+  compagnidigruppo$ : Observable<MemberStatus[]>;
 
   //variabili per caricare la tabella con le proposte di Team
   studentid : string;
   students : Student[] = new Array<Student>(); //da qua ricavo poi nome e cognome degli studenti  
-  membersStatus : MemberStatus[] = new Array<MemberStatus>(); //da qua controllo se lo studente ha accettato o ancora no la proposta 
+  membersStatus : MemberStatus[] = new Array<MemberStatus>();
+  membersStatus$ : Observable<MemberStatus[]>;
+  //da qua controllo se lo studente ha accettato o ancora no la proposta 
   tempmember : MemberStatus;
   teams : Team[] = new Array<Team>();
   courseId :string;
   teams$ : Observable <Team[]>;
   teams2 : Team[] = new Array<Team>();
   teamName : String = "";
+  ms : MemberStatus = new MemberStatus();
   creator$ : Observable <StudentDTO>;
   creator : StudentDTO;
   currentStudent$ : Observable<StudentDTO>;
@@ -85,7 +104,14 @@ export class StudentsContComponent implements OnInit {
   @ViewChild(StudentsComponent)
   studentsComponent: StudentsComponent
   
-  constructor (private courseService : CourseService, private route: ActivatedRoute, private studentservice : StudentService, private teamservice : TeamService, private router: Router, private activeRoute: ActivatedRoute, private authService: AuthService) {
+  
+  name: string;
+
+
+
+  constructor (private courseService : CourseService,private notificationService: NotificationService, private route: ActivatedRoute, 
+    private studentservice : StudentService, private teamservice : TeamService, private router: Router,
+     private activeRoute: ActivatedRoute, private authService: AuthService,public dialog: MatDialog) {
     
 
     //prendo l'username dell'user loggato 
@@ -185,6 +211,11 @@ export class StudentsContComponent implements OnInit {
         //prendo i team dello studente 
 
         this.teams$ = this.studentservice.getStudentCourseTeam(this.studentId,this.courseId);
+        
+        this.teamsinconstruction$ = this.studentservice.getStudentCourseTeam(this.studentId,this.courseId);
+        this.teamsinconstruction$.subscribe (data => {
+          console.log(data);
+        })
 
         this.teams$.subscribe (teamss => {
 
@@ -197,6 +228,7 @@ export class StudentsContComponent implements OnInit {
             else
             {
               this.teamsinconstruction.push(t);
+              
             }
           })
 
@@ -207,6 +239,7 @@ export class StudentsContComponent implements OnInit {
          {
            this.tabvalue = true;
            console.log("length maggiore 0");
+          // this.compagnidigruppoo$ = this.teamservice.getMembers(this.courseId,this.teamName);
            this.teamservice.getMembers(this.courseId,this.teamName).subscribe(members => {
          
                  this.compagnicorso = members;
@@ -232,6 +265,8 @@ export class StudentsContComponent implements OnInit {
          
            {this.tabvalue = false;
            }
+
+           //  this.compagnidigruppoo$ = this.teamservice.getMembers(this.courseId,this.teamName);
           
            for (let i=0; i<this.teamsinconstruction.length; i++){
            this.teamservice.getMembers(this.courseId,this.teamsinconstruction[i].name).subscribe(members => {
@@ -240,6 +275,7 @@ export class StudentsContComponent implements OnInit {
                 
                 this.tempmember = m;
                 this.tempmember.teamid = this.teamsinconstruction[i].id;
+                console.log(this.tempmember);
                 this.membersStatus.push(this.tempmember);
                 this.tempmember = null;
              
@@ -254,21 +290,18 @@ export class StudentsContComponent implements OnInit {
                 if (indexitem)
                 {
                   this.tempmember = this.membersStatus.find(e => e.studentId == s.id);
-                  this.tempmember.nome = s.name;
-                  this.tempmember.cognome = s.firstName;
+                  this.tempmember.firstName = s.name;
+                  this.tempmember.lastName = s.firstName;
                 
-                  console.log(this.tempmember);
+                  //console.log(this.tempmember);
                  // this.membersStatus.push(this.tempmember);
-                }
-                
-                  
-                
+                }  
               }
             )
 
            })
-
-           console.log(this.membersStatus);
+          this.compagnidigruppo$ = of(this.membersStatus);
+          // console.log(this.membersStatus);
           })
         }
         
@@ -299,7 +332,7 @@ export class StudentsContComponent implements OnInit {
 ngOnChanges (changes: SimpleChanges)
 {
 
-  //this.teamservice.addTeam(this.courseName,this.groupName,this.dainvitare,this.timeoutValue,this.studentId);
+
 }
   
 
@@ -374,6 +407,19 @@ console.log(this.compagni);
   }
 
 
+  receiveconfirmmatricola($event) {
+
+    this.matricola = $event;
+    
+  }
+
+  receiveconfirmteamid ($event)
+  {
+     
+    let teamid = $event;
+    this.notificationService.confirm(teamid,this.matricola).subscribe(data => console.log(data));
+  }
+
 
 
    //eventi per invito team 
@@ -389,18 +435,70 @@ console.log(this.compagni);
     this.timeoutValue = $event;
     console.log(this.timeoutValue);
    }
+   
+ openDialog(message) {
+    const dialogRef = this.dialog.open(Popup, {
+      width: '250px',
+      data: {name: message}
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      
+    });
+  }
+
+  closeDialog() {
+    this.dialog.closeAll();
+  }
 
    receiveinvitation($event)
    {
     
-    this.dainvitare = $event;
+
+      this.openDialog("Creazione team in corso, attendere");
+      this.dainvitare = $event;
    
          this.teamservice.addTeam(this.courseId,this.groupName,this.dainvitare,this.timeoutValue,this.studentId)
-        .subscribe(data => {console.log(data)}, error => {this.error =error});
-      
+        .subscribe(data => {console.log(data),
+             
+             this.closeDialog();
+             this.openDialog("La proposta per il team è stata inviata");
+        
+             this.teamsinconstruction$ = this.studentservice.getStudentCourseTeam(this.studentId,this.courseId);
+             this.membersStatus$ = this.teamservice.getMembers(this.courseId,data.name);
 
-
+             this.membersStatus$.subscribe(data1 => {
+               
+               data1.forEach(t => {
+                  
+                  this.membersarray.push(t);
+                })
+               }
+              
+             )
+              
+            
+              for(let i=0;i<this.membersarray.length;i++) {
+             this.ms.firstName = this.membersarray[i].firstName;
+                  this.ms.lastName = this.membersarray[i].lastName;
+                  this.ms.studentId = this.membersarray[i].studentId;
+                  this.ms.hasAccepted = this.membersarray[i].hasAccepted;
+                  this.ms.isCreator = this.membersarray[i].isCreator;
+                  this.ms.teamid = data.id;  
+                  console.log(this.ms);
+                  this.membersStatus.push(this.ms);
+                  console.log(this.membersStatus);
+              }
+             
+              console.log(this.membersStatus);
+              this.compagnidigruppo$ = of(this.membersStatus);
+            
+             
+            }
+    
+        )
+        
    }
    
    //eventi per mostrare la tabella con le proposte di team 

@@ -2,18 +2,21 @@
     [tablevalue] ="tabvalue"
     [studenti] ="studenti"
     [currentStudent]="currentStudent"
+    [compagnidigruppo$]="compagnidigruppo$"
     [membersStatus]="membersStatus"
     [enrolledstudents] ="enrolledstudents"
     [dataSource] ="dataSource"
     [compagniDTO]="compagniDTO"
     [teamName] = "teamName"
     [teams] = "teamsinconstruction"
+    [teams$] = "teamsinconstruction$"
     (groupName) = "groupname($event)"
     (timeoutValue) = "timeout($event)"
     (invitestudentEvent) = "receiveinvitation($event)"
     (addstudentEvent) = "receivestudent($event)"
     (removestudentsEvent) = "receivearray($event)"
- 
+    (confirmrequestEventmatricola) = "receiveconfirmmatricola($event)"
+    (confirmrequestEventteamid) = "receiveconfirmteamid($event)"
     >
     </app-students>
 

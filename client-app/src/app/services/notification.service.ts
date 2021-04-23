@@ -22,7 +22,8 @@ const httpOptions = {
 
    confirm (studentId,teamId) 
    {
-      return this.http.post<any>(`${environment.apiUrlnotification}/confirm`,{studentId,teamId});
+      
+      return this.http.get<any>(`${environment.apiUrlnotification}/confirm/${teamId}/${studentId}`);
    }
 
 
