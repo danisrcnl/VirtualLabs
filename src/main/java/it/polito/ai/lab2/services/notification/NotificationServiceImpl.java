@@ -224,8 +224,11 @@ public class NotificationServiceImpl implements NotificationService {
 
         for (String member : membersIds) {
             MemberStatus memberStatus = MemberStatus.builder().studentId(member).build();
+            StudentDTO studentDTO = studentService.getStudent(member).get();
             memberStatus.setHasAccepted(!pending.contains(member));
             memberStatus.setIsCreator(member.equals(teamService.getCreator(teamId)));
+            memberStatus.setFirstName(studentDTO.getFirstName());
+            memberStatus.setLastName(studentDTO.getName());
             memberStatuses.add(memberStatus);
         }
         return memberStatuses;

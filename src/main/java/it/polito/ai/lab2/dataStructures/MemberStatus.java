@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 public class MemberStatus {
     private String studentId;
+    private String firstName;
+    private String lastName;
     private Boolean isCreator;
     private Boolean hasAccepted;
 }
