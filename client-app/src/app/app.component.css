@@ -52,9 +52,6 @@ mat-sidenav-container{ margin: 20px; height: 100%; }
 
 }
 
-button:hover,.form button:active,.form button:focus {
-  background: #43A047;
-}
 
 body {
   background: #76b852; /* fallback for old browsers */
