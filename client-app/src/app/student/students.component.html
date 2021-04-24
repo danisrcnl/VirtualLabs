@@ -90,10 +90,10 @@
   <th>{{memberss.firstName}}</th>
   <th>{{memberss.lastName}}</th> 
   <th>{{memberss.hasAccepted}}</th>
-  <th>{{memberss.isCreator}}</th>
+  <th *ngIf = "memberss.isCreator==true"> Creatore </th>
   </tr>
 
-<div *ngIf = "memberss.studentId == currentStudent.id">
+<div *ngIf = "memberss.studentId == currentStudent.id && memberss.isCreator==false">
 <button mat-raised-button (click)="accept(memberss.teamid,memberss.studentId)"> Accetta </button>
 <button mat-raised-button (click)="reject(memberss.teamid,memberss.studentId)"> Rifiuta </button>
 </div>

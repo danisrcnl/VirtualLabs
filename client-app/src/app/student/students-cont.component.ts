@@ -448,6 +448,7 @@ console.log(this.compagni);
     });
   }
 
+
   closeDialog() {
     this.dialog.closeAll();
   }
@@ -489,10 +490,12 @@ console.log(this.compagni);
              
             
              
-            }
+            },
+        error => (
+          this.closeDialog(), this.openDialog("Non è stato possibile creare il team"))
+        
     
         )
-        
    }
    
    //eventi per mostrare la tabella con le proposte di team 
