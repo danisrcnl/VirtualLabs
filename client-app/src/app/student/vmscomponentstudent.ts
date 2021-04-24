@@ -6,6 +6,8 @@ import { StudentService } from '../services/student.service';
 import { Vms } from '../model/vms.model';
 import { LimitDialogComponent } from './limit-dialog.component';
 import { vmModelDTO } from 'app/model/vmModelDTO.model';
+import { Observable } from 'rxjs';
+import { MatCardModule } from '@angular/material/card';
 
 
 
@@ -18,21 +20,29 @@ export class VmscomponentComponent2 implements OnInit {
   href : string ="";
   //vms : Vms[] = new Array<Vms>();
   
-  vmsperteam : Vms[];
-
+  vmsperteam$ : Observable <Vms[]>;
+  vmModel : vmModelDTO;
   
 
-  @Input ('vmsperteam')
-  set Vms (vmss: Vms[])
+  @Input ('vmsperteam$')
+  set Vms (vmss: Observable<Vms[]>)
   {
-    this.vmsperteam = vmss;
+    this.vmsperteam$ = vmss;
+    console.log(this.vmsperteam$);
+  }
+
+  @Input ('vmModel')
+  set Vmmodel (vmmodel : vmModelDTO)
+  {
+    this.vmModel = vmmodel;
+    console.log(this.vmModel);
   }
  
   @Output() addvmEvent = new EventEmitter<Vms>();
 
   
 
-  vmModel : vmModelDTO;
+  
   vm : Vms = new Vms;
    
 
@@ -46,7 +56,7 @@ export class VmscomponentComponent2 implements OnInit {
 
   ngOnInit(){
 
-    console.log(this.vmsperteam);
+   
 
 
   }
@@ -57,7 +67,7 @@ export class VmscomponentComponent2 implements OnInit {
     const dialogRef = this.dialog.open (LimitDialogComponent, { height: '300px',
     width: '400px',
     data : {
-      dataKey: this.vmsperteam
+      
   
     }
   
