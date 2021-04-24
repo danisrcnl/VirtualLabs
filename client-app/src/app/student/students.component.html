@@ -87,19 +87,65 @@
     </form>
   </div>
 
-  <div class="limiter" id="proposalsDiv">
+  
+
+  <div id="proposalsDiv">
+    <table mat-table [dataSource]="teams$ | async">
+
+      <ng-container matColumnDef="teamName">
+        <th mat-header-cell *matHeaderCellDef> Team </th>
+        <td mat-cell *matCellDef="let row"><b> {{row.name}} </b></td>
+      </ng-container>
+
+      <ng-container matColumnDef="members">
+        <th mat-header-cell *matHeaderCellDef> Membri </th>
+        <td mat-cell *matCellDef="let team">
+          <div *ngFor="let memberss of compagnidigruppo$ | async">
+            <div *ngIf="memberss.teamid == team.id" id="members_row">
+              <div id="members_studentId" class="members_field">{{memberss.studentId}}</div> 
+              <div id="members_firstName" class="members_field">{{memberss.firstName}}</div>
+              <div id="members_lastName" class="members_field">{{memberss.lastName}}</div> 
+              <div id="members_hasAccepted" class="members_field">{{memberss.hasAccepted}}</div>
+              <div id="members_isCreator" class="members_field">{{memberss.isCreator}}</div>
+              <div id="members_button" class="members_field" *ngIf = "memberss.studentId == currentStudent.id">
+                <div class="members_field_button">
+                  <button mat-raised-button id="members_field_button_o" (click)="accept(memberss.teamid,memberss.studentId)"> Accetta </button>
+                </div>
+                  <div class="members_field_button">
+                <button mat-raised-button id="members_field_button_o" (click)="reject(memberss.teamid,memberss.studentId)"> Rifiuta </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef = "displayedColumnsProposals"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsProposals;"></tr>
+    </table>
+  </div>
+  
+  
+
+  <!--
+  <div id="proposalsDiv">
     <table>
       <h1> Proposte in attesa</h1>
+
       <ng-container *ngFor="let team of teams$ | async">
+
         <tr><td><h2>{{team.name}}</h2></td></tr>
         <tr>
           <th>Matricola</th>
           <th>Nome</th>
           <th>Cognome</th>
-          <th>Accettato</th>
+          <th>Stato</th>
+          <th>Creatore</th>
         </tr>
         <tr *ngFor = "let memberss of compagnidigruppo$ | async">
-        <i> 
+        <i class="noItalics">
           <tr  *ngIf = "memberss.teamid == team.id">
             <th>{{memberss.studentId}}</th> 
             <th>{{memberss.firstName}}</th>
@@ -113,12 +159,13 @@
             <button mat-raised-button (click)="reject(memberss.teamid,memberss.studentId)"> Rifiuta </button>
           </div>
         </i>
-
       </ng-container>
+
     </table>
   </div>
 
-</div>
+
+</div>-->
 
 <!--
       <div class="limiter">

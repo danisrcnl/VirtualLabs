@@ -1,12 +1,12 @@
 table {
   width: 100%;
-  table-layout: fixed;
 }
 
 #wrapperDiv {
   
   margin: auto;
-  height: fit-content;
+  height: 100%;
+  width: 100%;
 }
 
 #tableClassesDiv {
@@ -46,9 +46,44 @@ table {
       background-color: blue;
     }
 
+
 #proposalsDiv {
-  
+  height: fit-content;
+  display: flex;
 }
+
+  #members_row {
+    border-bottom: 1px solid lightgray;
+    min-height: 45px;
+    display:block;
+  }
+
+  .members_field {
+    padding: 5px;
+    margin: auto;
+    display: inline-block;
+    text-align: center;
+  }
+
+    .members_field_button {
+      display: inline-block;
+      margin: 2px;
+    }
+
+      #members_field_button_o {
+        background-color: royalblue;
+        color: white;
+      }
+      #members_field_button_o:hover {
+        background-color: blue;
+      }
+
+  .noItalic {
+    font-style: normal !important;
+    font-weight: normal !important;
+  }
+
+  
   
 
 
