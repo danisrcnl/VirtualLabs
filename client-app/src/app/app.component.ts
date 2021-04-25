@@ -17,6 +17,7 @@ import { Studentreturn } from './auth/models/studentreturn';
 import { AppComponentStudent } from './student/app.component';
 import { SidenavService } from './services/sidenav.service';
 import { AuthService } from './auth/authservices/auth.service';
+import { StudentDTO } from './model/studentDTO.model';
 
 
 
@@ -32,6 +33,8 @@ export class AppComponent implements OnInit {
   studs$ : Observable <Studentreturn[]>;
   courses : Course[] = new Array<Course>();
   currentUser : User;
+  studentId : String;
+  currentStudent : StudentDTO;
   isLogin : boolean = true;
   private _url2: string = "http://localhost:3000/courses";
   
@@ -40,8 +43,21 @@ export class AppComponent implements OnInit {
 
 constructor (public dialog:MatDialog, private studentservice: StudentService, private sidenavService: SidenavService, private authService: AuthService, private router: Router) {
 
+  this.authService.currentUser.subscribe(x => {this.currentUser =x});
 
-  this.authService.currentUser.subscribe (x => this.currentUser = x);
+   /* this.authService.currentUser.subscribe ( x => {this.currentUser = x;
+      this.studentId = this.currentUser.username.split("@")[0].substring(1,7);
+  
+  this.studentservice.getOne(this.studentId).subscribe(
+    s => {
+      this.currentStudent = s;
+    },
+    error => {
+      console.log("errore");
+    }
+  );
+    
+    });*/
   
 }
 

@@ -12,6 +12,11 @@ export class VmService {
     constructor(private http: HttpClient) { }
 
 
+    addVm(courseName,teamName,vmDTO : Vms,creator) {
+
+        return this.http.post<any>(`${environment.apiUrlvms}/${courseName}/${teamName}`,{vmDTO,creator});
+    }
+
     getVmsByCourse (courseName) {
 
         return this.http.get<Vms[]>(`${environment.apiUrlvms}/courses/${courseName}`);

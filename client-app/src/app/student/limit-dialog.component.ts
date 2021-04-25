@@ -11,6 +11,9 @@ import { Inject } from '@angular/core';
 })
 export class LimitDialogComponent implements OnInit {
 
+
+  
+
   limitForm: FormGroup;
 
   vms: Vms[] = []; 
@@ -32,7 +35,7 @@ export class LimitDialogComponent implements OnInit {
   vmstemp: Vms[];
   length : number;
   
-  constructor(private formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: Vms[], public dialog: MatDialog) {
+  constructor(private formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: Vms, public dialog: MatDialog) {
 
   }
 
@@ -42,8 +45,6 @@ export class LimitDialogComponent implements OnInit {
       VCPU: [''],
       RAM: [''],
       Disksize: [''],
-      ActiveVms: [''],
-      TotalVms: ['']
       
     });
 
@@ -66,7 +67,13 @@ this.dialog.closeAll();
 
 
 
-setlimit() {
+createvm() {
+
+  
+  
+
+
+
   this.alertACTIVEVMS = "";
   this.alertDISKSIZE = "";
   this.alertRAM = "";
@@ -78,29 +85,8 @@ setlimit() {
   this.RAMtotal = 0;
   this.TOTALVMS = 0;
   this.VCPUtotal = 0;
-
-
-  
-  for(let i=0; i<this.vms.length; i++) {
-  
-  this.VCPUtotal = this.VCPUtotal + this.vms[i].vcpu;
-  this.RAMtotal = this.RAMtotal + this.vms[i].ramsize;
-  this.DISKSIZE = this.DISKSIZE + this.vms[i].disksize;
-  if (this.vms[i].stato == "Attiva")
-  {
-    this.activevms++;
-  }
-  this.TOTALVMS++;
-};
-
-
  
-console.log(this.TOTALVMS);
- console.log("entrato");
- console.log(this.VCPUtotal);
- console.log(this.VCPU);
- console.log (this.activevms);
- console.log (this.TotalVms);
+
 if (this.VCPU < this.VCPUtotal)
 {
   this.alertVCPU = "Limite non consentito"
