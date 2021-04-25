@@ -1,15 +1,13 @@
 <mat-sidenav-container autosize="true">
   <mat-sidenav opened mode="side" #sidenav>
     <div class="container">
-      <mat-nav-list>
+      <mat-nav-list id="mat_list">
 
 
         <mat-list-item *ngFor="let item of courses$ | async" [routerLink]="['course' + '/students']" [queryParams] = "{name : item.name}"> {{item.name}}
         </mat-list-item>
 
-        <button class="btn2" mat-raised-button (click)="openmodDialog()"> Modifica
-        
-        </button>
+        <button class="button_modifica" mat-flat-button (click)="openmodDialog()"> Modifica corso </button>
 
       </mat-nav-list>
 
