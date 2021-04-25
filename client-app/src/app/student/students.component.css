@@ -47,15 +47,20 @@ table {
     }
 
 
+#proposalsDiv_title {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
 #proposalsDiv {
   height: fit-content;
   display: flex;
 }
 
   #members_row {
-    border-bottom: 1px solid lightgray;
     min-height: 45px;
     display:block;
+    vertical-align: middle;
   }
 
   .members_field {
@@ -64,6 +69,7 @@ table {
     float: left;
     width: 15%;
     text-align: center;
+    vertical-align: middle;
   }
 
     .members_field_button {

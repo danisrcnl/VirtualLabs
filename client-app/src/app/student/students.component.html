@@ -86,11 +86,15 @@
 
     </form>
   </div>
-
   
 
+  <div id="proposalsDiv_title">
+    <h1>Qui di seguito puoi vedere i team che hai creato/in cui sei stato invitato:</h1>
+  </div>
+
   <div id="proposalsDiv">
-    <table mat-table [dataSource]="teams$ | async">
+
+    <table mat-table [dataSource]="teams$ | async" id="proposalsDiv_table">
 
       <ng-container matColumnDef="teamName">
         <th mat-header-cell *matHeaderCellDef> Team </th>
@@ -104,10 +108,23 @@
             <div *ngIf="memberss.teamid == team.id" id="members_row">
               <div id="members_studentId" class="members_field">{{memberss.studentId}}</div> 
               <div id="members_firstName" class="members_field">{{memberss.firstName}}</div>
-              <div id="members_lastName" class="members_field">{{memberss.lastName}}</div> 
+              <div id="members_lastName" class="members_field">{{memberss.lastName}}</div>
+              <div id="members_status" class="members_field">
+                <span *ngIf="( memberss.isCreator )">
+                  <mat-icon title="master" [ngStyle]="{'color':'orange'}">vpn_key</mat-icon>
+                </span>
+                <span *ngIf="( !memberss.isCreator && memberss.hasAccepted )">
+                  <mat-icon title="user confirmed" [ngStyle]="{'color':'green'}">person</mat-icon>
+                </span>
+                <span *ngIf="( !memberss.isCreator && !memberss.hasAccepted )">
+                  <mat-icon title="user didn't accept yet" [ngStyle]="{'color':'gray'}">person</mat-icon>
+                </span>
+              </div>
+              <!-- 
               <div id="members_hasAccepted" class="members_field">{{memberss.hasAccepted}}</div>
               <div id="members_isCreator" class="members_field">{{memberss.isCreator}}</div>
-              <div id="members_button" class="members_field" *ngIf = "memberss.studentId == currentStudent.id">
+              -->
+              <div id="members_button" class="members_field" *ngIf = "(memberss.studentId == currentStudent.id && !memberss.isCreator)">
                 <div class="members_field_button">
                   <button mat-raised-button id="members_field_button_o" (click)="accept(memberss.teamid,memberss.studentId)"> Accetta </button>
                 </div>
