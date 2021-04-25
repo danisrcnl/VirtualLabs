@@ -84,6 +84,7 @@ public class VmServiceImpl implements VmService {
         Vm v = modelMapper.map(vm, Vm.class);
         v.setTeam(teamRepository.getTeamByCourseAndName(courseName, teamName));
         v.setCreator(creator_entity);
+        v.setCurrentStatus(VmStatus.OFF);
         vmRepository.save(v);
         vmRepository.flush();
         return v.getId();
