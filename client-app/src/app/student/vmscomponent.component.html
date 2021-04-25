@@ -1,10 +1,41 @@
 
- <tr *ngFor="let vmss of vmsperteam">
-        <i>{{ vmss.owner }} {{vmss.stato}} </i>
+
+
+
+
+<tr *ngFor="let vmss of vmsperteam$ | async">
+        <!--<i>{{ vmss.nVCpu }} {{vmss.disk}} </i>
 		<td></td>
-        <td> </td>
+        <td> </td>-->
+
+<mat-card class="example-card">
+    <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>{{vmss.nVCpu}}</mat-card-title>
+        <mat-card-subtitle class="sub">{{vmss.vmStatus}}</mat-card-subtitle>
+    </mat-card-header>
+       <div *ngIf = "vmModel.operatingSystem == 'Windows'">
+    <img mat-card-image src="https://media.kasperskydaily.com/wp-content/uploads/sites/89/2020/01/28120905/rip-windows-seven-featured.jpg" alt="Vm Windows">
+    </div>
+    <div *ngIf="vmModel.operatingSystem == 'Linux'">
+        <img mat-card-image src="https://cdn.mos.cms.futurecdn.net/LJSA6h759BKJvuaBZyoUY-320-80.jpg" alt="Vm Linux">
+    </div>
+    <mat-card-content>
+        <mat-list role="list">
+            <mat-list-item role="listitem">nVCpu : {{vmss.nvcpu}} </mat-list-item>
+            <mat-list-item role="listitem">Ram : {{vmss.ram}} Gb </mat-list-item>
+            <mat-list-item role="listitem">Disk Size : {{vmss.disk}} Gb </mat-list-item>
+        </mat-list>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-button>ON</button>
+        <button mat-button>OFF</button>
+        <button mat-button>CANCELLA</button>
+    </mat-card-actions>
+</mat-card>
+
         
 	</tr>
-
+<div>
 <button mat-raised-button (click)= "createvm()" > Crea Vm</button>
-
+</div>

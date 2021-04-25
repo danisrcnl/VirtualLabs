@@ -4,6 +4,7 @@ import { User } from '../auth/user';
 import { Vms } from 'app/model/vms.model';
 import { environment } from 'environments/environment';
 import { vmModelDTO } from 'app/model/vmModelDTO.model';
+import { Observable } from 'rxjs';
 
 
 
@@ -34,8 +35,8 @@ export class VmService {
         }
 
 
-    getVmsForTeam (teamId)
+    getVmsForTeam (teamId) : Observable<Vms[]>
     {
-        return this.http.get<Vms[]>(`${environment.apiUrlvms}/teams/${teamId}`);
+        return this.http.get<any>(`${environment.apiUrlvms}/teams/${teamId}`);
     }
 }

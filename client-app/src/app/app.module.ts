@@ -40,7 +40,7 @@ import { LimitDialogComponent } from './student/limit-dialog.component';
 import { JwtInterceptor } from './auth/interceptor/jwt.interceptor';
 import { ErrorInterceptor } from './auth/interceptor/error.interceptor';
 import { Popup } from './student/popup/popup.component';
-
+import { MatCardModule } from '@angular/material/card';
 
 
 @NgModule({
@@ -83,6 +83,7 @@ import { Popup } from './student/popup/popup.component';
     HttpClientModule,
     MatDialogModule,
     AuthModule,
+    MatCardModule
   
   ],
 

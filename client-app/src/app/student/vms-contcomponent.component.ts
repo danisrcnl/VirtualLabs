@@ -49,29 +49,23 @@ this.route.queryParams.subscribe(params => { this.courseId = params.name
               this.teams.forEach(t => 
                  {if (t.status == 1) {
                    this.team = t;
-                    this.vmService.getVmsForTeam(t.id).subscribe 
-                      (vmss => {
-   
-                       vmss.forEach 
-                         ( v => {
 
-                            this.vmsperteam.push(v);
-                             })
+                     this.vmsperteam$ = this.vmService.getVmsForTeam(t.id);
+                     this.vmsperteam$.subscribe(data => {
+                       data.forEach(t => {
+                         console.log(t);
+                       })
+                     }) 
+                     
+                      }
+                           })
 
-
-                                                                })}
-                                })
-
-      }
-     
-
-
-    )
+                    })
       
-      });
+                       });
 
 
-    },
+                           },
     error => {
       console.log("errore");
     }
@@ -107,7 +101,7 @@ this.route.queryParams.subscribe(params => { this.courseId = params.name
 
    }
 
-   vmsperteam : Vms[] = new Array<Vms>();
+   vmsperteam$ : Observable <Vms[]>;
    vm : Vms;
    vms$ : Observable <Vms[]>;
    studentId : string;
@@ -140,7 +134,12 @@ this.hreff = this.router.url;
 });
 
    
- 
+  this.vmService.getVmModelforCourse(this.firstParam).subscribe(data => {
+
+    this.vmModel = data;
+    console.log(this.vmModel);
+   })
+
  
      
     
