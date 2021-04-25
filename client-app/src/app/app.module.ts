@@ -41,6 +41,8 @@ import { JwtInterceptor } from './auth/interceptor/jwt.interceptor';
 import { ErrorInterceptor } from './auth/interceptor/error.interceptor';
 import { Popup } from './student/popup/popup.component';
 import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+
 
 
 @NgModule({
@@ -83,8 +85,8 @@ import { MatCardModule } from '@angular/material/card';
     HttpClientModule,
     MatDialogModule,
     AuthModule,
-    MatCardModule
-  
+    MatCardModule,
+    MatButtonModule
   ],
 
   providers: [
