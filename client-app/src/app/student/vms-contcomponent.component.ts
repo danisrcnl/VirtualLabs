@@ -11,6 +11,7 @@ import { CourseService } from 'app/services/course.service';
 import { vmModelDTO } from 'app/model/vmModelDTO.model';
 import { Team } from 'app/model/team.model';
 import { StudentDTO } from 'app/model/studentDTO.model';
+import { vmStatus } from 'app/model/vmStatus.model';
 
 @Component({
   selector: 'app-vms-contcomponent',
@@ -34,7 +35,7 @@ team : Team;
     s => {
       this.currentStudent = s;
 
-this.route.queryParams.subscribe(params => { this.courseId = params.name
+       this.route.queryParams.subscribe(params => { this.courseId = params.name
       
       
       
@@ -43,10 +44,11 @@ this.route.queryParams.subscribe(params => { this.courseId = params.name
        
       
        this.studentservice.getStudentCourseTeam(this.currentStudent.id,this.courseId).subscribe(
+
           data => {
-          this.teams = data;
-            
-              this.teams.forEach(t => 
+
+            this.teams = data;
+             this.teams.forEach(t => 
                  {if (t.status == 1) {
                    this.team = t;
 
@@ -55,51 +57,14 @@ this.route.queryParams.subscribe(params => { this.courseId = params.name
                        data.forEach(t => {
                          console.log(t);
                        })
-                     }) 
-                     
-                      }
-                           })
-
-                    })
-      
-                       });
+                     })}})})});},
 
 
-                           },
-    error => {
-      console.log("errore");
-    }
+          error => {
+            console.log("errore");
+                   }
 
-
-
-
-  )
-
-
-     
-     
- 
-  
-  
-  
-  
-  
-  ;
-    
-    }
-    
-    
-    
-    
-    )
-    
-  
-    
-    
-    ;
-
-
-   }
+    );});}
 
    vmsperteam$ : Observable <Vms[]>;
    vm : Vms;
@@ -154,7 +119,32 @@ this.hreff = this.router.url;
     receivevm($event)
     {
       this.vm = $event;
-      console.log(this.currentStudent.id);
+      this.vm.vmStatus = vmStatus.OFF;
       this.vmService.addVm(this.firstParam,this.team.name,this.vm,this.currentStudent.id).subscribe(data => {console.log(data)});
+      this.updatevms();
+    }
+
+    updatevms()
+    {
+
+        this.studentservice.getStudentCourseTeam(this.currentStudent.id,this.courseId).subscribe(
+          data => {
+          this.teams = data;
+            
+              this.teams.forEach(t => 
+                 {if (t.status == 1) {
+                   this.team = t;
+
+                     this.vmsperteam$ = this.vmService.getVmsForTeam(t.id);
+                     this.vmsperteam$.subscribe(data => {
+                       data.forEach(t => {
+                         console.log(t);
+                       })
+                     }) 
+                     
+                      }
+                           })
+
+                    })
     }
 }

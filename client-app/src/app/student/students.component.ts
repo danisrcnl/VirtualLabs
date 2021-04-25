@@ -49,6 +49,7 @@ export class StudentsComponent implements OnInit {
     compagnidigruppo$ : Observable<StudentDTO[]>;
     enrolledstudents : StudentDTO[];
     compagni : StudentDTO[];
+    tablevalue$ : Observable<boolean>;
     compagniDTO : StudentDTO[];
     groupid : number;
     teams$ : Observable <Team[]>;
@@ -124,6 +125,11 @@ export class StudentsComponent implements OnInit {
     }
 
   
+    @Input('tablevalue$')
+    set tableValue$ (val: Observable<boolean>)
+    {
+      this.tablevalue$ = val;
+    }
 
     @Input ('compagniDTO')
     set CompagniDTO (students : StudentDTO[])
@@ -153,8 +159,7 @@ export class StudentsComponent implements OnInit {
 
    ngOnChanges (changes: SimpleChanges) {
 
-    
-
+    /*
     this.tableclasses.hide = changes.tableValue.currentValue;
     this.tableclasses.show = !changes.tableValue.currentValue;;
     if (changes.tableValue.currentValue)
@@ -166,7 +171,7 @@ export class StudentsComponent implements OnInit {
       this.compagniclass.hide = true;
       this.compagniclass.show2 = false;
     }
-
+*/
   
    }
 
@@ -195,7 +200,6 @@ constructor (private router : Router, private activeRoute: ActivatedRoute, priva
 
 
     ngOnInit() {
-
       this.myForm = this.fb.group({
         timeout: '',
         groupname: ''

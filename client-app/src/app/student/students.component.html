@@ -6,6 +6,35 @@
   <router-outlet></router-outlet>
 </div>
 
+
+
+  <div *ngIf = "tablevalue$ | async ; else loading" class="limiter">
+    <table [ngClass]="compagniclass">
+      <h1>Gruppo {{teamName}}</h1>
+      <div class="row header">
+        <tr>
+          <td *ngFor="let column of headers1">
+            {{column}}
+          </td>
+        </tr>
+      </div>
+
+      <div class="row">
+        <tr *ngFor="let row of compagnidigruppo$ | async">
+          <td *ngFor="let column of headers">
+            {{row[column]}}
+          </td>
+        </tr>
+      </div>
+
+    </table>
+  </div>
+
+
+
+
+<ng-template #loading>
+<div>
 <div [ngClass] = "tableclasses" id="wrapperDiv">
 
   <div id="tableClassesDiv">
@@ -59,7 +88,7 @@
 
     </table>
   </div>
-
+</div>
 
   <div id="createTeamDiv">
     <form [formGroup] = "myForm" (ngSubmit)="sendinvite()">
@@ -122,10 +151,10 @@
               </div>
               <div id="members_button" class="members_field" *ngIf = "(memberss.studentId == currentStudent.id && !memberss.isCreator && !memberss.hasAccepted)">
                 <div class="members_field_button">
-                  <button mat-raised-button id="members_field_button_o" (click)="accept(memberss.teamid,memberss.studentId)"> Accetta </button>
+                  <button mat-raised-button id="members_field_button_o" (click)="accept(memberss.studentId,memberss.teamid)"> Accetta </button>
                 </div>
                   <div class="members_field_button">
-                <button mat-raised-button id="members_field_button_o" (click)="reject(memberss.teamid,memberss.studentId)"> Rifiuta </button>
+                <button mat-raised-button id="members_field_button_o" (click)="reject(memberss.studentId,memberss.teamid)"> Rifiuta </button>
                 </div>
               </div>
             </div>
@@ -139,8 +168,8 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumnsProposals;"></tr>
     </table>
   </div>
-  
-  
+  </div>
+  </ng-template>
 
   <!--
   <div id="proposalsDiv">
@@ -180,26 +209,6 @@
 
 </div>-->
 
-<!--
-      <div class="limiter">
-        <table [ngClass]="compagniclass">
-          <h1>Gruppo {{teamName}}</h1>
-          <div class = "row header">
-          <tr>
-           <td *ngFor = "let column of headers1">
-             {{column}}
-           </td>
-         </tr>
-        </div>
 
-          <div class = "row">
-          <tr *ngFor="let row of compagniDTO">
-            <td *ngFor="let column of headers">
-              {{row[column]}}
-            </td>
-          </tr>
-          </div>
 
-          </table>
-      </div>
--->
+

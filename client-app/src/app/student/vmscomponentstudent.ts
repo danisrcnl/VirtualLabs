@@ -82,6 +82,8 @@ export class VmscomponentComponent2 implements OnInit {
    {
       
       this.vm.nVCpu = data.nVCpu;
+      console.log(data.nvcpu);
+      console.log(data.nVCpu);
       this.vm.ram = data.ram;
       this.vm.disk = data.disk;
       
@@ -97,5 +99,9 @@ export class VmscomponentComponent2 implements OnInit {
     
 
 
+}
+
+set() {
+  
 }
 }
