@@ -40,6 +40,7 @@ import { LimitDialogComponent } from './student/limit-dialog.component';
 import { JwtInterceptor } from './auth/interceptor/jwt.interceptor';
 import { ErrorInterceptor } from './auth/interceptor/error.interceptor';
 import { Popup } from './student/popup/popup.component';
+import { MatButtonModule } from '@angular/material/button';
 
 
 
@@ -83,7 +84,7 @@ import { Popup } from './student/popup/popup.component';
     HttpClientModule,
     MatDialogModule,
     AuthModule,
-  
+    MatButtonModule
   ],
 
   providers: [

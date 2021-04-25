@@ -54,6 +54,7 @@ export class StudentsComponent implements OnInit {
     teams$ : Observable <Team[]>;
     teams : Team[];
     displayedColumns: string[] = ['select','name','firstname','serial'];
+    displayedColumnsProposals: string[] = ['teamName', 'members'];
     headers = ['id','name','firstName'];
     headers1 = ['Serial','Name','Firstname'];
         

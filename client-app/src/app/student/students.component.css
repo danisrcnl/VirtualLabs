@@ -1,106 +1,97 @@
-.mat-drawer-content {
-    position: relative;
-    z-index: 1;
-    
-    height: 100%;
-    width: 200%;
-    overflow: auto;
-    text-shadow: 0 0 black;
+table {
+  width: 100%;
+}
+
+#wrapperDiv {
+  
+  margin: auto;
+  height: 100%;
+  width: 100%;
+}
+
+#tableClassesDiv {
+  width: 100%;
+}
+
+#createTeamDiv {
+  
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+
+  #tableClassesTitle {
+    margin-left: 5px;
   }
-  .content{
-    
-    width: 100%;
+
+  #nomeGruppoField {
+    margin-right: 20px;
     display: inline-block;
   }
-   
-  
-    table {
-      width: 100%;
-      table-layout: fixed;
-    }
-  .mat-form-field {
-  
-    width: 70%;
+
+  #timeoutField {
+    margin-right: 20px;
+    display: inline-block;
   }
-  
-  
-  .show {
-    
-    width: 70%;
+
+  #buttonField {
+    display: inline-block;
   }
-  .show2 {
-    border-collapse: collapse;
-    position: absolute;
-    top: 50px;
-    width: 25%;
-    table-layout: fixed;
+
+    #buttonField_button {
+      background-color: royalblue;
+      color: white;
+    }
+    #buttonField_button:hover {
+      background-color: blue;
+    }
+
+
+#proposalsDiv_title {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+
+#proposalsDiv {
+  height: fit-content;
+  display: flex;
+}
+
+  #members_row {
+    min-height: 45px;
+    display:block;
+    vertical-align: middle;
   }
-    .buttonrows {
-  
-      position: static;
+
+  .members_field {
+    padding: 5px;
+    margin: auto;
+    float: left;
+    width: 15%;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+    .members_field_button {
+      display: inline-block;
+      margin: 2px;
     }
-  
-    .insert {
-      position: static;
-      border: none;
-      border-bottom: 2px solid navy;
-      margin-bottom: 20px;
-      height: 20px;
-      width: 23%;
-      
-    }
-  
-    .add {
-  
-      position: relative;
-      height: 20px;
-      bottom: 60px;
-      left: 250px;
-    }
-  
-    .hide
-    {
-      visibility: hidden;
-    }
-    
-  
-    .form {
-      width: 100%;
-    }
-    .limiter {
-  width: 100%;
-  margin: 0 auto;
-}
 
+      #members_field_button_o {
+        background-color: royalblue;
+        color: white;
+      }
+      #members_field_button_o:hover {
+        background-color: blue;
+      }
 
-    
-.row {
+  .noItalic {
+    font-style: normal !important;
+    font-weight: normal !important;
+  }
+
   
-  background: #fff;
-}
-
-.row.header {
-  color: #ffffff;
-  background: #6c7ae0;
- 
-}
-
-.limiter td, .row.header td {
-  border: 1px solid #6c7ae0;
-  padding: 8px;
-}
-
-.show2  {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  width: 50%;
   
-}
 
-.show2 td {
-  width: 3%;
-}
-
-.row tr:nth-child(even){background-color: rgb(243, 239, 239)};
 

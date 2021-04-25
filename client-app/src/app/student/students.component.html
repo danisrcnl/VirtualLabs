@@ -1,126 +1,190 @@
-   <div>
-    <nav mat-tab-nav-bar>
-      <a mat-tab-link [routerLink] ="[href]" [queryParams] = "{name : firstParam}" routerLinkActive = "active">Gruppi</a>
-      <a mat-tab-link [routerLink] = "[href2]" [queryParams] = "{name : firstParam}" routerLinkActive = "active">Vms</a>
-    </nav>
-    <router-outlet></router-outlet>
-   </div>
+<div>
+  <nav mat-tab-nav-bar>
+    <a mat-tab-link [routerLink] ="[href]" [queryParams] = "{name : firstParam}" routerLinkActive = "active">Gruppi</a>
+    <a mat-tab-link [routerLink] = "[href2]" [queryParams] = "{name : firstParam}" routerLinkActive = "active">Vms</a>
+  </nav>
+  <router-outlet></router-outlet>
+</div>
 
-   <div [ngClass] = "tableclasses">
-   <table [ngClass] = "tableclasses">
-        <h1>Elenco studenti iscritti al corso</h1>
+<div [ngClass] = "tableclasses" id="wrapperDiv">
 
-        <table mat-table [dataSource]= "dataSource" class="studenti">
-          <ng-container matColumnDef="select">
-            <th mat-header-cell *matHeaderCellDef>
-              <mat-checkbox (change)="$event ? masterToggle() : null"
+  <div id="tableClassesDiv">
+
+    <table [ngClass] = "tableclasses">
+      <div id="tableClassesTitle">
+        <h1>Seleziona gli studenti da invitare nel tuo team!</h1>
+      </div>
+
+      <table mat-table [dataSource]= "dataSource" class="studenti">
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? masterToggle() : null"
                             [checked]="selection.hasValue() && isAllSelected()"
                             [indeterminate]="selection.hasValue() && !isAllSelected()"
                             >
-              </mat-checkbox>
-            </th>
-            <td mat-cell *matCellDef="let row">
-              <mat-checkbox (click)="$event.stopPropagation()"
+            </mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <mat-checkbox (click)="$event.stopPropagation()"
                             (change)="$event ? selection.toggle(row) : null"
                             [checked]="selection.isSelected(row)"
                             >
-              </mat-checkbox>
-            </td>
-          </ng-container>
-
-
+            </mat-checkbox>
+          </td>
+        </ng-container>
 
         <!-- Name Column -->
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> Name </th>
-    <td mat-cell *matCellDef="let student"> {{student.name}} </td>
-  </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Cognome </th>
+          <td mat-cell *matCellDef="let student"> {{student.name}} </td>
+        </ng-container>
 
-  <!-- First Name Column -->
-  <ng-container matColumnDef="firstname">
-    <th mat-header-cell *matHeaderCellDef> Firstname </th>
-    <td mat-cell *matCellDef="let student"> {{student.firstName}} </td>
-  </ng-container>
+        <!-- First Name Column -->
+        <ng-container matColumnDef="firstname">
+          <th mat-header-cell *matHeaderCellDef> Nome </th>
+          <td mat-cell *matCellDef="let student"> {{student.firstName}} </td>
+        </ng-container>
 
-  <ng-container matColumnDef="serial">
-    <th mat-header-cell *matHeaderCellDef> Matricola </th>
-    <td mat-cell *matCellDef="let student"> {{student.id}} </td>
-  </ng-container>
+        <!-- Id Column -->
+        <ng-container matColumnDef="serial">
+          <th mat-header-cell *matHeaderCellDef> Matricola </th>
+          <td mat-cell *matCellDef="let student"> {{student.id}} </td>
+        </ng-container>
 
 
-  <tr mat-header-row *matHeaderRowDef = "displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-   </table>
+        <tr mat-header-row *matHeaderRowDef = "displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
       </table>
-<div>
-<form [formGroup] = "myForm" (ngSubmit)="sendinvite()">
-  <label for="groupname">Nome gruppo: </label>
-  <input type="text" formControlName = "groupname" [(ngModel)]="groupname">
-  <label for = "timeout" id = "timeout"> Timeout: </label>
-  <select formControlName="timeout" [(ngModel)]="timeout" id ="timeout">
-  <option value= "1"> 1 ora  </option>
-  <option value= "3"> 3 ore  </option>
-  <option value= "6"> 6 ore  </option>
-  <option value= "12"> 12 ore </option>
-  <option value= "24"> 24 ore</option>
-  </select>
-<button style="color:black;" type="submit" class="propose"> Invita </button>
-</form>
+
+    </table>
+  </div>
 
 
-</div>
+  <div id="createTeamDiv">
+    <form [formGroup] = "myForm" (ngSubmit)="sendinvite()">
 
-<div class="limiter">
-  <table>
-    <h1> Proposte in attesa</h1>
-  <ng-container *ngFor="let team of teams$ | async">
- <tr><td><h2>{{team.name}}</h2></td></tr>
-<tr>
-  <th>Matricola</th>
-  <th>Nome</th>
-  <th>Cognome</th>
-  <th>Accettato</th>
-</tr>
-<tr *ngFor = "let memberss of compagnidigruppo$ | async">
-<i *ngIf = "memberss.teamid == team.id"> 
- <tr>
-  <th>{{memberss.studentId}}</th> 
-  <th>{{memberss.firstName}}</th>
-  <th>{{memberss.lastName}}</th> 
-  <th>{{memberss.hasAccepted}}</th>
-  <th *ngIf = "memberss.isCreator==true"> Creatore </th>
-  </tr>
+      <mat-form-field id="nomeGruppoField">
+        <mat-label for="groupname" class="mat-row"> Nome gruppo: </mat-label>
+        <input matInput type="text" formControlName = "groupname" [(ngModel)]="groupname">
+      </mat-form-field>
 
-<div *ngIf = "memberss.studentId == currentStudent.id && memberss.isCreator==false">
-<button mat-raised-button (click)="accept(memberss.teamid,memberss.studentId)"> Accetta </button>
-<button mat-raised-button (click)="reject(memberss.teamid,memberss.studentId)"> Rifiuta </button>
-</div>
-</i>
+      <mat-form-field id="timeoutField">
+        <mat-label for = "timeout" id = "timeout"> Timeout: </mat-label>
+        <mat-select formControlName="timeout" [(ngModel)]="timeout" id ="timeout">
+        <mat-option value= "1"> 1 ora  </mat-option>
+        <mat-option value= "3"> 3 ore  </mat-option>
+        <mat-option value= "6"> 6 ore  </mat-option>
+        <mat-option value= "12"> 12 ore </mat-option>
+        <mat-option value= "24"> 24 ore</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-</ng-container>
+      <div id="buttonField">
+        <button mat-button type="submit" id="buttonField_button"> Invita </button>
+      </div>
 
+    </form>
+  </div>
+  
 
-    <!--<div class="row">
-        <td *ngFor="let student of enrolledstudents">
-          <i *ngIf="student.team.includes(team.id)"> {{student.name}}</i>
+  <div id="proposalsDiv_title">
+    <h1>Qui di seguito puoi vedere i team che hai creato/in cui sei stato invitato:</h1>
+  </div>
+
+  <div id="proposalsDiv">
+
+    <table mat-table [dataSource]="teams$ | async" id="proposalsDiv_table">
+
+      <ng-container matColumnDef="teamName">
+        <th mat-header-cell *matHeaderCellDef> Team </th>
+        <td mat-cell *matCellDef="let row"><b> {{row.name}} </b></td>
+      </ng-container>
+
+      <ng-container matColumnDef="members">
+        <th mat-header-cell *matHeaderCellDef> Membri </th>
+        <td mat-cell *matCellDef="let team">
+          <div *ngFor="let memberss of compagnidigruppo$ | async">
+            <div *ngIf="memberss.teamid == team.id" id="members_row">
+              <div id="members_studentId" class="members_field">{{memberss.studentId}}</div> 
+              <div id="members_firstName" class="members_field">{{memberss.firstName}}</div>
+              <div id="members_lastName" class="members_field">{{memberss.lastName}}</div>
+              <div id="members_status" class="members_field">
+                <span *ngIf="( memberss.isCreator )">
+                  <mat-icon title="master" [ngStyle]="{'color':'orange'}">vpn_key</mat-icon>
+                </span>
+                <span *ngIf="( !memberss.isCreator && memberss.hasAccepted )">
+                  <mat-icon title="user confirmed" [ngStyle]="{'color':'green'}">person</mat-icon>
+                </span>
+                <span *ngIf="( !memberss.isCreator && !memberss.hasAccepted )">
+                  <mat-icon title="user didn't accept yet" [ngStyle]="{'color':'gray'}">person</mat-icon>
+                </span>
+              </div>
+              <!-- 
+              <div id="members_hasAccepted" class="members_field">{{memberss.hasAccepted}}</div>
+              <div id="members_isCreator" class="members_field">{{memberss.isCreator}}</div>
+              -->
+              <div id="members_button" class="members_field" *ngIf = "(memberss.studentId == currentStudent.id && !memberss.isCreator)">
+                <div class="members_field_button">
+                  <button mat-raised-button id="members_field_button_o" (click)="accept(memberss.teamid,memberss.studentId)"> Accetta </button>
+                </div>
+                  <div class="members_field_button">
+                <button mat-raised-button id="members_field_button_o" (click)="reject(memberss.teamid,memberss.studentId)"> Rifiuta </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
           
         </td>
-      
-    </div>
-  -->
-  </table>
-</div>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef = "displayedColumnsProposals"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumnsProposals;"></tr>
+    </table>
+  </div>
+  
+  
+
+  <!--
+  <div id="proposalsDiv">
+    <table>
+      <h1> Proposte in attesa</h1>
+
+      <ng-container *ngFor="let team of teams$ | async">
+
+        <tr><td><h2>{{team.name}}</h2></td></tr>
+        <tr>
+          <th>Matricola</th>
+          <th>Nome</th>
+          <th>Cognome</th>
+          <th>Stato</th>
+          <th>Creatore</th>
+        </tr>
+        <tr *ngFor = "let memberss of compagnidigruppo$ | async">
+        <i class="noItalics">
+          <tr  *ngIf = "memberss.teamid == team.id">
+            <th>{{memberss.studentId}}</th> 
+            <th>{{memberss.firstName}}</th>
+            <th>{{memberss.lastName}}</th> 
+            <th>{{memberss.hasAccepted}}</th>
+            <th>{{memberss.isCreator}}</th>
+          </tr>
+
+          <div *ngIf = "memberss.studentId == currentStudent.id">
+            <button mat-raised-button (click)="accept(memberss.teamid,memberss.studentId)"> Accetta </button>
+            <button mat-raised-button (click)="reject(memberss.teamid,memberss.studentId)"> Rifiuta </button>
+          </div>
+        </i>
+      </ng-container>
+
+    </table>
+  </div>
 
 
+</div>-->
 
-
-
-
-</div>
-
-
+<!--
       <div class="limiter">
         <table [ngClass]="compagniclass">
           <h1>Gruppo {{teamName}}</h1>
@@ -142,3 +206,4 @@
 
           </table>
       </div>
+-->

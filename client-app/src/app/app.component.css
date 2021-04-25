@@ -1,5 +1,9 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 mat-sidenav-container{ margin: 20px; height: 100%; }
+body {
+  height: 100%;
+  width: 100%;
+}
 .menu {
  
   vertical-align: middle;
@@ -14,47 +18,19 @@ mat-sidenav-container{ margin: 20px; height: 100%; }
       padding: 0;
   }
 
-.btn2 {
-  font-family: "Roboto", sans-serif;
-  text-transform: uppercase;
-  outline: 0;
-  position: absolute;
-  background: #4CAF50;
-  width: 45%;
-  max-width: 105px;
-  min-width: 105px;
-  border: 0;
-  padding: 15px;
-  color: #FFFFFF;
-  font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
-  cursor: pointer;
-  border-radius: 80%;
+.login_icon {
+  margin-right: 15px;
 }
 
-.btn1 {
-  font-family: "Roboto", sans-serif;
-  text-transform: uppercase;
-  outline: 0;
-  background: #4CAF50;
-  width: 8%;
-  max-width: 55px;
-  min-width: 55px;
-  border: 0;
-  padding: 5px;
-  color: #FFFFFF;
-  font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
-  cursor: pointer;
-  border-radius: 40%;
-
+#welcome_msg {
+  margin-right: 15px;
 }
 
-button:hover,.form button:active,.form button:focus {
-  background: #43A047;
+.log_button:hover {
+  
+  color: royalblue;
 }
+
 
 body {
   background: #76b852; /* fallback for old browsers */
