@@ -1,11 +1,8 @@
-export interface Vms {
+export class Vms {
 
-    owner: string;
-    id: string;
-    stato: string;
-    disksize: number;
-    ramsize: number;
-    vcpu: number;
-    
+    nVCpu: Number;
+    disk: Number;
+    ram: Number;
+    vmStatus : boolean;
     }
     

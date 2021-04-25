@@ -84,19 +84,6 @@ setlimit() {
   this.VCPUtotal =0;
 
 
-  
-  for(let i=0; i<this.vms.length; i++) {
-  
-  this.VCPUtotal = this.VCPUtotal + this.vms[i].vcpu;
-  this.RAMtotal = this.RAMtotal + this.vms[i].ramsize;
-  this.DISKSIZE = this.DISKSIZE + this.vms[i].disksize;
-  if (this.vms[i].stato == "Attiva")
-  {
-    this.activevms++;
-  }
-  this.TOTALVMS++;
-};
-
 
  
 console.log(this.TOTALVMS);

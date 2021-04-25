@@ -45,16 +45,22 @@ this.route.queryParams.subscribe(params => { this.courseId = params.name
        this.studentservice.getStudentCourseTeam(this.currentStudent.id,this.courseId).subscribe(
           data => {
           this.teams = data;
-          this.team = this.teams[0];
-       
-         this.vmService.getVmsForTeam(this.team.id).subscribe ( vmss => {
+            
+              this.teams.forEach(t => 
+                 {if (t.status == 1) {
+                   this.team = t;
+                    this.vmService.getVmsForTeam(t.id).subscribe 
+                      (vmss => {
+   
+                       vmss.forEach 
+                         ( v => {
 
-      vmss.forEach ( v => {
+                            this.vmsperteam.push(v);
+                             })
 
-        this.vmsperteam.push(v);
-      })
 
-    })
+                                                                })}
+                                })
 
       }
      
@@ -102,6 +108,7 @@ this.route.queryParams.subscribe(params => { this.courseId = params.name
    }
 
    vmsperteam : Vms[] = new Array<Vms>();
+   vm : Vms;
    vms$ : Observable <Vms[]>;
    studentId : string;
    groups : Group[];
@@ -145,4 +152,10 @@ this.hreff = this.router.url;
     }
     
   
+    receivevm($event)
+    {
+      this.vm = $event;
+      console.log(this.currentStudent.id);
+      this.vmService.addVm(this.firstParam,this.team.name,this.vm,this.currentStudent.id).subscribe(data => {console.log(data)});
+    }
 }

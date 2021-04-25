@@ -1,42 +1,31 @@
 
-    <h2 mat-dialog-title> Imposta Limiti </h2>
-    <form [formGroup]= "limitForm" (ngSubmit)="setlimit()">
+    <h2 mat-dialog-title> Imposta parametri per la Vm: </h2>
+    <form [formGroup]= "limitForm" (ngSubmit)="createvm()">
         <div class="row">
           <div class="input-field col s12">
             
-            <input matInput type="text" id="VCPU" placeholder="VCPU" autocomplete="off" formControlName="VCPU" [(ngModel)]="VCPU">
-            {{alertVCPU}}
+            <input matInput type="text" id="VCPU" placeholder="VCPU" autocomplete="off" formControlName="VCPU" [(ngModel)]="data.nVCpu">
+            
           </div>
         </div>
         <div class="row"> 
           <div class="input-field col s12">
             
-            <input matInput type="text" id="RAM" placeholder="RAM" formControlName="RAM" [(ngModel)]="RAM" >
-            {{alertRAM}}
+            <input matInput type="text" id="RAM" placeholder="RAM" formControlName="RAM" [(ngModel)]="data.ram" >
+            
           </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
               
-              <input matInput type="text" id="Disksize" placeholder="Disksize" formControlName="Disksize" [(ngModel)]="Disksize" >
-              {{alertDISKSIZE}}
-            </div>
-          </div>
-          <div class="row">
-            <div class="input-field col s12">
+              <input matInput type="text" id="Disksize" placeholder="Disksize" formControlName="Disksize" [(ngModel)]="data.disk" >
               
-              <input matInput type="text" id="ActiveVms" placeholder="ActiveVms" formControlName="ActiveVms" [(ngModel)]="ActiveVms" >
-              {{alertACTIVEVMS}}
             </div>
           </div>
-          <div class="row">
-            <div class="input-field col s12">    
-              <input matInput type="text" id="TotalVms" placeholder="TotalVms" formControlName="TotalVms" [(ngModel)]="TotalVms">
-              {{alertTOTALVMS}}
-            </div>
-          </div>
+         
+         
           <div>
-        <button mat-raised-button color="primary" type="submit" class = "limit"> IMPOSTA LIMITI </button> 
-        <button mat-raised-button color="primary" (click)="close()"> CLOSE </button>
+        <button mat-raised-button [mat-dialog-close]="data" color="primary" type="submit" class = "limit"> Crea </button> 
+        <button mat-raised-button color="primary" (click)="close()"> Chiudi </button>
 </div>
 </form>

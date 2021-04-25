@@ -100,13 +100,11 @@ export class TeacherContComponent implements OnInit {
     this.studenteaggiunto = $event;
     if (!this.enrolledstudents.includes(this.studenteaggiunto)){
     this.enrolledstudents.push(this.studenteaggiunto);
-    console.log(this.enrolledstudents);
-    console.log(this.studenti);
     this.enrolledstudents = Object.assign( this.enrolledstudents);
     this.studenti.forEach(item => {
       let index: number = this.studenti.findIndex(d => d === item);
       this.studenti.splice(index,1)});}
-      console.log(this.studenti);
+    
       this.studentsComponent.updateFilteredOptions();
       this.studentsComponent.selection.clear();
       this.studentsComponent.studenteselezionato = null;
@@ -119,13 +117,13 @@ export class TeacherContComponent implements OnInit {
     this.darimuovere = $event;
     this.darimuovere.forEach(item => {
       let index: number = this.enrolledstudents.findIndex(d => d === item);
-      console.log(this.enrolledstudents.findIndex(d => d === item));
-      console.log (this.enrolledstudents);
+      //console.log(this.enrolledstudents.findIndex(d => d === item));
+      //console.log (this.enrolledstudents);
       this.enrolledstudents.splice(index,1);
       if (!this.studenti.includes(item))
       this.studenti.push(item);});
-      console.log(this.studenti);
-      console.log(this.enrolledstudents);
+      //console.log(this.studenti);
+      //console.log(this.enrolledstudents);
       this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);
 
     
