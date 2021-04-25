@@ -48,7 +48,7 @@ table {
 
 #proposalsDiv_title {
   margin-top: 5px;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
   margin-left: 5px;
 }
 
@@ -59,21 +59,20 @@ table {
 
   #members_row {
     min-height: 45px;
-    display:block;
-    vertical-align: middle;
+    max-height: 55px;
+    margin-bottom: 5px;
   }
 
   .members_field {
+    max-height: 55px;
     padding: 5px;
     margin: auto;
     float: left;
     width: 15%;
-    text-align: center;
-    vertical-align: middle;
   }
 
     .members_field_button {
-      display: inline-block;
+      float: left;
       margin: 2px;
     }
 

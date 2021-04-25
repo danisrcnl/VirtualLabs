@@ -120,11 +120,7 @@
                   <mat-icon title="user didn't accept yet" [ngStyle]="{'color':'gray'}">person</mat-icon>
                 </span>
               </div>
-              <!-- 
-              <div id="members_hasAccepted" class="members_field">{{memberss.hasAccepted}}</div>
-              <div id="members_isCreator" class="members_field">{{memberss.isCreator}}</div>
-              -->
-              <div id="members_button" class="members_field" *ngIf = "(memberss.studentId == currentStudent.id && !memberss.isCreator)">
+              <div id="members_button" class="members_field" *ngIf = "(memberss.studentId == currentStudent.id && !memberss.isCreator && !memberss.hasAccepted)">
                 <div class="members_field_button">
                   <button mat-raised-button id="members_field_button_o" (click)="accept(memberss.teamid,memberss.studentId)"> Accetta </button>
                 </div>
