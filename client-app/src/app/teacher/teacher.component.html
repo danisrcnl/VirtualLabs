@@ -9,80 +9,85 @@
    </div>
    
    
-   <table class= "Studenti">
-        <h1>Elenco studenti iscritti al corso</h1>
-        <div>
+   <table class= "Studenti" id="wrapping_table">
+    <div id="studenti_title">
+      <h1>Elenco studenti iscritti al corso</h1>
+    </div>
+    <div id="search_bar">
+      
+      <div id="search_bar_input">
         <form class="example-form">
-          
-            <mat-form-field class="formfield" appearance="fill">
-              
-          <input matInput [formControl] = "mycontrol" type="text" class="insert" placeholder="Aggiungi uno studente" [matAutocomplete]="auto"
-           [(ngModel)] = "studenteselezionato"
-          />
-        </mat-form-field>
-            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="saveobject($event)">
             
-            <mat-option *ngFor="let student of filteredOptions | async" [value]="student"> {{student.name}} {{student.firstName}} 
-              (s{{student.id}})
-            </mat-option>
-           
-  
-            </mat-autocomplete>
-          
-        </form>
-         
+          <mat-form-field class="formfield" appearance="fill">   
+            <input matInput [formControl] = "mycontrol" type="text" class="insert" placeholder="Aggiungi uno studente" [matAutocomplete]="auto"
+            [(ngModel)] = "studenteselezionato"
+            />
+          </mat-form-field>
 
-        <input type="button" name="add" value="Add" class="add" (click)="addstudent()">
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="saveobject($event)"> 
+            <mat-option *ngFor="let student of filteredOptions | async" [value]="student"> {{student.name}} {{student.firstName}} 
+                (s{{student.id}})
+            </mat-option>
+          </mat-autocomplete>
+            
+        </form>
+      </div>
+         
+      <div id="search_bar_add">
+        <button mat-flat-button id="search_bar_add_o" (click)="addstudent()">Aggiungi studente al corso</button>
+      </div>
         
-        </div>
-        <button style="color:black;" (click)="removeSelectedRows()" class="buttonrows"> Delete Selected</button>
-        <table mat-table [dataSource]= "dataSource" class="studenti">
-          <ng-container matColumnDef="select">
-            <th mat-header-cell *matHeaderCellDef>
-              <mat-checkbox (change)="$event ? masterToggle() : null"
+    </div>
+
+    <div id="delete_button">
+      <button mat-flat-button id="delete_button_o" (click)="removeSelectedRows()"> Rimuovi dal corso </button>
+    </div>
+    
+    <div id="table_wrapper">   
+      
+      <table id="table_studenti" mat-table [dataSource]= "dataSource" class="studenti">
+        
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? masterToggle() : null"
                             [checked]="selection.hasValue() && isAllSelected()"
                             [indeterminate]="selection.hasValue() && !isAllSelected()"
                             >
-              </mat-checkbox>
-            </th>
-            <td mat-cell *matCellDef="let row">
-              <mat-checkbox (click)="$event.stopPropagation()"
+            </mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <mat-checkbox (click)="$event.stopPropagation()"
                             (change)="$event ? selection.toggle(row) : null"
                             [checked]="selection.isSelected(row)"
                             >
-              </mat-checkbox>
-            </td>
-          </ng-container>
-
-
+            </mat-checkbox>
+          </td>
+        </ng-container>
 
           <!-- Id Column -->
         <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef> Id
-          </th>
-          <td mat-cell *matCellDef="let student">
-            {{student.id}}
-          </td>
+          <th mat-header-cell *matHeaderCellDef> Id </th>
+          <td mat-cell *matCellDef="let student"> {{student.id}} </td>
         </ng-container> 
+
         <!-- Name Column -->
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> Name </th>
-    <td mat-cell *matCellDef="let student"> {{student.name}} </td>
-  </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let student"> {{student.name}} </td>
+        </ng-container>
 
   <!-- First Name Column -->
-  <ng-container matColumnDef="firstname">
-    <th mat-header-cell *matHeaderCellDef> Firstname </th>
-    <td mat-cell *matCellDef="let student"> {{student.firstName}} </td>
-  </ng-container>
+        <ng-container matColumnDef="firstname">
+          <th mat-header-cell *matHeaderCellDef> Firstname </th>
+          <td mat-cell *matCellDef="let student"> {{student.firstName}} </td>
+        </ng-container>
 
 
-  <tr mat-header-row *matHeaderRowDef = "displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> 
+        <tr mat-header-row *matHeaderRowDef = "displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> 
 
-   </table>
-        <div class="container">
-  
-        </div>
       </table>
+    </div>
+    <div class="container"></div>
+  </table>
   

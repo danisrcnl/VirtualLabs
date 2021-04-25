@@ -1,4 +1,4 @@
-mat-sidenav-container{ margin: 20px; height: 100%; }
+mat-sidenav-container{height: 100%; }
 .menu {
  
   vertical-align: middle;
@@ -12,6 +12,16 @@ mat-sidenav-container{ margin: 20px; height: 100%; }
 .custom-modalbox .mat-dialog-container {
   padding: 0;
 }
+
+.button_modifica {
+  margin-left: 8px;
+  background-color: royalblue;
+  color: white;
+}
+
+  .button_modifica:hover {
+    background-color: blue;
+  }
 
 
   
