@@ -6,6 +6,7 @@ import it.polito.ai.lab2.dtos.VmDTO;
 import it.polito.ai.lab2.dtos.VmModelDTO;
 import it.polito.ai.lab2.entities.*;
 import it.polito.ai.lab2.repositories.*;
+import it.polito.ai.lab2.services.auth.AuthenticationService;
 import it.polito.ai.lab2.services.student.StudentService;
 import it.polito.ai.lab2.services.team.TeamService;
 import org.modelmapper.ModelMapper;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,6 +47,9 @@ public class VmServiceImpl implements VmService {
 
     @Autowired
     StudentService studentService;
+
+    @Autowired
+    AuthenticationService authenticationService;
 
     @Override
     public Long addVmToTeam(VmDTO vm, String courseName, String teamName, String creator) throws TeamNotFoundException, VmServiceException {
@@ -82,11 +88,25 @@ public class VmServiceImpl implements VmService {
         Student creator_entity = studentRepository.getOne(creator);
 
         Vm v = modelMapper.map(vm, Vm.class);
-        v.setTeam(teamRepository.getTeamByCourseAndName(courseName, teamName));
+        Team vmTeam = teamRepository.getTeamByCourseAndName(courseName, teamName);
+        v.setTeam(vmTeam);
         v.setCreator(creator_entity);
         v.setCurrentStatus(VmStatus.OFF);
         vmRepository.save(v);
         vmRepository.flush();
+
+        List<User> users = vmTeam
+                .getMembers()
+                .stream()
+                .map(Student :: getUser)
+                .collect(Collectors.toList());
+
+        for (User u : users) {
+            if (u.getStudent().getId().equals(creator))
+                authenticationService.setPrivileges(u.getUsername(), Arrays.asList("ROLE_VM_" + v.getId() + "_CREATOR"));
+            authenticationService.setPrivileges(u.getUsername(), Arrays.asList("ROLE_VM_" + v.getId() + "_OWNER"));
+        }
+
         return v.getId();
     }
 
@@ -163,9 +183,23 @@ public class VmServiceImpl implements VmService {
     public void deleteVm(Long id) throws VmNotFoundException {
         if(!vmRepository.existsById(id))
             throw new VmNotFoundException(id.toString());
-        vmRepository
-                .getOne(id)
-                .removeRelations();
+
+        Vm vm = vmRepository.getOne(id);
+
+        List<User> users = vm
+                .getTeam()
+                .getMembers()
+                .stream()
+                .map(Student :: getUser)
+                .collect(Collectors.toList());
+
+        for (User u : users) {
+            u
+                .getRoles()
+                .removeIf(role -> role.contains(vm.getId().toString()));
+        }
+
+        vm.removeRelations();
         vmRepository.deleteById(id);
         vmRepository.flush();
     }
