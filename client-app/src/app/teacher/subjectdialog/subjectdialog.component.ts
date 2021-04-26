@@ -37,6 +37,11 @@ export class SubjectdialogComponent implements OnInit {
   courseDTO : CourseDTO = new CourseDTO();
   courses$ : Observable <CourseDTO[]>;
   currentUser : User;
+
+  modCourse: Boolean = false;
+  newCourse: Boolean = false;
+  isIntro: Boolean = true;
+  courseSelected: Boolean = false;
   
   teacherId : string ;
 
@@ -156,6 +161,21 @@ console.log (this.enabled);
    this.dialog.closeAll();
 
    console.log(this.data);
+ }
+
+
+ showMod () {
+   this.isIntro = false;
+   this.modCourse = true;
+ }
+
+ showNew () {
+   this.isIntro = false;
+   this.newCourse = true;
+ }
+
+ showMods () {
+   this.courseSelected = true;
  }
 
 }
