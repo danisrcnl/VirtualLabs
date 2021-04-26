@@ -6,6 +6,7 @@ import it.polito.ai.lab2.dtos.VmDTO;
 import it.polito.ai.lab2.dtos.VmModelDTO;
 import it.polito.ai.lab2.entities.*;
 import it.polito.ai.lab2.repositories.*;
+import it.polito.ai.lab2.services.AiException;
 import it.polito.ai.lab2.services.auth.AuthenticationService;
 import it.polito.ai.lab2.services.student.StudentService;
 import it.polito.ai.lab2.services.team.TeamService;
@@ -89,6 +90,10 @@ public class VmServiceImpl implements VmService {
 
         Vm v = modelMapper.map(vm, Vm.class);
         Team vmTeam = teamRepository.getTeamByCourseAndName(courseName, teamName);
+
+        if (!vmTeam.getMembers().contains(creator_entity))
+            throw new VmServiceException("Creator must belong to the team");
+
         v.setTeam(vmTeam);
         v.setCreator(creator_entity);
         v.setCurrentStatus(VmStatus.OFF);
