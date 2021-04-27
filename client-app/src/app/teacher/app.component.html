@@ -7,7 +7,9 @@
         <mat-list-item *ngFor="let item of courses$ | async" [routerLink]="['course' + '/students']" [queryParams] = "{name : item.name}"> {{item.name}}
         </mat-list-item>
 
-        <button class="button_modifica" mat-flat-button (click)="openmodDialog()"> Modifica corso </button>
+        <div id="modCourse_w">
+          <button class="button_modifica" mat-flat-button (click)="openmodDialog()"> Gestisci corsi </button>
+        </div>
 
       </mat-nav-list>
 

@@ -1,60 +1,100 @@
 
-<form [formGroup] = "myForm">
-  <div>
-    <div>
-  <label for="cars">Quale corso vuoi modificare?</label>
-  <select formControlName ="selcourse" [(ngModel)]="selectedcourse">
-  
-    <option *ngFor = "let course of courses$ | async" [ngValue] = "course" >
-      {{course.name}}
-    </option>
+<form [formGroup] = "myForm" id="wrapper">
+
+  <div id="intro" *ngIf="isIntro">
+    <div id="button_modificaEsistente" (click)="showMod()">
+      <button mat-flat-button class="stdB">Modifica un corso esistente</button>
+    </div>
+    <div id="button_creaNuovo" (click)="showNew()">
+      <button mat-flat-button class="stdB">Crea un nuovo corso</button>
+    </div>
+  </div>
+
+  <div id="mod_corso" *ngIf="modCourse">
+
+    <div id="sel_corso">
+
+      <mat-form-field id="sel_corso_o">
+        <mat-label for="cars">Sel. corso</mat-label>
+        <mat-select formControlName ="selcourse" [(ngModel)]="selectedcourse" (selectionChange)="showMods()">
+          <mat-option *ngFor = "let course of courses$ | async" [value] = "course"> {{course.name}} </mat-option>
+        </mat-select>
+      </mat-form-field>
       
-    </select>
-  </div>
+    </div>
 
-    <div>
-   <mat-form-field>
-     <input matInput placeholder="Max studenti" formControlName = "maxstud" [(ngModel)]="maxstud">
-   </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Min studenti" formControlName="minstud" [(ngModel)]="minstud">
-    </mat-form-field>
-<div mat-dialog-actions>
+
+    <div id="selMinMax" *ngIf="courseSelected">
+
+      <div id="wrap_button_delete">
+        <button mat-button id="buttonDelete" class="stdB_red" (click) = "delete()"> Cancella corso </button>
+      </div>
+
+      <div id="selMin">
+        <mat-form-field id="selMin_o">
+          <input matInput placeholder="Minimo studenti per team" formControlName = "minstud" [(ngModel)]="minstud">
+        </mat-form-field>
+      </div>
+
+      <div id="selMax">
+        <mat-form-field id="selMax_o">
+          <input matInput placeholder="Massimo studenti per team" formControlName="maxstud" [(ngModel)]="maxstud">
+        </mat-form-field>
+      </div>
+
+      <div id="enableCourse">
+
+        <mat-checkbox id="enable" name="enable" formControlName="enabled" [(ngModel)]="enabled">Abilita il corso</mat-checkbox>
   
-</div>
+      </div>
 
-  </div>
+      <div id="buttonSave_w">
+        <button mat-flat-button id="buttonSave" class="stdB" (click)="check()"> Salva </button>
+      </div>
 
-
-   <button (click) = "delete()"> Cancella corso </button>
+    </div>  
  
   </div>
 
-  <div>
-    <input type="checkbox" id="enable" name="enable" formControlName="enabled" [(ngModel)]="enabled">
-    <label for="enable">Enabled</label> 
-    <button (click)="check()"> Invia </button>
-  </div>
+  
 
-  <div>
+  
+  <div id="crea_corso" *ngIf="newCourse">
 
-    <label for="cars">Crea corso : </label>
-    <mat-form-field>
-      <input matInput placeholder="Inserisci Nome" formControlName = "coursename" [(ngModel)]="data.coursename">
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Max studenti" formControlName="maxstud2" [(ngModel)]="data.maxstud">
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Min studenti" formControlName="minstud2" [(ngModel)]="data.minstud">
-    </mat-form-field>
-  <input type="checkbox" id="enabled2" name="enabled2" formControlName="enabled2" [(ngModel)]="data.enabled">
-  <label for="enabled2">Enabled</label>
-    <mat-form-field>
-      <input matInput placeholder="Acronimo" formControlName="acronym" [(ngModel)]="data.acronym">
-    </mat-form-field>
+    <div id="nome_w">
+      <mat-form-field id="crea_corso_nome">
+        <input matInput placeholder="Inserisci Nome" formControlName = "coursename" [(ngModel)]="data.coursename">
+      </mat-form-field>
+    </div>
+
+    <div id="min_w">
+      <mat-form-field id="crea_corso_min">
+        <input matInput placeholder="Min studenti" formControlName="minstud2" [(ngModel)]="data.minstud">
+      </mat-form-field>
+    </div>
+
+    <div id="max_w">
+      <mat-form-field id="crea_corso_max">
+        <input matInput placeholder="Max studenti" formControlName="maxstud2" [(ngModel)]="data.maxstud">
+      </mat-form-field>
+    </div>
+
+    <div id="acr_w">
+      <mat-form-field id="crea_corso_acronimo">
+        <input matInput placeholder="Acronimo" formControlName="acronym" [(ngModel)]="data.acronym">
+      </mat-form-field>
+    </div>
+
+    <div id="en_w">
+      <mat-checkbox id="enabled2" name="enabled2" formControlName="enabled2" [(ngModel)]="data.enabled">Abilita il corso</mat-checkbox>
+    </div>
+
 <!--<button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>-->
-    <button mat-button [mat-dialog-close]="data" (click) = "createcourse()"> Crea </button>
-    <div><button (click)="close()"> Chiudi </button></div>
+    <div id="buttonCrea_w">
+      <button mat-button class="stdB" [mat-dialog-close]="data" (click) = "createcourse()"> Crea </button>
+    </div>
+    <div id="buttonChiudi_w">
+      <button mat-flat-button class="stdB_red" (click)="close()"> Chiudi </button>
+    </div>
   </div>
   </form>
