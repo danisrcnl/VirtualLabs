@@ -42,6 +42,11 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         Optional<User> u = userRepository.findByUsername(username);
         if(!u.isPresent())
             throw new UserNotFoundException(username);
-        u.get().setRoles(roles);
+        List<String> userRoles = u.get().getRoles();
+        for (String role : roles) {
+            if (!userRoles.contains(role))
+                userRoles.add(role);
+        }
+        u.get().setRoles(userRoles);
     }
 }
