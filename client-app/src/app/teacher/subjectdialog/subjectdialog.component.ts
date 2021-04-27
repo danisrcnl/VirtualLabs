@@ -42,6 +42,7 @@ export class SubjectdialogComponent implements OnInit {
   newCourse: Boolean = false;
   isIntro: Boolean = true;
   courseSelected: Boolean = false;
+  deletePressed: Boolean = false;
   
   teacherId : string ;
 
@@ -176,6 +177,11 @@ console.log (this.enabled);
 
  showMods () {
    this.courseSelected = true;
+ }
+
+ selectDelete () {
+   this.deletePressed = true;
+
  }
 
 }
