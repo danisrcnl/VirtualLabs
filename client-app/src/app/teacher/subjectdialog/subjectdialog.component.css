@@ -1,0 +1,101 @@
+#wrapper {
+    min-width: 300px;
+}
+
+#intro {
+    text-align: center;
+} #button_modificaEsistente {
+    margin-bottom: 8px;
+} #button_creaNuovo {
+    margin-bottom: 8px;
+}
+
+#mod_corso {
+    min-width: 300px;
+}
+
+    #wrap_button_delete {
+        text-align: center;
+    } #buttonDelete {
+        margin-top: 4px;
+        margin-bottom: 4px;
+    }
+
+    .stdB {
+        background-color: royalblue;
+        color: white;
+    } .stdB:hover {
+        background-color: blue;
+    }
+    .stdB_red {
+        background-color: orangered;
+        color: white;
+    } .stdB_red:hover {
+        background-color: red;
+    }
+
+    #sel_corso {
+        min-width: 300px;
+        text-align: center;
+    } #sel_corso_o {
+        min-width: 250px;
+    }
+
+    #selMinMax {
+        text-align: center;
+    }
+    #selMin{
+    } #selMin_o {
+        min-width: 250px;
+    }
+
+    #selMax {
+        height: fit-content;
+    } #selMax_o {
+        min-width: 250px;
+    }
+
+    #enableCourse {
+        margin-top: 8px;
+        margin-bottom: 16px;
+    }
+
+#crea_corso {
+    text-align: center;
+}
+
+    #crea_corso_nome {
+        min-width: 250px;
+    }
+
+    #crea_corso_min {
+        min-width: 250px;
+    }
+
+    #crea_corso_max {
+        min-width: 250px;
+    }
+
+    #crea_corso_acronimo {
+        min-width: 250px;
+    }
+
+    #buttonCrea_w {
+        margin-top: 16px;
+    }
+
+    #buttonChiudi_w {
+        margin-top: 8px;
+    }
+
+    #sure_buttons {
+        margin-top: 8px;
+        margin-bottom: 8px;
+        display: block;
+    } #sure_yes {
+        display: inline-block;
+        margin-right: 4px;
+    } #sure_no {
+        display: inline-block;
+    }
+
