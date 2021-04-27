@@ -102,6 +102,9 @@ export class VmscomponentComponent2 implements OnInit {
 }
 
 set() {
+
+
   
 }
+
 }
