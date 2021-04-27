@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Group } from '../model/group.model';
 import { StudentService } from '../services/student.service';
 import { Vms } from '../model/vms.model';
 import { VmService } from 'app/services/vm.service';
-import { Observable } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import { AuthService } from 'app/auth/authservices/auth.service';
 import { User } from 'app/auth/user';
 import { CourseService } from 'app/services/course.service';
@@ -24,13 +24,18 @@ currentUser : User;
 team$ : Observable <Team[]>;
 teams : Team[] ;
 team : Team;
+roles : String[] = new Array<String>();
+roles$ : Observable<String[]>;
 
-  constructor(private route: ActivatedRoute,private authService : AuthService, private studentservice : StudentService, private router : Router,private vmService: VmService ) {
+constructor(private route: ActivatedRoute,private authService : AuthService, private studentservice : StudentService, private router : Router,private vmService: VmService ) {
 
   this.authService.currentUser.subscribe ( x => {this.currentUser = x;
     console.log(this.currentUser);
       this.studentId = this.currentUser.username.split("@")[0].substring(1,7);
-  
+
+      
+ 
+
   this.studentservice.getOne(this.studentId).subscribe(
     s => {
       this.currentStudent = s;
@@ -57,7 +62,23 @@ team : Team;
                        data.forEach(t => {
                          console.log(t);
                        })
-                     })}})})});},
+                       })}})
+                      
+                      })
+                     this.authService.info().subscribe(data => 
+                      
+                      {
+                        data.roles.forEach( r => {
+                            this.roles.push(r);
+                        })
+                      }
+
+                      )
+                      console.log(this.roles);
+                      this.roles$ = of(this.roles);
+                      
+                      ;
+                    });},
 
 
           error => {
@@ -120,8 +141,26 @@ this.hreff = this.router.url;
     {
       this.vm = $event;
       this.vm.vmStatus = vmStatus.OFF;
-      this.vmService.addVm(this.firstParam,this.team.name,this.vm,this.currentStudent.id).subscribe(data => {console.log(data)});
-      this.updatevms();
+      this.vmService.addVm(this.firstParam,this.team.name,this.vm,this.currentStudent.id).subscribe(
+        data1 => {console.log(data1)
+         this.updatevms();
+         this.authService.info().subscribe(data => 
+                      
+                      {
+                        data.roles.forEach( r => {
+                            if(r.includes("VM_"+data1))
+                            this.roles.push(r);
+                            console.log("VM_"+data1);
+                        })
+                      }
+
+                      )
+                      console.log(this.roles);
+                      this.roles$ = of(this.roles);
+        }
+     
+      );
+      
     }
 
     updatevms()
@@ -146,5 +185,15 @@ this.hreff = this.router.url;
                            })
 
                     })
+    }
+
+
+    changestatevm($event)
+    {
+      this.vmService.changeState($event.vmId,$event.command).subscribe(data => {console.log(data)
+      this.updatevms();
+      
+      });
+      
     }
 }

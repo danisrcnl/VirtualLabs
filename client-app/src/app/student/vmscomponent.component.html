@@ -27,11 +27,17 @@
             <mat-list-item role="listitem">Disk Size : {{vmss.disk}} Gb </mat-list-item>
         </mat-list>
     </mat-card-content>
-    <mat-card-actions>
-        <button mat-raised-button (click)= "set(ON)">ON</button>
-        <button mat-raised-button (click)= "set(OFF)">OFF</button>
-        <button mat-raised-button (click)= "set(DELETE)">CANCELLA</button>
-    </mat-card-actions>
+    <tr *ngFor="let role of roles$ | async">
+       <!--<div *ngIf = "role =='ROLE_VM_[vmss.id]_CREATOR'">-->
+        <div *ngIf= "role.includes('VM_'+vmss.id+'_CREATOR')">
+        <button mat-raised-button (click)= "set('start',vmss.id)">ON</button>
+        <button mat-raised-button (click)= "set('shutDown',vmss.id)">OFF</button>
+        <button mat-raised-button (click)="set('freeze',vmss.id)">FREEZE</button>
+        <button mat-raised-button (click)= "set('delete',vmss.id)">CANCELLA</button>
+        <!--</div>-->
+        </div>
+        
+</tr>
 </mat-card>
 
         

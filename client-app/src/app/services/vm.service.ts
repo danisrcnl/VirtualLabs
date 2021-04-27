@@ -39,4 +39,10 @@ export class VmService {
     {
         return this.http.get<any>(`${environment.apiUrlvms}/teams/${teamId}`);
     }
+
+
+    changeState(vmId,command)
+    {
+        return this.http.get<any>(`${environment.apiUrlvms}/${vmId}/changeState/${command}`);
+    }
 }

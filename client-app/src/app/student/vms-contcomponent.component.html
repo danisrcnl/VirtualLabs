@@ -9,8 +9,10 @@
    <app-vmscomponentstudent
    
    [vmModel] = "vmModel"
-   [vmsperteam$] = "vmsperteam$ "
+   [vmsperteam$] = "vmsperteam$"
+   [roles$] = "roles$"
    (addvmModelEvent) = "receivevmModel($event)"
+   (changestateEvent) = "changestatevm($event)"
    (addvmEvent) = "receivevm($event)"
    >
 

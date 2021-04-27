@@ -22,7 +22,7 @@ export class VmscomponentComponent2 implements OnInit {
   
   vmsperteam$ : Observable <Vms[]>;
   vmModel : vmModelDTO;
-  
+  roles$ : Observable<String[]>;
 
   @Input ('vmsperteam$')
   set Vms (vmss: Observable<Vms[]>)
@@ -37,9 +37,15 @@ export class VmscomponentComponent2 implements OnInit {
     this.vmModel = vmmodel;
     console.log(this.vmModel);
   }
- 
-  @Output() addvmEvent = new EventEmitter<Vms>();
 
+  @Input ('roles$')
+  set Roles (roles: Observable<String[]>)
+  {
+    this.roles$ = roles;
+    console.log(this.roles$);
+  }
+  @Output() addvmEvent = new EventEmitter<Vms>();
+  @Output() changestateEvent = new EventEmitter<any>();
   
 
   
@@ -47,7 +53,7 @@ export class VmscomponentComponent2 implements OnInit {
    
 
 
-  constructor(public dialog: MatDialog, private studentservice: StudentService,private router: Router, private activeRoute: ActivatedRoute) 
+  constructor(public dialog: MatDialog,private router: Router, private activeRoute: ActivatedRoute) 
   
   {
     
@@ -101,9 +107,10 @@ export class VmscomponentComponent2 implements OnInit {
 
 }
 
-set() {
+set(commandstring,vmid) {
 
 
+this.changestateEvent.emit({vmId:vmid,command:commandstring})
   
 }
 
