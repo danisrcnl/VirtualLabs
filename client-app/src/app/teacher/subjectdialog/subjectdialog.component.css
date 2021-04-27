@@ -88,3 +88,14 @@
         margin-top: 8px;
     }
 
+    #sure_buttons {
+        margin-top: 8px;
+        margin-bottom: 8px;
+        display: block;
+    } #sure_yes {
+        display: inline-block;
+        margin-right: 4px;
+    } #sure_no {
+        display: inline-block;
+    }
+

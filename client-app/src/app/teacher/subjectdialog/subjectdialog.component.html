@@ -26,29 +26,47 @@
 
     <div id="selMinMax" *ngIf="courseSelected">
 
-      <div id="wrap_button_delete">
-        <button mat-button id="buttonDelete" class="stdB_red" (click) = "delete()"> Cancella corso </button>
+      <div id="wrap_button_delete" *ngIf="!deletePressed">
+        <button mat-button id="buttonDelete" class="stdB_red" (click) = "selectDelete()"> Cancella corso </button>
       </div>
 
-      <div id="selMin">
+      <div id="wrap_deletion" *ngIf="deletePressed">
+
+        <div id="sure_text">
+          <mat-label id="sure_text_o">Sei sicuro di voler cancellare {{ selectedcourse.name }}?</mat-label>
+        </div>
+
+        <div id="sure_buttons">
+          <div id="sure_yes">
+            <button mat-flat-button class="stdB_red" (click)="delete()">Si</button>
+          </div>
+
+          <div id="sure_no">
+            <button mat-flat-button class="stdB" (click)="close()">No</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="selMin" *ngIf="!deletePressed">
         <mat-form-field id="selMin_o">
           <input matInput placeholder="Minimo studenti per team" formControlName = "minstud" [(ngModel)]="minstud">
         </mat-form-field>
       </div>
 
-      <div id="selMax">
+      <div id="selMax" *ngIf="!deletePressed">
         <mat-form-field id="selMax_o">
           <input matInput placeholder="Massimo studenti per team" formControlName="maxstud" [(ngModel)]="maxstud">
         </mat-form-field>
       </div>
 
-      <div id="enableCourse">
+      <div id="enableCourse" *ngIf="!deletePressed">
 
         <mat-checkbox id="enable" name="enable" formControlName="enabled" [(ngModel)]="enabled">Abilita il corso</mat-checkbox>
   
       </div>
 
-      <div id="buttonSave_w">
+      <div id="buttonSave_w" *ngIf="!deletePressed">
         <button mat-flat-button id="buttonSave" class="stdB" (click)="check()"> Salva </button>
       </div>
 
