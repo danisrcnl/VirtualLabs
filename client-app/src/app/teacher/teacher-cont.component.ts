@@ -15,6 +15,7 @@ import { TeamService } from 'app/services/team.service';
 import { AuthService } from 'app/auth/authservices/auth.service';
 import { CourseService } from 'app/services/course.service';
 import { StudentDTO } from 'app/model/studentDTO.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'teacher-cont',
@@ -24,6 +25,7 @@ import { StudentDTO } from 'app/model/studentDTO.model';
 export class TeacherContComponent implements OnInit {
 
   studenti: StudentDTO[] = new Array<StudentDTO>();
+  studenti$ : Observable<StudentDTO[]>;
   enrolledstudents : StudentDTO[] = new Array<StudentDTO>();
   studenteaggiunto : StudentDTO;
   darimuovere : StudentDTO[] =new Array<StudentDTO>();
@@ -42,11 +44,10 @@ export class TeacherContComponent implements OnInit {
     {
     this.activeRoute.paramMap.subscribe(params => {
 
-
-  this.href = this.router.url;
+    this.href = this.router.url;
       let id = 0;
       
-      this.studenti = [];
+     
       this.enrolledstudents = [];
         
       
@@ -64,13 +65,23 @@ export class TeacherContComponent implements OnInit {
 
     });
       
+     this.studentservice.getAll().subscribe(data => 
+        {
+         data.forEach(s => {
+           this.studenti.push(s);
+           console.log(s);
+         })
+        
     
       this.courseService.getenrolledStudents(this.courseId).subscribe(receivedstudents=>{
-        receivedstudents.forEach(s => {
+        receivedstudents.forEach(s1 => {
 
-          
-          
-            this.enrolledstudents.push(s);
+           
+          console.log(s1);
+            let index : number = this.studenti.findIndex(d => d = s1);
+            console.log(index);
+            this.studenti.splice(index,1);
+            this.enrolledstudents.push(s1);
     
                   
           this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);
@@ -80,7 +91,7 @@ export class TeacherContComponent implements OnInit {
           
         ) 
         
-         });
+         })});
   
         };
   ngOnInit() {   
@@ -109,6 +120,7 @@ export class TeacherContComponent implements OnInit {
       this.studentsComponent.selection.clear();
       this.studentsComponent.studenteselezionato = null;
     
+      this.courseService.enrollOne(this.courseId,this.studenteaggiunto).subscribe(data => console.log(data));
     this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);
     
   }
