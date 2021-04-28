@@ -104,7 +104,6 @@ export class StudentsComponent implements OnInit {
     set Compagnidigruppo (comp : Observable<StudentDTO[]>)
     {
       this.compagnidigruppo$ = comp;
-      console.log(this.compagnidigruppo$);
     }
 
     @Input('membersStatus')
@@ -193,7 +192,6 @@ export class StudentsComponent implements OnInit {
     
     
 constructor (private router : Router, private activeRoute: ActivatedRoute, private fb: FormBuilder) {
-
 }
 
 
@@ -211,12 +209,7 @@ const routeParams = this.activeRoute.snapshot.params;
 
 this.activeRoute.queryParams.subscribe (queryParams => {
 
-console.log (queryParams);
-console.log (this.teams);
-console.log(this.membersStatus);
-
 this.teams$.subscribe(data => {
-  console.log(data);
 })
 
 
@@ -244,7 +237,7 @@ this.hreff = this.router.url;
         startWith(''),
         map (studenti => this._filter(studenti)));   
 
-
+        
     
       }
 
