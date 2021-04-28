@@ -35,7 +35,13 @@ export class LimitDialogComponent implements OnInit {
   TotalVms: number;
   vmstemp: Vms[];
   length : number;
+
+  ram_consumption = 50;
+  vcpu_consumption = 45;
+  disk_consumption = 70;
+
   submitted = false;
+
   
   constructor(private alertService: AlertService,private formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: Vms, public dialog: MatDialog) {
 

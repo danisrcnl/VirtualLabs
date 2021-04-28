@@ -1,12 +1,30 @@
-.row{
+#wrapper {
+    height: fit-content;
+}
 
-    padding-bottom: 13px;
-    border: none;
+.row {
+    text-align: center;
     
-    
+} .row_input {
+    display: inline-block;
+    margin-right: 4px;
+} .row_progress {
+    vertical-align: middle;
+    display: inline-block;
+    margin-left: 4px;
+}
+
+#title {
+    text-align: center;
+}
+
+#buttons {
+    text-align: center;
+}
+
+    #buttonCrea {
+        margin-right: 4px;
     }
-
-    .limit {
-margin: 5px;
-     
+    #buttonChiudi {
+        margin-left: 4px;
     }

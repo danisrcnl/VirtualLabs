@@ -42,7 +42,12 @@ import { ErrorInterceptor } from './auth/interceptor/error.interceptor';
 import { Popup } from './student/popup/popup.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
 import { catchError } from 'rxjs/operators';
+
 
 
 @NgModule({
@@ -86,7 +91,9 @@ import { catchError } from 'rxjs/operators';
     MatDialogModule,
     AuthModule,
     MatCardModule,
-    MatButtonModule
+    MatButtonModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule
   ],
 
   providers: [

@@ -402,10 +402,10 @@ console.log(this.compagni);
           teamss.forEach ( t => {
 
             if(t.status==1){
-            this.teams2.push(t);
-            this.teamName = t.name;
-            this.tabvalue = true;
-            this.tabvalue$ = of(this.tabvalue);
+              this.teams2.push(t);
+              this.teamName = t.name;
+              this.tabvalue = true;
+              this.tabvalue$ = of(this.tabvalue);
             }
             else
             {
@@ -415,13 +415,13 @@ console.log(this.compagni);
           })
 
           
-          if(this.teams2.length > 0)
-            
-               //se lo studente fa parte già di un gruppo setta tabvalue a true e mostra la tabella con il suo gruppo 
-         {
-
+          if(this.teams2.length > 0){
+//se lo studente fa parte già di un gruppo setta tabvalue a true e mostra la tabella con il suo gruppo 
            console.log("length maggiore 0");
+           this.teamsinconstruction = this.teams2;
+           this.tabvalue = true;
           // this.compagnidigruppoo$ = this.teamservice.getMembers(this.courseId,this.teamName);
+          /*
            this.teamservice.getMembers(this.courseId,this.teamName).subscribe(members => {
          
                 this.compagnicorso = members;
@@ -436,14 +436,10 @@ console.log(this.compagni);
                  );
            })}
           
-          )}
+          )*/
+          }
 
-            
-           
-         
-         else{
-         
-           this.tabvalue = false;
+          
             this.tabvalue$ = of(this.tabvalue); 
           
            //  this.compagnidigruppoo$ = this.teamservice.getMembers(this.courseId,this.teamName);
@@ -489,7 +485,7 @@ console.log(this.compagni);
           })
         }
         
-         }
+         
         
         
         
