@@ -4,7 +4,8 @@
 .example-card {
   max-width: 200px;
   margin-bottom: 30px;
-  margin-top: 0px;
+  margin-top: 10px;
+  margin-left: 10px;
 }
 
 .example-header-image {
@@ -26,4 +27,9 @@
 } #creaVm_button_o {
   background-color: royalblue;
   color: white;
+}
+
+.cardHeader {
+  position: absolute;
+  z-index: 1;
 }

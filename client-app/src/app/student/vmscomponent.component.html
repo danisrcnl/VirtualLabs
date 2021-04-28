@@ -4,31 +4,29 @@
         <td> </td>-->
 
 <mat-card class="example-card">
-    <mat-card-header>
+    <mat-card-header class="cardHeader">
         <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>{{vmss.nVCpu}}</mat-card-title>
-        <mat-card-subtitle class="sub">{{vmss.vmStatus}}</mat-card-subtitle>
     </mat-card-header>
-       <div *ngIf = "vmModel.operatingSystem == 'Windows'">
-    <img mat-card-image src="https://media.kasperskydaily.com/wp-content/uploads/sites/89/2020/01/28120905/rip-windows-seven-featured.jpg" alt="Vm Windows">
+    <div *ngIf = "vmModel.operatingSystem == 'Windows'">
+        <img mat-card-image src="https://media.kasperskydaily.com/wp-content/uploads/sites/89/2020/01/28120905/rip-windows-seven-featured.jpg" alt="Vm Windows">
     </div>
     <div *ngIf="vmModel.operatingSystem == 'Linux'">
         <img mat-card-image src="https://cdn.mos.cms.futurecdn.net/LJSA6h759BKJvuaBZyoUY-320-80.jpg" alt="Vm Linux">
     </div>
     <mat-card-content>
         <mat-list role="list">
-            <mat-list-item role="listitem">nVCpu : {{vmss.nvcpu}} </mat-list-item>
-            <mat-list-item role="listitem">Ram : {{vmss.ram}} Gb </mat-list-item>
-            <mat-list-item role="listitem">Disk Size : {{vmss.disk}} Gb </mat-list-item>
+            <mat-list-item role="listitem"><b>CPU virtuali</b>: {{vmss.nvcpu}} </mat-list-item>
+            <mat-list-item role="listitem"><b>Ram</b>: {{vmss.ram}} MB </mat-list-item>
+            <mat-list-item role="listitem"><b>Disco riservato</b>: {{vmss.disk}} MB </mat-list-item>
         </mat-list>
     </mat-card-content>
     <tr *ngFor="let role of roles$ | async">
        <!--<div *ngIf = "role =='ROLE_VM_[vmss.id]_CREATOR'">-->
         <div *ngIf= "role.includes('VM_'+vmss.id+'_CREATOR')">
-            <button mat-raised-button (click)= "set('start',vmss.id)">ON</button>
-            <button mat-raised-button (click)= "set('shutDown',vmss.id)">OFF</button>
-            <button mat-raised-button (click)="set('freeze',vmss.id)">FREEZE</button>
-            <button mat-raised-button (click)= "set('delete',vmss.id)">CANCELLA</button>
+            <button mat-raised-button (click)= "set('start',vmss.id)">Avvia</button>
+            <button mat-raised-button (click)= "set('shutDown',vmss.id)">Spegni</button>
+            <button mat-raised-button (click)="set('freeze',vmss.id)">Sospendi</button>
+            <button mat-raised-button (click)= "set('delete',vmss.id)">Cancella</button>
         <!--</div>-->
         </div>
         
