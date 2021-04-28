@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Vms } from 'app/model/vms.model';
 import {MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { Inject } from '@angular/core';
+import { AlertService } from 'app/auth/authservices/alert.service';
 
 @Component({
   selector: 'app-limit-dialog',
@@ -38,17 +39,20 @@ export class LimitDialogComponent implements OnInit {
   ram_consumption = 50;
   vcpu_consumption = 45;
   disk_consumption = 70;
+
+  submitted = false;
+
   
-  constructor(private formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: Vms, public dialog: MatDialog) {
+  constructor(private alertService: AlertService,private formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: Vms, public dialog: MatDialog) {
 
   }
 
   ngOnInit() {
 
     this.limitForm = this.formBuilder.group({
-      VCPU: [''],
-      RAM: [''],
-      Disksize: [''],
+      VCPU: ['',Validators.required],
+      RAM: ['',Validators.required],
+      Disksize: ['',Validators.required],
       
     });
 
@@ -64,6 +68,9 @@ export class LimitDialogComponent implements OnInit {
     
   }
 
+
+  get f() { return this.limitForm.controls; }
+
 close()
 {
 this.dialog.closeAll();
@@ -72,10 +79,15 @@ this.dialog.closeAll();
 
 
 createvm() {
-
+this.alertService.clear();
   
-  
+  this.submitted = true;
 
+ if (this.limitForm.invalid) {
+            return;
+        }
+    
+        
 
 
   this.alertACTIVEVMS = "";
@@ -113,5 +125,7 @@ if (this.TotalVms< this.TOTALVMS)
   this.alertTOTALVMS = "Limite non consentito"
 
 }
+
+
 }
 }

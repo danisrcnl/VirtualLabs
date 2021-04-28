@@ -23,8 +23,18 @@ export class ErrorInterceptor implements HttpInterceptor {
                 location.reload(true);
             }
 
+             if ([409].indexOf(err.status) !== -1) {
+                // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
+                window.alert(err.error.message);
+                
+;            }
+
             const error = err.error.message || err.statusText;
             return throwError(error);
         }))
     }
+
+    
+
+
 }

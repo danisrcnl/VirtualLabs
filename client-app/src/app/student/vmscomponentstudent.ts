@@ -72,13 +72,13 @@ export class VmscomponentComponent2 implements OnInit {
    
     const dialogRef = this.dialog.open (LimitDialogComponent, { height: '320px',
     width: '400px',
-    data : {
+    data : { 
       
   
     }
   
     });
-
+    
     dialogRef.afterClosed().subscribe( data => {
 
       console.log(data);
