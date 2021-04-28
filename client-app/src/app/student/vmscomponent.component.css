@@ -20,3 +20,10 @@
   border-top-left-radius: inherit;
   border-top-right-radius: inherit;
 }
+
+#creaVm_button {
+  padding: 10px;
+} #creaVm_button_o {
+  background-color: royalblue;
+  color: white;
+}

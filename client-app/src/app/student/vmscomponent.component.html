@@ -1,8 +1,3 @@
-
-
-
-
-
 <tr *ngFor="let vmss of vmsperteam$ | async">
         <!--<i>{{ vmss.nVCpu }} {{vmss.disk}} </i>
 		<td></td>
@@ -30,10 +25,10 @@
     <tr *ngFor="let role of roles$ | async">
        <!--<div *ngIf = "role =='ROLE_VM_[vmss.id]_CREATOR'">-->
         <div *ngIf= "role.includes('VM_'+vmss.id+'_CREATOR')">
-        <button mat-raised-button (click)= "set('start',vmss.id)">ON</button>
-        <button mat-raised-button (click)= "set('shutDown',vmss.id)">OFF</button>
-        <button mat-raised-button (click)="set('freeze',vmss.id)">FREEZE</button>
-        <button mat-raised-button (click)= "set('delete',vmss.id)">CANCELLA</button>
+            <button mat-raised-button (click)= "set('start',vmss.id)">ON</button>
+            <button mat-raised-button (click)= "set('shutDown',vmss.id)">OFF</button>
+            <button mat-raised-button (click)="set('freeze',vmss.id)">FREEZE</button>
+            <button mat-raised-button (click)= "set('delete',vmss.id)">CANCELLA</button>
         <!--</div>-->
         </div>
         
@@ -42,6 +37,8 @@
 
         
 	</tr>
-<div>
-<button mat-raised-button (click)= "createvm()" > Crea Vm</button>
+<div id = "creaVm_button">
+    <button mat-fab id="creaVm_button_o" (click)= "createvm()">
+        <mat-icon>add</mat-icon>
+    </button>
 </div>

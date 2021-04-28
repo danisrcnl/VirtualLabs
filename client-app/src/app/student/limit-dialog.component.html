@@ -1,31 +1,45 @@
-
+  
+<div id="wrapper"> 
+  <div id="title">
     <h2 mat-dialog-title> Imposta parametri per la Vm: </h2>
+  </div>
     <form [formGroup]= "limitForm" (ngSubmit)="createvm()">
+
         <div class="row">
-          <div class="input-field col s12">
-            
-            <input matInput type="text" id="VCPU" placeholder="VCPU" autocomplete="off" formControlName="VCPU" [(ngModel)]="data.nVCpu">
-            
+          <div class="row_input">
+            <mat-form-field>
+              <input matInput type="text" id="VCPU" placeholder="Numero di Virtual CPUs" autocomplete="off" formControlName="VCPU" [(ngModel)]="data.nVCpu">
+            </mat-form-field>
+          </div>
+          <div class="row_progress">
+            <mat-progress-spinner diameter="30" mode="determinate" [value]="vcpu_consumption"></mat-progress-spinner>
           </div>
         </div>
         <div class="row"> 
-          <div class="input-field col s12">
-            
-            <input matInput type="text" id="RAM" placeholder="RAM" formControlName="RAM" [(ngModel)]="data.ram" >
-            
+          <div class="row_input">
+            <mat-form-field>
+              <input matInput type="text" id="RAM" placeholder="Memoria primaria (MB)" formControlName="RAM" [(ngModel)]="data.ram" >
+            </mat-form-field>
+          </div>
+          <div class="row_progress">
+            <mat-progress-spinner diameter="30" mode="determinate" [value]="ram_consumption"></mat-progress-spinner>
           </div>
         </div>
         <div class="row">
-            <div class="input-field col s12">
-              
-              <input matInput type="text" id="Disksize" placeholder="Disksize" formControlName="Disksize" [(ngModel)]="data.disk" >
-              
-            </div>
+          <div class="row_input">
+            <mat-form-field>
+              <input matInput type="text" id="Disksize" placeholder="Spazio su disco (MB)" formControlName="Disksize" [(ngModel)]="data.disk" >
+            </mat-form-field>
           </div>
+          <div class="row_progress">
+            <mat-progress-spinner diameter="30" mode="determinate" [value]="disk_consumption"></mat-progress-spinner>
+          </div>
+        </div>
          
          
-          <div>
-        <button mat-raised-button [mat-dialog-close]="data" color="primary" type="submit" class = "limit"> Crea </button> 
-        <button mat-raised-button color="primary" (click)="close()"> Chiudi </button>
+        <div id = "buttons">
+          <button mat-raised-button id="buttonCrea" [mat-dialog-close]="data" color="primary" type="submit" class = "limit"> Crea </button> 
+          <button mat-raised-button id="buttonChiudi" color="primary" (click)="close()"> Chiudi </button>
+        </div>
+  </form>
 </div>
-</form>
