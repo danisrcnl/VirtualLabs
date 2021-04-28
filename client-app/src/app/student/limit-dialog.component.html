@@ -5,27 +5,32 @@
           <div class="input-field col s12">
             
             <input matInput type="text" id="VCPU" placeholder="VCPU" autocomplete="off" formControlName="VCPU" [(ngModel)]="data.nVCpu">
-            
+            <div *ngIf="submitted && f.VCPU.errors" class="invalid-feedback">
+              <div *ngIf="f.VCPU.errors.required">Inserire il numero di Cpu </div>
+            </div> 
           </div>
         </div>
         <div class="row"> 
           <div class="input-field col s12">
             
             <input matInput type="text" id="RAM" placeholder="RAM" formControlName="RAM" [(ngModel)]="data.ram" >
-            
+           <div *ngIf="submitted && f.RAM.errors" class="invalid-feedback">
+              <div *ngIf="f.RAM.errors.required">Inserire il numero di Ram </div>
           </div>
+        </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
               
               <input matInput type="text" id="Disksize" placeholder="Disksize" formControlName="Disksize" [(ngModel)]="data.disk" >
-              
+             <div *ngIf="submitted && f.Disksize.errors" class="invalid-feedback">
+                <div *ngIf="f.Disksize.errors.required">Inserire la dimensione del disco </div>
             </div>
           </div>
-         
-         
-          <div>
-        <button mat-raised-button [mat-dialog-close]="data" color="primary" type="submit" class = "limit"> Crea </button> 
+         </div>
+
+        
+        <button mat-raised-button [mat-dialog-close]= "data" [disabled]="!limitForm.valid" color="primary" type="submit" class = "limit"> Crea </button> 
         <button mat-raised-button color="primary" (click)="close()"> Chiudi </button>
-</div>
+
 </form>
