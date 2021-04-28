@@ -42,7 +42,7 @@ import { ErrorInterceptor } from './auth/interceptor/error.interceptor';
 import { Popup } from './student/popup/popup.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-
+import { catchError } from 'rxjs/operators';
 
 
 @NgModule({

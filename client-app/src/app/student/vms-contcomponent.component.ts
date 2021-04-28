@@ -12,6 +12,7 @@ import { vmModelDTO } from 'app/model/vmModelDTO.model';
 import { Team } from 'app/model/team.model';
 import { StudentDTO } from 'app/model/studentDTO.model';
 import { vmStatus } from 'app/model/vmStatus.model';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-vms-contcomponent',
@@ -141,6 +142,7 @@ this.hreff = this.router.url;
     {
       this.vm = $event;
       this.vm.vmStatus = vmStatus.OFF;
+      console.log(this.vm);
       this.vmService.addVm(this.firstParam,this.team.name,this.vm,this.currentStudent.id).subscribe(
         data1 => {console.log(data1)
          this.updatevms();
@@ -157,7 +159,8 @@ this.hreff = this.router.url;
                       )
                       console.log(this.roles);
                       this.roles$ = of(this.roles);
-        }
+        },
+        
      
       );
       

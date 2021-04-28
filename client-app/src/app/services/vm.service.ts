@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
 import { User } from '../auth/user';
 import { Vms } from 'app/model/vms.model';
 import { environment } from 'environments/environment';
 import { vmModelDTO } from 'app/model/vmModelDTO.model';
 import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+
 
 
 
@@ -15,9 +18,13 @@ export class VmService {
 
     addVm(courseName,teamName,vmDTO : Vms,creator) {
 
-        return this.http.post<any>(`${environment.apiUrlvms}/${courseName}/${teamName}`,{vmDTO,creator});
+        return this.http.post<any>(`${environment.apiUrlvms}/${courseName}/${teamName}`,{vmDTO,creator})
+        .pipe(catchError(err=>{
+        throw 'error in source. Details: ' + err;
+    }));
     }
 
+ 
     getVmsByCourse (courseName) {
 
         return this.http.get<Vms[]>(`${environment.apiUrlvms}/courses/${courseName}`);
