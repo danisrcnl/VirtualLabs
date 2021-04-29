@@ -37,6 +37,8 @@ public interface CourseService {
 
     List<StudentDTO> getEnrolledStudents (String courseName);
 
+    List<StudentDTO> getNotEnrolled (String courseName);
+
     List<TeacherDTO> getTeachersForCourse (String courseName);
 
     void setMinForCourse (int value, String courseName);

@@ -61,6 +61,20 @@ public class CourseController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/{name}/notEnrolled")
+    public List<StudentDTO> notEnrolledStudents (@PathVariable String name) throws ResponseStatusException {
+        List<StudentDTO> notEnrolled;
+        try {
+            notEnrolled = courseService.getNotEnrolled(name);
+        } catch(AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+        }
+        return notEnrolled
+                .stream()
+                .map(ModelHelper::enrich)
+                .collect(Collectors.toList());
+    }
+
     @PostMapping({"", "/"})
     public CourseDTO addCourse (@RequestBody CourseWithTeacher courseWithTeacher)
             throws ResponseStatusException {

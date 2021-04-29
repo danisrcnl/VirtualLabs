@@ -90,8 +90,20 @@ public class CourseServiceImpl implements CourseService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<StudentDTO> getNotEnrolled(String courseName) throws CourseNotFoundException {
+        if(!courseRepository.existsById(courseName))
+            throw new CourseNotFoundException(courseName);
 
+        Course c = courseRepository.getOne(courseName);
 
+        return studentRepository
+                .findAll()
+                .stream()
+                .filter(s -> !s.getCourses().contains(c))
+                .map(s -> modelMapper.map(s, StudentDTO.class))
+                .collect(Collectors.toList());
+    }
 
 
     @Override
