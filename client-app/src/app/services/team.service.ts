@@ -15,6 +15,7 @@ import { Team } from '../model/team.model';
 import { MemberStatus } from '../model/memberstatus.model';
 import { of } from 'rxjs/internal/observable/of';
 import { StudentDTO } from 'app/model/studentDTO.model';
+import { UsedResources } from 'app/model/UsedResources.model';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -53,6 +54,10 @@ getMembers(courseName,teamName)
  {
      let params1 = new HttpParams().set('coursename',courseName).append('teamname',teamName);
      return this.http.get<any>(`${environment.apiUrlteam}/getMembersStatus`, {params : params1});
+ }
+
+ getUsedResources (courseName: string, teamName: string): Observable<UsedResources[]> {
+    return this.http.get<any>(`${environment.apiUrlteam}/${courseName}/${teamName}/getUsedResources`);
  }
 
  

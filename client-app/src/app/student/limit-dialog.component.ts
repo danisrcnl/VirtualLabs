@@ -4,6 +4,8 @@ import { Vms } from 'app/model/vms.model';
 import {MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { Inject } from '@angular/core';
 import { AlertService } from 'app/auth/authservices/alert.service';
+import { TeamService } from '../services/team.service';
+import { UsedResources } from 'app/model/UsedResources.model';
 
 @Component({
   selector: 'app-limit-dialog',
@@ -36,6 +38,7 @@ export class LimitDialogComponent implements OnInit {
   vmstemp: Vms[];
   length : number;
 
+  used_resources: UsedResources;
   ram_consumption = 50;
   vcpu_consumption = 45;
   disk_consumption = 70;
@@ -43,7 +46,7 @@ export class LimitDialogComponent implements OnInit {
   submitted = false;
 
   
-  constructor(private alertService: AlertService,private formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: Vms, public dialog: MatDialog) {
+  constructor(private alertService: AlertService, private teamService: TeamService, private formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: Vms, public dialog: MatDialog) {
 
   }
 
@@ -55,7 +58,6 @@ export class LimitDialogComponent implements OnInit {
       Disksize: ['',Validators.required],
       
     });
-
   
 
 
