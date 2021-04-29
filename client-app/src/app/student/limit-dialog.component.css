@@ -4,6 +4,7 @@
 
 .row {
     text-align: center;
+    margin-bottom: 4px;
     
 } .row_input {
     display: inline-block;
@@ -20,6 +21,7 @@
 
 #buttons {
     text-align: center;
+    margin-top: 4px;
 }
 
     #buttonCrea {
