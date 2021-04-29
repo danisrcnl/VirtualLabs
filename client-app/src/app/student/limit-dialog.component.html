@@ -49,9 +49,10 @@
           </div>
          
 
-        
-        <button mat-raised-button [mat-dialog-close]= "data" [disabled]="!limitForm.valid" color="primary" type="submit" class = "limit"> Crea </button> 
-        <button mat-raised-button color="primary" (click)="close()"> Chiudi </button>
+        <div id="buttons">
+          <button mat-raised-button [mat-dialog-close]= "data" id="buttonCrea" [disabled]="!limitForm.valid" color="primary" type="submit" class = "limit"> Crea </button> 
+          <button mat-raised-button color="primary" id="buttonChiudi" (click)="close()"> Chiudi </button>
+        </div>
 
 </form>
     </div>
