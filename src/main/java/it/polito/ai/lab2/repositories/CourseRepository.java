@@ -11,10 +11,23 @@ import java.util.List;
 @Repository
 public interface CourseRepository extends JpaRepository<Course,String> {
 
-    @Query("SELECT s FROM Student s INNER JOIN s.teams t INNER JOIN t.course c WHERE c.name=:courseName AND t.status=1")
+    @Query("SELECT s " +
+            "FROM Student s " +
+            "INNER JOIN s.teams t " +
+            "INNER JOIN t.course c " +
+            "WHERE c.name=:courseName " +
+            "AND t.status=1")
     public List<Student> getStudentsInTeams(String courseName);
 
-    @Query("SELECT s FROM Student s WHERE s NOT IN (SELECT s FROM Student s INNER JOIN s.teams t INNER JOIN t.course c WHERE c.name=:courseName AND t.status=1)")
+    @Query("SELECT s " +
+            "FROM Student s " +
+            "WHERE s NOT IN " +
+                "(SELECT s " +
+                "FROM Student s " +
+                "INNER JOIN s.teams t " +
+                "INNER JOIN t.course c " +
+                "WHERE c.name=:courseName " +
+                "AND t.status=1)")
     public List<Student> getStudentsNotInTeams(String courseName);
 
 }

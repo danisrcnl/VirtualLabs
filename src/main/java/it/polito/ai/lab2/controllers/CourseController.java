@@ -6,6 +6,7 @@ import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.dtos.TeacherDTO;
 import it.polito.ai.lab2.services.AiException;
 import it.polito.ai.lab2.services.course.CourseService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -197,6 +198,23 @@ public class CourseController {
                         .getCourse(courseName)
                         .get()
         );
+    }
+
+    @GetMapping("/{courseName}/{studentId}/evict")
+    public List<StudentDTO> evictOne (@PathVariable String studentId, @PathVariable String courseName) throws ResponseStatusException {
+
+        try {
+            courseService.evictOne(studentId, courseName);
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+        }
+
+        return courseService
+                .getEnrolledStudents(courseName)
+                .stream()
+                .map(ModelHelper :: enrich)
+                .collect(Collectors.toList());
+
     }
 
 }

@@ -19,6 +19,8 @@ public interface CourseService {
 
     boolean addStudentToCourse (String studentId, String courseName);
 
+    boolean evictOne (String studentId, String courseName);
+
     boolean addTeacherToCourse (String teacherId, String courseName);
 
     void enableCourse (String courseName);

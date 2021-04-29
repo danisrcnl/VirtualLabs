@@ -11,7 +11,9 @@ import it.polito.ai.lab2.repositories.CourseRepository;
 import it.polito.ai.lab2.repositories.StudentRepository;
 import it.polito.ai.lab2.repositories.TeacherRepository;
 import it.polito.ai.lab2.repositories.TeamRepository;
+import it.polito.ai.lab2.services.AiException;
 import it.polito.ai.lab2.services.student.StudentService;
+import it.polito.ai.lab2.services.team.TeamServiceException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -128,6 +130,22 @@ public class CourseServiceImpl implements CourseService {
                 .getOne(courseName)
                 .addStudent(studentRepository.getOne(studentId));
 
+        return true;
+    }
+
+    @Override
+    public boolean evictOne (String studentId, String courseName) throws StudentNotFoundException, CourseNotFoundException {
+        if (!studentRepository.existsById(studentId))
+            throw new StudentNotFoundException(studentId);
+        if (!courseRepository.existsById(courseName))
+            throw new CourseNotFoundException(courseName);
+        if (hasAlreadyATeamFor(studentId, courseName))
+            throw new TeamServiceException("Cannot delete student belonging to a team");
+
+        Student s = studentRepository.getOne(studentId);
+        Course c = courseRepository.getOne(courseName);
+        s.getCourses().remove(c);
+        c.getStudents().remove(s);
         return true;
     }
 
