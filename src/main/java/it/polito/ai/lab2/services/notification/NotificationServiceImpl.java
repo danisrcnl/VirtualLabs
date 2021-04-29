@@ -3,6 +3,7 @@ import it.polito.ai.lab2.controllers.NotificationController;
 import it.polito.ai.lab2.dataStructures.MemberStatus;
 import it.polito.ai.lab2.dtos.StudentDTO;
 import it.polito.ai.lab2.entities.*;
+import it.polito.ai.lab2.repositories.TeamRepository;
 import it.polito.ai.lab2.repositories.TokenRepository;
 import it.polito.ai.lab2.repositories.UserRepository;
 import it.polito.ai.lab2.services.course.CourseService;
@@ -37,6 +38,8 @@ public class NotificationServiceImpl implements NotificationService {
     TokenRepository tokenRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    TeamRepository teamRepository;
     @Autowired
     StudentService studentService;
 
@@ -74,29 +77,15 @@ public class NotificationServiceImpl implements NotificationService {
             return false;
         }
 
+        String studentId = t.getStudentId();
+
         tokenRepository.delete(t);
         tokenRepository.flush();
 
         if (tokenRepository.findAllByTeamId(teamId).isEmpty())
             teamService.activateTeamById(teamId);
 
-        List<String> memberIds = teamService
-                .getMembersById(t.getTeamId())
-                .stream()
-                .map(s -> s.getId())
-                .collect(Collectors.toList());
-        List<Token> deleted;
-        for (String id : memberIds) {
-            List<Token> studentTokens = tokenRepository.findAllByStudentId(id);
-            for (Token tk : studentTokens) {
-                if (tk.getTeamId() != t.getTeamId()) {
-                    deleted = tokenRepository.findAllByTeamId(tk.getTeamId());
-                    teamService.evictTeamById(tk.getTeamId());
-                    for (Token tkDel : deleted)
-                        tokenRepository.delete(tkDel);
-                }
-            }
-        }
+        deleteOtherTeams(teamId, studentId);
 
         return true;
     }
@@ -242,5 +231,49 @@ public class NotificationServiceImpl implements NotificationService {
                 return Optional.ofNullable(tk.getId());
         }
         return Optional.empty();
+    }
+
+    @Override
+    public void deleteOtherTeams(int teamId, String studentId) throws TeamNotFoundException {
+
+        if (!teamRepository.existsById(teamId))
+            throw new TeamNotFoundException(teamId);
+
+
+        List<Token> toBeDeleted;
+        List<Integer> deletedTeams = new ArrayList<>();
+        List<Token> studentTokens = tokenRepository.findAllByStudentId(studentId);
+        for (Token tk : studentTokens) {
+            int id = tk.getTeamId();
+            if (id != teamId && !deletedTeams.contains(id)) {
+                toBeDeleted = tokenRepository.findAllByTeamId(id);
+                teamService.evictTeamById(id);
+                deletedTeams.add(id);
+                for (Token tkDel : toBeDeleted)
+                    tokenRepository.delete(tkDel);
+
+                List<String> memberIds = teamRepository
+                        .getOne(teamId)
+                        .getMembers()
+                        .stream()
+                        .map(s -> s.getId())
+                        .collect(Collectors.toList());
+
+                String teamName = teamRepository
+                        .getOne(teamId)
+                        .getName();
+
+                for (String memberId : memberIds) {
+                    String message = "Ciao, questo è un messaggio generato per gli " +
+                            "utenti del team " + teamName + "!" + System.lineSeparator() +
+                            "Il gruppo è stato eliminato, in quanto uno dei membri ha accettato l'invito" +
+                            " per entrare a far parte di un altro gruppo.";
+                    String receiver = "s" + memberId + "@studenti.polito.it";
+                    String subject = "[VirtualLabs] Il gruppo " + teamName + " è stato eliminato";
+                    sendMessage(receiver, subject, message);
+                }
+            }
+        }
+
     }
 }

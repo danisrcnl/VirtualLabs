@@ -2,10 +2,7 @@ package it.polito.ai.lab2.services.team;
 
 import it.polito.ai.lab2.dtos.*;
 import it.polito.ai.lab2.entities.*;
-import it.polito.ai.lab2.repositories.CourseRepository;
-import it.polito.ai.lab2.repositories.StudentRepository;
-import it.polito.ai.lab2.repositories.TeacherRepository;
-import it.polito.ai.lab2.repositories.TeamRepository;
+import it.polito.ai.lab2.repositories.*;
 import it.polito.ai.lab2.services.course.CourseService;
 import it.polito.ai.lab2.services.student.StudentService;
 import org.modelmapper.ModelMapper;
@@ -35,6 +32,9 @@ public class TeamServiceImpl implements TeamService {
 
     @Autowired
     TeacherRepository teacherRepository;
+
+    @Autowired
+    TokenRepository tokenRepository;
 
     @Autowired
     TeamRepository teamRepository;
@@ -153,7 +153,27 @@ public class TeamServiceImpl implements TeamService {
                 .collect(Collectors.toList());
 
         for (String memberId : memberIds) {
-            if(!availableIds.contains(memberId))
+            List<Team> teamsForCourseStudent = studentRepository
+                    .getOne(memberId)
+                    .getTeams()
+                    .stream()
+                    .filter(t -> t.getCourse().getName().equals(courseName))
+                    .collect(Collectors.toList());
+
+            List<Token> tokensForCourseStudent = tokenRepository
+                    .findAllByStudentId(memberId)
+                    .stream()
+                    .filter(tk ->
+                            tk.getIsTeam().equals(true)
+                                    && (
+                            teamRepository
+                                    .getOne(tk.getTeamId())
+                                    .getCourse()
+                                    .getName()
+                                    .equals(courseName)))
+                    .collect(Collectors.toList());
+
+            if(!availableIds.contains(memberId) || (teamsForCourseStudent.size() != tokensForCourseStudent.size()))
                 throw new TeamServiceException("Student " + memberId + " has already a team for course " + courseName);
         }
 

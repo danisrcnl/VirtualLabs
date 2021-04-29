@@ -15,4 +15,5 @@ public interface NotificationService {
     boolean confirmUser (String token);
     List<MemberStatus> getMembersStatus (int teamId);
     Optional<String> getMemberToken (int teamId, String studentId);
+    void deleteOtherTeams (int teamId, String studentId);
 }
