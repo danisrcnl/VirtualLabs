@@ -31,7 +31,7 @@ import java.util.Map;
 
 import static org.springframework.http.ResponseEntity.ok;
 
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {

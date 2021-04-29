@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/API/teams")
 public class TeamController {
@@ -94,7 +95,8 @@ public class TeamController {
         int hours = teamRequest.getHours();
 
         try {
-            teamService.proposeTeam(courseName, teamName, memberIds, creator);
+            TeamDTO teamDTO = teamService.proposeTeam(courseName, teamName, memberIds, creator);
+            notificationService.deleteOtherTeams(teamDTO.getId(), creator);
         } catch (AiException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
