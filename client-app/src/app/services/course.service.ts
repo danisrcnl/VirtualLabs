@@ -54,12 +54,25 @@ export class CourseService {
    return this.http.get<any>(`${environment.apiUrlcourse}/${courseName}/getAvailableStudents`);
  }
 
+ getfreeStudents(name: string) 
+ {
+return this.http.get<StudentDTO[]>(`${environment.apiUrlcourse}/${name}/notEnrolled`);
+ }
+
  enrollOne (name,studentDTO)
  {
     return this.http.post<any>(`${environment.apiUrlcourse}/${name}/enrollOne`,studentDTO);
  }
  
+ deleteOne(name,studentId)
+ {
+   return this.http.get<any>(`${environment.apiUrlcourse}/${name}/${studentId}/evict`);
+ }
 
+ deleteCourse(name)
+ {
+      return this.http.get<any>(`${environment.apiUrlcourse}/${name}/delete`);
+ }
 
 
 

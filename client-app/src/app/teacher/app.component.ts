@@ -41,6 +41,7 @@ export class AppComponentTeacher implements OnInit {
   acronym : string;
   maxstud : number;
   minstud : number;
+  enabled: boolean;
   coursename :string;
   
 constructor (public dialog:MatDialog,private authService: AuthService,private teacherService : TeacherService ,private courseService: CourseService, private sidenavService: SidenavService,
@@ -111,12 +112,12 @@ for (let i=0 ;i< this.courses.length; i++)
 
    openmodDialog() {
      const dialogRef = this.dialog.open (SubjectdialogComponent, {
-     data : {acronym : this.acronym, maxstud : this.maxstud, minstud : this.minstud, coursename : this.coursename}
+     data : {acronym : this.acronym, maxstud : this.maxstud, minstud : this.minstud, coursename : this.coursename, enabled: this.enabled}
         
      });
 
   
-   dialogRef.afterClosed().subscribe( data => {
+   dialogRef.afterClosed().subscribe(data => {
 
    console.log(data);
 
@@ -124,7 +125,16 @@ for (let i=0 ;i< this.courses.length; i++)
    {
       this.courses$ = this.teacherService.getCourseforTeacher(this.idteacher);
    }
-  })
+   
+   
+   this.dialog.closeAll();
+   this.courses$ = this.teacherService.getCourseforTeacher(this.idteacher);
+
+  },
+  error => {this.courses$ = this.teacherService.getCourseforTeacher(this.idteacher);}
+  
+  
+  )
 
   
 
