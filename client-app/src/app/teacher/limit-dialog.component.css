@@ -1,12 +1,28 @@
-.row{
+#wrapper {
+    text-align: center;
+}
 
-    padding-bottom: 13px;
-    border: none;
-    
-    
-    }
+#buttons {
+    margin-top: 4px;
+}
 
-    .limit {
-margin: 5px;
-     
-    }
+#buttonSave {
+    margin-right: 4px;
+    background-color: royalblue;
+} #buttonSave:hover {
+    background-color: blue;
+}
+#buttonClose {
+    margin-left: 4px;
+    background-color: orangered;
+} #buttonClose:hover {
+    background-color: red;
+}
+
+.row {
+    width: 100%;
+}
+
+.text {
+    width: 80%;
+}

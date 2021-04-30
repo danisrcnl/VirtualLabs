@@ -33,6 +33,7 @@ export class LimitDialogComponent implements OnInit {
   TotalVms: number;
   vmstemp: Vms[];
   length : number;
+  options = ["Windows", "Linux"];
   
   constructor(private formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: DialogDataVm, public dialog: MatDialog) {
 
