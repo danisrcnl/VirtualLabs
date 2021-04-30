@@ -3,11 +3,12 @@
       <div id="title">
     <h2 mat-dialog-title> Imposta parametri per la Vm: </h2>
     </div>
-    <form [formGroup]= "limitForm" (ngSubmit)="createvm()">
+    <form [formGroup]= "limitForm" (ngSubmit)="createvm()" autocomplete="off">
         <div class="row">
           <div class="row_input">
-            <mat-form-field>
+            <mat-form-field class="row_field">
             <input matInput type="text" id="VCPU" placeholder="VCPU" autocomplete="off" formControlName="VCPU" [(ngModel)]="data.nVCpu">
+            <mat-hint align="end">{{data.nVCpu}} / 5000</mat-hint>
             <div *ngIf="submitted && f.VCPU.errors" class="invalid-feedback">
               <div *ngIf="f.VCPU.errors.required">Inserire il numero di Cpu </div>
             </div> 
@@ -21,8 +22,10 @@
 
         <div class="row"> 
           <div class="row_input">
-            <mat-form-field>
+            <mat-form-field class="row_field">
             <input matInput type="text" id="RAM" placeholder="RAM" formControlName="RAM" [(ngModel)]="data.ram" >
+            <p matSuffix>MB</p>
+            <mat-hint align="end">{{data.ram}} / 5000 MB</mat-hint>
            <div *ngIf="submitted && f.RAM.errors" class="invalid-feedback">
               <div *ngIf="f.RAM.errors.required">Inserire il numero di Ram </div>
           </div>
@@ -35,8 +38,10 @@
 
         <div class="row">
             <div class="row_input">
-              <mat-form-field>
+              <mat-form-field class="row_field">
               <input matInput type="text" id="Disksize" placeholder="Disksize" formControlName="Disksize" [(ngModel)]="data.disk" >
+              <p matSuffix>MB</p>
+              <mat-hint align="end">{{data.disk}} / 5000 MB</mat-hint>
              <div *ngIf="submitted && f.Disksize.errors" class="invalid-feedback">
                 <div *ngIf="f.Disksize.errors.required">Inserire la dimensione del disco </div>
             </div>
@@ -49,9 +54,10 @@
           </div>
          
 
-        
-        <button mat-raised-button [mat-dialog-close]= "data" [disabled]="!limitForm.valid" color="primary" type="submit" class = "limit"> Crea </button> 
-        <button mat-raised-button color="primary" (click)="close()"> Chiudi </button>
+        <div id="buttons">
+          <button mat-raised-button [mat-dialog-close]= "data" id="buttonCrea" [disabled]="!limitForm.valid" color="primary" type="submit" class = "limit"> Crea </button> 
+          <button mat-raised-button color="primary" id="buttonChiudi" (click)="close()"> Chiudi </button>
+        </div>
 
 </form>
     </div>

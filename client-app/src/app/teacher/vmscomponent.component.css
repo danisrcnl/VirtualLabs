@@ -1,19 +1,72 @@
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: auto;
-  }
+#wrapper {
+  
+}
 
-  td, th {
-    border: 1px solid #dddddd;
-    padding: 3px;
-  }
+.title {
+  margin-left: 16px;
+  margin-top: 16px;
+}
 
-  th {
-    width: 100px;
-  }
 
-  p {
-      font-weight: 300;
-      font-family: sans-serif;
-  }
+.cell {
+  display: inline-block;
+  margin-top: 40px;
+  margin-left: 16px;
+  margin-right: 45px;
+  vertical-align: middle;
+}
+
+.cell_img {
+  text-align: center;
+}
+
+.cell_label {
+  text-align: center;
+  margin-top: 8px;
+}
+
+#cpu_img {
+  content: url(../assets/cpu.svg);
+  height: 100px;
+  width: 100px;
+}
+
+#ram_img {
+  content: url(../assets/ram.svg);
+  height: 100px;
+  width: 100px;
+}
+
+#disk_img {
+  content: url(../assets/disk.svg);
+  height: 100px;
+  width: 100px;
+}
+
+#os_img {
+  content: url(../assets/os.svg);
+  height: 100px;
+  width: 100px;
+}
+
+#maxVms_img {
+  content: url(../assets/maxVms.svg);
+  height: 100px;
+  width: 100px;
+}
+
+#maxActive_img {
+  content: url(../assets/maxActive.svg);
+  height: 100px;
+  width: 100px;
+}
+
+#button {
+  margin-left: 16px;
+  display: inline-block;
+}
+
+#button2 {
+  margin-left: 16px;
+  margin-top: 4px;
+}

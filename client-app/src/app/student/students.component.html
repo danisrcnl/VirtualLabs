@@ -102,7 +102,7 @@
   </div>
 
   <div id="createTeamDiv">
-    <form [formGroup] = "myForm" (ngSubmit)="sendinvite()">
+    <form [formGroup] = "myForm" (ngSubmit)="sendinvite()" autocomplete="off">
 
       <mat-form-field id="nomeGruppoField">
         <mat-label for="groupname" class="mat-row"> Nome gruppo: </mat-label>

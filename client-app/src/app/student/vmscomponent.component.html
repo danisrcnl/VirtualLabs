@@ -21,13 +21,13 @@
         </mat-list>
     </mat-card-content>
     <tr *ngFor="let role of roles$ | async">
-       <!--<div *ngIf = "role =='ROLE_VM_[vmss.id]_CREATOR'">-->
-        <div *ngIf= "role.includes('VM_'+vmss.id+'_CREATOR')">
+       <!--*ngIf= "role.includes('VM_'+vmss.id+'_CREATOR')"-->
+        <div >
             <button mat-raised-button (click)= "set('start',vmss.id)">Avvia</button>
             <button mat-raised-button (click)= "set('shutDown',vmss.id)">Spegni</button>
             <button mat-raised-button (click)="set('freeze',vmss.id)">Sospendi</button>
             <button mat-raised-button (click)= "set('delete',vmss.id)">Cancella</button>
-        <!--</div>-->
+        
         </div>
         
 </tr>

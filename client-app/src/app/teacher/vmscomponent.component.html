@@ -1,19 +1,104 @@
+<div id="wrapper" *ngIf = "vmModel">
 
-<div *ngIf = "vmModel">
-<h1> Il vmModel ha i seguenti parametri: </h1>
-<p> maxNVCpu = {{vmModel.maxNVCpu}}</p>
-<p> maxDisk = {{vmModel.maxDisk}}</p>
-<p> maxRam = {{vmModel.maxRam}}</p>
-<p> operatingSystem = {{vmModel.operatingSystem}}</p>
-<p> maxVmsForCourse = {{vmModel.maxVmsForCourse}}</p>
-<p> maxActiveVms = {{vmModel.maxActiveVms}}</p>
+		<div class="title">
+			<mat-label>
+				<h1>Hai già inserito un modello per le VMs del corso:</h1>
+			</mat-label>
+		</div>
+
+		<div id="cpu" class="cell">
+			<div class="cell_img">
+				<img id="cpu_img">
+			</div>
+			<div class="cell_label">
+				<mat-label>
+					<h2><b>{{vmModel.maxNVCpu}} CPU virtuali</b></h2>
+				</mat-label>
+			</div>
+		</div>
+		<div id="disk" class="cell">
+			<div class="cell_img">
+				<img id="disk_img">
+			</div>
+			<div class="cell_label">
+				<mat-label>
+					<h2><b>{{vmModel.maxDisk}} MB (disco)</b></h2>
+				</mat-label>
+			</div>
+		</div>
+		<div id="ram" class="cell">
+			<div class="cell_img">
+				<img id="ram_img">
+			</div>
+			<div class="cell_label">
+				<mat-label>
+					<h2><b>{{vmModel.maxRam}} MB (ram)</b></h2>
+				</mat-label>
+			</div>
+		</div>
+
+
+		<div id="os" class="cell">
+			<div class="cell_img">
+				<img id="os_img">
+			</div>
+			<div class="cell_label">
+				<mat-label>
+					<h2><b>{{vmModel.operatingSystem}}</b></h2>
+				</mat-label>
+			</div>
+		</div>
+		<div id="maxVms" class="cell">
+			<div class="cell_img">
+				<img id="maxVms_img">
+			</div>
+			<div class="cell_label">
+				<mat-label>
+					<h2><b>Massimo {{vmModel.maxVmsForCourse}} VMs</b></h2>
+				</mat-label>
+			</div>
+		</div>
+		<div id="maxActive" class="cell">
+			<div class="cell_img">
+				<img id="maxActive_img">
+			</div>
+			<div class="cell_label">
+				<mat-label>
+					<h2><b>Massimo {{vmModel.maxActiveVms}} VMs attive</b></h2>
+				</mat-label>
+			</div>
+		</div>
+
+		<div class="cell">
+			<div id="button">
+				<button mat-fab  mat-raised-button (click)="openlimitdialog()"> 
+					<mat-icon>edit</mat-icon>
+				</button>
+			</div>
+		</div>
+</div>
+
+<div id="wrapper_not" *ngIf = "!vmModel">
+
+	<div class="title">
+		<mat-label>
+			<h1>Non hai ancora inserito un modello di VM per il corso</h1>
+		</mat-label>
+	</div>
+
+	<div class="cell">
+		<div id="button2">
+			<button mat-fab mat-raised-button (click)="openlimitdialog()"> 
+				<mat-icon>add</mat-icon>
+			</button>
+		</div>
+	</div>
+
 </div>
 
 
 
-<button class="btn2" mat-raised-button (click)="openlimitdialog()"> Imposta Vm Model 
 
-</button>
 <!--<table *ngFor="let group of groups">
 	
 	<tr>

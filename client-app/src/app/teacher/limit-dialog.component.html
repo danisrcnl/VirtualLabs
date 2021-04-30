@@ -1,51 +1,54 @@
-
+  <div id="wrapper">
     <h2 mat-dialog-title> Imposta Limiti </h2>
-    <form [formGroup]= "limitForm" (ngSubmit)="setlimit()">
+    <form [formGroup]= "limitForm" (ngSubmit)="setlimit()" autocomplete="off">
         <div class="row">
           <div class="input-field col s12">
-            
-            <input matInput type="text" id="VCPU" placeholder="VCPU" autocomplete="off" formControlName="VCPU" [(ngModel)]="data.VCPU">
-            {{alertVCPU}}
+            <mat-form-field class="text">
+              <input matInput type="text" placeholder="CPU virtuali" autocomplete="off" formControlName="VCPU" [(ngModel)]="data.VCPU">
+            </mat-form-field>
           </div>
         </div>
         <div class="row"> 
           <div class="input-field col s12">
-            
-            <input matInput type="text" id="RAM" placeholder="RAM" formControlName="RAM" [(ngModel)]="data.RAM" >
-            {{alertRAM}}
+            <mat-form-field class="text">
+              <input matInput type="text" placeholder="Memoria primaria" formControlName="RAM" [(ngModel)]="data.RAM" >
+              <p matSuffix>MB</p>
+            </mat-form-field>
           </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
-              
-              <input matInput type="text" id="Disksize" placeholder="Disksize" formControlName="Disksize" [(ngModel)]="data.Disksize" >
-              {{alertDISKSIZE}}
+              <mat-form-field class="text">
+                <input matInput type="text" placeholder="Spazio su disco" formControlName="Disksize" [(ngModel)]="data.Disksize">
+                <p matSuffix>MB</p>
+              </mat-form-field>
             </div>
           </div>
           <div class="row">
             <div class="input-field col s12">
-          
-              <input matInput type="text" id="OperatingSystem" placeholder="Operating System" formControlName="OperatingSystem"
-                [(ngModel)]="data.OperatingSystem">
-              {{alertOperatingSystem}}
+              <mat-form-field class="text">
+                <input matInput type="text" id="OperatingSystem" placeholder="Sistema Operativo" formControlName="OperatingSystem"
+                  [(ngModel)]="data.OperatingSystem">
+              </mat-form-field>
             </div>
           </div>
           <div class="row">
             <div class="input-field col s12">
-              
-              <input matInput type="text" id="ActiveVms" placeholder="ActiveVms" formControlName="ActiveVms" [(ngModel)]="data.ActiveVms" >
-              {{alertACTIVEVMS}}
-            </div>
+              <mat-form-field class="text">
+                <input matInput type="text" id="ActiveVms" placeholder="Max di VM attive" formControlName="ActiveVms" [(ngModel)]="data.ActiveVms" >
+              </mat-form-field>
+              </div>
           </div>
           <div class="row">
-            <div class="input-field col s12">    
-              <input matInput type="text" id="TotalVms" placeholder="TotalVms" formControlName="TotalVms" [(ngModel)]="data.TotalVms">
-              {{alertTOTALVMS}}
+            <div class="input-field col s12">  
+              <mat-form-field class="text">  
+                <input matInput type="text" id="TotalVms" placeholder="Max di VM istanziate" formControlName="TotalVms" [(ngModel)]="data.TotalVms">
+              </mat-form-field>
             </div>
           </div>
-          <div>
-       
-        <button mat-raised-button [mat-dialog-close]="data" color="primary"  type="submit" class = "limit"> IMPOSTA LIMITI </button> 
-        <button mat-raised-button color="primary" (click)="close()"> CLOSE </button>
+          <div id="buttons">
+            <button mat-raised-button id="buttonSave" [mat-dialog-close]="data" color="primary"  type="submit" class = "limit"> Salva </button> 
+            <button mat-raised-button id="buttonClose" color="primary" (click)="close()"> Chiudi </button>
+          </div>
+  </form>
 </div>
-</form>
