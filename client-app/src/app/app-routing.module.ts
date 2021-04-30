@@ -15,6 +15,8 @@ import {TeacherComponent} from './teacher/teacher.component';
 import { AppComponentStudent } from './student/app.component';
 import { AppComponentTeacher } from './teacher/app.component';
 import { VmsContcomponentComponent2 } from './student/vms-contcomponent.component';
+import { ElaboraticontteacherComponent } from './teacher/elaboraticontteacher/elaboraticontteacher.component';
+import { ElaboraticontstudentComponent } from './student/elaboraticontstudent/elaboraticontstudent.component';
 export const routes: Routes = [
 
   
@@ -47,7 +49,8 @@ component : HomeComponentComponent
      
     
       { path: "vms", component: VmsContcomponentComponent } ,
-      { path: "students", component: TeacherContComponent}
+      { path: "students", component: TeacherContComponent},
+       { path: "elaborati", component: ElaboraticontteacherComponent}
     
       
   ]}]}
@@ -60,7 +63,8 @@ component : HomeComponentComponent
     {path: "course",  children: [
     
       { path: "vms", component: VmsContcomponentComponent2 } ,
-      { path: "students", component: StudentsContComponent}
+      { path: "students", component: StudentsContComponent},
+      { path: "elaborati", component: ElaboraticontstudentComponent}
     
     ]}],
      //runGuardsAndResolvers: 'always'

@@ -42,6 +42,7 @@ export class VmsContcomponentComponent implements OnInit {
    public hreff : string ="";
    public href :string ="";
    public href2 : string ="";
+   public href3 : string ="";
    public subject : string ="";
    firstParam : string = "";
 
@@ -58,6 +59,7 @@ export class VmsContcomponentComponent implements OnInit {
      this.hreff = this.hreff.substring(0,this.hreff.lastIndexOf('/'));
      this.href = this.subject; console.log(this.href);
      this.href2 = this.hreff + '/students';
+     this.href3 = this.hreff + '/elaborati';
      console.log(this.href2);
 ;
 });

@@ -47,6 +47,11 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 import { catchError } from 'rxjs/operators';
+import { ElaboraticontstudentComponent } from './student/elaboraticontstudent/elaboraticontstudent.component';
+import { ElaboratistudentComponent } from './student/elaboratistudent/elaboratistudent.component';
+import { ElaboraticontteacherComponent } from './teacher/elaboraticontteacher/elaboraticontteacher.component';
+import { ElaboratiteacherComponent } from './teacher/elaboratiteacher/elaboratiteacher.component';
+
 
 
 
@@ -67,7 +72,12 @@ import { catchError } from 'rxjs/operators';
     TeacherComponent,
     AppComponentStudent,
     AppComponentTeacher,
-    Popup
+    Popup,
+    ElaboraticontstudentComponent,
+    ElaboratistudentComponent,
+    ElaboraticontteacherComponent,
+    ElaboratiteacherComponent,
+  
   ],
   imports: [
     BrowserModule,

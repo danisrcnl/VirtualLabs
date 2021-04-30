@@ -68,6 +68,7 @@ export class TeacherComponent implements OnInit {
 
     public href :string ="";
     public href2 : string ="";
+    public href3 : string ="";
     public hreff : string ="";
     public subject : string ="";
     public firstParam : string ="";
@@ -79,6 +80,7 @@ export class TeacherComponent implements OnInit {
     console.log(this.subject);
     this.href = '/teacher/course/'+ this.subject;
     this.href2 = this.href + '/vms';
+    this.href3 = this.href + '/consegne';
 }
 
     ngOnInit() {
@@ -92,6 +94,7 @@ this.hreff = this.router.url;
   this.hreff = this.hreff.substring(0,this.hreff.lastIndexOf('/'));
   this.href = this.subject; console.log(this.href);
    this.href2 = this.hreff + '/vms';
+   this.href3= this.hreff + '/elaborati';
    console.log(this.href2);
 ;
 
