@@ -69,7 +69,7 @@ export class VmscomponentComponent implements OnInit {
   openlimitdialog()
   {
    
-    const dialogRef = this.dialog.open (LimitDialogComponent, { height: '300px',
+    const dialogRef = this.dialog.open (LimitDialogComponent, { height: '500px',
     width: '400px',
     data : {
      
