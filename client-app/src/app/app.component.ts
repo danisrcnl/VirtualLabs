@@ -18,6 +18,7 @@ import { AppComponentStudent } from './student/app.component';
 import { SidenavService } from './services/sidenav.service';
 import { AuthService } from './auth/authservices/auth.service';
 import { StudentDTO } from './model/studentDTO.model';
+import {TeacherService} from './services/teacher.service';
 
 
 
@@ -35,30 +36,35 @@ export class AppComponent implements OnInit {
   currentUser : User;
   studentId : String;
   currentStudent : StudentDTO;
+  name: String;
   isLogin : boolean = true;
   private _url2: string = "http://localhost:3000/courses";
   
 @ViewChild ('sidenav') public sidenav: MatSidenav;
 
 
-constructor (public dialog:MatDialog, private studentservice: StudentService, private sidenavService: SidenavService, private authService: AuthService, private router: Router) {
+constructor (public dialog:MatDialog, private teacherService:TeacherService, private studentservice: StudentService, private sidenavService: SidenavService, private authService: AuthService, private router: Router) {
 
   this.authService.currentUser.subscribe(x => {this.currentUser =x});
 
-   /* this.authService.currentUser.subscribe ( x => {this.currentUser = x;
-      this.studentId = this.currentUser.username.split("@")[0].substring(1,7);
-  
-  this.studentservice.getOne(this.studentId).subscribe(
-    s => {
-      this.currentStudent = s;
-    },
-    error => {
-      console.log("errore");
-    }
-  );
+  /*
+    let splitted = this.currentUser.username.split("@", 1);
+    let splittedString: String = new String(splitted);
+    let control = splitted[0][0];
     
-    });*/
-  
+    // splitted[1] conterrà l'id dell'utente, control contiene 'd' o 's'
+    if (control == "s") {
+      splitted = splittedString.split("s", 2);
+      this.studentservice.getOne(splitted[1]).subscribe(x => {
+        this.name = x.firstName;
+      })
+    } else if (control == "d") {
+      splitted = splittedString.split("d", 2);
+      this.teacherService.getOne(splitted[1]).subscribe(x => {
+        this.name = x.firstName;
+      })
+    }
+  */
 }
 
 
