@@ -62,6 +62,10 @@ this.authService.currentUser.subscribe (x => this.currentUser = x);
   
   ngOnInit(){
 
+
+
+    
+
     this.idteacher = this.currentUser.username.split("@")[0].substring(1,7);
  
     this.teacherService._refresh$.subscribe(()=> {
