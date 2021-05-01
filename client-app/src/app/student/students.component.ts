@@ -214,11 +214,11 @@ this.teams$.subscribe(data => {
 })
 
 
-});
+
 
 this.firstParam = this.activeRoute.snapshot.queryParamMap.get('name');
 
-this.activeRoute.params.subscribe (routeParams => {
+
 this.hreff = this.router.url;
   this.subject = this.hreff.substring(0,this.hreff.lastIndexOf('?'));
   this.hreff = this.hreff.substring(0,this.hreff.lastIndexOf('/'));
@@ -228,7 +228,7 @@ this.hreff = this.router.url;
    console.log(this.href2);
    
 ;
-});
+
   
      this.enrolledstudents = Object.assign(this.enrolledstudents);
      this.dataSource = new MatTableDataSource<StudentDTO> (this.enrolledstudents);
@@ -239,7 +239,7 @@ this.hreff = this.router.url;
         startWith(''),
         map (studenti => this._filter(studenti)));   
 
-        
+        });
     
       }
 

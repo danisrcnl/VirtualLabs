@@ -118,8 +118,27 @@ export class StudentsContComponent implements OnInit {
     
 
     //prendo l'username dell'user loggato 
-
+this.route.queryParams.subscribe(data => {
     
+  this.teams = [];
+  this.courseId = "";
+  this.teams2 = [];
+  this.students = [];
+  this.membersStatus = [];
+  this.compagnicorso = [];
+  this.compagniDTO = [];
+  this.dainvitare = [];
+  this.groupName = "";
+  this.membersarray = [];
+  this.teamsinconstruction=[];
+  this.tabvalue = false;
+  this.compagni = [];
+
+
+
+
+
+
 
     this.authService.currentUser.subscribe ( x => {this.currentUser = x;
       this.studentId = this.currentUser.username.split("@")[0].substring(1,7);
@@ -183,9 +202,9 @@ export class StudentsContComponent implements OnInit {
       
         
         this.teamsinconstruction$ = this.studentservice.getStudentCourseTeam(this.studentId,this.courseId);
-        this.teamsinconstruction$.subscribe (data => {
-          console.log(data);
-        })
+           this.teamsinconstruction$.subscribe (data => {
+                 console.log(data);
+               })
 
         
         this.updateteamstatus();
@@ -201,7 +220,7 @@ export class StudentsContComponent implements OnInit {
           //this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);  
           
 
-
+});
   };
 
 
@@ -409,8 +428,9 @@ console.log(this.compagni);
             }
             else
             {
+              this.tabvalue$ = of(this.tabvalue); 
               this.teamsinconstruction.push(t);
-              
+              console.log(this.teamsinconstruction);
             }
           })
 
@@ -437,8 +457,8 @@ console.log(this.compagni);
            })}
           
           )*/
+        
           }
-
           
             this.tabvalue$ = of(this.tabvalue); 
           
@@ -484,7 +504,7 @@ console.log(this.compagni);
           // console.log(this.membersStatus);
           })
         }
-        
+      
          
         
         

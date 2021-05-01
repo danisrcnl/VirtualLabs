@@ -43,21 +43,33 @@ export class TeacherContComponent implements OnInit {
   constructor (private courseService : CourseService, private route: ActivatedRoute, private studentservice : StudentService, private teamservice : TeamService, private router: Router, private activeRoute: ActivatedRoute, private authService: AuthService) 
     
     {
-    this.activeRoute.paramMap.subscribe(params => {
 
+
+this.route.queryParams.subscribe(params => {
+
+  
+this.darimuovere = [];
+this.enrolledstudents =[];
+this.courseId = "";
+this.studentinoninteam = [];
+this.studenti = [];
+this.dataSource = null;
+this.studenteaggiunto = null;
+
+    
     this.href = this.router.url;
      
-      this.route.queryParams.subscribe(params => { this.courseId = params.name
+       this.courseId = params.name;
       
       
       
        this.courseId.replace('%20', " ");
        console.log (this.courseId);
-       });
+       
 
       
 
-    });
+ 
       
     
       this.courseService.getenrolledStudents(this.courseId).subscribe(receivedstudents=>{
@@ -87,9 +99,12 @@ export class TeacherContComponent implements OnInit {
         
       this.studenti$ =  this.courseService.getfreeStudents(this.courseId);
 
-         
-  
+      
+    })
         };
+
+
+
   ngOnInit() {   
 
 

@@ -75,15 +75,12 @@ export class TeacherComponent implements OnInit {
     
     constructor (private router : Router, private activeRoute: ActivatedRoute) {
 
-    this.hreff = router.url;
-    this.subject = this.hreff.substring(this.hreff.lastIndexOf('/')+1 );
-    console.log(this.subject);
-    this.href = '/teacher/course/'+ this.subject;
-    this.href2 = this.href + '/vms';
-    this.href3 = this.href + '/consegne';
+   
 }
 
     ngOnInit() {
+
+this.activeRoute.queryParams.subscribe(data => {
 
 console.log(this.studenti);
       this.firstParam = this.activeRoute.snapshot.queryParamMap.get('name');
@@ -115,7 +112,10 @@ this.hreff = this.router.url;
     
 
      
-})}  ;
+})
+
+    })
+}  ;
       
 
      
