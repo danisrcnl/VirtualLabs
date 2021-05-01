@@ -14,6 +14,7 @@ import { Proposal } from '../model/proposal.model';
 import { Team } from '../model/team.model';
 import { MemberStatus } from '../model/memberstatus.model';
 import { of } from 'rxjs/internal/observable/of';
+import {TeacherDTO} from '../model/teacherDTO.model';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -43,6 +44,10 @@ getCourseforTeacher(teacherId) {
    let params1 = new HttpParams().set('teacherId',teacherId);
     return this.http.get<any>(`${environment.apiUrlteacher}/${teacherId}/getCourses`,{params : params1});
 
+ }
+
+ getOne (teacherId) {
+   return this.http.get<TeacherDTO>(`${environment.apiUrlteacher}/${teacherId}`);
  }
 
 

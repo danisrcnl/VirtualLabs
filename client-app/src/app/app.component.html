@@ -5,7 +5,7 @@
   <div class="toolbar">
 <mat-toolbar color="primary">
 
-<mat-toolbar-row>
+<mat-toolbar-row id = "toolbar">
 <mat-icon (click) ="toggleForMenuClick()" class="menu" >menu</mat-icon>
 <a routerLink="/"><span class="title"> VirtualLabs</span></a>
 <a routerLink="/teacher"><span class="title"> Teacher</span></a>
@@ -13,7 +13,8 @@
 <span class ="loginicon" ></span>
 <mat-icon class="login_icon">login</mat-icon><i class="fas fa-sign-in-alt"></i>
 <a routerLink="/login"><span class="title"></span></a>
-<div *ngIf="currentUser" id="welcome_msg"> Benvenuto, {{currentUser.username}}!</div>
+
+<div *ngIf="currentUser" id="welcome_msg">Benvenuto, {{currentUser.username}}!</div>
 <button  class="log_button" mat-flat-button (click)="openDialog()" *ngIf="!currentUser">Login </button>
 <button *ngIf="currentUser" class="log_button" mat-flat-button (click)="logout()"> Logout </button>
 
