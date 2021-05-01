@@ -37,6 +37,10 @@ const httpOptions = {
         return this.http.get<Paper>(`${environment.apiUrlassignments}/paper/${id}`);
     }
 
+    getPaperCreator (id: number) {
+        return this.http.get<String>(`${environment.apiUrlassignments}/paper/${id}/creator`);
+    }
+
     getCourseAssignments (courseName: String) {
         return this.http.get<Assignment[]>(`${environment.apiUrlassignments}/${courseName}/getAssignments`);
     }

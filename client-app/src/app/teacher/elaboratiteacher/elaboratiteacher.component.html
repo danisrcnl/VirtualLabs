@@ -1,1 +1,17 @@
-<p>elaboratiteacher works!</p>
+<mat-accordion>
+
+    <mat-expansion-panel *ngFor="let ass of assignmentWithPapers">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ass.assignment.id}}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{ass.assignment.content}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div *ngFor="let pap of ass.papersWithHistory">
+        <p>{{pap.paper.id}}</p>
+      </div>
+    </mat-expansion-panel>
+
+  </mat-accordion>

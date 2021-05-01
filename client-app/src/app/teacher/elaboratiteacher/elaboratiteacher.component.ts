@@ -3,17 +3,18 @@ import {Assignment} from '../../model/assignment.model';
 import {Paper} from '../../model/paper.model';
 import {PaperStatus} from '../../model/paperStatus.model';
 import {PaperStatusTime} from '../../model/paperStatusTime.model';
+import {StudentDTO} from '../../model/studentDTO.model'
 
-interface PaperWithHistory {
+class PaperWithHistory {
   paper: Paper;
+  creator: StudentDTO;
   history: PaperStatusTime[];
 }
 
-interface AssignmentWithPapers {
+class AssignmentWithPapers {
   assignment: Assignment;
-  papers: Paper[];
+  papersWithHistory: PaperWithHistory[];
 }
-
 
 @Component({
   selector: 'app-elaboratiteacher',
@@ -22,11 +23,11 @@ interface AssignmentWithPapers {
 })
 export class ElaboratiteacherComponent implements OnInit {
 
-  assignments: Assignment[];
+  assignmentWithPapers: AssignmentWithPapers[] = [];
 
-  @Input('assignments')
-  set _assignments (assignments: Assignment[]) {
-    this.assignments = assignments;
+  @Input('assignmentWithPapers')
+  set _assignmentWithPapers (assignmentWithPapers: AssignmentWithPapers[]) {
+    this.assignmentWithPapers = assignmentWithPapers;
   }
 
   
