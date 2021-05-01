@@ -71,13 +71,14 @@ export class ElaboraticontteacherComponent implements OnInit {
               this.assignmentService.getPaperHistory(paper.id).subscribe(history =>{
                 paperWithHistory.history = history;
                 element.papersWithHistory.push(paperWithHistory);
+                
               })
-/*
+
               this.assignmentService.getPaperCreator(paper.id).subscribe(creator =>{
                 this.studentService.getOne(creator).subscribe(studentCreator => {
                   student = studentCreator;
                 })
-              })*/
+              })
               
             })
 
