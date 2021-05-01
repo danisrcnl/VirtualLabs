@@ -330,9 +330,12 @@ public class CourseServiceImpl implements CourseService {
         if(!courseRepository.existsById(courseName))
             throw new CourseNotFoundException(courseName);
 
+        Course c = courseRepository.getOne(courseName);
+
         return courseRepository
                 .getStudentsNotInTeams(courseName)
                 .stream()
+                .filter(s -> s.getCourses().contains(c))
                 .map(s -> modelMapper.map(s, StudentDTO.class))
                 .collect(Collectors.toList());
     }
