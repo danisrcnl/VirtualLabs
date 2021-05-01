@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { AuthService } from './authservices/auth.service';
 import { AlertService } from './authservices/alert.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RegisterComponent } from './register/register.component';
 import { JwtInterceptor } from './interceptor/jwt.interceptor';
+import { DialogLogin } from 'app/app.component';
 
 @Component({ templateUrl: 'login-dialog.component.html' ,
 styleUrls: ['login-dialog.component.css']})
@@ -25,7 +26,10 @@ export class LoginDialogComponent implements OnInit {
         private router: Router,
         private authService: AuthService,
         private alertService: AlertService,
-        private matDialog: MatDialog
+        private matDialog: MatDialog,
+        public dialogRef: MatDialogRef<LoginDialogComponent>,
+        @Inject(MAT_DIALOG_DATA) public data : DialogLogin,
+       
     ) {
         // redirect to home if already logged in
         if (this.authService.currentUserValue) {
@@ -49,7 +53,8 @@ export class LoginDialogComponent implements OnInit {
 
     onSubmit() {
       this.submitted = true;
-
+     
+      console.log("submitted");
       // reset alerts on submit
       this.alertService.clear();
 
@@ -59,12 +64,15 @@ export class LoginDialogComponent implements OnInit {
         console.log('Login invalid');
         return;
       }
+      else
+       this.dialogRef.close(this.loginForm.value);
 
       var dummy = Promise.resolve();
       this.loading = true;
 
+      
 
-
+/*
       this.authService.login(this.f.username.value, this.f.password.value).subscribe
       (
         data => { console.log(data);
@@ -83,7 +91,7 @@ export class LoginDialogComponent implements OnInit {
         )}
         )
         
-      
+      */
 
 
      /* this.authService.login(this.f.username.value, this.f.password.value).toPromise()

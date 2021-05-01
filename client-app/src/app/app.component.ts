@@ -1,6 +1,6 @@
 import { Component,ViewChild,OnInit,EventEmitter,Output, ElementRef, Input } from '@angular/core';
 import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
-import { Routes, RouterModule, Router } from '@angular/router';
+import { Routes, RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { TeacherComponent } from './teacher/teacher.component';
 import { VmsContcomponentComponent } from './teacher/vms-contcomponent.component';
 import { StudentsContComponent } from './student/students-cont.component';
@@ -21,6 +21,10 @@ import { StudentDTO } from './model/studentDTO.model';
 import {TeacherService} from './services/teacher.service';
 
 
+export interface DialogLogin {
+ username : string;
+ password : string;
+}
 
 
   @Component({
@@ -33,24 +37,40 @@ export class AppComponent implements OnInit {
   courses$ : Observable <Course[]>;
   studs$ : Observable <Studentreturn[]>;
   courses : Course[] = new Array<Course>();
-  currentUser : User;
+  currentUser : Observable <User>;
   studentId : String;
   currentStudent : StudentDTO;
   name: String;
   isLogin : boolean = true;
+
+
+  //variabili per login
+  username : string;
+  password: string;
+  isTeacher: boolean;
+  returnUrl: string;
+
   private _url2: string = "http://localhost:3000/courses";
   
 @ViewChild ('sidenav') public sidenav: MatSidenav;
 
 
-constructor (public dialog:MatDialog, private teacherService:TeacherService, private studentservice: StudentService, private sidenavService: SidenavService, private authService: AuthService, private router: Router) {
+constructor (public dialog:MatDialog,private route: ActivatedRoute, private teacherService:TeacherService, private studentservice: StudentService, private sidenavService: SidenavService, private authService: AuthService, private router: Router) {
 
-  this.authService.currentUser.subscribe(x => {this.currentUser =x});
-
-
-  /*  this.authService.currentUser.subscribe ( x => {this.currentUser = x;
-      this.studentId = this.currentUser.username.split("@")[0].substring(1,7);
   
+   if (this.authService.currentUserValue) {
+            this.router.navigate(['/']);
+        }
+
+
+  
+
+
+
+/*
+    this.authService.currentUser.subscribe ( x => {this.currentUser = x;
+      this.studentId = this.currentUser.username.split("@")[0].substring(1,7);
+  console.log("Hey");
   this.studentservice.getOne(this.studentId).subscribe(
     s => {
       this.currentStudent = s;
@@ -91,6 +111,8 @@ constructor (public dialog:MatDialog, private teacherService:TeacherService, pri
   
   ngOnInit(){
 
+
+    this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
     if(this.currentUser)
     {
       console.log("loggato");
@@ -141,7 +163,85 @@ console.log(this.studs$);
   }
 
    openDialog() {
-     this.dialog.open (LoginDialogComponent , { panelClass: 'custom-modalbox' });
+    const dialogRef =  this.dialog.open (LoginDialogComponent , { 
+       
+      data: {username : this.username, password: this.password}
+      
+       });
+
+      
+
+       dialogRef.afterClosed().subscribe (data => {
+         console.log(data);
+
+         if(data != undefined)
+         {
+           
+           this.authService.login (data.username,data.password).subscribe
+           (
+        data => { console.log(data);
+        this.authService.info().subscribe(
+          data1 => {
+            this.isTeacher= data1.isTeacher;
+            if (this.isTeacher == false)
+        {
+          this.router.navigate([this.returnUrl + 'student'], {queryParams: {user: data.username}});
+          this.dialog.closeAll();
+        }
+        else 
+         this.router.navigate([this.returnUrl + 'teacher'], {queryParams: {user: data.username}});
+         this.dialog.closeAll();
+      }
+        )
+      
+          this.currentUser = this.authService.currentUser;
+   
+  console.log(this.currentUser);
+
+  this.currentUser.subscribe(data => {console.log(data)
+  
+   
+
+
+
+
+
+   this.studentId = data.username.split("@")[0].substring(1,7);
+
+   if(data.username.startsWith("s")){
+   this.studentservice.getOne(this.studentId).subscribe(
+    s => {
+      this.currentStudent = s;
+    },
+    error => {
+      console.log("errore");
+    }
+  );}
+
+  if(data.username.startsWith("d")){
+   this.teacherService.getOne(this.studentId).subscribe(
+    s => {
+      this.currentStudent = s;
+    },
+    error => {
+      console.log("errore");
+    }
+  );}
+
+
+  });
+      
+      
+      
+      }
+        )
+         }
+
+
+       })
+
+
+
    }
 
 
@@ -154,6 +254,7 @@ console.log(this.studs$);
         this.isLogin = true;
         this.authService.logout();
         this.router.navigate (["/"]);
+        console.log(this.currentUser);
     }
 
 }

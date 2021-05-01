@@ -116,6 +116,7 @@ for (let i=0 ;i< this.courses.length; i++)
         
      });
 
+    
   
    dialogRef.afterClosed().subscribe(data => {
 
