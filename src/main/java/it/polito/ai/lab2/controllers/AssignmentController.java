@@ -213,7 +213,7 @@ public class AssignmentController {
     }
 
     @PostMapping("/paper/{paperId}/setContent")
-    public PaperDTO deliverPaper (@PathVariable Long paperId, @RequestBody String content) throws ResponseStatusException {
+    public PaperDTO setContent (@PathVariable Long paperId, @RequestBody String content) throws ResponseStatusException {
         try {
             if(!assignmentService.setPaperContent(paperId, content))
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "The paper can't be edited anymore");
