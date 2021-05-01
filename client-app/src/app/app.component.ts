@@ -58,12 +58,13 @@ export class AppComponent implements OnInit {
 constructor (public dialog:MatDialog,private route: ActivatedRoute, private teacherService:TeacherService, private studentservice: StudentService, private sidenavService: SidenavService, private authService: AuthService, private router: Router) {
 
   
-   if (this.authService.currentUserValue) {
+   /*if (this.authService.currentUserValue) {
             this.router.navigate(['/']);
         }
 
-
+*/
   
+
 
 
 
@@ -112,9 +113,44 @@ constructor (public dialog:MatDialog,private route: ActivatedRoute, private teac
   ngOnInit(){
 
 
+
+  this.currentUser = this.authService.currentUser;
+
+  this.currentUser.subscribe(data => {console.log(data)
+  
+   
+
+   this.studentId = data.username.split("@")[0].substring(1,7);
+
+   if(data.username.startsWith("s")){
+   this.studentservice.getOne(this.studentId).subscribe(
+    s => {
+      this.currentStudent = s;
+    },
+    error => {
+      console.log("errore");
+    }
+  );}
+
+  if(data.username.startsWith("d")){
+   this.teacherService.getOne(this.studentId).subscribe(
+    s => {
+      this.currentStudent = s;
+    },
+    error => {
+      console.log("errore");
+    }
+  );}
+
+
+  });
+
+    
+
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
     if(this.currentUser)
     {
+      
       console.log("loggato");
       this.isLogin = false;
     }
@@ -156,12 +192,6 @@ onActivate (componentRef)
 }
 
 
-  students() {
-
-console.log(this.studs$);
-    
-  }
-
    openDialog() {
     const dialogRef =  this.dialog.open (LoginDialogComponent , { 
        
@@ -197,14 +227,11 @@ console.log(this.studs$);
           this.currentUser = this.authService.currentUser;
    
   console.log(this.currentUser);
+  
 
   this.currentUser.subscribe(data => {console.log(data)
   
    
-
-
-
-
 
    this.studentId = data.username.split("@")[0].substring(1,7);
 
@@ -231,10 +258,7 @@ console.log(this.studs$);
 
   });
       
-      
-      
-      }
-        )
+      })
          }
 
 
