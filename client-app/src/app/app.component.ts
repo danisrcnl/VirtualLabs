@@ -47,12 +47,25 @@ constructor (public dialog:MatDialog, private teacherService:TeacherService, pri
 
   this.authService.currentUser.subscribe(x => {this.currentUser =x});
 
-  /*
+
+  /*  this.authService.currentUser.subscribe ( x => {this.currentUser = x;
+      this.studentId = this.currentUser.username.split("@")[0].substring(1,7);
+  
+  this.studentservice.getOne(this.studentId).subscribe(
+    s => {
+      this.currentStudent = s;
+    },
+    error => {
+      console.log("errore");
+    }
+  );
+    
+    
+    /*
     let splitted = this.currentUser.username.split("@", 1);
     let splittedString: String = new String(splitted);
     let control = splitted[0][0];
-    
-    // splitted[1] conterrà l'id dell'utente, control contiene 'd' o 's'
+// splitted[1] conterrà l'id dell'utente, control contiene 'd' o 's'
     if (control == "s") {
       splitted = splittedString.split("s", 2);
       this.studentservice.getOne(splitted[1]).subscribe(x => {

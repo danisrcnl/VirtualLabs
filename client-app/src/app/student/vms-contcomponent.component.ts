@@ -99,6 +99,7 @@ constructor(private route: ActivatedRoute,private authService : AuthService, pri
    selectedegroups : Group[];
    public href :string ="";
    public href2 : string ="";
+    public href3 : string ="";
     public hreff : string ="";
         public subject : string ="";
    
@@ -116,6 +117,7 @@ this.hreff = this.router.url;
   this.hreff = this.hreff.substring(0,this.hreff.lastIndexOf('/'));
   this.href = this.subject; console.log(this.href);
    this.href2 = this.hreff + '/students';
+   this.href3 = this.hreff + '/elaborati';
    console.log(this.href2);
 ;
 });

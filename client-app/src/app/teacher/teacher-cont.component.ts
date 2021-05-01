@@ -25,6 +25,7 @@ import { Observable } from 'rxjs';
 export class TeacherContComponent implements OnInit {
 
   studenti: StudentDTO[] = new Array<StudentDTO>();
+  studentinoninteam : StudentDTO[] = new Array<StudentDTO>();
   studenti$ : Observable<StudentDTO[]>;
   enrolledstudents : StudentDTO[] = new Array<StudentDTO>();
   studenteaggiunto : StudentDTO;
@@ -45,15 +46,8 @@ export class TeacherContComponent implements OnInit {
     this.activeRoute.paramMap.subscribe(params => {
 
     this.href = this.router.url;
-      let id = 0;
-      
      
-      this.enrolledstudents = [];
-        
-      
-     //chiamata alla funzione 
-
-       this.route.queryParams.subscribe(params => { this.courseId = params.name
+      this.route.queryParams.subscribe(params => { this.courseId = params.name
       
       
       
@@ -65,36 +59,41 @@ export class TeacherContComponent implements OnInit {
 
     });
       
-     this.studentservice.getAll().subscribe(data => 
-        {
-         data.forEach(s => {
-           this.studenti.push(s);
-           console.log(s);
-         })
-        
     
       this.courseService.getenrolledStudents(this.courseId).subscribe(receivedstudents=>{
         receivedstudents.forEach(s1 => {
 
-           
-          console.log(s1);
-            let index : number = this.studenti.findIndex(d => d = s1);
-            console.log(index);
-            this.studenti.splice(index,1);
             this.enrolledstudents.push(s1);
     
                   
           this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);
+         console.log("Studenti non iscritti al corso: ",this.studenti);
           this.studentsComponent.updateFilteredOptions();
   
           }
           
         ) 
         
-         })});
+         })
+
+      this.courseService.getfreeStudents(this.courseId).subscribe(data => {
+
+        data.forEach(s => {
+          this.studentinoninteam.push(s);
+        })
+
+        this.studentsComponent.updateFilteredOptions();
+      });
+        
+      this.studenti$ =  this.courseService.getfreeStudents(this.courseId);
+
+         
   
         };
   ngOnInit() {   
+
+
+
     }
 
   
@@ -112,30 +111,55 @@ export class TeacherContComponent implements OnInit {
     if (!this.enrolledstudents.includes(this.studenteaggiunto)){
     this.enrolledstudents.push(this.studenteaggiunto);
     this.enrolledstudents = Object.assign( this.enrolledstudents);
-    this.studenti.forEach(item => {
-      let index: number = this.studenti.findIndex(d => d === item);
-      this.studenti.splice(index,1)});}
-    
+  
+
+
+      this.courseService.enrollOne(this.courseId,this.studenteaggiunto).subscribe(data => {console.log(data)
+      this.studenti$=this.courseService.getfreeStudents(this.courseId);
+      this.studenti$.subscribe(data => {
+        console.log(data);
       this.studentsComponent.updateFilteredOptions();
       this.studentsComponent.selection.clear();
       this.studentsComponent.studenteselezionato = null;
+      });
     
-      this.courseService.enrollOne(this.courseId,this.studenteaggiunto).subscribe(data => console.log(data));
-    this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);
+    }
+      );
+      
+      this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);
     
-  }
+  }}
 
+  //funzione per cancellare uno o più studenti dal corso 
   receivearray ($event) {
+
     this.darimuovere = $event;
-    this.darimuovere.forEach(item => {
-      let index: number = this.enrolledstudents.findIndex(d => d === item);
-      //console.log(this.enrolledstudents.findIndex(d => d === item));
-      //console.log (this.enrolledstudents);
+    
+      
+     this.darimuovere.forEach(s => {
+
+      this.courseService.deleteOne(this.courseId,s.id).subscribe(data => {console.log(data)
+     // this.studenti$ =  this.courseService.getfreeStudents(this.courseId); 
+      this.studentsComponent.updateFilteredOptions();     
+
+     
+      let index: number = this.enrolledstudents.findIndex(d => d === s);
       this.enrolledstudents.splice(index,1);
-      if (!this.studenti.includes(item))
-      this.studenti.push(item);});
-      //console.log(this.studenti);
-      //console.log(this.enrolledstudents);
+      console.log(this.enrolledstudents);
+       this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);
+  
+       
+    },
+      
+      ),
+      
+      error => { 
+
+
+      }
+      ;
+     })
+
       this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);
 
     

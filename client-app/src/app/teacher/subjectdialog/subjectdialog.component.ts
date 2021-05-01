@@ -38,6 +38,7 @@ export class SubjectdialogComponent implements OnInit {
   courses$ : Observable <CourseDTO[]>;
   currentUser : User;
 
+
   modCourse: Boolean = false;
   newCourse: Boolean = false;
   isIntro: Boolean = true;
@@ -110,7 +111,7 @@ this.courseservice.addCourse(this.courseDTO,this.teacherId)
 .subscribe(
   
   data => {console.log(data);
-  this.courses$ = this.teacherService.getCourseforTeacher(this.teacherId);
+ // this.courses$ = this.teacherService.getCourseforTeacher(this.teacherId);
 
   this.dialog.closeAll();
   
@@ -128,15 +129,11 @@ console.log(this.courseDTO);
 
  delete()
  {
-  for (var i in this.courses) {
-
-    if (this.courses[i].name == this.selectedcourse.name)
-    {
-      this.courses[i].name = this.newname;
-      this.courseservice.deletecourse(this.courses[i],i);
-     
-    }
-  }
+  let name = this.selectedcourse.name;
+  this.courseservice.deleteCourse(name).subscribe(data => {console.log(data)
+  this.dialog.closeAll();
+  });
+  
 
  }
 

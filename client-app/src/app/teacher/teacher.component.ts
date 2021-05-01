@@ -29,6 +29,7 @@ export class TeacherComponent implements OnInit {
 
 
     enrolledstudents : StudentDTO[];
+    studenti$ : Observable<StudentDTO[]>;
 
     public get _enrolledstudents(): StudentDTO[] {
       return this.enrolledstudents;
@@ -48,15 +49,26 @@ export class TeacherComponent implements OnInit {
     
     
     @Input('studenti') 
-    studenti : StudentDTO [];
+    studenti : StudentDTO[] = new Array <StudentDTO>();
+
+     
+    @Input('studenti$')
+    set Studenti (students : Observable<StudentDTO[]>)
+    {
+       this.studenti$ = students;
+ 
+    }
+    
     
     displayedColumns: string[] = ['select','id','name','firstname'];
     selection = new SelectionModel<StudentDTO>(true, []);
     mycontrol = new FormControl();
     filteredOptions : Observable<StudentDTO[]>;
+    studentiss : StudentDTO[] = new Array<StudentDTO>();
 
     public href :string ="";
     public href2 : string ="";
+    public href3 : string ="";
     public hreff : string ="";
     public subject : string ="";
     public firstParam : string ="";
@@ -68,11 +80,12 @@ export class TeacherComponent implements OnInit {
     console.log(this.subject);
     this.href = '/teacher/course/'+ this.subject;
     this.href2 = this.href + '/vms';
+    this.href3 = this.href + '/consegne';
 }
 
     ngOnInit() {
 
-
+console.log(this.studenti);
       this.firstParam = this.activeRoute.snapshot.queryParamMap.get('name');
 
 this.activeRoute.params.subscribe (routeParams => {
@@ -81,18 +94,29 @@ this.hreff = this.router.url;
   this.hreff = this.hreff.substring(0,this.hreff.lastIndexOf('/'));
   this.href = this.subject; console.log(this.href);
    this.href2 = this.hreff + '/vms';
+   this.href3= this.hreff + '/elaborati';
    console.log(this.href2);
 ;
-});
 
      this.enrolledstudents = Object.assign(this.enrolledstudents);
+     this.studenti = Object.assign(this.studenti);
      this.dataSource = new MatTableDataSource<StudentDTO> (this.enrolledstudents);
-      this.filteredOptions = this.mycontrol.valueChanges.pipe(
-        startWith(''),
-        map (studenti => this._filter(studenti)));    
 
-        
-      }
+
+    this.studenti$.subscribe(data => {data.forEach(s => { this.studentiss.push(s)})
+  
+   this.filteredOptions = this.mycontrol.valueChanges.pipe(
+        startWith(''),
+        map (studentiss => this._filter(studentiss,studentiss)));    
+  
+  
+  });
+
+    
+
+     
+})}  ;
+      
 
      
     isAllSelected() {
@@ -108,6 +132,7 @@ this.hreff = this.router.url;
           this.selection.clear() :
           this.dataSource.data.forEach(row => this.selection.select(row));
     }
+
     removeSelectedRows() {
       
       this.removestudentsEvent.emit(this.selection.selected);
@@ -115,7 +140,7 @@ this.hreff = this.router.url;
       
       this.filteredOptions = this.mycontrol.valueChanges.pipe(
         startWith(''),
-        map (studenti => this._filter(studenti)));    
+        map (studentiss => this._filter(studentiss,studentiss)));    
 
       
     }
@@ -124,10 +149,12 @@ this.hreff = this.router.url;
   
   
   
-  private _filter(studente: string): StudentDTO [] {
-  const filterValue = studente.toLowerCase();
+  private _filter(studente: string,studenti: StudentDTO[]){
+ 
+    const filterValue = studente.toLowerCase();
+     
   
-  return this.studenti.filter(option => this.displayFn(option).toLowerCase().includes(filterValue));
+  return studenti.filter(student => this.displayFn(student).toLowerCase().includes(filterValue));
   
   }
   
@@ -152,15 +179,33 @@ this.hreff = this.router.url;
   
     this.addstudentEvent.emit(this.studenteselezionato);
     this.studenteselezionato = null;
+    
 
   }
 
   updateFilteredOptions() {
-    this.filteredOptions = this.mycontrol.valueChanges.pipe(
+    this.studenti$.subscribe(data1 => {
+
+      
+      
+
+this.filteredOptions = this.mycontrol.valueChanges.pipe(
+        startWith(''),
+        map(value => typeof value === 'string' ? value : this.displayFn(value)),
+        map (data => this._filter(data,data1)));    
+
+
+    });
+
+   
+
+
+
+   /* this.filteredOptions = this.mycontrol.valueChanges.pipe(
       startWith(''),
       map(value => typeof value === 'string' ? value : this.displayFn(value)),
       map(displayedValue => this._filter(displayedValue))
-    );
+    );*/
   }
 
   

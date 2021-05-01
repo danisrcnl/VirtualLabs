@@ -50,24 +50,24 @@
 
       <div id="selMin" *ngIf="!deletePressed">
         <mat-form-field id="selMin_o">
-          <input matInput placeholder="Minimo studenti per team" formControlName = "minstud" [(ngModel)]="minstud">
+          <input matInput placeholder="Minimo studenti per team" formControlName = "minstud" [(ngModel)]="data.minstud">
         </mat-form-field>
       </div>
 
       <div id="selMax" *ngIf="!deletePressed">
         <mat-form-field id="selMax_o">
-          <input matInput placeholder="Massimo studenti per team" formControlName="maxstud" [(ngModel)]="maxstud">
+          <input matInput placeholder="Massimo studenti per team" formControlName="maxstud" [(ngModel)]="data.maxstud">
         </mat-form-field>
       </div>
 
       <div id="enableCourse" *ngIf="!deletePressed">
 
-        <mat-checkbox id="enable" name="enable" formControlName="enabled" [(ngModel)]="enabled">Abilita il corso</mat-checkbox>
+        <mat-checkbox id="enable" name="enable" formControlName="enabled" [(ngModel)]="data.enabled">Abilita il corso</mat-checkbox>
   
       </div>
 
       <div id="buttonSave_w" *ngIf="!deletePressed">
-        <button mat-flat-button id="buttonSave" class="stdB" (click)="check()"> Salva </button>
+        <button mat-flat-button id="buttonSave" [mat-dialog-close]="data" class="stdB" (click)="check()"> Salva </button>
       </div>
 
     </div>  
