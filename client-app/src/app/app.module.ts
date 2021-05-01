@@ -51,7 +51,7 @@ import { ElaboraticontstudentComponent } from './student/elaboraticontstudent/el
 import { ElaboratistudentComponent } from './student/elaboratistudent/elaboratistudent.component';
 import { ElaboraticontteacherComponent } from './teacher/elaboraticontteacher/elaboraticontteacher.component';
 import { ElaboratiteacherComponent } from './teacher/elaboratiteacher/elaboratiteacher.component';
-
+import {MatExpansionModule} from '@angular/material/expansion';
 
 
 
@@ -103,7 +103,8 @@ import { ElaboratiteacherComponent } from './teacher/elaboratiteacher/elaboratit
     MatCardModule,
     MatButtonModule,
     MatProgressBarModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatExpansionModule
   ],
 
   providers: [
