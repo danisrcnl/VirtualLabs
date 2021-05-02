@@ -80,7 +80,7 @@ private courseSubject :Subject<Course[]>;
 
 getOne (studentId) : Observable <StudentDTO>
 {
-  return this.http.get<any>(`${environment.apiUrlstudent}/${studentId}`);
+  return this.http.get<StudentDTO>(`${environment.apiUrlstudent}/${studentId}`);
 }
 
 
