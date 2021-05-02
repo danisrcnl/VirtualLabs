@@ -42,9 +42,9 @@ export class LimitDialogComponent implements OnInit {
   vmModel : vmModelDTO;
   used_resources: UsedResources;
 
-  ram_consumption : Number;
-  vcpu_consumption : Number;
-  disk_consumption : Number;
+  ram_consumption : number;
+  vcpu_consumption : number;
+  disk_consumption : number;
 
   ram_left : number;
   vcpu_left: number;
@@ -94,6 +94,8 @@ export class LimitDialogComponent implements OnInit {
     this.vcpu_consumption = ((this.vmModel.maxNVCpu - this.used_resources.vCpu)/this.vmModel.maxNVCpu)*100;
 
     console.log(this.ram_consumption);
+
+    
     
   }
 
@@ -105,7 +107,14 @@ close()
 this.dialog.closeAll();
 }
 
+ onKeypressEvent(event: any){
+  
 
+
+   this.ram_consumption = this.ram_consumption + ((this.vmModel.maxRam - event.target.value)/this.vmModel.maxRam)*100;
+
+
+  }
 
 createvm() {
 this.alertService.clear();
