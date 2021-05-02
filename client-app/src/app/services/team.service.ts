@@ -56,7 +56,7 @@ getMembers(courseName,teamName)
      return this.http.get<any>(`${environment.apiUrlteam}/getMembersStatus`, {params : params1});
  }
 
- getUsedResources (courseName: string, teamName: string): Observable<UsedResources[]> {
+ getUsedResources (courseName: string, teamName: String): Observable<UsedResources> {
     return this.http.get<any>(`${environment.apiUrlteam}/${courseName}/${teamName}/getUsedResources`);
  }
 

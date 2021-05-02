@@ -8,7 +8,7 @@
           <div class="row_input">
             <mat-form-field class="row_field">
             <input matInput type="text" class="inputField" id="VCPU" placeholder="VCPU" autocomplete="off" formControlName="VCPU" [(ngModel)]="data.nVCpu">
-            <mat-hint align="end">{{data.nVCpu}} / 5000</mat-hint>
+            <mat-hint align="end">{{data.nVCpu}} / {{vcpu_left}}</mat-hint>
             <div *ngIf="submitted && f.VCPU.errors" class="invalid-feedback">
               <div *ngIf="f.VCPU.errors.required">Inserire il numero di Cpu </div>
             </div> 
@@ -25,7 +25,7 @@
             <mat-form-field class="row_field">
             <input matInput class="inputField" type="text" id="RAM" placeholder="RAM" formControlName="RAM" [(ngModel)]="data.ram" >
             <p matSuffix>MB</p>
-            <mat-hint align="end">{{data.ram}} / 5000 MB</mat-hint>
+            <mat-hint align="end">{{data.ram}} / {{ram_left}}</mat-hint>
            <div *ngIf="submitted && f.RAM.errors" class="invalid-feedback">
               <div *ngIf="f.RAM.errors.required">Inserire il numero di Ram </div>
           </div>
@@ -41,7 +41,7 @@
               <mat-form-field class="row_field">
               <input matInput class="inputField" type="text" id="Disksize" placeholder="Disksize" formControlName="Disksize" [(ngModel)]="data.disk" >
               <p matSuffix>MB</p>
-              <mat-hint align="end">{{data.disk}} / 5000 MB</mat-hint>
+              <mat-hint align="end">{{data.disk}} / {{disk_left}}</mat-hint>
              <div *ngIf="submitted && f.Disksize.errors" class="invalid-feedback">
                 <div *ngIf="f.Disksize.errors.required">Inserire la dimensione del disco </div>
             </div>
