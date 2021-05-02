@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -38,7 +39,7 @@ public class Paper {
     private Assignment assignment;
 
     @OneToMany(mappedBy = "paper")
-    private List<PaperStatusTime> statusHistory;
+    private List<PaperStatusTime> statusHistory = new ArrayList<>();
 
     public int addStatusHistory(PaperStatusTime paperStatusTime) {
         statusHistory.add(paperStatusTime);

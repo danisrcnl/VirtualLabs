@@ -66,6 +66,8 @@ public class AssignmentServiceImpl implements AssignmentService {
                         .getOne(assignmentId)
                 );
 
+        courseRepository.flush();
+
         return true;
 
     }
@@ -143,6 +145,17 @@ public class AssignmentServiceImpl implements AssignmentService {
     public Optional<PaperDTO> getPaper (Long id) {
         Paper paper = paperRepository.getOne(id);
         return Optional.ofNullable(modelMapper.map(paper, PaperDTO.class));
+    }
+
+    @Override
+    public String getPaperCreator(Long id) throws PaperNotFoundException {
+        if(!paperRepository.existsById(id))
+            throw new PaperNotFoundException(id.toString());
+
+        return paperRepository
+                .getOne(id)
+                .getStudent()
+                .getId();
     }
 
     @Override

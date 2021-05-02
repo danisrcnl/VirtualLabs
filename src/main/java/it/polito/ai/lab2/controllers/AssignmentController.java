@@ -67,6 +67,22 @@ public class AssignmentController {
         throw new ResponseStatusException(HttpStatus.CONFLICT, "No papers with id " + id.toString());
     }
 
+    @GetMapping("/paper/{id}/creator")
+    public String getPaperCreator (@PathVariable Long id) throws ResponseStatusException {
+        Optional<PaperDTO> outcome = assignmentService.getPaper(id);
+        String creator;
+        if(outcome.isPresent()) {
+            try {
+                creator = assignmentService.getPaperCreator(id);
+            } catch (AiException e) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+            }
+        } else
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "No papers with id " + id.toString());
+
+        return creator;
+    }
+
     @GetMapping("/{courseName}/getAssignments")
     public List<AssignmentDTO> getCourseAssignments (@PathVariable String courseName) throws ResponseStatusException {
         List<AssignmentDTO> outcome;
