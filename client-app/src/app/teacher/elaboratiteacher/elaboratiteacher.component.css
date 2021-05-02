@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 .cell {
   display: inline-block;
@@ -19,4 +20,29 @@ cell_img {
 .cell_label {
   text-align: center;
   margin-top: 8px;
+=======
+#add_wrapper {
+}
+#add {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.papers {
+    margin-top: 10px;
+}
+
+.chips {
+    height: fit-content;
+    border-bottom: 10px;
+}
+
+.lab {
+    box-shadow: none !important;
+    background-color: royalblue;
+}
+
+.example-box:hover {
+    cursor: pointer;
+>>>>>>> 43f67575226a03087f883ad7d6f324fd419ca48f
 }

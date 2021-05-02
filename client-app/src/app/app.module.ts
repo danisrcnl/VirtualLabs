@@ -42,7 +42,7 @@ import { ErrorInterceptor } from './auth/interceptor/error.interceptor';
 import { Popup } from './student/popup/popup.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-
+import {MatChipsModule} from '@angular/material/chips';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
@@ -106,7 +106,8 @@ import { ConsegnadialogComponent } from './teacher/consegnadialog/consegnadialog
     MatButtonModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatChipsModule
   ],
 
   providers: [
