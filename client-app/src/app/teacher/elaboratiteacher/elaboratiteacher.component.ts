@@ -39,15 +39,11 @@ export class ElaboratiteacherComponent implements OnInit {
   ngOnInit (): void {
 
     this.assignmentWithPapers.forEach(a => {
-      console.log(a)
-      a.papersWithHistory.forEach(ph => {
-        console.log(ph)
-        this.studentService.getOne(ph.paper.creator).subscribe(dto => {
-          console.log(dto)
-          ph.creator = dto;
+      a.papersWithHistory.forEach(p => {
+        this.studentService.getOne(p.paper.creator).subscribe(s => {
+          console.log(s);
         })
       })
-      console.log(this.assignmentWithPapers);
     })
     
 
