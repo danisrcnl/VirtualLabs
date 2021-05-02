@@ -1,12 +1,12 @@
 <mat-accordion>
 
-    <mat-expansion-panel *ngFor="let ass of assignmentWithPapers" (opened)="setView(ass.papersWithHistory)" (closed)="clearChips">
+    <mat-expansion-panel *ngFor="let ass of assignmentWithPapers" (opened)="setView(ass.papersWithHistory)" (closed)="clearChips()">
       <mat-expansion-panel-header>
         <mat-panel-title>
           <button class ="lab" mat-mini-fab>{{ass.assignment.id}}</button>
         </mat-panel-title>
         <mat-panel-description>
-          {{ass.assignment.content}}
+          
         </mat-panel-description>
       </mat-expansion-panel-header>
       <div class="chips">
@@ -22,9 +22,13 @@
           </mat-chip>
         </mat-chip-list>
       </div>
-      <div class="papers" *ngFor="let pap of filteredViewingPapers">
-        <p>{{pap.paper.id}}, {{pap.paper.currentStatus}}</p>
-      </div>
+     
+      <mat-list class="papers">
+        <mat-list-item class="paper" *ngFor="let pap of filteredViewingPapers" (click)="viewPaper(pap.paper.id, pap.history)">
+          {{pap.paper.id}}, {{pap.paper.currentStatus}}
+        </mat-list-item>
+      </mat-list>
+      
     </mat-expansion-panel>
 
   </mat-accordion>
