@@ -6,6 +6,7 @@ import it.polito.ai.lab2.dtos.PaperDTO;
 import it.polito.ai.lab2.dtos.PaperStatusTimeDTO;
 import it.polito.ai.lab2.entities.*;
 import it.polito.ai.lab2.repositories.*;
+import it.polito.ai.lab2.services.AiException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -109,6 +110,7 @@ public class AssignmentServiceImpl implements AssignmentService {
 
         Paper p = modelMapper.map(paper, Paper.class);
         p.setEditable(true);
+        p.setCreator(studentId);
         p.setStudent(studentRepository.getOne(studentId));
 
         paperRepository.save(p);
@@ -247,12 +249,14 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public Boolean readPaper (Long paperId) throws PaperNotFoundException {
+    public Boolean readPaper (Long paperId) throws AiException {
         if(!paperRepository.existsById(paperId))
             throw new PaperNotFoundException(paperId.toString());
         Paper p = paperRepository.getOne(paperId);
         if(!paperRepository.getOne(paperId).getEditable())
             return false;
+        if(!p.getCurrentStatus().equals(PaperStatus.NULL))
+            throw new AiException();
         p.setCurrentStatus(PaperStatus.LETTO);
 
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris"));

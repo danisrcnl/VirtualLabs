@@ -22,6 +22,8 @@ public class Paper {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String creator;
+
     private String content;
 
     private PaperStatus currentStatus;
