@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { StudentDTO } from 'app/model/studentDTO.model';
 import { AssignmentService } from 'app/services/assignment.service';
 import { StudentService } from 'app/services/student.service';
-
+import { from, Observable, of } from 'rxjs';
 import {Assignment} from '../../model/assignment.model';
 import {Paper} from '../../model/paper.model';
 import {PaperStatus} from '../../model/paperStatus.model';
@@ -39,6 +39,7 @@ export class ElaboraticontteacherComponent implements OnInit {
   private courseName: String;
 
   assignmentWithPapers: AssignmentWithPapers[] = [];
+  assignmentWithPapers$: Observable<AssignmentWithPapers[]> = of(this.assignmentWithPapers);
 
   ngOnInit() {
       this.firstParam = this.route.snapshot.queryParamMap.get('name');  
@@ -70,13 +71,13 @@ export class ElaboraticontteacherComponent implements OnInit {
 
               this.assignmentService.getPaperHistory(paper.id).subscribe(history =>{
                 paperWithHistory.history = history;
-                element.papersWithHistory.push(paperWithHistory);
-                
+                element.papersWithHistory.push(paperWithHistory);                
               })
 
               this.assignmentService.getPaperCreator(paper.id).subscribe(creator =>{
                 this.studentService.getOne(creator).subscribe(studentCreator => {
                   student = studentCreator;
+                  console.log(studentCreator);
                 })
               })
               
@@ -87,6 +88,7 @@ export class ElaboraticontteacherComponent implements OnInit {
           })
 
         })
+        console.log(this.assignmentWithPapers);
 
       })
 

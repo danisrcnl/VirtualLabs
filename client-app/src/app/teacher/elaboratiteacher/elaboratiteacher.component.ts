@@ -1,9 +1,13 @@
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { parseI18nMeta } from '@angular/compiler/src/render3/view/i18n/meta';
 import { Component, Input, OnInit } from '@angular/core';
+import { MatChip, MatChipList } from '@angular/material/chips';
+import { Observable } from 'rxjs';
 import {Assignment} from '../../model/assignment.model';
 import {Paper} from '../../model/paper.model';
 import {PaperStatus} from '../../model/paperStatus.model';
 import {PaperStatusTime} from '../../model/paperStatusTime.model';
-import {StudentDTO} from '../../model/studentDTO.model'
+import {StudentDTO} from '../../model/studentDTO.model';
 
 class PaperWithHistory {
   paper: Paper;
@@ -24,19 +28,106 @@ class AssignmentWithPapers {
 export class ElaboratiteacherComponent implements OnInit {
 
   assignmentWithPapers: AssignmentWithPapers[] = [];
+  viewingPapers: PaperWithHistory[] = [];
+  filteredViewingPapers: PaperWithHistory[] = [];
+  status: String[] = ["letti", "consegnati", "rivisti", "valutati"];
+  selection: String[] = [];
 
   @Input('assignmentWithPapers')
   set _assignmentWithPapers (assignmentWithPapers: AssignmentWithPapers[]) {
     this.assignmentWithPapers = assignmentWithPapers;
+    console.log(this.assignmentWithPapers);
   }
 
-  
+  constructor () { }
 
-
-
-  constructor() { }
-
-  ngOnInit(): void {
+  ngOnInit (): void {
   }
 
+  addAssignment () {
+
+  }
+
+  setView (papersWithHistory: PaperWithHistory[]) {
+    this.viewingPapers = papersWithHistory;
+    this.filteredViewingPapers = this.viewingPapers;
+    console.log(this.viewingPapers);
+  }
+
+  toggle(chip: MatChip) {
+    
+    var newSelection: String[] = [];
+
+    if(chip.selected){
+
+      chip.deselect();
+      this.selection.forEach(status => {
+        if(status != chip.value)
+          newSelection.push(status);
+      })
+      this.selection = newSelection;
+      
+    } 
+
+    else {
+      this.selection = [];
+      chip.toggleSelected();
+      this.selection.push(chip.value);
+    }
+
+    console.log(this.selection);
+    this.filter(this.selection);
+    console.log(this.filteredViewingPapers);
+
+    
+  }
+
+  clearChips () {
+    this.selection = [];
+  }
+
+  filter (selection: String[]) {
+    var keep: Boolean = false;
+    var newArray: PaperWithHistory[] = [];
+
+    if(selection.length == 0) {
+      this.filteredViewingPapers = this.viewingPapers;
+      return;
+    }
+
+
+    this.viewingPapers.forEach(p => {
+      selection.forEach(s => {
+        if(this.hasSameStatus(p.paper.currentStatus, s))
+          keep = true;
+      });
+
+      if(keep) {
+        newArray.push(p);
+        keep = false;
+      }
+
+    });
+    this.filteredViewingPapers = newArray;
+  }
+
+  hasSameStatus (status: PaperStatus, value: String) {
+
+
+    if (status.toString() == "CONSEGNATO" && value == " consegnati ")
+      return true;
+
+    if (status.toString() == "LETTO" && value == " letti ")
+      return true;
+
+    if (status.toString() == "RIVISTO" && value == " rivisti ")
+      return true;
+
+    if (status.toString() == "VALUTATO" && value == " valutati ")
+      return true;
+
+    return false;
+
+  }
+    
 }
