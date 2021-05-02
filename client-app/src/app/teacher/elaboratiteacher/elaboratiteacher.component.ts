@@ -1,22 +1,15 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { parseI18nMeta } from '@angular/compiler/src/render3/view/i18n/meta';
 import { Component, Input, OnInit } from '@angular/core';
-<<<<<<< HEAD
 import { MatDialog } from '@angular/material/dialog';
-=======
 import { MatChip, MatChipList } from '@angular/material/chips';
 import { Observable } from 'rxjs';
->>>>>>> 43f67575226a03087f883ad7d6f324fd419ca48f
 import {Assignment} from '../../model/assignment.model';
 import {Paper} from '../../model/paper.model';
 import {PaperStatus} from '../../model/paperStatus.model';
 import {PaperStatusTime} from '../../model/paperStatusTime.model';
-<<<<<<< HEAD
 import {StudentDTO} from '../../model/studentDTO.model'
 import { ConsegnadialogComponent } from '../consegnadialog/consegnadialog.component';
-=======
-import {StudentDTO} from '../../model/studentDTO.model';
->>>>>>> 43f67575226a03087f883ad7d6f324fd419ca48f
 
 class PaperWithHistory {
   paper: Paper;
@@ -48,7 +41,7 @@ export class ElaboratiteacherComponent implements OnInit {
     console.log(this.assignmentWithPapers);
   }
 
-  constructor () { }
+  constructor (public matDialog: MatDialog) { }
 
   ngOnInit (): void {
   }
@@ -105,15 +98,12 @@ export class ElaboratiteacherComponent implements OnInit {
     }
 
 
-<<<<<<< HEAD
-  constructor(public matDialog : MatDialog) { }
-=======
+ 
     this.viewingPapers.forEach(p => {
       selection.forEach(s => {
         if(this.hasSameStatus(p.paper.currentStatus, s))
           keep = true;
       });
->>>>>>> 43f67575226a03087f883ad7d6f324fd419ca48f
 
       if(keep) {
         newArray.push(p);
@@ -124,7 +114,6 @@ export class ElaboratiteacherComponent implements OnInit {
     this.filteredViewingPapers = newArray;
   }
 
-<<<<<<< HEAD
 
   createconsegna() 
   {
@@ -132,7 +121,6 @@ export class ElaboratiteacherComponent implements OnInit {
 
   }
 
-=======
   hasSameStatus (status: PaperStatus, value: String) {
 
 
@@ -152,5 +140,4 @@ export class ElaboratiteacherComponent implements OnInit {
 
   }
     
->>>>>>> 43f67575226a03087f883ad7d6f324fd419ca48f
 }

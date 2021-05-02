@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-
 .cell {
   display: inline-block;
   margin-top: 40px;
@@ -13,36 +11,33 @@
   margin-top: 4px;
 }
 
-cell_img {
+.cell_img {
   text-align: center;
 }
 
 .cell_label {
   text-align: center;
   margin-top: 8px;
-=======
-#add_wrapper {
 }
 #add {
-    margin-top: 10px;
-    margin-left: 10px;
+  margin-top: 10px;
+  margin-left: 10px;
 }
 
 .papers {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .chips {
-    height: fit-content;
-    border-bottom: 10px;
+  height: fit-content;
+  border-bottom: 10px;
 }
 
 .lab {
-    box-shadow: none !important;
-    background-color: royalblue;
+  box-shadow: none !important;
+  background-color: royalblue;
 }
 
 .example-box:hover {
-    cursor: pointer;
->>>>>>> 43f67575226a03087f883ad7d6f324fd419ca48f
+  cursor: pointer;
 }
