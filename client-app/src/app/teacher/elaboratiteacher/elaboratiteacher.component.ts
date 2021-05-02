@@ -3,24 +3,18 @@ import { parseI18nMeta } from '@angular/compiler/src/render3/view/i18n/meta';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatChip, MatChipList } from '@angular/material/chips';
+import { AssignmentService } from 'app/services/assignment.service';
+import { StudentService } from 'app/services/student.service';
 import { Observable } from 'rxjs';
 import {Assignment} from '../../model/assignment.model';
 import {Paper} from '../../model/paper.model';
 import {PaperStatus} from '../../model/paperStatus.model';
 import {PaperStatusTime} from '../../model/paperStatusTime.model';
-import {StudentDTO} from '../../model/studentDTO.model'
+import {StudentDTO} from '../../model/studentDTO.model';
+import {AssignmentWithPapers, PaperWithHistory} from '../../model/assignmentsupport.model';
+import { ViewPaperComponent } from 'app/view-paper/view-paper.component';
 import { ConsegnadialogComponent } from '../consegnadialog/consegnadialog.component';
 
-class PaperWithHistory {
-  paper: Paper;
-  creator: StudentDTO;
-  history: PaperStatusTime[];
-}
-
-class AssignmentWithPapers {
-  assignment: Assignment;
-  papersWithHistory: PaperWithHistory[];
-}
 
 @Component({
   selector: 'app-elaboratiteacher',
@@ -32,7 +26,7 @@ export class ElaboratiteacherComponent implements OnInit {
   assignmentWithPapers: AssignmentWithPapers[] = [];
   viewingPapers: PaperWithHistory[] = [];
   filteredViewingPapers: PaperWithHistory[] = [];
-  status: String[] = ["letti", "consegnati", "rivisti", "valutati"];
+  status: String[] = ["null", "letti", "consegnati", "rivisti", "valutati"];
   selection: String[] = [];
 
   @Input('assignmentWithPapers')
@@ -41,9 +35,19 @@ export class ElaboratiteacherComponent implements OnInit {
     console.log(this.assignmentWithPapers);
   }
 
-  constructor (public matDialog: MatDialog) { }
+  constructor (private assignmentService: AssignmentService, private studentService: StudentService, public dialog: MatDialog) { }
 
   ngOnInit (): void {
+
+    this.assignmentWithPapers.forEach(a => {
+      a.papersWithHistory.forEach(p => {
+        this.studentService.getOne(p.paper.creator).subscribe(s => {
+          console.log(s);
+        })
+      })
+    })
+    
+
   }
 
   addAssignment () {
@@ -117,7 +121,7 @@ export class ElaboratiteacherComponent implements OnInit {
 
   createconsegna() 
   {
-    this.matDialog.open(ConsegnadialogComponent);
+    this.dialog.open(ConsegnadialogComponent);
 
   }
 
@@ -136,8 +140,24 @@ export class ElaboratiteacherComponent implements OnInit {
     if (status.toString() == "VALUTATO" && value == " valutati ")
       return true;
 
+    if (status.toString() == "NULL" && value == " null ")
+      return true;
+
     return false;
 
+  }
+
+  viewPaper (id: number, history: PaperStatusTime[]) {
+    const dialogRef = this.dialog.open(ViewPaperComponent, {
+      width: '600px',
+      data: {
+        id: id,
+        history: history
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+    });
   }
     
 }

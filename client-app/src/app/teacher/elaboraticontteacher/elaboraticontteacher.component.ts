@@ -8,17 +8,7 @@ import {Assignment} from '../../model/assignment.model';
 import {Paper} from '../../model/paper.model';
 import {PaperStatus} from '../../model/paperStatus.model';
 import {PaperStatusTime} from '../../model/paperStatusTime.model';
-
-class PaperWithHistory {
-  paper: Paper;
-  creator: StudentDTO;
-  history: PaperStatusTime[];
-}
-
-class AssignmentWithPapers {
-  assignment: Assignment;
-  papersWithHistory: PaperWithHistory[];
-}
+import {AssignmentWithPapers, PaperWithHistory} from '../../model/assignmentsupport.model'
 
 @Component({
   selector: 'app-elaboraticontteacher',
@@ -66,22 +56,18 @@ export class ElaboraticontteacherComponent implements OnInit {
 
             papers.forEach(paper => {
               var paperWithHistory: PaperWithHistory = new PaperWithHistory();
-              var student: StudentDTO = new StudentDTO();
               paperWithHistory.paper = paper;
 
               this.assignmentService.getPaperHistory(paper.id).subscribe(history =>{
                 paperWithHistory.history = history;
-                element.papersWithHistory.push(paperWithHistory);                
-              })
 
-              this.assignmentService.getPaperCreator(paper.id).subscribe(creator =>{
-                this.studentService.getOne(creator).subscribe(studentCreator => {
-                  student = studentCreator;
-                  console.log(studentCreator);
-                })
-              })
+            
+                  element.papersWithHistory.push(paperWithHistory);
+              });
+
               
-            })
+              
+            });
 
             this.assignmentWithPapers.push(element);
 

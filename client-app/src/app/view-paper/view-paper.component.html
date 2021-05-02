@@ -1,0 +1,5 @@
+<mat-list>
+    <mat-list-item *ngFor="let st of history">
+        {{displayDate(st.timestamp)}}, {{displayTime(st.timestamp)}}, {{st.paperStatus}}
+    </mat-list-item>
+</mat-list>

@@ -52,7 +52,11 @@ import { ElaboratistudentComponent } from './student/elaboratistudent/elaboratis
 import { ElaboraticontteacherComponent } from './teacher/elaboraticontteacher/elaboraticontteacher.component';
 import { ElaboratiteacherComponent } from './teacher/elaboratiteacher/elaboratiteacher.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+<<<<<<< HEAD
 import { ConsegnadialogComponent } from './teacher/consegnadialog/consegnadialog.component';
+=======
+import { ViewPaperComponent } from './view-paper/view-paper.component';
+>>>>>>> 6b5399f975932c3e70a5c745b28a6d77a41319ef
 
 
 
@@ -78,7 +82,11 @@ import { ConsegnadialogComponent } from './teacher/consegnadialog/consegnadialog
     ElaboratistudentComponent,
     ElaboraticontteacherComponent,
     ElaboratiteacherComponent,
+<<<<<<< HEAD
     ConsegnadialogComponent,
+=======
+    ViewPaperComponent,
+>>>>>>> 6b5399f975932c3e70a5c745b28a6d77a41319ef
   
   ],
   imports: [
