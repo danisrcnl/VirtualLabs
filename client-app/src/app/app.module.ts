@@ -52,6 +52,7 @@ import { ElaboratistudentComponent } from './student/elaboratistudent/elaboratis
 import { ElaboraticontteacherComponent } from './teacher/elaboraticontteacher/elaboraticontteacher.component';
 import { ElaboratiteacherComponent } from './teacher/elaboratiteacher/elaboratiteacher.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { ConsegnadialogComponent } from './teacher/consegnadialog/consegnadialog.component';
 
 
 
@@ -77,6 +78,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
     ElaboratistudentComponent,
     ElaboraticontteacherComponent,
     ElaboratiteacherComponent,
+    ConsegnadialogComponent,
   
   ],
   imports: [

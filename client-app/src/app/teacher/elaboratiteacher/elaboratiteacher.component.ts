@@ -1,9 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import {Assignment} from '../../model/assignment.model';
 import {Paper} from '../../model/paper.model';
 import {PaperStatus} from '../../model/paperStatus.model';
 import {PaperStatusTime} from '../../model/paperStatusTime.model';
 import {StudentDTO} from '../../model/studentDTO.model'
+import { ConsegnadialogComponent } from '../consegnadialog/consegnadialog.component';
 
 class PaperWithHistory {
   paper: Paper;
@@ -34,9 +36,16 @@ export class ElaboratiteacherComponent implements OnInit {
 
 
 
-  constructor() { }
+  constructor(public matDialog : MatDialog) { }
 
   ngOnInit(): void {
+  }
+
+
+  createconsegna() 
+  {
+    this.matDialog.open(ConsegnadialogComponent);
+
   }
 
 }

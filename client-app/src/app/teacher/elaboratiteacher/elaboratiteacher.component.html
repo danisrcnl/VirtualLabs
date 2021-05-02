@@ -15,3 +15,17 @@
     </mat-expansion-panel>
 
   </mat-accordion>
+
+<div id="wrapper_not" *ngIf = "assignmentWithPapers?.length < 1">
+
+   <div class="cell">
+
+      <div id="button2">
+         <button mat-fab mat-raised-button (click)="createconsegna()">
+            <mat-icon>add</mat-icon>
+         </button>
+     </div>
+
+   </div>
+
+</div>

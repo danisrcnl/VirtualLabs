@@ -1,0 +1,22 @@
+
+.cell {
+  display: inline-block;
+  margin-top: 40px;
+  margin-left: 16px;
+  margin-right: 45px;
+  vertical-align: middle;
+}
+
+#button2 {
+  margin-left: 16px;
+  margin-top: 4px;
+}
+
+cell_img {
+  text-align: center;
+}
+
+.cell_label {
+  text-align: center;
+  margin-top: 8px;
+}
