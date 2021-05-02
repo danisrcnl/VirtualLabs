@@ -1,0 +1,24 @@
+#add_wrapper {
+}
+#add {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.papers {
+    margin-top: 10px;
+}
+
+.chips {
+    height: fit-content;
+    border-bottom: 10px;
+}
+
+.lab {
+    box-shadow: none !important;
+    background-color: royalblue;
+}
+
+.example-box:hover {
+    cursor: pointer;
+}

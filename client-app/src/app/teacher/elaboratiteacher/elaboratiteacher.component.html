@@ -1,17 +1,33 @@
 <mat-accordion>
 
-    <mat-expansion-panel *ngFor="let ass of assignmentWithPapers">
+    <mat-expansion-panel *ngFor="let ass of assignmentWithPapers" (opened)="setView(ass.papersWithHistory)" (closed)="clearChips">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          {{ass.assignment.id}}
+          <button class ="lab" mat-mini-fab>{{ass.assignment.id}}</button>
         </mat-panel-title>
         <mat-panel-description>
           {{ass.assignment.content}}
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <div *ngFor="let pap of ass.papersWithHistory">
-        <p>{{pap.paper.id}}</p>
+      <div class="chips">
+        <mat-chip-list
+          selectable
+          class="example-chip">
+          <mat-chip
+            #c="matChip"
+            class="example-box"
+            (click)="toggle(c)"
+            *ngFor="let stat of status">
+            {{stat}}
+          </mat-chip>
+        </mat-chip-list>
+      </div>
+      <div class="papers" *ngFor="let pap of filteredViewingPapers">
+        <p>{{pap.paper.id}}, {{pap.paper.currentStatus}}</p>
       </div>
     </mat-expansion-panel>
 
   </mat-accordion>
+  <div id="add_wrapper">
+    <button mat-fab id="add" (onclick)="addAssignment()"><mat-icon>add</mat-icon></button>
+  </div>
