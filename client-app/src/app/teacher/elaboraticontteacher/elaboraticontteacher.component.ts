@@ -30,6 +30,7 @@ export class ElaboraticontteacherComponent implements OnInit {
 
   assignmentWithPapers: AssignmentWithPapers[] = [];
   assignmentWithPapers$: Observable<AssignmentWithPapers[]> = of(this.assignmentWithPapers);
+  obs_creators$: Observable<StudentDTO>[] = [];
 
   ngOnInit() {
       this.firstParam = this.route.snapshot.queryParamMap.get('name');  
@@ -41,7 +42,7 @@ export class ElaboraticontteacherComponent implements OnInit {
       this.href2 = this.hreff + '/students';
       this.href3 = this.hreff + '/vms';
       this.courseName = this.route.snapshot.queryParamMap.get('name');
-
+    });
 
       this.assignmentService.getCourseAssignments(this.courseName).subscribe(assignments => {
 
@@ -60,12 +61,14 @@ export class ElaboraticontteacherComponent implements OnInit {
 
               this.assignmentService.getPaperHistory(paper.id).subscribe(history =>{
                 paperWithHistory.history = history;
+                
 
-            
+                this.studentService.getOne(paper.creator).subscribe(student => {
+                  console.log("!!!");
+                  paperWithHistory.creator = student;
                   element.papersWithHistory.push(paperWithHistory);
+                })
               });
-
-              
               
             });
 
@@ -75,6 +78,7 @@ export class ElaboraticontteacherComponent implements OnInit {
 
         })
         console.log(this.assignmentWithPapers);
+        console.log(this.obs_creators$);
 
       })
 
@@ -84,7 +88,7 @@ export class ElaboraticontteacherComponent implements OnInit {
 
     
 
-  });
+  
 
 }
 

@@ -1,5 +1,42 @@
-<mat-list>
-    <mat-list-item *ngFor="let st of history">
-        {{displayDate(st.timestamp)}}, {{displayTime(st.timestamp)}}, {{st.paperStatus}}
-    </mat-list-item>
-</mat-list>
+<div id="title" *ngIf="step1">
+    <h1>Storico delle soluzioni dello studente</h1>
+</div>
+<div id="history" *ngIf="step1">
+    <mat-list>
+        <mat-list-item *ngFor="let st of history">
+            {{displayDate(st.timestamp)}}, {{displayTime(st.timestamp)}}, {{st.paperStatus}}
+        </mat-list-item>
+    </mat-list>
+</div>
+
+<div id="buttons" *ngIf="editable && step1">
+
+    <div id="buttonReview_w">
+        <button class="buttonO" mat-flat-button (click)="clickreview()">Carica una revisione</button>
+    </div>
+    <div id="buttonRate_w" *ngIf="ratable">
+        <button class="buttonO" mat-flat-button (click)="clickrate()">Assegna un voto</button>
+    </div>
+
+</div>
+
+<div id="rate" *ngIf="!step1 && goRate">
+    <mat-form-field id="form" appearance="fill">
+        <mat-label>Voto: </mat-label>
+        <mat-select>
+          <mat-option *ngFor="let rate of rates" value="rate">{{rate}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <button mat-flat-button class="buttonO">Conferma</button>
+</div>
+
+<div id="review" *ngIf="!step1 && goReview">
+    <mat-form-field appearance="fill">
+    <mat-label>Commenta la soluzione dello studente:</mat-label>
+    <div id="textarea_w">
+        <textarea matInput id="textarea"></textarea>
+    </div>
+    </mat-form-field><br>
+    <button mat-flat-button class="buttonRev">Conferma</button>
+</div>

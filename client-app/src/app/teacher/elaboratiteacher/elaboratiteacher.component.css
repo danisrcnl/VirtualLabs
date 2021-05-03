@@ -9,6 +9,10 @@
     margin-top: 10px;
 }
 
+.paper {
+    vertical-align: middle;
+}
+
 .paper:hover {
     cursor: pointer;
     background-color: #e0e0e0;
@@ -28,22 +32,33 @@
     cursor: pointer;
 }
 
-.valutati {
+.valutati, .VALUTATO {
     background-color: #00ff99;
     color: #0a0f0f;
 }
 
-.rivisti {
+.rivisti, .RIVISTO {
     background-color: #ffff66;
     color: #0a0f0f;
 }
 
-.consegnati {
+.consegnati, .CONSEGNATO {
     background-color: #3399ff;
     color: white;
 }
 
-.letti {
+.letti, .LETTO {
     background-color: #ff3399;
     color: white;
+}
+
+
+.statusCircle {
+    vertical-align: text-top;
+    margin-bottom: 12px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 4px;
+    height: 22px;
+    font-weight: bold;
 }

@@ -6,5 +6,6 @@ export class PaperStatusTime {
     timestamp: Date;
     paperStatus: PaperStatus;
     content: String;
+    review: String;
 
 }

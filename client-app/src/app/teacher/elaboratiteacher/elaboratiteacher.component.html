@@ -25,8 +25,9 @@
       </div>
      
       <mat-list class="papers">
-        <mat-list-item class="paper" *ngFor="let pap of filteredViewingPapers" (click)="viewPaper(pap.paper.id, pap.history)">
-          {{pap.paper.creator}}
+        <mat-list-item class="paper" *ngFor="let pap of filteredViewingPapers" (click)="viewPaper(pap.paper.id, pap.history, pap.paper.currentStatus, pap.paper.editable)">
+          <button class="statusCircle" [ngClass]="pap.paper.currentStatus">s{{pap.creator.id}}</button>
+          <p class="details">{{pap.creator.firstName}} {{pap.creator.name}}</p>
         </mat-list-item>
       </mat-list>
       

@@ -37,14 +37,6 @@ export class ElaboratiteacherComponent implements OnInit {
   constructor (private assignmentService: AssignmentService, private studentService: StudentService, public dialog: MatDialog) { }
 
   ngOnInit (): void {
-
-    this.assignmentWithPapers.forEach(a => {
-      a.papersWithHistory.forEach(p => {
-        this.studentService.getOne(p.paper.creator).subscribe(s => {
-          console.log(s);
-        })
-      })
-    })
     
 
   }
@@ -138,12 +130,14 @@ export class ElaboratiteacherComponent implements OnInit {
 
   }
 
-  viewPaper (id: number, history: PaperStatusTime[]) {
+  viewPaper (id: number, history: PaperStatusTime[], currentStatus: String, editable: Boolean) {
     const dialogRef = this.dialog.open(ViewPaperComponent, {
       width: '600px',
       data: {
         id: id,
-        history: history
+        history: history,
+        currentStatus: currentStatus,
+        editable: editable
       }
     });
   
