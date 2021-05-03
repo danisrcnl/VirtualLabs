@@ -9,12 +9,12 @@
     </mat-list>
 </div>
 
-<div id="buttons" *ngIf="editable && step1">
+<div id="buttons">
 
-    <div id="buttonReview_w">
+    <div id="buttonReview_w" *ngIf="editable && step1">
         <button class="buttonO" mat-flat-button (click)="clickreview()">Carica una revisione</button>
     </div>
-    <div id="buttonRate_w" *ngIf="ratable">
+    <div id="buttonRate_w" *ngIf="ratable && step1">
         <button class="buttonO" mat-flat-button (click)="clickrate()">Assegna un voto</button>
     </div>
 
@@ -37,6 +37,11 @@
     <div id="textarea_w">
         <textarea matInput id="textarea"></textarea>
     </div>
-    </mat-form-field><br>
+    </mat-form-field>
+    <div id="definitiva">
+        <mat-label>Vuoi che questa sia la soluzione definitiva?</mat-label>
+        <mat-checkbox id="checkbox"></mat-checkbox>
+    </div><br>
     <button mat-flat-button class="buttonRev">Conferma</button>
+    
 </div>
