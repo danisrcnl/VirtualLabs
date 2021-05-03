@@ -29,7 +29,7 @@ teams : Team[] ;
 team : Team;
 roles : String[] = new Array<String>();
 roles$ : Observable<String[]>;
-usedResources : UsedResources;
+usedResources$ : Observable <UsedResources>;
 
 constructor(
   private route: ActivatedRoute,
@@ -93,7 +93,7 @@ constructor(
                       console.log(this.roles);
                       this.roles$ = of(this.roles);
                      
-                      this.teamService.getUsedResources(this.courseId,this.team.name).subscribe(data => {this.usedResources = data})
+                      this.usedResources$ = this.teamService.getUsedResources(this.courseId,this.team.name);
 
                    })  });},
 
@@ -204,6 +204,8 @@ this.hreff = this.router.url;
                      
                       }
                            })
+
+ this.usedResources$ = this.teamService.getUsedResources(this.courseId,this.team.name);
 
                     })
     }

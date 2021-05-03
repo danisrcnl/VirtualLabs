@@ -24,7 +24,7 @@ export class VmscomponentComponent2 implements OnInit {
   vmsperteam$ : Observable <Vms[]>;
   vmModel : vmModelDTO;
   roles$ : Observable<String[]>;
-  usedResources : UsedResources;
+  usedResources$ : Observable <UsedResources>;
 
   @Input ('vmsperteam$')
   set Vms (vmss: Observable<Vms[]>)
@@ -47,10 +47,10 @@ export class VmscomponentComponent2 implements OnInit {
     console.log(this.roles$);
   }
 
-  @Input ('usedResources')
-  set Usedresources (value : UsedResources)
+  @Input ('usedResources$')
+  set Usedresources (value : Observable <UsedResources>)
   {
-    this.usedResources = value;
+    this.usedResources$ = value;
     
   }
 
@@ -84,7 +84,7 @@ export class VmscomponentComponent2 implements OnInit {
     const dialogRef = this.dialog.open (LimitDialogComponent, { height: '350px',
     width: '400px',
     data : { 
-      resources : this.usedResources, vmModel : this.vmModel
+      resources : this.usedResources$, vmModel : this.vmModel
   
     }
   

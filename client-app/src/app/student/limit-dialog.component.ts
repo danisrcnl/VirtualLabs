@@ -7,6 +7,7 @@ import { AlertService } from 'app/auth/authservices/alert.service';
 import { TeamService } from '../services/team.service';
 import { UsedResources } from 'app/model/UsedResources.model';
 import { vmModelDTO } from 'app/model/vmModelDTO.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-limit-dialog',
@@ -40,7 +41,8 @@ export class LimitDialogComponent implements OnInit {
   length : any;
 
   vmModel : vmModelDTO;
-  used_resources: UsedResources;
+  used_resource: Observable <UsedResources>;
+  used_resources : UsedResources;
 
   ram_consumption : any;
   nvcpu_consumption : any;
@@ -80,13 +82,15 @@ export class LimitDialogComponent implements OnInit {
     
     this.length = (s.length);
    if(m==0)
-    this.used_resources = s[1];
+    this.used_resource = s[1];
     
     else
     this.vmModel = s[1];
 
     m++;
     })
+
+    this.used_resource.subscribe(data => {this.used_resources = data;
     
     this.ram_left = (this.vmModel.maxRam - this.used_resources.ram);
     this.disk_left = (this.vmModel.maxDisk - this.used_resources.disk);
@@ -102,7 +106,7 @@ export class LimitDialogComponent implements OnInit {
     console.log(this.ram_consumption);
     console.log(this.nvcpu_consumption);
     
-    
+  })
   }
 
 
