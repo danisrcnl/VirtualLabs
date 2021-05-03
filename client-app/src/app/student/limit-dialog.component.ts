@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Vms } from 'app/model/vms.model';
 import {MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
@@ -22,34 +22,37 @@ export class LimitDialogComponent implements OnInit {
 
   vms: Vms[] = []; 
   alertACTIVEVMS : string = "";
-  activevms : number = 0;
+  activevms : any = 0;
   alertRAM : string = "";
-  RAMtotal : number = 0;
-  alertVCPU : string = "";
-  VCPUtotal : number = 0;
+  RAMtotal : any = 0;
+  alertnvcpu : string = "";
+  nvcputotal : any = 0;
   alertTOTALVMS : string = "";
-  TOTALVMS : number = 0;
+  TOTALVMS : any = 0;
   alertDISKSIZE : string = "";
-  DISKSIZE : number = 0;
-  VCPU: number;
-  RAM: number;
-  Disksize: number;
-  ActiveVms: number;
-  TotalVms: number;
+  DISKSIZE : any = 0;
+  nvcpu: any;
+  RAM: any;
+  Disksize: any;
+  ActiveVms: any;
+  TotalVms: any;
   vmstemp: Vms[];
-  length : number;
+  length : any;
 
   vmModel : vmModelDTO;
   used_resources: UsedResources;
 
-  ram_consumption : number;
-  vcpu_consumption : number;
-  disk_consumption : number;
+  ram_consumption : any;
+  nvcpu_consumption : any;
+  disk_consumption : any;
 
-  ram_left : number;
-  vcpu_left: number;
-  disk_left: number;
-
+  ram_left : any;
+  nvcpu_left: any;
+  disk_left: any;
+  myvalue : any;
+ a : any;
+ b : any;
+ count :any = 0;
   submitted = false;
 
   
@@ -60,7 +63,7 @@ export class LimitDialogComponent implements OnInit {
   ngOnInit() {
 
     this.limitForm = this.formBuilder.group({
-      VCPU: ['',Validators.required],
+      nvcpu: ['',Validators.required],
       RAM: ['',Validators.required],
       Disksize: ['',Validators.required],
       
@@ -78,6 +81,7 @@ export class LimitDialogComponent implements OnInit {
     this.length = (s.length);
    if(m==0)
     this.used_resources = s[1];
+    
     else
     this.vmModel = s[1];
 
@@ -86,15 +90,17 @@ export class LimitDialogComponent implements OnInit {
     
     this.ram_left = (this.vmModel.maxRam - this.used_resources.ram);
     this.disk_left = (this.vmModel.maxDisk - this.used_resources.disk);
-    this.vcpu_left = ((this.vmModel.maxNVCpu - this.used_resources.vCpu));
+    this.nvcpu_left = ((this.vmModel.maxnvcpu - this.used_resources.nvcpu));
 
 
-    this.ram_consumption = ((this.vmModel.maxRam - this.used_resources.ram)/this.vmModel.maxRam)*100;
-    this.disk_consumption = ((this.vmModel.maxDisk - this.used_resources.disk)/this.vmModel.maxDisk)*100;
-    this.vcpu_consumption = ((this.vmModel.maxNVCpu - this.used_resources.vCpu)/this.vmModel.maxNVCpu)*100;
+    this.ram_consumption = ((this.used_resources.ram)/this.vmModel.maxRam)*100;
+    this.disk_consumption = ((this.used_resources.disk)/this.vmModel.maxDisk)*100;
+    this.nvcpu_consumption = ((this.used_resources.nvcpu)/this.vmModel.maxnvcpu)*100;
 
+    console.log(this.used_resources);
+    console.log(this.vmModel.maxnvcpu);
     console.log(this.ram_consumption);
-
+    console.log(this.nvcpu_consumption);
     
     
   }
@@ -107,14 +113,59 @@ close()
 this.dialog.closeAll();
 }
 
- onKeypressEvent(event: any){
+
+  valuechangeRam(newValue) {
   
+   if(newValue!=undefined && this.count==0) {
+     this.count = 1;
+  this.a = newValue;
+  console.log("prima volta" + this.ram_consumption);
+  this.ram_consumption = this.ram_consumption + ((newValue)/this.vmModel.maxRam)*100;
+  console.log("1 " + this.ram_consumption);
+  this.b = ((newValue)/this.vmModel.maxRam)*100;}
 
 
-   this.ram_consumption = this.ram_consumption + ((this.vmModel.maxRam - event.target.value)/this.vmModel.maxRam)*100;
-
-
+  if(newValue!=this.a){
+   this.ram_consumption = this.ram_consumption -this.b;
+  
+   this.ram_consumption = this.ram_consumption + ((newValue)/this.vmModel.maxRam)*100;
+    console.log("12 " + this.ram_consumption);
+   this.b = ((newValue)/this.vmModel.maxRam)*100;
+   this.a = newValue;
   }
+
+  
+}
+
+valuechangeDisk(newValue) {
+  
+   if(newValue!=undefined)
+
+ this.disk_consumption = this.disk_consumption + ((newValue)/this.vmModel.maxDisk)*100;
+   console.log(this.disk_consumption);
+
+   
+  if(newValue==0)
+   this.disk_consumption = ((this.vmModel.maxDisk - this.used_resources.disk)/this.vmModel.maxDisk)*100;
+   console.log(this.disk_consumption);
+
+}
+
+
+valuechangenvcpu(newValue) {
+  
+   if(newValue!=undefined)
+
+  this.nvcpu_consumption = this.nvcpu_consumption + ((newValue)/this.vmModel.maxnvcpu)*100;
+   
+   
+  if(newValue==0)
+
+    this.nvcpu_consumption = ((this.vmModel.maxnvcpu - this.used_resources.nvcpu)/this.vmModel.maxnvcpu)*100;
+    
+
+}
+
 
 createvm() {
 this.alertService.clear();
@@ -132,18 +183,18 @@ this.alertService.clear();
   this.alertDISKSIZE = "";
   this.alertRAM = "";
   this.alertTOTALVMS = "";
-  this.alertVCPU ="";
+  this.alertnvcpu ="";
 
   this.activevms = 0;
   this.DISKSIZE = 0;
   this.RAMtotal = 0;
   this.TOTALVMS = 0;
-  this.VCPUtotal = 0;
+  this.nvcputotal = 0;
  
 
-if (this.VCPU < this.VCPUtotal)
+if (this.nvcpu < this.nvcputotal)
 {
-  this.alertVCPU = "Limite non consentito"
+  this.alertnvcpu = "Limite non consentito"
 }
 
 if (this.RAM < this.RAMtotal)
