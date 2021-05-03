@@ -6,6 +6,7 @@ import { Inject } from '@angular/core';
 import { AlertService } from 'app/auth/authservices/alert.service';
 import { TeamService } from '../services/team.service';
 import { UsedResources } from 'app/model/UsedResources.model';
+import { vmModelDTO } from 'app/model/vmModelDTO.model';
 
 @Component({
   selector: 'app-limit-dialog',
@@ -38,10 +39,16 @@ export class LimitDialogComponent implements OnInit {
   vmstemp: Vms[];
   length : number;
 
+  vmModel : vmModelDTO;
   used_resources: UsedResources;
-  ram_consumption = 50;
-  vcpu_consumption = 45;
-  disk_consumption = 70;
+
+  ram_consumption : number;
+  vcpu_consumption : number;
+  disk_consumption : number;
+
+  ram_left : number;
+  vcpu_left: number;
+  disk_left: number;
 
   submitted = false;
 
@@ -57,16 +64,38 @@ export class LimitDialogComponent implements OnInit {
       RAM: ['',Validators.required],
       Disksize: ['',Validators.required],
       
+
+
+
+      
     });
   
-
+      
+  let m = 0;
 
     Object.entries(this.data).forEach( s => {
-
+    
     this.length = (s.length);
-    console.log(s[1]);
-    this.vms = Object.assign(s[1]);
+   if(m==0)
+    this.used_resources = s[1];
+    else
+    this.vmModel = s[1];
+
+    m++;
     })
+    
+    this.ram_left = (this.vmModel.maxRam - this.used_resources.ram);
+    this.disk_left = (this.vmModel.maxDisk - this.used_resources.disk);
+    this.vcpu_left = ((this.vmModel.maxNVCpu - this.used_resources.vCpu));
+
+
+    this.ram_consumption = ((this.vmModel.maxRam - this.used_resources.ram)/this.vmModel.maxRam)*100;
+    this.disk_consumption = ((this.vmModel.maxDisk - this.used_resources.disk)/this.vmModel.maxDisk)*100;
+    this.vcpu_consumption = ((this.vmModel.maxNVCpu - this.used_resources.vCpu)/this.vmModel.maxNVCpu)*100;
+
+    console.log(this.ram_consumption);
+
+    
     
   }
 
@@ -78,7 +107,14 @@ close()
 this.dialog.closeAll();
 }
 
+ onKeypressEvent(event: any){
+  
 
+
+   this.ram_consumption = this.ram_consumption + ((this.vmModel.maxRam - event.target.value)/this.vmModel.maxRam)*100;
+
+
+  }
 
 createvm() {
 this.alertService.clear();

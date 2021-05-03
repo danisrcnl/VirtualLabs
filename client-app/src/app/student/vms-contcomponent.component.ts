@@ -13,6 +13,8 @@ import { Team } from 'app/model/team.model';
 import { StudentDTO } from 'app/model/studentDTO.model';
 import { vmStatus } from 'app/model/vmStatus.model';
 import { catchError } from 'rxjs/operators';
+import { UsedResources } from 'app/model/UsedResources.model';
+import { TeamService } from 'app/services/team.service';
 
 @Component({
   selector: 'app-vms-contcomponent',
@@ -27,8 +29,15 @@ teams : Team[] ;
 team : Team;
 roles : String[] = new Array<String>();
 roles$ : Observable<String[]>;
+usedResources : UsedResources;
 
-constructor(private route: ActivatedRoute,private authService : AuthService, private studentservice : StudentService, private router : Router,private vmService: VmService ) {
+constructor(
+  private route: ActivatedRoute,
+  private authService : AuthService, 
+  private studentservice : StudentService, 
+  private router : Router,
+  private vmService: VmService,
+  private teamService : TeamService ) {
 
   this.authService.currentUser.subscribe ( x => {this.currentUser = x;
     console.log(this.currentUser);
@@ -55,17 +64,23 @@ constructor(private route: ActivatedRoute,private authService : AuthService, pri
 
             this.teams = data;
              this.teams.forEach(t => 
-                 {if (t.status == 1) {
-                   this.team = t;
+                 {
+                   if (t.status == 1) {
+                       this.team = t;
 
-                     this.vmsperteam$ = this.vmService.getVmsForTeam(t.id);
-                     this.vmsperteam$.subscribe(data => {
-                       data.forEach(t => {
-                         console.log(t);
+                        this.vmsperteam$ = this.vmService.getVmsForTeam(t.id);
+                       
+                          this.vmsperteam$.subscribe(data => {
+                             
+                              data.forEach(t => {
+                                
+                                console.log(t);
                        })
-                       })}})
+
+                          })}})
                       
-                      })
+                          
+                     
                      this.authService.info().subscribe(data => 
                       
                       {
@@ -77,9 +92,10 @@ constructor(private route: ActivatedRoute,private authService : AuthService, pri
                       )
                       console.log(this.roles);
                       this.roles$ = of(this.roles);
-                      
-                      ;
-                    });},
+                     
+                      this.teamService.getUsedResources(this.courseId,this.team.name).subscribe(data => {this.usedResources = data})
+
+                   })  });},
 
 
           error => {
