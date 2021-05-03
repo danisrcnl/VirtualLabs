@@ -178,10 +178,10 @@ public class AssignmentController {
         );
     }
 
-    @GetMapping("/paper/{paperId}/review")
-    public PaperDTO reviewPaper (@PathVariable Long paperId) throws ResponseStatusException {
+    @PostMapping("/paper/{paperId}/review")
+    public PaperDTO reviewPaper (@PathVariable Long paperId, @RequestBody String content) throws ResponseStatusException {
         try {
-            if(!assignmentService.reviewPaper(paperId))
+            if(!assignmentService.reviewPaper(paperId, content))
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "The paper can't be edited anymore");
         } catch (AiException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());

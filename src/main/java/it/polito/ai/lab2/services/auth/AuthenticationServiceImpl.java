@@ -49,4 +49,13 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         }
         u.get().setRoles(userRoles);
     }
+
+    @Override
+    public String getUsername(Long userId) throws UserNotFoundException {
+        if(!userRepository.existsById(userId))
+            throw new UserNotFoundException(userId.toString());
+        return userRepository
+                .getOne(userId)
+                .getUsername();
+    }
 }

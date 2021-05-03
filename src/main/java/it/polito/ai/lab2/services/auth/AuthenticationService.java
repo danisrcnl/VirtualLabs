@@ -4,9 +4,11 @@ import java.util.List;
 
 public interface AuthenticationService {
 
-    public void addUser (String username, String password);
+    void addUser (String username, String password);
 
-    public void deleteUser (String username);
+    void deleteUser (String username);
 
-    public void setPrivileges (String username, List<String> roles);
+    void setPrivileges (String username, List<String> roles);
+
+    String getUsername (Long userId);
 }

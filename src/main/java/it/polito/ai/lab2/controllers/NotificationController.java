@@ -1,6 +1,10 @@
 package it.polito.ai.lab2.controllers;
 
+import it.polito.ai.lab2.dtos.StudentDTO;
+import it.polito.ai.lab2.services.auth.AuthenticationService;
 import it.polito.ai.lab2.services.notification.NotificationService;
+import it.polito.ai.lab2.services.student.StudentService;
+import it.polito.ai.lab2.services.teacher.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -18,6 +23,12 @@ public class NotificationController {
 
     @Autowired
     NotificationService notificationService;
+    @Autowired
+    AuthenticationService authenticationService;
+    @Autowired
+    StudentService studentService;
+    @Autowired
+    TeacherService teacherService;
 
     @GetMapping("/confirm/{tokenId}")
     public String confirm (@PathVariable String tokenId) {
@@ -38,8 +49,28 @@ public class NotificationController {
 
     @GetMapping("/register/confirm/{tokenId}")
     public String confirmSignUp (@PathVariable String tokenId) {
-        if(notificationService.confirmUser(tokenId))
+        if(notificationService.confirmUser(tokenId)) {
+
+            Long uid;
+            if(!notificationService.getToken(tokenId).isPresent())
+                return "redirect:/notification/confirmation/success";
+            uid = notificationService.getToken(tokenId).get().getUserId();
+            String username = authenticationService.getUsername(uid);
+            String tmpid = username.split("@")[0];
+            String id = "";
+            for (int i = 1; i < tmpid.length(); i++)
+                id += tmpid.charAt(i);
+            if (username.charAt(0) == 's') {
+                studentService.linkToUser(id, username);
+                authenticationService.setPrivileges(username, Arrays.asList("ROLE_STUDENT"));
+            } else if (username.charAt(0) == 'd') {
+                teacherService.linkToUser(id, username);
+                authenticationService.setPrivileges(username, Arrays.asList("ROLE_TEACHER"));
+
+            } else return "redirect:/notification/confirmation/failure";
+
             return "redirect:/notification/confirmation/success";
+        }
         else return "redirect:/notification/confirmation/success";
     }
 

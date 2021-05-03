@@ -19,5 +19,6 @@ public class PaperStatusTimeDTO extends RepresentationModel<PaperStatusTimeDTO> 
     private Timestamp timestamp;
     private PaperStatus paperStatus;
     private String content;
+    private String review;
 
 }

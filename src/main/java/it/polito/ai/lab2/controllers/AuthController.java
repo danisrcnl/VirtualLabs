@@ -109,8 +109,7 @@ public class AuthController {
                     throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
                 }
             }
-            studentService.linkToUser(signUpRequest.getId(), signUpRequest.getEmail());
-            authenticationService.setPrivileges(signUpRequest.getEmail(), Arrays.asList("ROLE_STUDENT"));
+
         } else if (signUpRequest.getEmail().charAt(0) == 'd') {
             TeacherDTO teacherDTO = TeacherDTO
                     .builder()
@@ -127,8 +126,7 @@ public class AuthController {
                 authenticationService.deleteUser(signUpRequest.getEmail());
                 throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
             }
-            teacherService.linkToUser(signUpRequest.getId(), signUpRequest.getEmail());
-            authenticationService.setPrivileges(signUpRequest.getEmail(), Arrays.asList("ROLE_TEACHER"));
+
         }
         notificationService.notifyUser(signUpRequest.getEmail());
     }

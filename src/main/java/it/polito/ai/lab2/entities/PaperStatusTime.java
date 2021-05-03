@@ -26,6 +26,8 @@ public class PaperStatusTime {
 
     private String content;
 
+    private String review;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="paper_id")
     private Paper paper;

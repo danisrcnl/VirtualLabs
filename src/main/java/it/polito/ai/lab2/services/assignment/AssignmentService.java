@@ -42,7 +42,7 @@ public interface AssignmentService {
 
     Boolean readPaper (Long paperId);
 
-    Boolean reviewPaper (Long paperId);
+    Boolean reviewPaper (Long paperId, String content);
 
     Boolean deliverPaper (Long paperId);
 

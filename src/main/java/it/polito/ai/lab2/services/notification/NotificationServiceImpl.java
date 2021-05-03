@@ -6,6 +6,7 @@ import it.polito.ai.lab2.entities.*;
 import it.polito.ai.lab2.repositories.TeamRepository;
 import it.polito.ai.lab2.repositories.TokenRepository;
 import it.polito.ai.lab2.repositories.UserRepository;
+import it.polito.ai.lab2.services.AiException;
 import it.polito.ai.lab2.services.course.CourseService;
 import it.polito.ai.lab2.services.student.StudentService;
 import it.polito.ai.lab2.services.team.TeamService;
@@ -275,5 +276,14 @@ public class NotificationServiceImpl implements NotificationService {
             }
         }
 
+    }
+
+    @Override
+    public Optional<Token> getToken(String token) {
+        if(!tokenRepository.existsById(token))
+            return Optional.empty();
+        return Optional
+                .of(tokenRepository
+                .getOne(token));
     }
 }

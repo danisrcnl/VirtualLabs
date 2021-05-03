@@ -197,7 +197,8 @@ public class AssignmentServiceImpl implements AssignmentService {
     public Boolean ratePaper (Long paperId, int mark) throws PaperNotFoundException {
         if(!paperRepository.existsById(paperId))
             throw new PaperNotFoundException(paperId.toString());
-        if(!paperRepository.getOne(paperId).getCurrentStatus().equals(PaperStatus.RIVISTO))
+        if(!paperRepository.getOne(paperId).getCurrentStatus().equals(PaperStatus.RIVISTO) &&
+        !paperRepository.getOne(paperId).getCurrentStatus().equals(PaperStatus.CONSEGNATO))
             return false;
         if(paperRepository.getOne(paperId).getEditable())
             return false;
@@ -272,13 +273,14 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
-    public Boolean reviewPaper (Long paperId) throws PaperNotFoundException {
+    public Boolean reviewPaper (Long paperId, String content) throws PaperNotFoundException {
         if(!paperRepository.existsById(paperId))
             throw new PaperNotFoundException(paperId.toString());
         if(!paperRepository.getOne(paperId).getEditable())
             return false;
         Paper p = paperRepository.getOne(paperId);
         p.setCurrentStatus(PaperStatus.RIVISTO);
+        p.setContent(content);
 
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris"));
         Timestamp t = Timestamp.valueOf(localDateTime);
