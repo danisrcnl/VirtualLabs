@@ -65,8 +65,8 @@ const httpOptions = {
         return this.http.get<Paper>(`${environment.apiUrlassignments}/paper/${paperId}/read`);
     }
 
-    reviewPaper (paperId: number) {
-        return this.http.get<Paper>(`${environment.apiUrlassignments}/paper/${paperId}/review`);
+    reviewPaper (paperId: number, content: String) {
+        return this.http.post<Paper>(`${environment.apiUrlassignments}/paper/${paperId}/review`, content);
     }
 
     deliverPaper (paperId: number) {

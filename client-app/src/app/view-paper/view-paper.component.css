@@ -1,0 +1,33 @@
+#buttons {
+    text-align: center;
+}
+
+#buttonReview_w, #buttonRate_w {
+    margin-top: 10px;
+}
+
+.buttonO, .buttonRev {
+    background-color: royalblue;
+    color: white;
+} .buttonO:hover, .buttonRev:hover {
+    background-color: blue;
+}
+
+#rate, #review {
+    text-align: center;
+}
+
+#form {
+    margin-right: 10px;
+}
+
+#textarea_w {
+}
+
+#textarea {
+    min-height: 200px;
+}
+
+.buttonRev {
+    
+}
