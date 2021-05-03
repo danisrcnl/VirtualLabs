@@ -8,6 +8,7 @@ import { LimitDialogComponent } from './limit-dialog.component';
 import { vmModelDTO } from 'app/model/vmModelDTO.model';
 import { Observable } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
+import { UsedResources } from 'app/model/UsedResources.model';
 
 
 
@@ -23,6 +24,7 @@ export class VmscomponentComponent2 implements OnInit {
   vmsperteam$ : Observable <Vms[]>;
   vmModel : vmModelDTO;
   roles$ : Observable<String[]>;
+  usedResources : UsedResources;
 
   @Input ('vmsperteam$')
   set Vms (vmss: Observable<Vms[]>)
@@ -44,6 +46,15 @@ export class VmscomponentComponent2 implements OnInit {
     this.roles$ = roles;
     console.log(this.roles$);
   }
+
+  @Input ('usedResources')
+  set Usedresources (value : UsedResources)
+  {
+    this.usedResources = value;
+    
+  }
+
+
   @Output() addvmEvent = new EventEmitter<Vms>();
   @Output() changestateEvent = new EventEmitter<any>();
   
@@ -73,7 +84,7 @@ export class VmscomponentComponent2 implements OnInit {
     const dialogRef = this.dialog.open (LimitDialogComponent, { height: '350px',
     width: '400px',
     data : { 
-      
+      resources : this.usedResources, vmModel : this.vmModel
   
     }
   

@@ -1,6 +1,7 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { parseI18nMeta } from '@angular/compiler/src/render3/view/i18n/meta';
 import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatChip, MatChipList } from '@angular/material/chips';
 import { AssignmentService } from 'app/services/assignment.service';
 import { StudentService } from 'app/services/student.service';
@@ -11,8 +12,8 @@ import {PaperStatus} from '../../model/paperStatus.model';
 import {PaperStatusTime} from '../../model/paperStatusTime.model';
 import {StudentDTO} from '../../model/studentDTO.model';
 import {AssignmentWithPapers, PaperWithHistory} from '../../model/assignmentsupport.model';
-import { MatDialog } from '@angular/material/dialog';
 import { ViewPaperComponent } from 'app/view-paper/view-paper.component';
+import { ConsegnadialogComponent } from '../consegnadialog/consegnadialog.component';
 
 
 @Component({
@@ -36,8 +37,7 @@ export class ElaboratiteacherComponent implements OnInit {
 
   constructor (private assignmentService: AssignmentService, private studentService: StudentService, public dialog: MatDialog) { }
 
-  ngOnInit (): void {
-    
+  ngOnInit (): void {   
 
   }
 
@@ -93,6 +93,7 @@ export class ElaboratiteacherComponent implements OnInit {
     }
 
 
+ 
     this.viewingPapers.forEach(p => {
       selection.forEach(s => {
         if(this.hasSameStatus(p.paper.currentStatus, s))
@@ -106,6 +107,13 @@ export class ElaboratiteacherComponent implements OnInit {
 
     });
     this.filteredViewingPapers = newArray;
+  }
+
+
+  createconsegna() 
+  {
+    this.dialog.open(ConsegnadialogComponent);
+
   }
 
   hasSameStatus (status: PaperStatus, value: String) {
