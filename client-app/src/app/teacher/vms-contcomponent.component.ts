@@ -7,7 +7,7 @@ import { vmModelDTO } from 'app/model/vmModelDTO.model';
 import { VmService } from 'app/services/vm.service';
 
 export interface DialogDataVm {
-  VCPU  : number;
+  nvcpu  : number;
   RAM : number;
   Disksize : number;
   OperatingSystem : String;

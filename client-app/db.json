@@ -179,7 +179,7 @@
       "courseId": 0,
       "disksize": 1,
       "ramsize": 2048,
-      "vcpu": 2
+      "nvcpu": 2
     },
     {
       "id": "2",
@@ -189,7 +189,7 @@
       "courseId": 0,
       "disksize": 1,
       "ramsize": 4096,
-      "vcpu": 1
+      "nvcpu": 1
     },
     {
       "id": "3",
@@ -199,7 +199,7 @@
       "courseId": 1,
       "disksize": 2,
       "ramsize": 2048,
-      "vcpu": 1
+      "nvcpu": 1
     },
     {
       "id": "4",
@@ -209,7 +209,7 @@
       "courseId": 0,
       "disksize": 2,
       "ramsize": 2048,
-      "vcpu": 1
+      "nvcpu": 1
     },
     {
       "id": "5",
@@ -219,7 +219,7 @@
       "courseId": 0,
       "disksize": 2,
       "ramsize": 2048,
-      "vcpu": 1
+      "nvcpu": 1
     },
     {
       "id": "6",
@@ -229,7 +229,7 @@
       "courseId": 1,
       "disksize": 2,
       "ramsize": 2048,
-      "vcpu": 1
+      "nvcpu": 1
     }
   ]
 }

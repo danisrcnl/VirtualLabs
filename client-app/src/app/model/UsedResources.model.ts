@@ -1,5 +1,5 @@
 export class UsedResources {
-    vCpu: number;
+    nvcpu: number;
     ram: number;
     disk: number;
 }

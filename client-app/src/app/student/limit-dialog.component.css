@@ -1,39 +1,51 @@
 #wrapper {
-    height: fit-content;
+  height: fit-content;
 }
 
 .row {
-    text-align: center;
-    margin-bottom: 4px;
-    width: 100%;
-    
-} .row_input {
-    display: inline-block;
-    margin-right: 4px;
-} .row_progress {
-    vertical-align: middle;
-    display: inline-block;
-    margin-left: 4px;
-} .row_field {
-    min-width: 205px;
+  text-align: center;
+  margin-bottom: 4px;
+  width: 100%;
+}
+.row_input {
+  display: inline-block;
+  margin-right: 4px;
+}
+.row_progress {
+  vertical-align: middle;
+  display: inline-block;
+  margin-left: 4px;
+}
+.row_field {
+  min-width: 205px;
 }
 
 #title {
-    text-align: center;
+  text-align: center;
 }
 
 #buttons {
-    text-align: center;
-    margin-top: 16px;
+  text-align: center;
+  margin-top: 16px;
 }
 
-    #buttonCrea {
-        margin-right: 4px;
-    } #buttonCrea:hover {
-    }
-    #buttonChiudi {
-        margin-left: 4px;
-        background-color: orangered;
-    } #buttonChiudi:hover {
-        background-color: red;
-    }
+#buttonCrea {
+  margin-right: 4px;
+}
+#buttonCrea:hover {
+}
+#buttonChiudi {
+  margin-left: 4px;
+  background-color: orangered;
+}
+#buttonChiudi:hover {
+  background-color: red;
+}
+
+.red ::ng-deep .mat-progress-spinner circle,
+.mat-spinner circle {
+  stroke: red;
+}
+.blue {
+  stroke: blue;
+}

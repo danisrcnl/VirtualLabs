@@ -98,9 +98,9 @@ export class VmscomponentComponent2 implements OnInit {
        if(data != undefined)
    {
       
-      this.vm.nVCpu = data.nVCpu;
+      this.vm.nvcpu = data.nvcpu;
       console.log(data.nvcpu);
-      console.log(data.nVCpu);
+      console.log(data.nvcpu);
       this.vm.ram = data.ram;
       this.vm.disk = data.disk;
       

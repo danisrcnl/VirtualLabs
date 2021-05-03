@@ -19,14 +19,14 @@ export class LimitDialogComponent implements OnInit {
   activevms : number = 0;
   alertRAM : string = "";
   RAMtotal : number = 0;
-  alertVCPU : string = "";
-  VCPUtotal : number = 0;
+  alertnvcpu : string = "";
+  nvcputotal : number = 0;
   alertTOTALVMS : string = "";
   TOTALVMS : number = 0;
   alertDISKSIZE : string = "";
   alertOperatingSystem : string = "";
   DISKSIZE : number = 0;
-  VCPU: number;
+  nvcpu: number;
   RAM: number;
   Disksize: number;
   ActiveVms: number;
@@ -42,7 +42,7 @@ export class LimitDialogComponent implements OnInit {
   ngOnInit() {
 
     this.limitForm = this.formBuilder.group({
-      VCPU: [''],
+      nvcpu: [''],
       RAM: [''],
       Disksize: [''],
       OperatingSystem: [''],
@@ -76,26 +76,26 @@ setlimit() {
   this.alertDISKSIZE = "";
   this.alertRAM = "";
   this.alertTOTALVMS = "";
-  this.alertVCPU ="";
+  this.alertnvcpu ="";
 
   this.activevms = 0;
   this.DISKSIZE = 0;
   this.RAMtotal = 0;
   this.TOTALVMS = 0;
-  this.VCPUtotal =0;
+  this.nvcputotal =0;
 
 
 
  
 console.log(this.TOTALVMS);
  console.log("entrato");
- console.log(this.VCPUtotal);
- console.log(this.VCPU);
+ console.log(this.nvcputotal);
+ console.log(this.nvcpu);
  console.log (this.activevms);
  console.log (this.TotalVms);
-if (this.VCPU < this.VCPUtotal)
+if (this.nvcpu < this.nvcputotal)
 {
-  this.alertVCPU = "Limite non consentito"
+  this.alertnvcpu = "Limite non consentito"
 }
 
 if (this.RAM < this.RAMtotal)

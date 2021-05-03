@@ -1,6 +1,6 @@
 export class vmModelDTO {
 
-    maxNVCpu: number;
+    maxnvcpu: number;
     maxDisk : number;
     maxRam : number;
     operatingSystem : String;

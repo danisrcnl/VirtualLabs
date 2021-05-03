@@ -10,7 +10,7 @@ import { StudentDTO } from 'app/model/studentDTO.model';
 
 
 export interface DialogDataVm {
-  VCPU  : number;
+  nvcpu  : number;
   RAM : number;
   Disksize : number;
   ActiveVms :number;
@@ -26,7 +26,7 @@ export interface DialogDataVm {
 export class VmscomponentComponent implements OnInit {
 
 
-  displayedColumns: string[] = ['maxNVCpu', 'maxDisk', 'maxRam', 'operatingSystem','maxVmsForCourse','maxActiveForCourse'];
+  displayedColumns: string[] = ['maxnvcpu', 'maxDisk', 'maxRam', 'operatingSystem','maxVmsForCourse','maxActiveForCourse'];
   
 
    @Output() addvmModel2Event = new EventEmitter<vmModelDTO>();
@@ -87,7 +87,7 @@ export class VmscomponentComponent implements OnInit {
    if(data != undefined)
    {
       
-      this.vmModel2.maxNVCpu = data.VCPU;
+      this.vmModel2.maxnvcpu = data.nvcpu;
       this.vmModel2.maxRam = data.RAM;
       this.vmModel2.maxActiveVms = data.ActiveVms;
       this.vmModel2.maxDisk = data.Disksize;
