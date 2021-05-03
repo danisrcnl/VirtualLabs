@@ -26,7 +26,7 @@ export class ViewPaperComponent implements OnInit {
     this.history = this.data.history;
     this.currentStatus = this.data.currentStatus;
     this.editable = this.data.editable;
-    this.ratable = (this.currentStatus == "CONSEGNATO" || this.currentStatus == "RIVISTO");
+    this.ratable = (this.currentStatus == "RIVISTO" && this.editable == false);
     for(let i = 1; i<=30; i++) {
       this.rates.push(i);
     }
