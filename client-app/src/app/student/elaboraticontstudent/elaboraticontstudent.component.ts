@@ -28,6 +28,7 @@ export class ElaboraticontstudentComponent implements OnInit {
   public href3 : string ="";
   public subject : string ="";
   private courseName: String;
+  public papervalue : Paper;
 
   assignmentWithPapers: AssignmentWithPapers[] = [];
   assignmentWithPapers$: Observable<AssignmentWithPapers[]> = of(this.assignmentWithPapers);
@@ -63,7 +64,8 @@ export class ElaboraticontstudentComponent implements OnInit {
 
       assignments.forEach(assignment => {
   
-        
+        console.log(assignment.id);
+
         var element: AssignmentWithPapers = new AssignmentWithPapers();
         element.papersWithHistory = [];
         element.assignment = assignment;
@@ -73,16 +75,16 @@ export class ElaboraticontstudentComponent implements OnInit {
         console.log("calling")
         this.assignmentService.getPaperStudent(assignment.id, id).subscribe(paper => {
           
-  
           
           var paperWithHistory: PaperWithHistory = new PaperWithHistory();
           paperWithHistory.paper = paper;
   
-          this.assignmentService.getPaperHistory(paper.id).subscribe(history => {
+          this.assignmentService.getPaperHistory(paper[0].id).subscribe(history => {
             paperWithHistory.history = history;
+            
               
   
-            this.studentService.getOne(paper.creator).subscribe(student => {
+            this.studentService.getOne(paper[0].creator).subscribe(student => {
               paperWithHistory.creator = student;
               element.papersWithHistory.push(paperWithHistory);
             })

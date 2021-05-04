@@ -31,6 +31,7 @@ export class ElaboratistudentComponent implements OnInit {
   set _assignmentWithPapers (assignmentWithPapers: AssignmentWithPapers[]) {
     this.assignmentWithPapers = assignmentWithPapers;
     console.log(this.assignmentWithPapers);
+    
   }
 
 
