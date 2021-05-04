@@ -89,6 +89,17 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
+    public AssignmentDTO setAssignmentContent(Long assignmentId, String content) throws AssignmentNotFoundException {
+        if(!assignmentRepository.existsById(assignmentId))
+            throw new AssignmentNotFoundException(assignmentId.toString());
+        assignmentRepository
+                .getOne(assignmentId)
+                .setContent(content);
+
+        return modelMapper.map(assignmentRepository.getOne(assignmentId), AssignmentDTO.class);
+    }
+
+    @Override
     public List<AssignmentDTO> getCourseAssignments (String courseName) throws CourseNotFoundException {
 
         if(!courseRepository.existsById(courseName))

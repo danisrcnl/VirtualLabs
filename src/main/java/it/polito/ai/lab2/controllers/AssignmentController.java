@@ -3,12 +3,15 @@ package it.polito.ai.lab2.controllers;
 import it.polito.ai.lab2.dtos.AssignmentDTO;
 import it.polito.ai.lab2.dtos.PaperDTO;
 import it.polito.ai.lab2.dtos.PaperStatusTimeDTO;
+import it.polito.ai.lab2.image.ImageService;
 import it.polito.ai.lab2.services.AiException;
 import it.polito.ai.lab2.services.assignment.AssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -24,6 +27,8 @@ public class AssignmentController {
 
     @Autowired
     AssignmentService assignmentService;
+    @Autowired
+    ImageService imageService;
 
     @GetMapping({"", "/"})
     public List<AssignmentDTO> all () {
@@ -48,8 +53,23 @@ public class AssignmentController {
         } catch (AiException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
-
     }
+
+    @PostMapping("/{assignmentId}/setContent")
+    public String setAssignmentContent (@PathVariable Long assignmentId , @RequestParam("file") MultipartFile multipartFile) throws ResponseStatusException {
+        String subfolder = "assignments/";
+        String name = assignmentId.toString();
+        String value = "";
+        try {
+            value = imageService.uploadImage(multipartFile, subfolder, name);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Problems with image");
+        }
+        assignmentService.setAssignmentContent(assignmentId, value);
+        return value;
+    }
+
 
     @GetMapping("/{id}")
     public AssignmentDTO getOne (@PathVariable Long id) throws ResponseStatusException {

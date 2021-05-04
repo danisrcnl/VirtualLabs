@@ -19,6 +19,8 @@ public interface AssignmentService {
 
     List<AssignmentDTO> getAllAssignments ();
 
+    AssignmentDTO setAssignmentContent (Long assignmentId, String content);
+
 
     List<AssignmentDTO> getCourseAssignments (String courseName);
 
