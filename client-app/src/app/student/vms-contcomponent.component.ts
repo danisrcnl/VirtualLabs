@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Group } from '../model/group.model';
 import { StudentService } from '../services/student.service';
@@ -15,6 +15,7 @@ import { vmStatus } from 'app/model/vmStatus.model';
 import { catchError } from 'rxjs/operators';
 import { UsedResources } from 'app/model/UsedResources.model';
 import { TeamService } from 'app/services/team.service';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-vms-contcomponent',
@@ -37,7 +38,8 @@ constructor(
   private studentservice : StudentService, 
   private router : Router,
   private vmService: VmService,
-  private teamService : TeamService ) {
+  private teamService : TeamService,
+  private dialog : MatDialog ) {
 
   this.authService.currentUser.subscribe ( x => {this.currentUser = x;
     console.log(this.currentUser);
@@ -178,6 +180,15 @@ this.hreff = this.router.url;
                       console.log(this.roles);
                       this.roles$ = of(this.roles);
         },
+
+        (error) => {
+
+                        let dialogRef = this.dialog.open(YourDialog, {
+                            data: { name: error },
+                                });
+          console.log(error);
+
+        }
         
      
       );
@@ -219,4 +230,12 @@ this.hreff = this.router.url;
       });
       
     }
+}
+
+@Component({
+  selector: 'your-dialog',
+  template: '{{ data.name }}',
+})
+export class YourDialog {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {name: string}) { }
 }

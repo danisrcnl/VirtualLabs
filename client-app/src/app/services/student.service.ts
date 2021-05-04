@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Student } from '../teacher/student.model';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { Observable, BehaviorSubject, Subject} from 'rxjs';
+import { HttpClient, HttpParams, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { Observable, BehaviorSubject, Subject, throwError} from 'rxjs';
 import { Course } from '../model/course.model';
 import { find, catchError, tap } from 'rxjs/operators';
 import { Vms } from '../model/vms.model';
@@ -80,7 +80,21 @@ private courseSubject :Subject<Course[]>;
 
 getOne (studentId) : Observable <StudentDTO>
 {
-  return this.http.get<StudentDTO>(`${environment.apiUrlstudent}/${studentId}`);
+  return this.http.get<StudentDTO>(`${environment.apiUrlstudent}/${studentId}`).pipe(catchError(this.handleError));
+}
+
+handleError(err) {
+ 
+  if(err instanceof HttpErrorResponse) {
+   
+    return throwError(err.error.message);
+
+  } else {
+
+    return throwError(err.error.message);
+    
+
+  }
 }
 
 

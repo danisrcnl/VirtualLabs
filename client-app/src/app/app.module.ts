@@ -24,7 +24,7 @@ import { PageNotFoundComponentComponent } from './page-not-found-component/page-
 import { VmsContcomponentComponent } from './teacher/vms-contcomponent.component';
 import { StudentService } from './services/student.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import {MatDialogModule, MatDialogRef, MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS} from '@angular/material/dialog';
+import {MatDialog, MatDialogModule, MatDialogRef, MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS} from '@angular/material/dialog';
 import {LoginDialogComponent} from './auth/login-dialog.component';
 import { AuthModule } from './auth/auth.module';
 import { RegisterComponent } from './auth/register/register.component';
@@ -54,6 +54,8 @@ import { ElaboratiteacherComponent } from './teacher/elaboratiteacher/elaboratit
 import {MatExpansionModule} from '@angular/material/expansion';
 import { ConsegnadialogComponent } from './teacher/consegnadialog/consegnadialog.component';
 import { ViewPaperComponent } from './view-paper/view-paper.component';
+import { ErrorDialog, VmService } from './services/vm.service';
+import { Vms } from './model/vms.model';
 
 
 
@@ -81,6 +83,8 @@ import { ViewPaperComponent } from './view-paper/view-paper.component';
     ElaboratiteacherComponent,
     ConsegnadialogComponent,
     ViewPaperComponent,
+    ErrorDialog,
+    
   
   ],
   imports: [
@@ -109,17 +113,20 @@ import { ViewPaperComponent } from './view-paper/view-paper.component';
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatExpansionModule,
-    MatChipsModule
+    MatChipsModule,
+   
   ],
 
   providers: [
+
+    VmService,
      { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         { provide: MAT_DIALOG_DATA, useValue: [] },
         { provide : MatDialogRef, useValue: {}},],
     
   bootstrap: [AppComponent],
-  entryComponents : [LoginDialogComponent]
+  entryComponents : [LoginDialogComponent,ErrorDialog]
 })
 export class AppModule { }
 

@@ -27,6 +27,8 @@ export class ElaboraticontteacherComponent implements OnInit {
   public href3 : string ="";
   public subject : string ="";
   private courseName: String;
+  public errBlock : boolean;
+  public errorText : String;
 
   assignmentWithPapers: AssignmentWithPapers[] = [];
   assignmentWithPapers$: Observable<AssignmentWithPapers[]> = of(this.assignmentWithPapers);
@@ -67,7 +69,8 @@ export class ElaboraticontteacherComponent implements OnInit {
                   console.log("!!!");
                   paperWithHistory.creator = student;
                   element.papersWithHistory.push(paperWithHistory);
-                })
+                },
+                )
               });
               
             });

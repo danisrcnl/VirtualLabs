@@ -4,7 +4,7 @@
 // an alert with the error can be displayed on the screen
 
 import { Component, Inject, Injectable } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthenticationService } from '../authentication.service';
@@ -24,7 +24,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                 location.reload(true);
             }
 
-             if ([409].indexOf(err.status) !== -1) {
+           /*  if ([409].indexOf(err.status) !== -1) {
                 // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
                // window.alert(err.error.message);
 
@@ -32,21 +32,23 @@ export class ErrorInterceptor implements HttpInterceptor {
                             data: { name: err.error.message },
                                 });
                 
-;            }
-
-            const error = err.error.message || err.statusText;
-            return throwError(error);
+;            }*/
+/*
+if(err instanceof HttpErrorResponse) {
+    console.log("err: server" + err.error.message);
+    return throwError(err.error.message);
+}
+else {
+    console.log("err client "+err);
+           
+            return throwError(err.error.message);}
+        
+        */
+  
+return throwError(err);
         }))
     }
 
     
 }
 
-
-@Component({
-  selector: 'your-dialog',
-  template: '{{ data.name }}',
-})
-export class YourDialog {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {name: string}) { }
-}
