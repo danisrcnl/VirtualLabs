@@ -1,6 +1,16 @@
-mat-sidenav-container{height: 100%; }
+.inventory-body {
+  min-width: 100%;
+  background-image: url("https://i.postimg.cc/Dw20vhft/titolo.png");
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+  background-size: cover;
+}
+
+mat-sidenav-container {
+  height: 100%;
+}
 .menu {
- 
   vertical-align: middle;
   cursor: pointer;
 }
@@ -10,12 +20,5 @@ mat-sidenav-container{height: 100%; }
 }
 
 .content {
-
   box-sizing: 140px;
 }
-
-
-
-
-  
-  
