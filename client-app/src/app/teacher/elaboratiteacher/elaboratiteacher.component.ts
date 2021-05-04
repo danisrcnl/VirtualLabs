@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatChip, MatChipList } from '@angular/material/chips';
 import { AssignmentService } from 'app/services/assignment.service';
 import { StudentService } from 'app/services/student.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import {Assignment} from '../../model/assignment.model';
 import {Paper} from '../../model/paper.model';
 import {PaperStatus} from '../../model/paperStatus.model';
@@ -14,6 +14,7 @@ import {StudentDTO} from '../../model/studentDTO.model';
 import {AssignmentWithPapers, PaperWithHistory} from '../../model/assignmentsupport.model';
 import { ViewPaperComponent } from 'app/view-paper/view-paper.component';
 import { ConsegnadialogComponent } from '../consegnadialog/consegnadialog.component';
+import { A11yModule } from '@angular/cdk/a11y';
 
 
 @Component({
@@ -38,7 +39,7 @@ export class ElaboratiteacherComponent implements OnInit {
   constructor (private assignmentService: AssignmentService, private studentService: StudentService, public dialog: MatDialog) { }
 
   ngOnInit (): void {   
-
+    
   }
 
   addAssignment () {
@@ -145,7 +146,9 @@ export class ElaboratiteacherComponent implements OnInit {
         id: id,
         history: history,
         currentStatus: currentStatus,
-        editable: editable
+        editable: editable,
+        teacher: true,
+        student: false
       }
     });
   

@@ -39,3 +39,20 @@
 #checkbox {
     margin-left: 8px;
 }
+
+#buttonCaricaST_w {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#itembutton {
+    margin-left: 100px;
+}
+
+.matitem {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+#closeRev {
+    text-align: center;
+}

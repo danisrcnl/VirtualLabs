@@ -85,6 +85,10 @@ const httpOptions = {
         return this.http.get<PaperStatusTime[]>(`${environment.apiUrlassignments}/paper/${paperId}/getHistory`);
     }
 
+    getPaperStudent (assignmentId: number, studentId: String) {
+        return this.http.get<Paper>(`${environment.apiUrlassignments}/${assignmentId}/${studentId}/getPapersStudent`);
+    }
+
 
 
     
