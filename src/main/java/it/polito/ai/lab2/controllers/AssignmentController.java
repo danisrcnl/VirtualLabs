@@ -256,5 +256,13 @@ public class AssignmentController {
         return outcome;
     }
 
+    @GetMapping("/{assignmentId}/{studentId}/getPapersStudent")
+    public PaperDTO getPaperStudent (@PathVariable Long assignmentId, @PathVariable String studentId) throws ResponseStatusException {
+        Optional<PaperDTO> outcome = assignmentService.getStudentPaper(assignmentId, studentId);
+        if (!outcome.isPresent())
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "No papers for student " + studentId);
+        return outcome.get();
+    }
+
 
 }

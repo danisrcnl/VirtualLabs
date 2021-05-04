@@ -144,6 +144,24 @@ public class AssignmentServiceImpl implements AssignmentService {
     }
 
     @Override
+    public Optional<PaperDTO> getStudentPaper(Long assignmentId, String studentId) {
+        if (!assignmentRepository.existsById(assignmentId))
+            return Optional.empty();
+        List<PaperDTO> papers = assignmentRepository
+                .getOne(assignmentId)
+                .getPapers()
+                .stream()
+                .filter(p -> p.getCreator().equals(studentId))
+                .map(p -> modelMapper.map(p, PaperDTO.class))
+                .collect(Collectors.toList());
+
+        if (papers.size() == 0)
+            return Optional.empty();
+
+        return Optional.of(papers.get(0));
+    }
+
+    @Override
     public Optional<PaperDTO> getPaper (Long id) {
         Paper paper = paperRepository.getOne(id);
         return Optional.ofNullable(modelMapper.map(paper, PaperDTO.class));

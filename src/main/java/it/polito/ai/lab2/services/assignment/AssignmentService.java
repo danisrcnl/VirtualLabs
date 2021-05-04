@@ -26,6 +26,8 @@ public interface AssignmentService {
 
     boolean linkPaperToAssignment (Long paperId, Long assignmentId);
 
+    Optional<PaperDTO> getStudentPaper (Long assignmentId, String studentId);
+
     Optional<PaperDTO> getPaper (Long id);
 
     String getPaperCreator (Long id);
