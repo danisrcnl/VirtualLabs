@@ -19,7 +19,11 @@ export class ViewPaperComponent implements OnInit {
   step1: Boolean = true;
   goRate: Boolean = false;
   goReview: Boolean = false;
+  teacher: Boolean = false;
+  student: Boolean = false;
   rates: number[] = [];
+  revisioni: Boolean = false;
+  currentReview: String;
 
   ngOnInit(): void {
     this.id = this.data.id;
@@ -30,11 +34,13 @@ export class ViewPaperComponent implements OnInit {
     for(let i = 1; i<=30; i++) {
       this.rates.push(i);
     }
+    this.teacher = this.data.teacher;
+    this.student = this.data.student;
   }
 
   displayDate(date: Date) {
     var newDate: Date = new Date(date);
-    return newDate.getDay() + "/" + newDate.getMonth() + "/" + newDate.getFullYear();
+    return newDate.getDate() + "/" + (newDate.getMonth()+1) + "/" + newDate.getFullYear();
   }
 
   displayTime(date: Date) {
@@ -50,5 +56,16 @@ export class ViewPaperComponent implements OnInit {
   clickreview(){
     this.step1 = false;
     this.goReview = true;
+  }
+
+  viewReview(content: String) {
+    this.currentReview = content;
+    this.step1 = false;
+    this.revisioni = true;
+  }
+
+  exitReview() {
+    this.step1 = true;
+    this.revisioni = false;
   }
 }

@@ -1,0 +1,84 @@
+.cell {
+    display: inline-block;
+    margin-top: 40px;
+    margin-left: 16px;
+    margin-right: 45px;
+    vertical-align: middle;
+  }
+  
+  #button2 {
+    margin-left: 16px;
+    margin-top: 4px;
+  }
+  
+  .cell_img {
+    text-align: center;
+  }
+  
+  .cell_label {
+    text-align: center;
+    margin-top: 8px;
+  }
+  #add {
+    margin-top: 10px;
+    margin-left: 10px;
+  }
+  
+  .papers {
+    margin-top: 10px;
+  }
+  
+  .paper {
+      vertical-align: middle;
+  }
+  
+  .paper:hover {
+    cursor: pointer;
+    background-color: #e0e0e0;
+  }
+  
+  .chips {
+    height: fit-content;
+    border-bottom: 10px;
+  }
+  
+  .lab {
+    box-shadow: none !important;
+    background-color: royalblue;
+  }
+  
+  .example-box:hover {
+    cursor: pointer;
+  }
+  
+  .valutati, .VALUTATO {
+      background-color: #00ff99;
+      color: #0a0f0f;
+  }
+  
+  .rivisti, .RIVISTO {
+      background-color: #ffff66;
+      color: #0a0f0f;
+  }
+  
+  .consegnati, .CONSEGNATO {
+      background-color: #3399ff;
+      color: white;
+  }
+  
+  .letti, .LETTO {
+      background-color: #ff3399;
+      color: white;
+  }
+  
+  
+  .statusCircle {
+      vertical-align: text-top;
+      margin-bottom: 12px;
+      margin-right: 10px;
+      border: none;
+      border-radius: 4px;
+      height: 22px;
+      font-weight: bold;
+  }
+  

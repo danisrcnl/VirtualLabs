@@ -1,16 +1,14 @@
 <div>
     <nav mat-tab-nav-bar>
-
-        <a mat-tab-link [routerLink]="[href2]" [queryParams]="{name : firstParam}"
-            routerLinkActive="active">Gruppi</a>
+        
+        <a mat-tab-link [routerLink]="[href2]" [queryParams]="{name : firstParam}" routerLinkActive="active">Studenti</a>
         <a mat-tab-link [routerLink]="[href3]" [queryParams]="{name : firstParam}" routerLinkActive="active">Vms</a>
-        <a mat-tab-link [routerLink]="[href]" [queryParams]="{name : firstParam}"
-            routerLinkActive="active">Elaborati</a>
+        <a mat-tab-link [routerLink]="[href]" [queryParams]="{name : firstParam}" routerLinkActive="active">Elaborati</a>
     </nav>
     <router-outlet></router-outlet>
 
 </div>
-<app-elaboratistudent>
+<app-elaboratistudent [assignmentWithPapers]="assignmentWithPapers$ | async" >
 
 
 </app-elaboratistudent>
