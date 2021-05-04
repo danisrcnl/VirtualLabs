@@ -8,14 +8,14 @@
           <div class="row_input">
             <mat-form-field class="row_field">
             <input (ngModelChange)="valuechangenvcpu($event)" matInput type="text" class="inputField" id="nvcpu" placeholder="nvcpu" autocomplete="off" formControlName="nvcpu" [(ngModel)]="data.nvcpu">
-            <mat-hint align="end">{{data.nvcpu}} / {{nvcpu_left}}</mat-hint>
+            <mat-hint align="end"  [ngStyle]="{'color': ram_consumption > 100 ? 'red' : 'black'}" >{{data.nvcpu}} / {{nvcpu_left}}</mat-hint>
             <div *ngIf="submitted && f.nvcpu.errors" class="invalid-feedback">
               <div *ngIf="f.nvcpu.errors.required">Inserire il numero di Cpu </div>
             </div> 
             </mat-form-field>
             </div>
             <div class="row_progress">
-              <div [ngClass]="nvcpu_consumption >= 100 ? 'red' : 'blue'">
+              <div [ngClass]="nvcpu_consumption > 100 ? 'red' : 'blue'">
               <mat-progress-spinner diameter="30" mode="determinate" [value]="nvcpu_consumption"></mat-progress-spinner>
               </div>
           </div>
@@ -26,7 +26,7 @@
             <mat-form-field class="row_field">
             <input  (ngModelChange)="valuechangeRam($event)" matInput class="inputField" type="text" id="RAM" placeholder="RAM" formControlName="RAM" [(ngModel)]="data.ram" >
             <p matSuffix>MB</p>
-            <mat-hint align="end">{{data.ram}} / {{ram_left}}</mat-hint>
+            <mat-hint align="end" [ngStyle]="{'color': ram_consumption > 100 ? 'red' : 'black'}" >{{data.ram}} / {{ram_left}}</mat-hint>
            <div *ngIf="submitted && f.RAM.errors" class="invalid-feedback">
               <div *ngIf="f.RAM.errors.required">Inserire il numero di Ram </div>
           </div>
@@ -34,7 +34,7 @@
           </div>
           
           <div class="row_progress">
-            <div [ngClass] = "ram_consumption >= 100 ? 'red' : 'blue'">
+            <div [ngClass] = "ram_consumption > 100 ? 'red' : 'blue'">
             <mat-progress-spinner diameter="30" mode="determinate" [value]="ram_consumption" ></mat-progress-spinner>
          </div>
         </div>
@@ -53,7 +53,7 @@
             </mat-form-field>
             </div>
             <div class="row_progress">
-              <div [ngClass]="disk_consumption >= 100 ? 'red' : 'blue'">
+              <div [ngClass]="disk_consumption > 100 ? 'red' : 'blue'">
               <mat-progress-spinner diameter="30" mode="determinate" [value]="disk_consumption"></mat-progress-spinner>
             </div>
             </div>

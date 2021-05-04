@@ -1,3 +1,4 @@
+
 <div>
   <nav mat-tab-nav-bar>
     <a mat-tab-link [routerLink] ="[href]" [queryParams] = "{name : firstParam}" routerLinkActive = "active">Gruppi</a>
@@ -5,6 +6,7 @@
     <a mat-tab-link [routerLink]="[href3]" [queryParams]="{name : firstParam}" routerLinkActive="active">Elaborati</a>
   </nav>
   <router-outlet></router-outlet>
+
 </div>
 
 
@@ -179,6 +181,8 @@
       <tr mat-header-row *matHeaderRowDef = "displayedColumnsProposals"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumnsProposals;"></tr>
     </table>
+
+    
   </div>
   <!--</ng-template>-->
 
@@ -219,7 +223,6 @@
 
 
 </div>-->
-
 
 
 

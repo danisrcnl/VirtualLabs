@@ -16,6 +16,7 @@
 
 <mat-toolbar> <span>{{title}}</span></mat-toolbar>
 -->
+<div class="inventory-body"></div>
 <mat-sidenav-container  autosize="true">
 
   <mat-sidenav opened mode="side" #sidenav>
@@ -30,11 +31,13 @@
 
   </mat-sidenav>
   
-  
-  <mat-sidenav-content class="content">
+ 
+  <mat-sidenav-content class="inventory-body">
+    
     <router-outlet></router-outlet>
+   
   </mat-sidenav-content> 
     
 </mat-sidenav-container>
-
+<div>
   

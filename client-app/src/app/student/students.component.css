@@ -3,7 +3,6 @@ table {
 }
 
 #wrapperDiv {
-  
   margin: auto;
   width: 100%;
 }
@@ -13,38 +12,36 @@ table {
 }
 
 #createTeamDiv {
-  
   margin-top: 5px;
   margin-bottom: 5px;
   margin-left: 5px;
 }
 
-  .tableClassesTitle {
-    margin-left: 5px;
-  }
+.tableClassesTitle {
+  margin-left: 5px;
+}
 
-  #nomeGruppoField {
-    margin-right: 20px;
-    display: inline-block;
-  }
+#nomeGruppoField {
+  margin-right: 20px;
+  display: inline-block;
+}
 
-  #timeoutField {
-    margin-right: 20px;
-    display: inline-block;
-  }
+#timeoutField {
+  margin-right: 20px;
+  display: inline-block;
+}
 
-  #buttonField {
-    display: inline-block;
-  }
+#buttonField {
+  display: inline-block;
+}
 
-    #buttonField_button {
-      background-color: royalblue;
-      color: white;
-    }
-    #buttonField_button:hover {
-      background-color: blue;
-    }
-
+#buttonField_button {
+  background-color: royalblue;
+  color: white;
+}
+#buttonField_button:hover {
+  background-color: blue;
+}
 
 #proposalsDiv_title {
   margin-top: 5px;
@@ -57,39 +54,34 @@ table {
   display: flex;
 }
 
-  #members_row {
-    min-height: 45px;
-    max-height: 55px;
-    margin-bottom: 5px;
-  }
+#members_row {
+  min-height: 45px;
+  max-height: 55px;
+  margin-bottom: 5px;
+}
 
-  .members_field {
-    max-height: 55px;
-    padding: 5px;
-    margin: auto;
-    float: left;
-    width: 15%;
-  }
+.members_field {
+  max-height: 55px;
+  padding: 5px;
+  margin: auto;
+  float: left;
+  width: 15%;
+}
 
-    .members_field_button {
-      float: left;
-      margin: 2px;
-    }
+.members_field_button {
+  float: left;
+  margin: 2px;
+}
 
-      #members_field_button_o {
-        background-color: royalblue;
-        color: white;
-      }
-      #members_field_button_o:hover {
-        background-color: blue;
-      }
+#members_field_button_o {
+  background-color: royalblue;
+  color: white;
+}
+#members_field_button_o:hover {
+  background-color: blue;
+}
 
-  .noItalic {
-    font-style: normal !important;
-    font-weight: normal !important;
-  }
-
-  
-  
-
-
+.noItalic {
+  font-style: normal !important;
+  font-weight: normal !important;
+}
