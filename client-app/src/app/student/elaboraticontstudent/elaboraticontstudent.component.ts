@@ -79,7 +79,6 @@ export class ElaboraticontstudentComponent implements OnInit {
           console.log(paper.id)
   
           this.assignmentService.getPaperHistory(paper.id).subscribe(history => {
-            console.log("history")
             paperWithHistory.history = history;
             
               
@@ -94,7 +93,13 @@ export class ElaboraticontstudentComponent implements OnInit {
   
           this.assignmentWithPapers.push(element);
   
-        })
+        },
+        
+        error => {
+          this.assignmentWithPapers.push(element);
+        }
+        
+        )
   
       })
       
