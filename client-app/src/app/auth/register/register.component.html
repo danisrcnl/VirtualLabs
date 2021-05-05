@@ -15,7 +15,7 @@
  
 <div class="form">
   <mat-dialog-actions>
-    <button mat-button class = "btn"></button>
+    <button mat-button class = "btn" (click)= "close()"></button>
   </mat-dialog-actions>
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
       <div class="form-group">
@@ -50,7 +50,14 @@
         <div *ngIf="f.password.errors.minlength">La password deve essere almeno di 6 caratteri </div>
     </div>
 </div>
-      <button class="btn1"> Registrati </button>
+      <div *ngIf = "loading$ | async; else notloading">
+<mat-progress-spinner class="example-margin" color="green" mode="indeterminate">
+</mat-progress-spinner>
+</div>
+<ng-template #notloading>
+      <button class="btn1" > Registrati </button>
+      </ng-template>
+     
     </form>
   </div>
 </div>

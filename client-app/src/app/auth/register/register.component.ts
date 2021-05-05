@@ -8,12 +8,15 @@ import { UserService } from 'app/services/user.service';
 import { AuthenticationService } from '../authentication.service';
 import { AlertService } from '../authservices/alert.service';
 import { AuthService } from '../authservices/auth.service';
+import { Observable } from 'rxjs/internal/Observable';
+import { of } from 'rxjs';
 
 @Component({ templateUrl: 'register.component.html',
 styleUrls: ['register.component.css']})
 export class RegisterComponent implements OnInit {
     registerForm: FormGroup;
-    loading = false;
+    loading : boolean = false;
+    loading$ : Observable <boolean>;
     submitted = false;
 
     constructor(
@@ -36,9 +39,12 @@ export class RegisterComponent implements OnInit {
             nome: ['', Validators.required],
             cognome: ['', Validators.required],
             matricola: ['', Validators.required],
-            email: ['', Validators.required,],
+            email: ['', Validators.required,Validators.email],
             password: ['', [Validators.required, Validators.minLength(6)]]
         });
+
+  this.loading$ = of(this.loading);
+        
     }
 
     // convenience getter for easy access to form fields
@@ -54,21 +60,32 @@ export class RegisterComponent implements OnInit {
         if (this.registerForm.invalid) {
             return;
         }
-
         this.loading = true;
+        this.loading$ = of(this.loading);
+        this.loading$.subscribe(data => {console.log(data);});
+
+
         this.authService.signup(this.f.nome.value,this.f.cognome.value,this.f.matricola.value,this.f.email.value,this.f.password.value)
 
             .subscribe(
                 data => {
+                    this.loading = false;
                     console.log(data);
                     this.alertService.success('Registration successful', true);
                     this.matDialog.closeAll();
                     this.router.navigate(['/auth/login']);
                 },
                 error => {
-                    this.alertService.error(error);
                     this.loading = false;
+                    this.loading$ = of(this.loading);
+                    this.alertService.error(error);
+                    
                 });
+    }
+
+    close()
+    {
+        this.matDialog.closeAll();
     }
 
 }

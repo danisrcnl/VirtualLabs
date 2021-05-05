@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { config } from 'app/config';
 import { User } from '../user';
 
@@ -45,7 +45,7 @@ export class AuthService {
 
     signup(firstName,lastName,id,email,password) {
 
-        return this.http.post<any>(`${config.apiUrl}/auth/signup`, {id,firstName,lastName,email,password});
+        return this.http.post<any>(`${config.apiUrl}/auth/signup`, {id,firstName,lastName,email,password}).pipe(catchError(this.handleError));
     }
 
 
@@ -55,6 +55,21 @@ export class AuthService {
 
     }
 
+    
+    handleError(err) {
+ 
+  if(err instanceof HttpErrorResponse) {
+
+    console.log(err.error.message);
+    return throwError(err.error.message);
+
+  } else {
+
+    return throwError(err.error.message);
+    
+
+  }
+}
 
 
 }
