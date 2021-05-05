@@ -8,7 +8,10 @@
     <router-outlet></router-outlet>
 
 </div>
-<app-elaboratiteacher [assignmentWithPapers]="assignmentWithPapers$ | async" >
+<app-elaboratiteacher 
+
+[assignmentWithPapers]="assignmentWithPapers$ | async" 
+(addconsegna) = "receiveconsegna($event)"
+></app-elaboratiteacher>
 
 
-</app-elaboratiteacher>

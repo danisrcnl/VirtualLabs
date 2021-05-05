@@ -1,6 +1,6 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { parseI18nMeta } from '@angular/compiler/src/render3/view/i18n/meta';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter  } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatChip, MatChipList } from '@angular/material/chips';
 import { AssignmentService } from 'app/services/assignment.service';
@@ -17,6 +17,15 @@ import { ConsegnadialogComponent } from '../consegnadialog/consegnadialog.compon
 import { A11yModule } from '@angular/cdk/a11y';
 
 
+export interface DialogConsegna {
+
+giorno : number;
+mese : String;
+anno : number;
+content : String;
+
+}
+
 @Component({
   selector: 'app-elaboratiteacher',
   templateUrl: './elaboratiteacher.component.html',
@@ -29,6 +38,10 @@ export class ElaboratiteacherComponent implements OnInit {
   filteredViewingPapers: PaperWithHistory[] = [];
   status: String[] = ["null", "letti", "consegnati", "rivisti", "valutati"];
   selection: String[] = [];
+  consegnadata = {} as DialogConsegna;
+
+
+  @Output() addconsegna = new EventEmitter<DialogConsegna>();
 
   @Input('assignmentWithPapers')
   set _assignmentWithPapers (assignmentWithPapers: AssignmentWithPapers[]) {
@@ -114,13 +127,24 @@ export class ElaboratiteacherComponent implements OnInit {
   createconsegna() 
   {
     const dialogRef = this.dialog.open(ConsegnadialogComponent, {
-      width: '600px',
+      width: '400px',
       data: {
         
       }
     });
   
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(data => {
+
+      console.log(data);
+
+      this.consegnadata.anno = data.anno;
+      this.consegnadata.giorno = data.giorno;
+      this.consegnadata.mese = data.mese;
+      this.consegnadata.content = data.content;
+      
+      this.addconsegna.emit(this.consegnadata);
+      
+
     });
 
   }

@@ -1,10 +1,15 @@
-<form autocomplete="off">
+<form [formGroup]= "consegnaForm" (ngSubmit)="onSubmit()" autocomplete="off">
     <div id="input_w">
         <div id="inputLabel">
             <mat-label>Carica l'immagine del laboratorio:</mat-label>
         </div>
         <div id="inputO">
-            <input #imageInput type="file" id="input" accept="image/x-png,image/gif,image/jpeg">
+            <input #imageInput type="file" id="input" accept="image/x-png,image/gif,image/jpeg" formControlName = "content" 
+             [(ngModel)]="data.content" [ngClass]="{ 'is-invalid': submitted && f.content.errors }">
+        <div *ngIf="submitted && f.content.errors" class="invalid-feedback">
+            <div *ngIf="f.content.errors.required"> Inserire un file  </div>
+        </div>
+        
         </div>
     </div>
 
@@ -19,21 +24,32 @@
             <div id="selectDay">
                 <mat-form-field>
                     <mat-label>Giorno</mat-label>
-                    <input matInput type="number">
+                    <input matInput type="number" formControlName = "giorno"  [(ngModel)]="data.giorno"
+                    [ngClass]="{ 'is-invalid': submitted && f.giorno.errors }">
+                    <div *ngIf="submitted && f.giorno.errors" class="invalid-feedback">
+                        <div *ngIf="f.giorno.errors.required">Inserire il giorno</div>
+                    </div>
                 </mat-form-field>
             </div>
             <div id="selectMonth">
                 <mat-form-field>
                     <mat-label>Mese</mat-label>
-                    <mat-select>
-                        <mat-option *ngFor="let month of months">{{month}}</mat-option>
+                    <mat-select formControlName ="mese"  [(ngModel)]="data.mese">
+                        <mat-option *ngFor="let month of months" [value] = "month">{{month}}</mat-option>
                     </mat-select>
+                    <div *ngIf="submitted && f.mese.errors" class="invalid-feedback">
+                        <div *ngIf="f.mese.errors.required">Inserire il mese </div>
+                    </div>
                 </mat-form-field>
             </div>
             <div id="selectYear">
                 <mat-form-field>
                     <mat-label>Anno (AAAA)</mat-label>
-                    <input matInput type="number">
+                    <input matInput type="number" formControlName = "anno"  [(ngModel)]="data.anno"
+                    [ngClass]="{ 'is-invalid': submitted && f.anno.errors }">
+                    <div *ngIf="submitted && f.anno.errors" class="invalid-feedback">
+                        <div *ngIf="f.anno.errors.required">Inserire l'anno </div>
+                    </div>
                 </mat-form-field>
             </div>
 
@@ -42,7 +58,7 @@
     </div>
 
     <div id="buttonCarica_w">
-        <button mat-flat-button class="buttonO" id="buttonCarica">Crea</button>
+        <button mat-flat-button class="buttonO" id="buttonCarica" >Crea</button>
     </div>
     
 </form>

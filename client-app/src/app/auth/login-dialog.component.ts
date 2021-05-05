@@ -69,48 +69,6 @@ export class LoginDialogComponent implements OnInit {
 
       var dummy = Promise.resolve();
       this.loading = true;
-
-      
-
-/*
-      this.authService.login(this.f.username.value, this.f.password.value).subscribe
-      (
-        data => { console.log(data);
-        this.authService.info().subscribe(
-          data1 => {
-            this.isTeacher= data1.isTeacher;
-            if (this.isTeacher == false)
-        {
-          this.router.navigate([this.returnUrl + 'student'], {queryParams: {user: this.f.username.value}});
-          this.matDialog.closeAll();
-        }
-        else 
-         this.router.navigate([this.returnUrl + 'teacher'], {queryParams: {user: this.f.username.value}});
-         this.matDialog.closeAll();
-      }
-        )}
-        )
-        
-      */
-
-
-     /* this.authService.login(this.f.username.value, this.f.password.value).toPromise()
-      .then( data => console.log (data)).then( ()=> this.authService.info().toPromise()
-      .then(data => { this.isTeacher = data.isTeacher;
-       
-        if (this.isTeacher == false)
-        {
-          this.router.navigate([this.returnUrl + 'student'], {queryParams: {user: this.f.username.value}});
-          this.matDialog.closeAll();
-        }
-        else 
-         this.router.navigate([this.returnUrl + 'teacher'], {queryParams: {user: this.f.username.value}});
-         this.matDialog.closeAll();
-      }
-      )).catch(error => console.log('errore'));
-      
-
-    */
   
      }
 
