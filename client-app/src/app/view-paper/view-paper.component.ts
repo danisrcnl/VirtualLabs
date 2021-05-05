@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PaperStatusTime } from 'app/model/paperStatusTime.model';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-view-paper',
@@ -24,6 +25,8 @@ export class ViewPaperComponent implements OnInit {
   rates: number[] = [];
   revisioni: Boolean = false;
   currentReview: String;
+  currentSol: String = "";
+  imageViewer: Boolean = false;
 
   ngOnInit(): void {
     this.id = this.data.id;
@@ -67,5 +70,15 @@ export class ViewPaperComponent implements OnInit {
   exitReview() {
     this.step1 = true;
     this.revisioni = false;
+  }
+
+  goViewSol (relativePath: String) {
+    var newImg: String = environment.baseimage + "/" + relativePath;
+    this.currentSol = newImg;
+    this.imageViewer = true;
+  }
+
+  exitImageViewer() {
+    this.imageViewer = false;
   }
 }

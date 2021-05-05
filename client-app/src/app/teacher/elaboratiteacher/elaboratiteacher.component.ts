@@ -149,7 +149,7 @@ export class ElaboratiteacherComponent implements OnInit {
 
   viewPaper (id: number, history: PaperStatusTime[], currentStatus: String, editable: Boolean) {
     const dialogRef = this.dialog.open(ViewPaperComponent, {
-      width: '600px',
+      width: '800px',
       data: {
         id: id,
         history: history,

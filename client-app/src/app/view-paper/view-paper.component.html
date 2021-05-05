@@ -1,31 +1,34 @@
 <div id="title" *ngIf="step1">
     <h1>Storico delle soluzioni dello studente</h1>
 </div>
-<div id="history" *ngIf="step1">
+<div id="history" *ngIf="step1 && !imageViewer">
     <mat-list>
         <mat-list-item class="matitem" *ngFor="let st of history">
             <div id="itemtext">
                 {{displayDate(st.timestamp)}} &nbsp; {{displayTime(st.timestamp)}} &nbsp;&nbsp; {{st.paperStatus}}
             </div>
-            <div id="itembutton" *ngIf="st.review != null">
+            <div id="itembutton2" *ngIf="st.content.length != 0">
+                <button mat-flat-button class="buttonO" (click)="goViewSol(st.content)">Vedi soluzione</button>
+            </div>
+            <div id="itembutton" *ngIf="st.review != null && student">
                 <button mat-flat-button class="buttonO" (click)="viewReview(st.review)">Vedi revisione del docente</button>
             </div>
         </mat-list-item>
     </mat-list>
 </div>
 
-<div id="buttons" *ngIf="teacher">
+<div id="buttons" *ngIf="teacher && step1 && !imageViewer">
 
-    <div id="buttonReview_w" *ngIf="editable && step1">
+    <div id="buttonReview_w" *ngIf="editable">
         <button class="buttonO" mat-flat-button (click)="clickreview()">Carica una revisione</button>
     </div>
-    <div id="buttonRate_w" *ngIf="ratable && step1">
+    <div id="buttonRate_w" *ngIf="ratable">
         <button class="buttonO" mat-flat-button (click)="clickrate()">Assegna un voto</button>
     </div>
 
 </div>
 
-<div id="rate" *ngIf="!step1 && goRate && teacher">
+<div id="rate" *ngIf="!step1 && goRate && teacher && !imageViewer">
     <mat-form-field id="form" appearance="fill">
         <mat-label>Voto: </mat-label>
         <mat-select>
@@ -36,7 +39,7 @@
     <button mat-flat-button class="buttonO">Conferma</button>
 </div>
 
-<div id="review" *ngIf="!step1 && goReview && teacher">
+<div id="review" *ngIf="!step1 && goReview && teacher && !imageViewer">
     <mat-form-field appearance="fill">
     <mat-label>Commenta la soluzione dello studente:</mat-label>
     <div id="textarea_w">
@@ -51,7 +54,7 @@
     
 </div>
 
-<div id="buttons_st" *ngIf="student && !revisioni">
+<div id="buttons_st" *ngIf="student && !revisioni && !imageViewer">
 
     <div id="buttonCaricaST_w">
         <button class="buttonO" mat-flat-button >Carica una nuova soluzione</button>
@@ -59,7 +62,7 @@
 
 </div>
 
-<div *ngIf="revisioni">
+<div *ngIf="revisioni && !imageViewer">
     <p>
         {{ currentReview }}
     </p>
@@ -68,4 +71,17 @@
             Chiudi
         </button>
     </div>
+</div>
+
+<div id="viewSol" *ngIf="imageViewer">
+
+    <div id="viewSol_img">
+        <img id="viewSol_img_obj" src="{{currentSol}}">
+    </div>
+    <div id="viewSol_btn">
+        <button mat-flat-button class="buttonO" (click)="exitImageViewer()">
+            Torna indietro
+        </button>
+    </div>
+    
 </div>

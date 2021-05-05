@@ -46,7 +46,10 @@
 }
 
 #itembutton {
-    margin-left: 100px;
+    margin-left: 20px;
+}
+#itembutton2 {
+    margin-left: 20px;
 }
 
 .matitem {
@@ -55,4 +58,17 @@
 
 #closeRev {
     text-align: center;
+}
+
+#viewSol {
+    max-width: 700px;
+    text-align: center;
+}
+
+#viewSol_img {
+    max-width: 600px;
+}
+
+#viewSol_img_obj {
+    max-width: 550px;
 }
