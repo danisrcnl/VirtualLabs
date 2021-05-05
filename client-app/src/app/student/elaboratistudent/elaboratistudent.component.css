@@ -81,4 +81,17 @@
       height: 22px;
       font-weight: bold;
   }
+
+  #addSolWrapper {
+    display: block;
+  }
+
+  #addSolLab {
+    display: inline-block;
+    margin-left: 8px;
+  }
+
+  #addSol {
+    display: inline-block;
+  }
   

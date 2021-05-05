@@ -56,6 +56,7 @@ import { ConsegnadialogComponent } from './teacher/consegnadialog/consegnadialog
 import { ViewPaperComponent } from './view-paper/view-paper.component';
 import { ErrorDialog, VmService } from './services/vm.service';
 import { Vms } from './model/vms.model';
+import { CreatePaperComponent } from './create-paper/create-paper.component';
 
 
 
@@ -84,6 +85,7 @@ import { Vms } from './model/vms.model';
     ConsegnadialogComponent,
     ViewPaperComponent,
     ErrorDialog,
+    CreatePaperComponent,
     
   
   ],

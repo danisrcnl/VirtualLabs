@@ -6,30 +6,25 @@
           <button class ="lab" mat-mini-fab>{{ass.assignment.id}}</button>
         </mat-panel-title>
         <mat-panel-description class="descr">
-          
           {{ ass.papersWithHistory?.length || '0' }} elaborati
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <div class="chips">
-        <mat-chip-list
-          selectable
-          class="example-chip">
-          <mat-chip
-            #c="matChip"
-            class="example-box"
-            [ngClass]="stat"
-            (click)="toggle(c)"
-            *ngFor="let stat of status">
-            {{stat}}
-          </mat-chip>
-        </mat-chip-list>
-      </div>
      
       <mat-list class="papers">
         <mat-list-item class="paper" *ngFor="let pap of filteredViewingPapers" (click)="viewPaper(pap.paper.id, pap.history, pap.paper.currentStatus, pap.paper.editable)">
           <button class="statusCircle" [ngClass]="pap.paper.currentStatus">s{{pap.creator.id}}</button>
           <p class="details">{{pap.creator.firstName}} {{pap.creator.name}}</p>
         </mat-list-item>
+
+        <div id="addSolWrapper" *ngIf="filteredViewingPapers.length == 0">
+          
+          <div id="addSol">
+            <button mat-mini-fab (click)="createPaper(ass.assignment.id)"><mat-icon>add</mat-icon></button>
+          </div>
+          <div id="addSolLab">
+            <mat-label>Carica una soluzione</mat-label>
+          </div>
+        </div>
       </mat-list>
       
     </mat-expansion-panel>
