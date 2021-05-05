@@ -1,1 +1,48 @@
-<p>consegnadialog works!</p>
+<form autocomplete="off">
+    <div id="input_w">
+        <div id="inputLabel">
+            <mat-label>Carica l'immagine del laboratorio:</mat-label>
+        </div>
+        <div id="inputO">
+            <input #imageInput type="file" id="input" accept="image/x-png,image/gif,image/jpeg">
+        </div>
+    </div>
+
+    <div id="selectDate">
+
+        <div id="dateTitle">
+            <mat-label>Seleziona la data di termine per la consegna</mat-label>
+        </div>
+
+        <div id="datePick">
+
+            <div id="selectDay">
+                <mat-form-field>
+                    <mat-label>Giorno</mat-label>
+                    <input matInput type="number">
+                </mat-form-field>
+            </div>
+            <div id="selectMonth">
+                <mat-form-field>
+                    <mat-label>Mese</mat-label>
+                    <mat-select>
+                        <mat-option *ngFor="let month of months">{{month}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div id="selectYear">
+                <mat-form-field>
+                    <mat-label>Anno (AAAA)</mat-label>
+                    <input matInput type="number">
+                </mat-form-field>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="buttonCarica_w">
+        <button mat-flat-button class="buttonO" id="buttonCarica">Crea</button>
+    </div>
+    
+</form>

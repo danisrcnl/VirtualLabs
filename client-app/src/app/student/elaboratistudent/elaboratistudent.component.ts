@@ -13,6 +13,7 @@ import {PaperStatusTime} from '../../model/paperStatusTime.model';
 import {StudentDTO} from '../../model/studentDTO.model';
 import {AssignmentWithPapers, PaperWithHistory} from '../../model/assignmentsupport.model';
 import { ViewPaperComponent } from 'app/view-paper/view-paper.component';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-elaboratistudent',
@@ -26,6 +27,7 @@ export class ElaboratistudentComponent implements OnInit {
   filteredViewingPapers: PaperWithHistory[] = [];
   status: String[] = ["null", "letti", "consegnati", "rivisti", "valutati"];
   selection: String[] = [];
+  baseimage = environment.baseimage;
 
   @Input('assignmentWithPapers')
   set _assignmentWithPapers (assignmentWithPapers: AssignmentWithPapers[]) {

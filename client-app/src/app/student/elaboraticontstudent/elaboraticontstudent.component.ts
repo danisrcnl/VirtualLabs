@@ -10,6 +10,7 @@ import {PaperStatus} from '../../model/paperStatus.model';
 import {PaperStatusTime} from '../../model/paperStatusTime.model';
 import {AssignmentWithPapers, PaperWithHistory} from '../../model/assignmentsupport.model'
 import { AuthService } from 'app/auth/authservices/auth.service';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-elaboraticontstudent',

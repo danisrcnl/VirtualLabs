@@ -45,7 +45,7 @@ import { MatButtonModule } from '@angular/material/button';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-
+import {MatDatepickerModule} from '@angular/material/datepicker';
 import { catchError } from 'rxjs/operators';
 import { ElaboraticontstudentComponent } from './student/elaboraticontstudent/elaboraticontstudent.component';
 import { ElaboratistudentComponent } from './student/elaboratistudent/elaboratistudent.component';
@@ -114,7 +114,7 @@ import { Vms } from './model/vms.model';
     MatProgressSpinnerModule,
     MatExpansionModule,
     MatChipsModule,
-   
+    MatDatepickerModule
   ],
 
   providers: [

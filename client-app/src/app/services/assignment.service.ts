@@ -29,6 +29,14 @@ const httpOptions = {
         return this.http.post<void>(`${environment.apiUrlassignments}/${courseName}`, assignment);
     }
 
+    setAssignmentContent (assignmentId: number, image: File) {
+        return this.http.post<void>(`${environment.apiUrlassignments}/${assignmentId}`, image);
+    }
+
+    setPaperContent (paperId: number, image: File) {
+        return this.http.post<void>(`${environment.apiUrlassignments}/paper/${paperId}`, image);
+    }
+
     getOne (id: number) {
         return this.http.get<Assignment>(`${environment.apiUrlassignments}/${id}`);
     }
