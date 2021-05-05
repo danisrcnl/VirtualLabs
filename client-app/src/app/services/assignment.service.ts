@@ -94,7 +94,7 @@ const httpOptions = {
     }
 
     getPaperStudent (assignmentId: number, studentId: String) {
-        return this.http.get<Paper>(`${environment.apiUrlassignments}/${assignmentId}/${studentId}/getPapers`);
+        return this.http.get<Paper>(`${environment.apiUrlassignments}/${assignmentId}/${studentId}/getPapersStudent`);
     }
 
 
