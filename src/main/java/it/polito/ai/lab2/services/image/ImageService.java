@@ -1,4 +1,4 @@
-package it.polito.ai.lab2.image;
+package it.polito.ai.lab2.services.image;
 
 import org.springframework.web.multipart.MultipartFile;
 

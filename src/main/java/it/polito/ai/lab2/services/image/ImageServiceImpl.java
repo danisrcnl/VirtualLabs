@@ -1,4 +1,4 @@
-package it.polito.ai.lab2.image;
+package it.polito.ai.lab2.services.image;
 
 import it.polito.ai.lab2.services.AiException;
 import org.springframework.stereotype.Service;
@@ -8,9 +8,6 @@ import javax.transaction.Transactional;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Optional;
 
 @Service
@@ -18,7 +15,7 @@ import java.util.Optional;
 public class ImageServiceImpl implements ImageService {
     @Override
     public String uploadImage(MultipartFile file, String subfolder, String name) throws IOException {
-        String folder = "/static/images/" + subfolder;
+        String folder = "images/" + subfolder + "/";
         String newFileName = name;
         byte[] imageBytes = file.getBytes();
         String fileName = file.getOriginalFilename();
@@ -26,7 +23,7 @@ public class ImageServiceImpl implements ImageService {
         if(!outcome.isPresent())
             throw new AiException();
         newFileName += ("." + outcome.get());
-        String fileLocation = new File("static\\images").getAbsolutePath() + "\\" + newFileName;
+        String fileLocation = new File("src\\main\\resources\\images\\" + subfolder + "\\").getAbsolutePath() + "\\" + newFileName;
         FileOutputStream fos = new FileOutputStream(fileLocation);
         fos.write(imageBytes);
         fos.close();
