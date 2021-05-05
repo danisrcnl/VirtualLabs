@@ -1,0 +1,30 @@
+.buttonO{
+    background-color: royalblue;
+    color: white;
+  }
+  .buttonO:hover {
+    background-color: blue;
+  }
+
+#buttonCarica_w {
+    text-align: center;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+#input_w {
+    text-align: center;
+}
+
+#inputLabel {
+  margin-bottom: 8px;
+}
+
+#dateTitle {
+  margin-top: 16px;
+  text-align: center;
+}
+
+#datePick {
+  text-align: center;
+}
