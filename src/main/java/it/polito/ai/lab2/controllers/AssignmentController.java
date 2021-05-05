@@ -70,7 +70,7 @@ public class AssignmentController {
         return value;
     }
 
-    @PostMapping("/papers/{paperId}/setContent")
+    @PostMapping("/paper/{paperId}/setContent")
     public String setPaperContent (@PathVariable Long paperId , @RequestParam("file") MultipartFile multipartFile) throws ResponseStatusException {
         String subfolder = "papers";
         String name = paperId.toString();
@@ -81,7 +81,20 @@ public class AssignmentController {
             e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Problems with image");
         }
-        assignmentService.setPaperContent(paperId, value);
+        try {
+            if(!assignmentService.setPaperContent(paperId, value))
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "The paper can't be edited anymore");
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+        }
+
+        try {
+            if(!assignmentService.deliverPaper(paperId))
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "The paper can't be edited anymore");
+        } catch (AiException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+        }
+
         return value;
     }
 
@@ -251,22 +264,6 @@ public class AssignmentController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Mark must be at least 0, no more than 30");
         try {
             if(!assignmentService.ratePaper(paperId, mark))
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "The paper can't be edited anymore");
-        } catch (AiException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
-        }
-
-        return ModelHelper.enrich(
-                assignmentService
-                        .getPaper(paperId)
-                        .get()
-        );
-    }
-
-    @PostMapping("/paper/{paperId}/setContent")
-    public PaperDTO setContent (@PathVariable Long paperId, @RequestBody String content) throws ResponseStatusException {
-        try {
-            if(!assignmentService.setPaperContent(paperId, content))
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "The paper can't be edited anymore");
         } catch (AiException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
