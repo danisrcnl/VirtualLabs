@@ -42,6 +42,7 @@ export class AppComponent implements OnInit {
   currentStudent : StudentDTO;
   name: String;
   isLogin : boolean = true;
+  log: Boolean = false;
 
 
   //variabili per login

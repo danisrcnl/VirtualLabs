@@ -14,6 +14,7 @@ import {StudentDTO} from '../../model/studentDTO.model';
 import {AssignmentWithPapers, PaperWithHistory} from '../../model/assignmentsupport.model';
 import { ViewPaperComponent } from 'app/view-paper/view-paper.component';
 import { environment } from 'environments/environment';
+import {CreatePaperComponent} from 'app/create-paper/create-paper.component';
 
 @Component({
   selector: 'app-elaboratistudent',
@@ -137,7 +138,7 @@ export class ElaboratistudentComponent implements OnInit {
 
   viewPaper (id: number, history: PaperStatusTime[], currentStatus: String, editable: Boolean) {
     const dialogRef = this.dialog.open(ViewPaperComponent, {
-      width: '600px',
+      width: '800px',
       data: {
         id: id,
         history: history,
@@ -149,6 +150,15 @@ export class ElaboratistudentComponent implements OnInit {
     });
   
     dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+
+  createPaper (id: number) {
+    const dialogRef = this.dialog.open(CreatePaperComponent, {
+      width: '600px',
+      data: {
+        id: id
+      }
     });
   }
     
