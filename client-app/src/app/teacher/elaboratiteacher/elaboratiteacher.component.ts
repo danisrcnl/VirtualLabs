@@ -113,7 +113,15 @@ export class ElaboratiteacherComponent implements OnInit {
 
   createconsegna() 
   {
-    this.dialog.open(ConsegnadialogComponent);
+    const dialogRef = this.dialog.open(ConsegnadialogComponent, {
+      width: '600px',
+      data: {
+        
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+    });
 
   }
 

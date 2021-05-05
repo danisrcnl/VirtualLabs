@@ -10,6 +10,7 @@ import {PaperStatus} from '../../model/paperStatus.model';
 import {PaperStatusTime} from '../../model/paperStatusTime.model';
 import {AssignmentWithPapers, PaperWithHistory} from '../../model/assignmentsupport.model'
 import { AuthService } from 'app/auth/authservices/auth.service';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-elaboraticontstudent',
@@ -70,21 +71,19 @@ export class ElaboraticontstudentComponent implements OnInit {
         element.papersWithHistory = [];
         element.assignment = assignment;
 
-        
-
-        console.log("calling")
         this.assignmentService.getPaperStudent(assignment.id, id).subscribe(paper => {
-          
+          console.log(paper)
           
           var paperWithHistory: PaperWithHistory = new PaperWithHistory();
           paperWithHistory.paper = paper;
+          console.log(paper.id)
   
-          this.assignmentService.getPaperHistory(paper[0].id).subscribe(history => {
+          this.assignmentService.getPaperHistory(paper.id).subscribe(history => {
             paperWithHistory.history = history;
             
               
   
-            this.studentService.getOne(paper[0].creator).subscribe(student => {
+            this.studentService.getOne(paper.creator).subscribe(student => {
               paperWithHistory.creator = student;
               element.papersWithHistory.push(paperWithHistory);
             })
@@ -94,7 +93,13 @@ export class ElaboraticontstudentComponent implements OnInit {
   
           this.assignmentWithPapers.push(element);
   
-        })
+        },
+        
+        error => {
+          this.assignmentWithPapers.push(element);
+        }
+        
+        )
   
       })
       
