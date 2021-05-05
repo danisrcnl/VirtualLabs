@@ -71,21 +71,20 @@ export class ElaboraticontstudentComponent implements OnInit {
         element.papersWithHistory = [];
         element.assignment = assignment;
 
-        
-
-        console.log("calling")
         this.assignmentService.getPaperStudent(assignment.id, id).subscribe(paper => {
-          
+          console.log(paper)
           
           var paperWithHistory: PaperWithHistory = new PaperWithHistory();
           paperWithHistory.paper = paper;
+          console.log(paper.id)
   
-          this.assignmentService.getPaperHistory(paper[0].id).subscribe(history => {
+          this.assignmentService.getPaperHistory(paper.id).subscribe(history => {
+            console.log("history")
             paperWithHistory.history = history;
             
               
   
-            this.studentService.getOne(paper[0].creator).subscribe(student => {
+            this.studentService.getOne(paper.creator).subscribe(student => {
               paperWithHistory.creator = student;
               element.papersWithHistory.push(paperWithHistory);
             })
