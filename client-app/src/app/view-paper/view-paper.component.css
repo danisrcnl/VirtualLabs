@@ -61,11 +61,13 @@
 }
 
 #viewSol {
+    margin: 0 auto;
     max-width: 700px;
     text-align: center;
 }
 
 #viewSol_img {
+    margin: 0 auto;
     max-width: 600px;
 }
 
