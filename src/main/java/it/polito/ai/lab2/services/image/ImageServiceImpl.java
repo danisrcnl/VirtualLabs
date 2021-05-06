@@ -24,6 +24,18 @@ public class ImageServiceImpl implements ImageService {
         if(!outcome.isPresent())
             throw new AiException();
         newFileName += ("." + outcome.get());
+
+        File directory = new File("src\\main\\images");
+
+        if(!directory.isDirectory()) {
+            directory.mkdir();
+            directory = new File("src\\main\\images\\assignments");
+            directory.mkdir();
+            directory = new File("src\\main\\images\\papers");
+            directory.mkdir();
+        }
+
+
         File prova = new File("src\\main\\images\\" + subfolder + "\\" + newFileName);
         while (prova.exists()) {
             i++;
