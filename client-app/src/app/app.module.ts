@@ -57,6 +57,7 @@ import { ViewPaperComponent } from './view-paper/view-paper.component';
 import { ErrorDialog, VmService } from './services/vm.service';
 import { Vms } from './model/vms.model';
 import { CreatePaperComponent } from './create-paper/create-paper.component';
+import { ViewAssignmentComponent } from './view-assignment/view-assignment.component';
 
 
 
@@ -86,6 +87,7 @@ import { CreatePaperComponent } from './create-paper/create-paper.component';
     ViewPaperComponent,
     ErrorDialog,
     CreatePaperComponent,
+    ViewAssignmentComponent,
     
   
   ],
