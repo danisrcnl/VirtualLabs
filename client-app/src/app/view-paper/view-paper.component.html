@@ -39,20 +39,22 @@
     <button mat-flat-button class="buttonO">Conferma</button>
 </div>
 
+<form [formGroup] = "soluzioneForm" (ngSubmit) = "onSubmit()"  autocomplete="off">
 <div id="review" *ngIf="!step1 && goReview && teacher && !imageViewer">
     <mat-form-field appearance="fill">
     <mat-label>Commenta la soluzione dello studente:</mat-label>
     <div id="textarea_w">
-        <textarea matInput id="textarea"></textarea>
+        <textarea matInput id="textarea" formControlName = "soluzione" [(ngModel)]="data.soluzione" ></textarea>
     </div>
     </mat-form-field>
     <div id="definitiva">
         <mat-label>Vuoi che questa sia la soluzione definitiva?</mat-label>
-        <mat-checkbox id="checkbox"></mat-checkbox>
+        <mat-checkbox id="checkbox" formControlName="check" [(ngModel)]="data.check"></mat-checkbox>
     </div><br>
-    <button mat-flat-button class="buttonRev">Conferma</button>
+    <button mat-flat-button class="buttonRev" >Conferma</button>
     
 </div>
+</form>
 
 <div id="buttons_st" *ngIf="student && !revisioni && !imageViewer">
 

@@ -1,6 +1,6 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { parseI18nMeta } from '@angular/compiler/src/render3/view/i18n/meta';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatChip, MatChipList } from '@angular/material/chips';
 import { AssignmentService } from 'app/services/assignment.service';
@@ -12,9 +12,11 @@ import {PaperStatus} from '../../model/paperStatus.model';
 import {PaperStatusTime} from '../../model/paperStatusTime.model';
 import {StudentDTO} from '../../model/studentDTO.model';
 import {AssignmentWithPapers, PaperWithHistory} from '../../model/assignmentsupport.model';
-import { ViewPaperComponent } from 'app/view-paper/view-paper.component';
+
 import { environment } from 'environments/environment';
 import {CreatePaperComponent} from 'app/create-paper/create-paper.component';
+import { ViewPaperComponent } from 'app/view-paper/view-paper.component';
+
 
 @Component({
   selector: 'app-elaboratistudent',
@@ -29,6 +31,9 @@ export class ElaboratistudentComponent implements OnInit {
   status: String[] = ["null", "letti", "consegnati", "rivisti", "valutati"];
   selection: String[] = [];
   baseimage = environment.baseimage;
+
+  @Output() addpaper = new EventEmitter<Paper>();
+
 
   @Input('assignmentWithPapers')
   set _assignmentWithPapers (assignmentWithPapers: AssignmentWithPapers[]) {
@@ -108,11 +113,6 @@ export class ElaboratistudentComponent implements OnInit {
   }
 
 
-  createconsegna() 
-  {
-    
-
-  }
 
   hasSameStatus (status: PaperStatus, value: String) {
 
@@ -160,6 +160,18 @@ export class ElaboratistudentComponent implements OnInit {
         id: id
       }
     });
+
+ dialogRef.afterClosed().subscribe(data => {
+
+  console.log(data);
+
+
+ 
+
+
+ })
+
+
   }
     
 }

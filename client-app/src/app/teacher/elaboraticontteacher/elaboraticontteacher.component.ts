@@ -173,5 +173,18 @@ receiveconsegna($event)
 }
 
 
+receivesoluzione ($event)
+{
+
+ if ($event.res.check == true)
+ {
+   this.assignmentService.lockPaper($event.paperid).subscribe(data => {console.log(data)});
+ }
+
+ this.assignmentService.reviewPaper($event.paperid,$event.res.soluzione).subscribe(data => {console.log(data);});
+
+}
+
+
 
 }

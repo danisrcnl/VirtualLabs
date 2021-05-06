@@ -22,7 +22,7 @@ export interface DialogConsegna {
 giorno : number;
 mese : String;
 anno : number;
-content : String;
+content : File
 
 }
 
@@ -40,6 +40,8 @@ export class ElaboratiteacherComponent implements OnInit {
   selection: String[] = [];
   consegnadata = {} as DialogConsegna;
 
+ 
+  @Output() addsoluzione = new EventEmitter<any>();
 
   @Output() addconsegna = new EventEmitter<DialogConsegna>();
 
@@ -185,6 +187,11 @@ export class ElaboratiteacherComponent implements OnInit {
     });
   
     dialogRef.afterClosed().subscribe(result => {
+
+        this.addsoluzione.emit({res: result, paperid : id});
+
+
+      console.log(result);
     });
   }
     

@@ -1,7 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormBuilder, FormGroup,Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { CreatePaperComponent } from 'app/create-paper/create-paper.component';
 import { PaperStatusTime } from 'app/model/paperStatusTime.model';
 import { environment } from 'environments/environment';
+
 
 @Component({
   selector: 'app-view-paper',
@@ -10,7 +13,11 @@ import { environment } from 'environments/environment';
 })
 export class ViewPaperComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) { }
+ 
+  constructor( public dialogRef: MatDialogRef<ViewPaperComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any, 
+  public dialog: MatDialog,
+  private formBuilder : FormBuilder) { }
 
   history: PaperStatusTime[] = [];
   id: number;
@@ -27,6 +34,8 @@ export class ViewPaperComponent implements OnInit {
   currentReview: String;
   currentSol: String = "";
   imageViewer: Boolean = false;
+  soluzioneForm : FormGroup;
+  submitted : boolean = false;
 
   ngOnInit(): void {
     this.id = this.data.id;
@@ -39,7 +48,34 @@ export class ViewPaperComponent implements OnInit {
     }
     this.teacher = this.data.teacher;
     this.student = this.data.student;
+
+
+    this.soluzioneForm = this.formBuilder.group({
+
+      soluzione : [''],
+      check : ['']
+
+    })
+
+
   }
+
+  onSubmit() {
+      this.submitted = true;
+     
+      console.log("submitted");
+    
+      // Fermati qua se il form è invalido 
+      if (this.soluzioneForm.invalid) {
+        console.log('Login invalid');
+        return;
+      }
+      else
+       this.dialogRef.close(this.soluzioneForm.value);
+
+  
+     }
+
 
   displayDate(date: Date) {
     var newDate: Date = new Date(date);
@@ -59,6 +95,8 @@ export class ViewPaperComponent implements OnInit {
   clickreview(){
     this.step1 = false;
     this.goReview = true;
+
+
   }
 
   viewReview(content: String) {
@@ -81,4 +119,7 @@ export class ViewPaperComponent implements OnInit {
   exitImageViewer() {
     this.imageViewer = false;
   }
+
+
+ 
 }
