@@ -15,6 +15,7 @@ import {AssignmentWithPapers, PaperWithHistory} from '../../model/assignmentsupp
 import { ViewPaperComponent } from 'app/view-paper/view-paper.component';
 import { environment } from 'environments/environment';
 import {CreatePaperComponent} from 'app/create-paper/create-paper.component';
+import { ViewAssignmentComponent } from 'app/view-assignment/view-assignment.component';
 
 @Component({
   selector: 'app-elaboratistudent',
@@ -45,7 +46,11 @@ export class ElaboratistudentComponent implements OnInit {
 
   setView (papersWithHistory: PaperWithHistory[]) {
     this.viewingPapers = papersWithHistory;
-    this.filteredViewingPapers = this.viewingPapers;
+    this.filteredViewingPapers = this.viewingPapers.filter(p => {
+      p.paper.currentStatus.toString() == "CONSEGNATO" ||
+      p.paper.currentStatus.toString() == "LETTO" ||
+      p.paper.currentStatus.toString() == "VALUTATO"
+    });
     console.log(this.viewingPapers);
   }
 
@@ -158,6 +163,23 @@ export class ElaboratistudentComponent implements OnInit {
       width: '600px',
       data: {
         id: id
+      }
+    });
+  }
+
+  isNull (papersWithHistory: PaperWithHistory[]) {
+    return this.hasSameStatus(papersWithHistory[0].paper.currentStatus, " null ");
+  }
+
+  isRead (papersWithHistory: PaperWithHistory[]) {
+    return this.hasSameStatus(papersWithHistory[0].paper.currentStatus, " letti ");
+  }
+
+  viewAssignment (assignment: Assignment) {
+    const dialogRef = this.dialog.open(ViewAssignmentComponent, {
+      width: '600px',
+      data: {
+        assignment: assignment
       }
     });
   }

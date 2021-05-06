@@ -6,7 +6,7 @@
           <button class ="lab" mat-mini-fab>{{ass.assignment.id}}</button>
         </mat-panel-title>
         <mat-panel-description class="descr">
-          {{ ass.papersWithHistory?.length || '0' }} elaborati
+          {{ filteredViewingPapers?.length || '0' }} elaborati
         </mat-panel-description>
       </mat-expansion-panel-header>
      
@@ -16,7 +16,11 @@
           <p class="details">{{pap.creator.firstName}} {{pap.creator.name}}</p>
         </mat-list-item>
 
-        <div id="addSolWrapper" *ngIf="filteredViewingPapers.length == 0">
+        <div id="readAssWrapper" *ngIf="filteredViewingPapers.length == 0">
+            <button mat-flat-button class="buttonO" id="readAss" (click)="viewAssignment(ass.assignment)">Leggi la consegna</button>
+        </div>
+
+        <div id="addSolWrapper" *ngIf="filteredViewingPapers.length == 0 && isRead(ass.papersWithHistory)">
           
           <div id="addSol">
             <button mat-mini-fab (click)="createPaper(ass.assignment.id)"><mat-icon>add</mat-icon></button>

@@ -94,4 +94,15 @@
   #addSol {
     display: inline-block;
   }
+
+  #readAss {
+    margin-bottom: 16px;
+  }
+
+  .buttonO, .buttonRev {
+    background-color: royalblue;
+    color: white;
+} .buttonO:hover, .buttonRev:hover {
+    background-color: blue;
+}
   
