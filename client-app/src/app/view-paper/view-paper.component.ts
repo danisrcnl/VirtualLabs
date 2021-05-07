@@ -62,7 +62,7 @@ export class ViewPaperComponent implements OnInit {
 
     this.valutaForm = this.formBuilder.group({
 
-      voto : ['']
+      voto : null
     })
     
 

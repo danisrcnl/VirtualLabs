@@ -186,7 +186,22 @@ receivesoluzione ($event)
   );
 }
 
+
+receivevalutazione($event) {
+
+console.log($event);
+
+this.assignmentService.ratePaper($event.paperid,$event.voto).subscribe(data => {
+
+  this.update();
+
+})
+
+}
+
 update () {
+
+this.assignmentWithPapersnull = [];
 
  this.assignmentService.getCourseAssignments(this.courseName).subscribe(assignments => {
 

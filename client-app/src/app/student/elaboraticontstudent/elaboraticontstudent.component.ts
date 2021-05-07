@@ -30,7 +30,9 @@ export class ElaboraticontstudentComponent implements OnInit {
   public subject : string ="";
   private courseName: String;
   public papervalue : Paper;
+  public studentid : String;
 
+  assignmentWithPapersnull : AssignmentWithPapers[] = [];
   assignmentWithPapers: AssignmentWithPapers[] = [];
   assignmentWithPapers$: Observable<AssignmentWithPapers[]> = of(this.assignmentWithPapers);
   obs_creators$: Observable<StudentDTO>[] = [];
@@ -55,7 +57,8 @@ export class ElaboraticontstudentComponent implements OnInit {
   this.authService.info().subscribe(info => {
 
     var idtmp: String[] = info.username.split('@', 1);
-    console.log(idtmp + ", " + idtmp[0].length)
+    console.log(idtmp + ", " + idtmp[0].length);
+    this.studentid = idtmp[0].substring(1);
     var id: String = "";
     for (let i = 1; i<idtmp[0].length; i++)
       id += idtmp[0][i];
@@ -65,14 +68,12 @@ export class ElaboraticontstudentComponent implements OnInit {
 
       assignments.forEach(assignment => {
   
-        console.log(assignment.id);
 
         var element: AssignmentWithPapers = new AssignmentWithPapers();
         element.papersWithHistory = [];
         element.assignment = assignment;
 
         this.assignmentService.getPaperStudent(assignment.id, id).subscribe(paper => {
-          console.log(paper)
           
           var paperWithHistory: PaperWithHistory = new PaperWithHistory();
           paperWithHistory.paper = paper;
@@ -108,16 +109,78 @@ export class ElaboraticontstudentComponent implements OnInit {
 
   })
 
+}
+
+
+
+receivelettaconsegna($event) {
+
+  console.log($event);
+  console.log(this.studentid);
+this.assignmentService.getAssignmentPapers($event.id).subscribe(data => {
+
+  data.forEach (p => {
+
+    if(p.creator == this.studentid)
+    
+      this.assignmentService.readPaper(p.id).subscribe(data => {
+      this.update();
+      })
+    
+  })
+
+})
+}
+
+ update() {
+
+  this.assignmentWithPapersnull = [];
+
+    this.assignmentService.getCourseAssignments(this.courseName).subscribe(assignments => {
+      
+
+      assignments.forEach(assignment => {
   
 
+        var element: AssignmentWithPapers = new AssignmentWithPapers();
+        element.papersWithHistory = [];
+        element.assignment = assignment;
 
+        this.assignmentService.getPaperStudent(assignment.id, this.studentid).subscribe(paper => {
+          
+          var paperWithHistory: PaperWithHistory = new PaperWithHistory();
+          paperWithHistory.paper = paper;
+          console.log(paper.id)
+  
+          this.assignmentService.getPaperHistory(paper.id).subscribe(history => {
+            paperWithHistory.history = history;
+            
+              
+  
+            this.studentService.getOne(paper.creator).subscribe(student => {
+              paperWithHistory.creator = student;
+              element.papersWithHistory.push(paperWithHistory);
+            })
+          
+            
+          });
+  
+          this.assignmentWithPapersnull.push(element);
+          this.assignmentWithPapers$ = of(this.assignmentWithPapersnull);
+  
+        },
+        
+        error => {
+          this.assignmentWithPapers.push(element);
+        }
+        
+        )
+  
+      })
+      
+  
+    })
+ }
 
-
-
-
-
-
-
-}
 
 }

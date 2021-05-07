@@ -33,7 +33,7 @@
     <mat-form-field id="form" appearance="fill">
         <mat-label>Voto: </mat-label>
         <mat-select formControlName = "voto" >
-          <mat-option *ngFor="let rate of rates" value="rate">{{rate}}</mat-option>
+          <mat-option *ngFor="let rate of rates" [value]="rate">{{rate}}</mat-option>
         </mat-select>
     </mat-form-field>
 

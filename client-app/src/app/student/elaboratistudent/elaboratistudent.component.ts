@@ -35,6 +35,7 @@ export class ElaboratistudentComponent implements OnInit {
 
   @Output() addpaper = new EventEmitter<Paper>();
 
+  @Output() lettaconsegna = new EventEmitter<any>();
 
   @Input('assignmentWithPapers')
   set _assignmentWithPapers (assignmentWithPapers: AssignmentWithPapers[]) {
@@ -42,6 +43,8 @@ export class ElaboratistudentComponent implements OnInit {
     console.log(this.assignmentWithPapers);
     
   }
+
+  
 
 
   constructor(private assignmentService: AssignmentService, private studentService: StudentService, public dialog: MatDialog) { }
@@ -166,16 +169,6 @@ export class ElaboratistudentComponent implements OnInit {
       }
     });
 
- dialogRef.afterClosed().subscribe(data => {
-
-  console.log(data);
-
-
- 
-
-
- })
-
 
   }
 
@@ -192,12 +185,24 @@ export class ElaboratistudentComponent implements OnInit {
   }
 
   viewAssignment (assignment: Assignment) {
+
+
+
     const dialogRef = this.dialog.open(ViewAssignmentComponent, {
       width: '600px',
       data: {
         assignment: assignment
       }
     });
+
+     dialogRef.afterClosed().subscribe(data => {
+
+  this.lettaconsegna.emit(assignment);
+
+
+ })
+    
+
   }
     
 }
