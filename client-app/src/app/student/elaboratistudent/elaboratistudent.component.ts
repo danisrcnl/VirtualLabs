@@ -180,10 +180,14 @@ export class ElaboratistudentComponent implements OnInit {
   }
 
   isNull (papersWithHistory: PaperWithHistory[]) {
+    if(papersWithHistory[0] == undefined)
+      return false;
     return this.hasSameStatus(papersWithHistory[0].paper.currentStatus, " null ");
   }
 
   isRead (papersWithHistory: PaperWithHistory[]) {
+    if(papersWithHistory[0] == undefined)
+      return false;
     return this.hasSameStatus(papersWithHistory[0].paper.currentStatus, " letti ");
   }
 
