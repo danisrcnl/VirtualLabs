@@ -1,10 +1,10 @@
-<form id="papForm">
+<form [formGroup] ="createForm"  (ngSubmit) = "onSubmit()" id="papForm" enctype="multipart/form-data">
     <div id="input_w">
         <div id="inputLabel">
             <mat-label>Carica la tua soluzione:</mat-label>
         </div>
         <div id="inputO">
-            <input #imageInput type="file" id="input" accept="image/x-png,image/gif,image/jpeg" >
+            <input #imageInput type="file" id="input" accept="image/x-png,image/gif,image/jpeg" enctype="multipart/form-data"  formControlName = "content"  [(ngModel)]= "data.content">
         </div>
         <p id="info">Il file deve essere in formato png/jpg/jpeg</p>
     </div>

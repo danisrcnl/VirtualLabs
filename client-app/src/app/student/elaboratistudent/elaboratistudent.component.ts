@@ -33,9 +33,11 @@ export class ElaboratistudentComponent implements OnInit {
   selection: String[] = [];
   baseimage = environment.baseimage;
 
-  @Output() addpaper = new EventEmitter<Paper>();
+  @Output() setcontentpaper = new EventEmitter<any>();
 
   @Output() lettaconsegna = new EventEmitter<any>();
+
+
 
   @Input('assignmentWithPapers')
   set _assignmentWithPapers (assignmentWithPapers: AssignmentWithPapers[]) {
@@ -168,6 +170,12 @@ export class ElaboratistudentComponent implements OnInit {
         id: id
       }
     });
+
+    dialogRef.afterClosed().subscribe( data => {
+
+     this.setcontentpaper.emit({content: data, id: id});
+
+    })
 
 
   }

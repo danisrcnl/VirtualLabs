@@ -88,8 +88,8 @@ const httpOptions = {
         return this.http.get<Paper>(`${environment.apiUrlassignments}/paper/${paperId}/rate/${mark}`);
     }
 
-    setContent (paperId: number, content: String) {
-        return this.http.post<Paper>(`${environment.apiUrlassignments}/paper/${paperId}/lock`, content);
+    setContent (paperId: number, file: any) {
+        return this.http.post<any>(`${environment.apiUrlassignments}/paper/${paperId}/setContent`, file);
     }
 
     getPaperHistory (paperId: number) {

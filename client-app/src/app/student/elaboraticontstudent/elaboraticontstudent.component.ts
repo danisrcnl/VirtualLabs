@@ -115,8 +115,6 @@ export class ElaboraticontstudentComponent implements OnInit {
 
 receivelettaconsegna($event) {
 
-  console.log($event);
-  console.log(this.studentid);
 this.assignmentService.getAssignmentPapers($event.id).subscribe(data => {
 
   data.forEach (p => {
@@ -130,6 +128,29 @@ this.assignmentService.getAssignmentPapers($event.id).subscribe(data => {
   })
 
 })
+}
+
+
+
+receivecontentpaper($event) {
+
+this.assignmentService.getAssignmentPapers($event.id).subscribe(data => {
+
+  data.forEach (p => {
+
+    if(p.creator == this.studentid)
+    
+      this.assignmentService.setContent(p.id,$event.content).subscribe(data => {
+      this.update();
+      })
+    
+  })
+
+})
+
+
+
+
 }
 
  update() {

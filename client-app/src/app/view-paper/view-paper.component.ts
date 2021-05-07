@@ -14,10 +14,11 @@ import { environment } from 'environments/environment';
 export class ViewPaperComponent implements OnInit {
 
  
-  constructor( public dialogRef: MatDialogRef<ViewPaperComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, 
-  public dialog: MatDialog,
-  private formBuilder : FormBuilder) { }
+  constructor( 
+     public dialogRef: MatDialogRef<ViewPaperComponent>,
+     public dialog: MatDialog,
+     private formBuilder : FormBuilder,
+     @Inject(MAT_DIALOG_DATA) public data: any ) { }
 
   history: PaperStatusTime[] = [];
   id: number;
@@ -55,8 +56,8 @@ export class ViewPaperComponent implements OnInit {
     //Inizializzazione dei Form 
     this.soluzioneForm = this.formBuilder.group({
 
-      soluzione : [''],
-      check : ['']
+      soluzione : ['',Validators.required],
+      check : ['',Validators.required]
 
     })
 
