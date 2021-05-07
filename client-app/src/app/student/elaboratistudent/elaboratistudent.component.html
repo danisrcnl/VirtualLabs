@@ -1,6 +1,6 @@
 <mat-accordion>
 
-    <mat-expansion-panel *ngFor="let ass of assignmentWithPapers" (opened)="setView(ass.papersWithHistory)" (closed)="clearChips()">
+    <mat-expansion-panel *ngFor="let ass of assignmentWithPapers" (opened)="setView(ass.papersWithHistory)">
       <mat-expansion-panel-header>
         <mat-panel-title>
           <button class ="lab" mat-mini-fab>{{ass.assignment.id}}</button>
