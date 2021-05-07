@@ -28,16 +28,18 @@
 
 </div>
 
+<form [formGroup]="valutaForm" (ngSubmit)="onSubmit2()" autocomplete="off">
 <div id="rate" *ngIf="!step1 && goRate && teacher && !imageViewer">
     <mat-form-field id="form" appearance="fill">
         <mat-label>Voto: </mat-label>
-        <mat-select>
+        <mat-select formControlName = "voto" >
           <mat-option *ngFor="let rate of rates" value="rate">{{rate}}</mat-option>
         </mat-select>
     </mat-form-field>
 
     <button mat-flat-button class="buttonO">Conferma</button>
 </div>
+</form>
 
 <form [formGroup] = "soluzioneForm" (ngSubmit) = "onSubmit()"  autocomplete="off">
 <div id="review" *ngIf="!step1 && goReview && teacher && !imageViewer">

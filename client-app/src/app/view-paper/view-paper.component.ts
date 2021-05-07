@@ -35,6 +35,7 @@ export class ViewPaperComponent implements OnInit {
   currentSol: String = "";
   imageViewer: Boolean = false;
   soluzioneForm : FormGroup;
+  valutaForm : FormGroup;
   submitted : boolean = false;
 
   ngOnInit(): void {
@@ -51,6 +52,7 @@ export class ViewPaperComponent implements OnInit {
     this.student = this.data.student;
 
 
+    //Inizializzazione dei Form 
     this.soluzioneForm = this.formBuilder.group({
 
       soluzione : [''],
@@ -58,23 +60,35 @@ export class ViewPaperComponent implements OnInit {
 
     })
 
+    this.valutaForm = this.formBuilder.group({
+
+      voto : ['']
+    })
+    
+
 
   }
 
   onSubmit() {
       this.submitted = true;
-     
-      console.log("submitted");
     
       // Fermati qua se il form è invalido 
       if (this.soluzioneForm.invalid) {
-        console.log('Login invalid');
         return;
       }
       else
        this.dialogRef.close(this.soluzioneForm.value);
+     }
 
-  
+   onSubmit2() {
+      this.submitted = true;
+
+      // Fermati qua se il form è invalido 
+      if (this.valutaForm.invalid) {
+        return;
+      }
+      else
+       this.dialogRef.close(this.valutaForm.value);
      }
 
 

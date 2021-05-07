@@ -40,7 +40,8 @@ export class ElaboratiteacherComponent implements OnInit {
   selection: String[] = [];
   consegnadata = {} as DialogConsegna;
 
- 
+  @Output() addvalutazione = new EventEmitter<any>();
+
   @Output() addsoluzione = new EventEmitter<any>();
 
   @Output() addconsegna = new EventEmitter<DialogConsegna>();
@@ -190,7 +191,7 @@ export class ElaboratiteacherComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
 
         this.addsoluzione.emit({res: result, paperid : id, assid : assid});
-
+        
 
       console.log(result);
     });

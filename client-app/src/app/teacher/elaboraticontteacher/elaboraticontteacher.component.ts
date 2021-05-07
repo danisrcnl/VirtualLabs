@@ -112,7 +112,7 @@ export class ElaboraticontteacherComponent implements OnInit {
 
 }
 
-
+//Funzione che riceve la consegna (assignment) appena creato da un professore 
 receiveconsegna($event)
 {
 
@@ -137,7 +137,7 @@ this.assignmentWithPapersnull = [];
 
   let month = months.indexOf($event.mese);
   console.log(month);
-  this.assignment.content = $event.content;
+ 
   this.assignment.creator = this.currentTeacher;
   this.creationDate.getTime();
   this.expiryDate.setDate($event.giorno);
@@ -151,9 +151,44 @@ this.assignmentWithPapersnull = [];
   this.assignmentService.addAssignmentToCourse(this.assignment,this.courseName).subscribe(data => 
     
     {
+        this.assignmentService.setAssignmentContent(this.assignment.id,$event.content).subscribe(data=> {
 
-      
-       this.assignmentService.getCourseAssignments(this.courseName).subscribe(assignments => {
+         this.update();
+
+        })
+
+      //aggiorno l'observable che mostra gli assignments con i paper dopo l'aggiunta dell'assignment
+     
+     
+    });
+
+}
+
+
+//Funzione che riceve la soluzione del professore per un paper 
+receivesoluzione ($event)
+{
+
+ this.assignmentService.reviewPaper($event.paperid,$event.res.soluzione).subscribe
+ 
+ (data => {
+   // se setto il checkbox a true, allora il paper non sarà più modificabile e potrà essere solo valutato
+     if ($event.res.check == true) 
+          {
+          this.assignmentService.lockPaper($event.paperid).subscribe
+                      (data => 
+                           {
+                           //aggiorno l'observable che mostra gli assignments con i paper dopo la review del paper
+                            this.update();
+                            });
+          }
+         }
+  );
+}
+
+update () {
+
+ this.assignmentService.getCourseAssignments(this.courseName).subscribe(assignments => {
 
         assignments.forEach(assignment => {
 
@@ -192,33 +227,6 @@ this.assignmentWithPapers$ = of(this.assignmentWithPapersnull);
 
       })
       
-     
-    });
-
-}
-
-
-receivesoluzione ($event)
-{
-
- 
-
- this.assignmentService.reviewPaper($event.paperid,$event.res.soluzione).subscribe
- 
- (data => {
-     if ($event.res.check == true) {
-          this.assignmentService.lockPaper($event.paperid).subscribe
-                      (data => {
-    
-
-                      });
-       }
-  
-  
-  });
-
- 
-
 }
 
 

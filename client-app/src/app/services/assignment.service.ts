@@ -21,6 +21,9 @@ const httpOptions = {
 
     constructor (private http: HttpClient) {}
 
+
+  
+
     get () {
         return this.http.get<Assignment>(`${environment.apiUrlassignments}/`);
     }
