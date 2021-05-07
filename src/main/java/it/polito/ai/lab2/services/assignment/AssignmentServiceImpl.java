@@ -60,14 +60,23 @@ public class AssignmentServiceImpl implements AssignmentService {
         if (!assignmentRepository.existsById(assignmentId))
             return false;
 
-        courseRepository
-                .getOne(courseName)
-                .addAssignment(
-                        assignmentRepository
-                        .getOne(assignmentId)
-                );
+        Course c = courseRepository.getOne(courseName);
+
+        c.addAssignment(assignmentRepository.getOne(assignmentId));
 
         courseRepository.flush();
+
+        List<String> ids = c
+                .getStudents()
+                .stream()
+                .map(Student :: getId)
+                .collect(Collectors.toList());
+
+        Long paperId;
+        for (String id : ids) {
+            paperId = addPaper(PaperDTO.builder().build(), courseName, id);
+            linkPaperToAssignment(paperId, assignmentId);
+        }
 
         return true;
 
@@ -120,6 +129,7 @@ public class AssignmentServiceImpl implements AssignmentService {
             throw new StudentNotFoundException(studentId);
 
         Paper p = modelMapper.map(paper, Paper.class);
+        p.setCurrentStatus(PaperStatus.NULL);
         p.setEditable(true);
         p.setCreator(studentId);
         p.setStudent(studentRepository.getOne(studentId));

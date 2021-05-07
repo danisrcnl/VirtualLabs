@@ -48,8 +48,8 @@ public class Course {
         assignments = new ArrayList<>();
     }
 
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
+    //@ToString.Exclude
+    //@EqualsAndHashCode.Exclude
     @OneToOne(cascade = CascadeType.REMOVE)
     private VmModel vmModel;
 

@@ -25,7 +25,6 @@ public class Assignment {
     @NotEmpty
     private String creator;
 
-    @NotEmpty
     private String content;
 
     private Timestamp creationDate;

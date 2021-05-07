@@ -30,4 +30,7 @@ public interface CourseRepository extends JpaRepository<Course,String> {
                 "AND t.status=1)")
     public List<Student> getStudentsNotInTeams(String courseName);
 
+    @Query("SELECT s FROM Student s INNER JOIN s.papers p INNER JOIN p.assignment a WHERE a.id =:assignmentId")
+    public List<Student> getStudentsWithNoPaperFor(Long assignmentId);
+
 }

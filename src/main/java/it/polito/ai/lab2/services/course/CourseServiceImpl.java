@@ -2,16 +2,14 @@ package it.polito.ai.lab2.services.course;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
-import it.polito.ai.lab2.dtos.CourseDTO;
-import it.polito.ai.lab2.dtos.StudentDTO;
-import it.polito.ai.lab2.dtos.TeacherDTO;
-import it.polito.ai.lab2.dtos.TeamDTO;
+import it.polito.ai.lab2.dtos.*;
 import it.polito.ai.lab2.entities.*;
 import it.polito.ai.lab2.repositories.CourseRepository;
 import it.polito.ai.lab2.repositories.StudentRepository;
 import it.polito.ai.lab2.repositories.TeacherRepository;
 import it.polito.ai.lab2.repositories.TeamRepository;
 import it.polito.ai.lab2.services.AiException;
+import it.polito.ai.lab2.services.assignment.AssignmentService;
 import it.polito.ai.lab2.services.student.StudentService;
 import it.polito.ai.lab2.services.team.TeamServiceException;
 import org.modelmapper.ModelMapper;
@@ -46,6 +44,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     TeamRepository teamRepository;
+
+    @Autowired
+    AssignmentService assignmentService;
 
     @Override
     public boolean addCourse(CourseDTO course) {
@@ -141,6 +142,19 @@ public class CourseServiceImpl implements CourseService {
         courseRepository
                 .getOne(courseName)
                 .addStudent(studentRepository.getOne(studentId));
+
+        List<Long> assignmentIds = courseRepository
+                .getOne(courseName)
+                .getAssignments()
+                .stream()
+                .map(a -> a.getId())
+                .collect(Collectors.toList());
+
+        Long paperId;
+        for (Long id : assignmentIds) {
+            paperId = assignmentService.addPaper(PaperDTO.builder().build(), courseName, studentId);
+            assignmentService.linkPaperToAssignment(paperId, id);
+        }
 
         return true;
     }
