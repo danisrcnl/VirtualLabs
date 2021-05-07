@@ -21,8 +21,7 @@ public class Team {
 
     private int status;
 
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
+
     @ManyToOne
     @JoinColumn(name="course_id")
     private Course course;
