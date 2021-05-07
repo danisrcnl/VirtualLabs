@@ -190,9 +190,11 @@ export class ElaboratiteacherComponent implements OnInit {
   
     dialogRef.afterClosed().subscribe(result => {
 
+        if(result.voto!= undefined)
+        this.addvalutazione.emit({voto : result.voto, paperid : id});
+        if(result.soluzione!=undefined)
         this.addsoluzione.emit({res: result, paperid : id, assid : assid});
         
-
       console.log(result);
     });
   }
