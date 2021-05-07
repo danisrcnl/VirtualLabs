@@ -173,7 +173,7 @@ export class ElaboratiteacherComponent implements OnInit {
 
   }
 
-  viewPaper (id: number, history: PaperStatusTime[], currentStatus: String, editable: Boolean) {
+  viewPaper (id: number, history: PaperStatusTime[], currentStatus: String, editable: Boolean, assid : number) {
     const dialogRef = this.dialog.open(ViewPaperComponent, {
       width: '800px',
       data: {
@@ -182,13 +182,14 @@ export class ElaboratiteacherComponent implements OnInit {
         currentStatus: currentStatus,
         editable: editable,
         teacher: true,
-        student: false
+        student: false,
+        assid
       }
     });
   
     dialogRef.afterClosed().subscribe(result => {
 
-        this.addsoluzione.emit({res: result, paperid : id});
+        this.addsoluzione.emit({res: result, paperid : id, assid : assid});
 
 
       console.log(result);

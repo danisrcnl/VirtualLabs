@@ -48,6 +48,7 @@ export class ElaboraticontteacherComponent implements OnInit {
   public id : number;
 
   assignment : Assignment = new Assignment;
+  assignmentWithPapersnull : AssignmentWithPapers[] = [];
   assignmentWithPapers: AssignmentWithPapers[] = [];
   assignmentWithPapers$: Observable<AssignmentWithPapers[]> = of(this.assignmentWithPapers);
   obs_creators$: Observable<StudentDTO>[] = [];
@@ -115,6 +116,8 @@ export class ElaboraticontteacherComponent implements OnInit {
 receiveconsegna($event)
 {
 
+this.assignmentWithPapersnull = [];
+
   var months = [
     'Gennaio',
     'Febbraio',
@@ -150,23 +153,45 @@ receiveconsegna($event)
     {
 
       
-      this.assignmentService.getCourseAssignments(this.courseName).subscribe(assignments => {
+       this.assignmentService.getCourseAssignments(this.courseName).subscribe(assignments => {
 
         assignments.forEach(assignment => {
 
-            this.id = assignment.id;
+          
+          var element: AssignmentWithPapers = new AssignmentWithPapers();
+          element.papersWithHistory = [];
+          element.assignment = assignment;
+
+          this.assignmentService.getAssignmentPapers(assignment.id).subscribe(papers => {
+
+            papers.forEach(paper => {
+              var paperWithHistory: PaperWithHistory = new PaperWithHistory();
+              paperWithHistory.paper = paper;
+
+              this.assignmentService.getPaperHistory(paper.id).subscribe(history =>{
+                paperWithHistory.history = history;
+                
+
+                this.studentService.getOne(paper.creator).subscribe(student => {
+                  console.log("!!!");
+                  paperWithHistory.creator = student;
+                  element.papersWithHistory.push(paperWithHistory);
+                },
+                )
+              });
+              
+            });
+
+            this.assignmentWithPapersnull.push(element);
+this.assignmentWithPapers$ = of(this.assignmentWithPapersnull);
+          })
+
         })
-
-
-        this.assignmentService.getOne(this.id).subscribe (assignment => {
-
-          this.assignpaper.assignment = assignment;
-          this.assignpaper.papersWithHistory = null;
-          this.assignmentWithPapers.push(this.assignpaper);
-          this.assignmentWithPapers$ = of(this.assignmentWithPapers);
-        })
+        console.log(this.assignmentWithPapers);
+        console.log(this.obs_creators$);
 
       })
+      
      
     });
 
@@ -176,14 +201,27 @@ receiveconsegna($event)
 receivesoluzione ($event)
 {
 
- if ($event.res.check == true)
- {
-   this.assignmentService.lockPaper($event.paperid).subscribe(data => {console.log(data)});
- }
+ 
 
- this.assignmentService.reviewPaper($event.paperid,$event.res.soluzione).subscribe(data => {console.log(data);});
+ this.assignmentService.reviewPaper($event.paperid,$event.res.soluzione).subscribe
+ 
+ (data => {
+     if ($event.res.check == true) {
+          this.assignmentService.lockPaper($event.paperid).subscribe
+                      (data => {
+    
+
+                      });
+       }
+  
+  
+  });
+
+ 
 
 }
+
+
 
 
 
