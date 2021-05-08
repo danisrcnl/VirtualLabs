@@ -18,30 +18,30 @@ export class CreatePaperComponent implements OnInit {
 
   createForm : FormGroup;
   submitted : boolean = false;
+  file: File;
 
   ngOnInit(): void {
 
-   this.createForm = this.formBuilder.group({
-
-    content : ['',Validators.required]
-
-   })
+   
   
 
 
   }
 
-  onSubmit() {
+  carica() {
 
-  this.submitted = true;
+    this.submitted = true;
     
-      // Fermati qua se il form è invalido 
-      if (this.createForm.invalid) {
-        return;
-      }
-      else
-       this.dialogRef.close(this.createForm.value);
+   
+    var formData = new FormData();
+    formData.append("file", this.file);
+    this.dialogRef.close(formData);
 
+
+  }
+
+  onFileSelected (event) {
+    this.file = event.target.files[0];
   }
 
 }

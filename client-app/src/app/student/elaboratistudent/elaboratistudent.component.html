@@ -6,7 +6,7 @@
           <button class ="lab" mat-mini-fab>{{ass.assignment.id}}</button>
         </mat-panel-title>
         <mat-panel-description class="descr">
-          {{ filteredViewingPapers?.length || '0' }} elaborati
+          {{getValids(ass.papersWithHistory).length}} elaborati
         </mat-panel-description>
       </mat-expansion-panel-header>
      
