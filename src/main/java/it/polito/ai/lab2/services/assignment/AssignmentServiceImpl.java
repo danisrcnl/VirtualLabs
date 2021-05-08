@@ -241,9 +241,11 @@ public class AssignmentServiceImpl implements AssignmentService {
             return false;
         if(paperRepository.getOne(paperId).getEditable())
             return false;
-        paperRepository
-                .getOne(paperId)
-                .setMark(mark);
+        Paper p = paperRepository
+                .getOne(paperId);
+
+        p.setMark(mark);
+        p.setCurrentStatus(PaperStatus.VALUTATO);
 
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris"));
         Timestamp t = Timestamp.valueOf(localDateTime);
