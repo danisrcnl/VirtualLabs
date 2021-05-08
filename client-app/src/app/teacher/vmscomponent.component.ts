@@ -87,7 +87,7 @@ export class VmscomponentComponent implements OnInit {
    if(data != undefined)
    {
       
-      this.vmModel2.maxnvcpu = data.nvcpu;
+      this.vmModel2.maxNVCpu = data.nvcpu;
       this.vmModel2.maxRam = data.RAM;
       this.vmModel2.maxActiveVms = data.ActiveVms;
       this.vmModel2.maxDisk = data.Disksize;
