@@ -94,15 +94,16 @@ export class LimitDialogComponent implements OnInit {
     
     this.ram_left = (this.vmModel.maxRam - this.used_resources.ram);
     this.disk_left = (this.vmModel.maxDisk - this.used_resources.disk);
-    this.nvcpu_left = ((this.vmModel.maxnvcpu - this.used_resources.nvcpu));
+    this.nvcpu_left = ((this.vmModel.maxNVCpu - this.used_resources.nvcpu));
 
 
     this.ram_consumption = ((this.used_resources.ram)/this.vmModel.maxRam)*100;
     this.disk_consumption = ((this.used_resources.disk)/this.vmModel.maxDisk)*100;
-    this.nvcpu_consumption = ((this.used_resources.nvcpu)/this.vmModel.maxnvcpu)*100;
+    this.nvcpu_consumption = ((this.used_resources.nvcpu)/this.vmModel.maxNVCpu)*100;
+    console.log(this.vmModel)
 
     console.log(this.used_resources);
-    console.log(this.vmModel.maxnvcpu);
+    console.log(this.vmModel.maxNVCpu);
     console.log(this.ram_consumption);
     console.log(this.nvcpu_consumption);
     
@@ -160,12 +161,12 @@ valuechangenvcpu(newValue) {
   
    if(newValue!=undefined)
 
-  this.nvcpu_consumption = this.nvcpu_consumption + ((newValue)/this.vmModel.maxnvcpu)*100;
+  this.nvcpu_consumption = this.nvcpu_consumption + ((newValue)/this.vmModel.maxNVCpu)*100;
    
    
   if(newValue==0)
 
-    this.nvcpu_consumption = ((this.vmModel.maxnvcpu - this.used_resources.nvcpu)/this.vmModel.maxnvcpu)*100;
+    this.nvcpu_consumption = ((this.vmModel.maxNVCpu - this.used_resources.nvcpu)/this.vmModel.maxNVCpu)*100;
     
 
 }
