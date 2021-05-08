@@ -60,9 +60,7 @@
 }
 
 #buttonsContainer {
-  border-top: 1px solid #e0e0e0;
   margin: 0 auto;
-  padding-top: 10px;
   width: 100%;
 }
 
@@ -91,4 +89,8 @@
   background-color: blue;
 } #del:hover {
   background-color: royalblue;
+}
+
+.specItem {
+  border-bottom: 1px solid #e0e0e0;
 }

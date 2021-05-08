@@ -17,9 +17,9 @@
     </div>
     <mat-card-content>
         <mat-list role="list">
-            <mat-list-item role="listitem"><b>CPU virtuali</b>: {{vmss.nvcpu}} </mat-list-item>
-            <mat-list-item role="listitem"><b>Ram</b>: {{vmss.ram}} MB </mat-list-item>
-            <mat-list-item role="listitem"><b>Disco riservato</b>: {{vmss.disk}} MB </mat-list-item>
+            <mat-list-item class="specItem" role="listitem"><b>CPU virtuali</b>: {{vmss.nvcpu}} </mat-list-item>
+            <mat-list-item class="specItem" role="listitem"><b>RAM</b>: {{vmss.ram}} MB </mat-list-item>
+            <mat-list-item class="specItem" role="listitem"><b>Disco</b>: {{vmss.disk}} MB </mat-list-item>
         </mat-list>
     </mat-card-content>
     <tr *ngFor="let role of roles$ | async" class="contcont">
