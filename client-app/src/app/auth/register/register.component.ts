@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import {FormControl, Validators, FormGroup, FormBuilder, NgForm} from '@angular/forms';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { User } from '../user';
@@ -28,6 +28,7 @@ export class RegisterComponent implements OnInit {
         private matDialog : MatDialog,
         private authService: AuthService,
         public dialog : MatDialog,
+        public dialogRef: MatDialogRef<RegisterComponent>,
     ) {
         // redirect to home if already logged in
         if (this.authenticationService.currentUserValue) {
@@ -65,6 +66,7 @@ export class RegisterComponent implements OnInit {
         this.loading$ = of(this.loading);
         this.loading$.subscribe(data => {console.log(data);});
 
+        
 
         this.authService.signup(this.f.nome.value,this.f.cognome.value,this.f.matricola.value,this.f.email.value,this.f.password.value)
 
@@ -89,7 +91,7 @@ export class RegisterComponent implements OnInit {
 
     close()
     {
-        this.matDialog.closeAll();
+       this.dialogRef.close();
     }
 
     

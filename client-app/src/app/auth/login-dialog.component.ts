@@ -73,8 +73,8 @@ export class LoginDialogComponent implements OnInit {
      }
 
     openregister() {
-
-        this.matDialog.open (RegisterComponent, { panelClass: 'custom-modalbox' });
+        
+        this.matDialog.open (RegisterComponent, { panelClass: 'custom-modalbox', disableClose : true });
 
     }
 

@@ -139,17 +139,34 @@ console.log(this.courseDTO);
 
 
  check() {
+console.log(this.data.enabled);
 
-/* if (this.isChecked)
- {
-   console.log ("Checked");
+let name = this.selectedcourse.name;
+
+if(this.data.minstud!=undefined && this.data.maxstud!=undefined){
+this.courseservice.setMin(name,this.data.minstud).subscribe(data => {
+
+
+  this.courseservice.setMax(name,this.data.maxstud).subscribe (data => {
+
+  });
+});
  }
- else 
- console.log ("Not checked");
-*/
 
-console.log (this.enabled);
+
+if(this.data.enabled == true)
+{
+  this.courseservice.setEnabled(name,this.data.enabled).subscribe(data => {
+
+this.courses$ = this.teacherService.getCourseforTeacher(this.teacherId);
+
+  });
+}
+else
+this.courses$ = this.teacherService.getCourseforTeacher(this.teacherId);
  
+
+
 
  }
 

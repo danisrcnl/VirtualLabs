@@ -66,14 +66,14 @@ export class ElaboratistudentComponent implements OnInit {
 
   getValids (papersWithHistory: PaperWithHistory[]) {
     var rv: PaperWithHistory[] = [];
-    console.log(papersWithHistory)
+    
     papersWithHistory.forEach(p => {
       if(p.paper.currentStatus.toString() == "RIVISTO" ||
       p.paper.currentStatus.toString() == "CONSEGNATO" ||
       p.paper.currentStatus.toString() == "VALUTATO")
         rv.push(p);
     });
-    console.log(rv)
+    
     return rv;
   }
 

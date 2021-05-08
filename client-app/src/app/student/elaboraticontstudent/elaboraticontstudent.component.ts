@@ -141,14 +141,18 @@ this.assignmentService.getAssignmentPapers($event.id).subscribe(data => {
     if(p.creator == this.studentid)
     
       this.assignmentService.setContent(p.id,$event.content).subscribe(data => {
+        console.log(data);
       this.update();
+      },
+      (error) => {
+        this.update();
+        console.log("errore");
+        
       })
     
   })
 
 })
-
-
 
 
 }

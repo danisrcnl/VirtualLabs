@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import {Assignment} from '../model/assignment.model';
 import {Paper} from '../model/paper.model';
 import {PaperStatus} from '../model/paperStatus.model';
 import {PaperStatusTime} from '../model/paperStatusTime.model';
-import { Observable, BehaviorSubject, Subject} from 'rxjs';
+import { Observable, BehaviorSubject, Subject, throwError} from 'rxjs';
 import { environment } from 'environments/environment';
+import { catchError } from 'rxjs/operators';
 
 const httpOptions = {
     headers: new HttpHeaders({
@@ -90,7 +91,7 @@ const httpOptions = {
 
     setContent (paperId: number, formData: FormData) {
         var file = formData;
-        return this.http.post<any>(`${environment.apiUrlassignments}/paper/${paperId}/setContent`, file);
+        return this.http.post<any>(`${environment.apiUrlassignments}/paper/${paperId}/setContent`, file).pipe(catchError(this.handleError));
     }
 
     getPaperHistory (paperId: number) {
@@ -102,6 +103,20 @@ const httpOptions = {
     }
 
 
+    handleError(err) {
+ 
+  if(err instanceof HttpErrorResponse) {
+
+    console.log(err.error.message);
+    return throwError(err.error.message);
+
+  } else {
+
+    return throwError(err.error.message);
+    
+
+  }
+}
 
     
 

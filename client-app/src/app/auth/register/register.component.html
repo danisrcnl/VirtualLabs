@@ -15,7 +15,9 @@
  
 <div class="form">
   <mat-dialog-actions>
+    <div *ngIf = "!(loading$ | async)">
     <button mat-button class = "btn" (click)= "close()"></button>
+    </div>
   </mat-dialog-actions>
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
       <div class="form-group">

@@ -75,6 +75,21 @@ return this.http.get<StudentDTO[]>(`${environment.apiUrlcourse}/${name}/notEnrol
  }
 
 
+ setMin (coursename,value)
+ {
+return this.http.get<any>(`${environment.apiUrlcourse}/${coursename}/setMin/${value}`);
+ }
+
+ setMax (coursename,value)
+ {
+return this.http.get<any>(`${environment.apiUrlcourse}/${coursename}/setMax/${value}`);
+ }
+
+  setEnabled (coursename,value)
+ {
+return this.http.get<any>(`${environment.apiUrlcourse}/${coursename}/setEnabled/${value}`);
+ }
+
 
 
 courses$ : Observable<Course[]>;

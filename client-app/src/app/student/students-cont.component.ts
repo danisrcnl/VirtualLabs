@@ -355,6 +355,18 @@ console.log(this.compagni);
    }
    
     openDialog(message) {
+    const dialogRef = this.dialog.open(Popup, { disableClose : true,
+      width: '250px',
+      data: {name: message}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      
+    });
+  }
+
+   openDialog2(message) {
     const dialogRef = this.dialog.open(Popup, {
       width: '250px',
       data: {name: message}
@@ -375,14 +387,14 @@ console.log(this.compagni);
    {
     
 
-      this.openDialog("Creazione team in corso, attendere");
+      this.openDialog("Creazione team in corso, attendere", );
       this.dainvitare = $event;
    
          this.teamservice.addTeam(this.courseId,this.groupName,this.dainvitare,this.timeoutValue,this.studentId)
         .subscribe(data => {console.log(data),
              
              this.closeDialog();
-             this.openDialog("La proposta per il team è stata inviata");
+             this.openDialog2("La proposta per il team è stata inviata");
         
              this.teamsinconstruction$ = this.studentservice.getStudentCourseTeam(this.studentId,this.courseId);
              this.membersStatus$ = this.teamservice.getMembers(this.courseId,data.name);

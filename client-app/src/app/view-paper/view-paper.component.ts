@@ -57,7 +57,7 @@ export class ViewPaperComponent implements OnInit {
     this.soluzioneForm = this.formBuilder.group({
 
       soluzione : ['',Validators.required],
-      check : ['',Validators.required]
+      check : ['',]
 
     })
 

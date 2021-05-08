@@ -182,6 +182,8 @@ receivesoluzione ($event)
                             this.update();
                             });
           }
+          else
+          this.update();
          }
   );
 }
