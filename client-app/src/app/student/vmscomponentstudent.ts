@@ -100,7 +100,6 @@ export class VmscomponentComponent2 implements OnInit {
       
       this.vm.nvcpu = data.nvcpu;
       console.log(data.nvcpu);
-      console.log(data.nvcpu);
       this.vm.ram = data.ram;
       this.vm.disk = data.disk;
       
@@ -125,4 +124,22 @@ this.changestateEvent.emit({vmId:vmid,command:commandstring})
   
 }
 
+isOn (stat: String) {
+  console.log(stat)
+  if(stat == "ACTIVE") return true;
+  return false;
 }
+isOff (stat: String) {
+  console.log(stat)
+  if (stat == "OFF") return true;
+  return false;
+}
+isFreezed (stat: String) {
+  console.log(stat)
+  if (stat == "FREEZED") return true;
+  return false;
+}
+
+}
+
+

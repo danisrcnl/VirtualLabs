@@ -7,7 +7,7 @@
             <div id="itemtext">
                 {{displayDate(st.timestamp)}} &nbsp; {{displayTime(st.timestamp)}} &nbsp;&nbsp; {{st.paperStatus}}
             </div>
-            <div id="itembutton2" *ngIf="st.content.length != 0">
+            <div id="itembutton2" *ngIf="st.content != null">
                 <button mat-flat-button class="buttonO" (click)="goViewSol(st.content)">Vedi soluzione</button>
             </div>
             <div id="itembutton" *ngIf="st.review != null && student">

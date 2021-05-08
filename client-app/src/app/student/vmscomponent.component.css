@@ -6,10 +6,31 @@
   margin-bottom: 30px;
   margin-top: 10px;
   margin-left: 10px;
+  width: 100%;
 }
 
-.example-header-image {
-  background-image: url("https://e7.pngegg.com/pngimages/23/668/png-clipart-vm-logo-text-brand-logo-vmware-text-logo.png");
+.textAvatar {
+  font-size: 12px;
+  font-weight: bold;
+  margin-top: 7px;
+  color: white;
+}
+
+.example-header-image1 {
+  text-align: center;
+  background-color: #ff637a;
+  background-size: cover;
+}
+
+.example-header-image2 {
+  text-align: center;
+  background-color: #63ffac;
+  background-size: cover;
+}
+
+.example-header-image3 {
+  text-align: center;
+  background-color: #ffea63;
   background-size: cover;
 }
 
@@ -31,4 +52,45 @@
 .cardHeader {
   position: absolute;
   z-index: 1;
+}
+
+.contcont {
+  width: 100%;
+  text-align: center;
+}
+
+#buttonsContainer {
+  margin: 0 auto;
+  width: 100%;
+}
+
+.actionB_wrapper {
+  
+  margin-left: 5px;
+  display: inline-block;
+}
+
+#on {
+  background-color: #009959;
+} #on:hover{
+  background-color: #63ffac;
+}
+#off {
+  background-color: #990014;
+} #off:hover {
+  background-color: #ff637a;
+}
+#pause {
+  background-color: #e8b200;
+} #pause:hover {
+  background-color: #ffea63;
+}
+#del {
+  background-color: blue;
+} #del:hover {
+  background-color: royalblue;
+}
+
+.specItem {
+  border-bottom: 1px solid #e0e0e0;
 }

@@ -42,8 +42,6 @@ export class ElaboratistudentComponent implements OnInit {
   @Input('assignmentWithPapers')
   set _assignmentWithPapers (assignmentWithPapers: AssignmentWithPapers[]) {
     this.assignmentWithPapers = assignmentWithPapers;
-    console.log(this.assignmentWithPapers);
-    
   }
 
   
@@ -56,70 +54,27 @@ export class ElaboratistudentComponent implements OnInit {
 
   setView (papersWithHistory: PaperWithHistory[]) {
     this.viewingPapers = papersWithHistory;
-    this.filteredViewingPapers = this.viewingPapers.filter(p => {
-      p.paper.currentStatus.toString() == "CONSEGNATO" ||
-      p.paper.currentStatus.toString() == "LETTO" ||
-      p.paper.currentStatus.toString() == "VALUTATO"
-    });
-    console.log(this.viewingPapers);
-  }
-
-  toggle(chip: MatChip) {
-    
-    var newSelection: String[] = [];
-
-    if(chip.selected){
-
-      chip.deselect();
-      this.selection.forEach(status => {
-        if(status != chip.value)
-          newSelection.push(status);
-      })
-      this.selection = newSelection;
-      
-    } 
-
-    else {
-      this.selection = [];
-      chip.toggleSelected();
-      this.selection.push(chip.value);
-    }
-
-    console.log(this.selection);
-    this.filter(this.selection);
-    console.log(this.filteredViewingPapers);
-
-    
-  }
-
-  clearChips () {
-    this.selection = [];
-  }
-
-  filter (selection: String[]) {
-    var keep: Boolean = false;
-    var newArray: PaperWithHistory[] = [];
-
-    if(selection.length == 0) {
-      this.filteredViewingPapers = this.viewingPapers;
-      return;
-    }
-
-
- 
+    var rv: PaperWithHistory[] = [];
     this.viewingPapers.forEach(p => {
-      selection.forEach(s => {
-        if(this.hasSameStatus(p.paper.currentStatus, s))
-          keep = true;
-      });
-
-      if(keep) {
-        newArray.push(p);
-        keep = false;
-      }
-
+      if(p.paper.currentStatus.toString() == "RIVISTO" ||
+      p.paper.currentStatus.toString() == "CONSEGNATO" ||
+      p.paper.currentStatus.toString() == "VALUTATO")
+        rv.push(p);
     });
-    this.filteredViewingPapers = newArray;
+    this.filteredViewingPapers = rv;
+  }
+
+  getValids (papersWithHistory: PaperWithHistory[]) {
+    var rv: PaperWithHistory[] = [];
+    console.log(papersWithHistory)
+    papersWithHistory.forEach(p => {
+      if(p.paper.currentStatus.toString() == "RIVISTO" ||
+      p.paper.currentStatus.toString() == "CONSEGNATO" ||
+      p.paper.currentStatus.toString() == "VALUTATO")
+        rv.push(p);
+    });
+    console.log(rv)
+    return rv;
   }
 
 
@@ -193,9 +148,6 @@ export class ElaboratistudentComponent implements OnInit {
   }
 
   viewAssignment (assignment: Assignment) {
-
-
-
     const dialogRef = this.dialog.open(ViewAssignmentComponent, {
       width: '600px',
       data: {
