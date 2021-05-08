@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UsedResources {
-    private int VCpu;
+    private int nVCpu;
     private int Ram;
     private int Disk;
 }
