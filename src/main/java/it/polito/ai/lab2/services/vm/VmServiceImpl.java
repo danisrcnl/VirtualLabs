@@ -176,12 +176,13 @@ public class VmServiceImpl implements VmService {
     }
 
     @Override
-    public void freezeVm(Long id) throws VmNotFoundException {
+    public void freezeVm(Long id) throws AiException {
         if(!vmRepository.existsById(id))
             throw new VmNotFoundException(id.toString());
-        vmRepository
-                .getOne(id)
-                .setCurrentStatus(VmStatus.FREEZED);
+        Vm vm = vmRepository.getOne(id);
+        if (vm.getCurrentStatus() != VmStatus.ACTIVE)
+            throw new AiException();
+        vm.setCurrentStatus(VmStatus.FREEZED);
     }
 
     @Override
