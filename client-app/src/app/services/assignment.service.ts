@@ -88,7 +88,8 @@ const httpOptions = {
         return this.http.get<Paper>(`${environment.apiUrlassignments}/paper/${paperId}/rate/${mark}`);
     }
 
-    setContent (paperId: number, file: any) {
+    setContent (paperId: number, formData: FormData) {
+        var file = formData;
         return this.http.post<any>(`${environment.apiUrlassignments}/paper/${paperId}/setContent`, file);
     }
 
