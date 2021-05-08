@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import {FormControl, Validators, FormGroup, FormBuilder, NgForm} from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { User } from '../user';
@@ -26,7 +26,8 @@ export class RegisterComponent implements OnInit {
         private userService: UserService,
         private alertService: AlertService,
         private matDialog : MatDialog,
-        private authService: AuthService
+        private authService: AuthService,
+        public dialog : MatDialog,
     ) {
         // redirect to home if already logged in
         if (this.authenticationService.currentUserValue) {
@@ -38,7 +39,7 @@ export class RegisterComponent implements OnInit {
         this.registerForm = this.formBuilder.group({
             nome: ['', Validators.required],
             cognome: ['', Validators.required],
-            matricola: ['', Validators.required],
+            matricola: ['', [Validators.required,Validators.minLength(6)]],
             email: ['', Validators.required,Validators.email],
             password: ['', [Validators.required, Validators.minLength(6)]]
         });
@@ -73,7 +74,10 @@ export class RegisterComponent implements OnInit {
                     console.log(data);
                     this.alertService.success('Registration successful', true);
                     this.matDialog.closeAll();
-                    this.router.navigate(['/auth/login']);
+                    let dialogRef = this.dialog.open(YourDialog, {
+                            data: { name: 'Registrazione effettuata!' },
+                                });
+                    this.router.navigate(['/']);
                 },
                 error => {
                     this.loading = false;
@@ -88,4 +92,14 @@ export class RegisterComponent implements OnInit {
         this.matDialog.closeAll();
     }
 
+    
+
+}
+
+@Component({
+  selector: 'your-dialog',
+  template: '{{ data.name }}',
+})
+export class YourDialog {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {name: string}) { }
 }

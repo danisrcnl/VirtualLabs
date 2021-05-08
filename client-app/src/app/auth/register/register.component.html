@@ -51,9 +51,11 @@
     </div>
 </div>
       <div *ngIf = "loading$ | async; else notloading">
+        <div class="row_progress">
 <mat-progress-spinner class="example-margin" color="green" mode="indeterminate">
 </mat-progress-spinner>
 </div>
+      </div>
 <ng-template #notloading>
       <button class="btn1" > Registrati </button>
       </ng-template>
