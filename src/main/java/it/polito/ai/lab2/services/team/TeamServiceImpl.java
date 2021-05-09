@@ -3,6 +3,7 @@ package it.polito.ai.lab2.services.team;
 import it.polito.ai.lab2.dtos.*;
 import it.polito.ai.lab2.entities.*;
 import it.polito.ai.lab2.repositories.*;
+import it.polito.ai.lab2.services.auth.AuthenticationService;
 import it.polito.ai.lab2.services.course.CourseService;
 import it.polito.ai.lab2.services.student.StudentService;
 import org.modelmapper.ModelMapper;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +28,9 @@ public class TeamServiceImpl implements TeamService {
 
     @Autowired
     CourseService courseService;
+
+    @Autowired
+    AuthenticationService authenticationService;
 
     @Autowired
     StudentRepository studentRepository;
@@ -48,7 +53,28 @@ public class TeamServiceImpl implements TeamService {
         if(!teamRepository.existsById(id))
             throw new TeamNotFoundException(id);
 
-        teamRepository.getOne(id).setStatus(1);
+        Team t = teamRepository.getOne(id);
+
+        t.setStatus(1);
+
+        List<User> users = t
+                .getMembers()
+                .stream()
+                .map(Student :: getUser)
+                .collect(Collectors.toList());
+
+        String creator = t.getCreator().getId();
+        String courseName = t.getCourse().getName();
+        String teamName = t.getName();
+
+        for (User user : users) {
+            if(user.getStudent().getId().equals(creator)) {
+                authenticationService.setPrivileges(user.getUsername(), Arrays.asList("ROLE_TEAM_" + courseName + "_" + teamName + "_CREATOR"));
+                authenticationService.setPrivileges(user.getUsername(), Arrays.asList("ROLE_TEAM_" + t.getId() + "_CREATOR"));
+            }
+            authenticationService.setPrivileges(user.getUsername(), Arrays.asList("ROLE_TEAM_" + courseName + "_" + teamName + "_MEMBER"));
+            authenticationService.setPrivileges(user.getUsername(), Arrays.asList("ROLE_TEAM_" + t.getId() + "_MEMBER"));
+        }
     }
 
     @Override
@@ -77,6 +103,24 @@ public class TeamServiceImpl implements TeamService {
 
         teamRepository.delete(t);
         teamRepository.flush();
+    }
+
+    private void deleteRolesOfTeam (int id) throws TeamNotFoundException {
+        if(!teamRepository.existsById(id))
+            throw new TeamNotFoundException(id);
+        Team t = teamRepository.getOne(id);
+        List<User> users = teamRepository
+                .getOne(id)
+                .getMembers()
+                .stream()
+                .map(s -> s.getUser())
+                .collect(Collectors.toList());
+        Integer idO = id;
+        for (User user : users) {
+            user
+                    .getRoles()
+                    .removeIf(role -> (role.contains(idO.toString()) && role.contains("TEAM")) || (role.contains(t.getName()) && role.contains(t.getCourse().getName())));
+        }
     }
 
     @Override

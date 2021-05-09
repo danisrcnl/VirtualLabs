@@ -64,11 +64,13 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         Optional<User> outcome = userRepository.findByUsername(username);
         if (!outcome.isPresent())
             throw new UserNotFoundException(username);
+        return outcome.get().getActive();
+        /*
         List<String> roles = outcome
                 .get()
                 .getRoles();
         if(!roles.contains("ROLE_STUDENT") && !roles.contains("ROLE_TEACHER"))
             return false;
-        return true;
+        return true;*/
     }
 }

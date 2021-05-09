@@ -202,7 +202,7 @@ public class VmServiceImpl implements VmService {
         for (User u : users) {
             u
                 .getRoles()
-                .removeIf(role -> role.contains(vm.getId().toString()));
+                .removeIf(role -> role.contains(vm.getId().toString()) && role.contains("VM"));
         }
 
         vm.removeRelations();
