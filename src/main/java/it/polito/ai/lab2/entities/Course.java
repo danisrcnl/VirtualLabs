@@ -60,10 +60,16 @@ public class Course {
     }
 
     public void removeRelations () {
-        for (Student s : students)
+        for (Student s : students) {
+            if(s.getUser() != null)
+                s.getUser().getRoles().removeIf(r -> r.contains(this.getName()));
             s.getCourses().remove(this);
-        for (Teacher t : teachers)
+        }
+        for (Teacher t : teachers) {
+            if(t.getUser() != null)
+                t.getUser().getRoles().removeIf(r -> r.contains(this.getName()));
             t.getCourses().remove(this);
+        }
     }
 
     public int addTeacher (Teacher teacher) {

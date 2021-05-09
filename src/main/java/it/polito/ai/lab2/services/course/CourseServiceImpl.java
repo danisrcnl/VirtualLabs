@@ -12,6 +12,7 @@ import it.polito.ai.lab2.services.AiException;
 import it.polito.ai.lab2.services.assignment.AssignmentService;
 import it.polito.ai.lab2.services.auth.AuthenticationService;
 import it.polito.ai.lab2.services.student.StudentService;
+import it.polito.ai.lab2.services.team.TeamService;
 import it.polito.ai.lab2.services.team.TeamServiceException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     StudentService studentService;
+
+    @Autowired
+    TeamService teamService;
 
     @Autowired
     CourseRepository courseRepository;
@@ -235,6 +239,15 @@ public class CourseServiceImpl implements CourseService {
             throw new CourseNotFoundException(courseName);
 
         Course c = courseRepository.getOne(courseName);
+        List<Integer> teams = courseRepository
+                .getOne(courseName)
+                .getTeams()
+                .stream()
+                .map(Team :: getId)
+                .collect(Collectors.toList());
+        for(Integer i : teams) {
+            teamService.evictTeamById(i.intValue());
+        }
         c.removeRelations();
         courseRepository.delete(c);
         courseRepository.flush();

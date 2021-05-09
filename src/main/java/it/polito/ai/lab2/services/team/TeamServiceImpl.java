@@ -91,6 +91,17 @@ public class TeamServiceImpl implements TeamService {
         if(!teamRepository.existsById(id))
             throw new TeamNotFoundException(id);
 
+        List<User> users = teamRepository
+                .getOne(id)
+                .getMembers()
+                .stream()
+                .map(Student :: getUser)
+                .collect(Collectors.toList());
+
+        for (User user : users) {
+            user.getRoles().removeIf(r -> r.contains("TEAM_" + id));
+        }
+
         teamRepository.delete(teamRepository.getOne(id));
         teamRepository.flush();
     }
@@ -100,6 +111,17 @@ public class TeamServiceImpl implements TeamService {
         Team t = teamRepository.getTeamByCourseAndName(courseName, teamName);
         if(t == null)
             throw new TeamNotFoundException(teamName);
+
+        List<User> users = teamRepository
+                .getTeamByCourseAndName(courseName, teamName)
+                .getMembers()
+                .stream()
+                .map(Student :: getUser)
+                .collect(Collectors.toList());
+
+        for (User user : users) {
+            user.getRoles().removeIf(r -> r.contains("TEAM_" + courseName + "_" + teamName));
+        }
 
         teamRepository.delete(t);
         teamRepository.flush();
