@@ -161,6 +161,10 @@ public class CourseServiceImpl implements CourseService {
             assignmentService.linkPaperToAssignment(paperId, id);
         }
 
+        User u = teacherRepository.getOne(studentId).getUser();
+        if(u != null)
+            authenticationService.setPrivileges(u.getUsername(), Arrays.asList("ROLE_COURSE_" + courseName + "_STUDENT"));
+
         return true;
     }
 
@@ -202,7 +206,8 @@ public class CourseServiceImpl implements CourseService {
                 .addTeacher(teacherRepository.getOne(teacherId));
 
         User u = teacherRepository.getOne(teacherId).getUser();
-        authenticationService.setPrivileges(u.getUsername(), Arrays.asList("ROLE_COURSE_" + courseName + "_TEACHER"));
+        if (u != null)
+            authenticationService.setPrivileges(u.getUsername(), Arrays.asList("ROLE_COURSE_" + courseName + "_TEACHER"));
 
         return true;
 
