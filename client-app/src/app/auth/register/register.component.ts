@@ -46,8 +46,8 @@ export class RegisterComponent implements OnInit {
         this.registerForm = this.formBuilder.group({
             nome: ['', Validators.required],
             cognome: ['', Validators.required],
-            matricola: ['', [Validators.required,Validators.minLength(7)]],
-            email: ['', Validators.required,Validators.email],
+            matricola: ['', [Validators.required,Validators.minLength(7),Validators.maxLength(7)]],
+            email: ['', [Validators.required,Validators.email]],
             password: ['', [Validators.required, Validators.minLength(6)]]
         });
 
@@ -63,7 +63,10 @@ export class RegisterComponent implements OnInit {
 
 
     this.registerForm.valueChanges.subscribe ( val => {
+
+      console.log(val);
         
+      
 
         if(val.matricola == 's' && this.count==0)
         {
@@ -96,13 +99,13 @@ export class RegisterComponent implements OnInit {
 
 
         this.matr = this.registerForm.controls['matricola'].value;
-console.log(this.matr.length);
+
         if(this.matr.length == 0 && this.count!=0)
         {
-            console.log(this.matr.length);
+            
             this.count = 0;
         }  
-        
+   
     })
    }
 
@@ -110,21 +113,34 @@ console.log(this.matr.length);
     get f() { return this.registerForm.controls; }
 
     onSubmit() {
-        this.submitted = true;
+
+this.submitted = true;
+        let mail;
+        this.autoemail.subscribe(data => {mail = data})
+        this.registerForm.controls['email'].setValue(mail);
+        console.log(this.registerForm.controls['email'].value);
+
+
+  
+         if (this.registerForm.invalid) {
+            return;
+        }
+       
+      
 
         // reset alerts on submit
         this.alertService.clear();
 
         // stop here if form is invalid
-        if (this.registerForm.invalid) {
-            return;
-        }
+       
         this.loading = true;
         this.loading$ = of(this.loading);
         this.loading$.subscribe(data => {console.log(data);});
 
        this.numbermatricola = this.f.matricola.value;
        this.numbermatricola = this.numbermatricola.substring(1);
+       
+
 
         
 

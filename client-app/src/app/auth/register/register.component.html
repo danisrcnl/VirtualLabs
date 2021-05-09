@@ -19,7 +19,7 @@
     <button mat-button class = "btn" (click)= "close()"></button>
     </div>
   </mat-dialog-actions>
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form" autocomplete="off">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
       <div class="form-group">
         <input type="text" placeholder = "Nome" formControlName="nome" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.nome.errors }" />
         <div *ngIf="submitted && f.nome.errors" class="invalid-feedback">
@@ -36,6 +36,8 @@
             <input type="text" placeholder = "Matricola" formControlName="matricola" class="form-control" [(ngModel)]= "matricolis" [ngClass]="{ 'is-invalid': submitted && f.matricola.errors }" />
             <div *ngIf="submitted && f.matricola.errors" class="invalid-feedback">
                 <div *ngIf="f.matricola.errors.required">Inserire una matricola </div>
+                <div *ngIf="f.matricola.errors.minlength">La matricola deve essere di 6 caratteri esclusa la lettera </div>
+                <div *ngIf="f.matricola.errors.maxlength">La matricola deve essere di 6 caratteri esclusa la lettera </div>
             </div>
         </div>
         <div class="form-group">
