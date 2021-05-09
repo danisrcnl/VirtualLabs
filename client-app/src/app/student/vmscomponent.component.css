@@ -26,16 +26,16 @@
 .example-header-image2 {
   box-shadow: 1px 1px 10px grey;
   text-align: center;
-  background-color: #63ffac;
+  background-color: #009959;
   background-size: cover;
-}
+} 
 
 .example-header-image3 {
   box-shadow: 1px 1px 10px grey;
   text-align: center;
-  background-color: #ffea63;
+  background-color: #ffdf2c;
   background-size: cover;
-}
+} #taY {color: #252525;}
 
 .sub {
   color: green;
