@@ -1,4 +1,5 @@
-<tr *ngFor="let vmss of vmsperteam$ | async">
+<div id="wrapper" *ngIf="team != null">
+<tr *ngFor="let vmss of vmsperteam$ | async" >
         <!--<i>{{ vmss.nvcpu }} {{vmss.disk}} </i>
 		<td></td>
         <td> </td>-->
@@ -55,3 +56,5 @@
         <mat-icon>add</mat-icon>
     </button>
 </div>
+</div>
+<div *ngIf="team == null"><h1>Non fai ancora parte di nessun team</h1></div>

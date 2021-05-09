@@ -9,6 +9,7 @@ import { vmModelDTO } from 'app/model/vmModelDTO.model';
 import { Observable } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { UsedResources } from 'app/model/UsedResources.model';
+import { Team } from 'app/model/team.model';
 
 
 
@@ -25,12 +26,19 @@ export class VmscomponentComponent2 implements OnInit {
   vmModel : vmModelDTO;
   roles$ : Observable<String[]>;
   usedResources$ : Observable <UsedResources>;
+  team: Team;
 
   @Input ('vmsperteam$')
   set Vms (vmss: Observable<Vms[]>)
   {
     this.vmsperteam$ = vmss;
     console.log(this.vmsperteam$);
+  }
+
+  @Input ('team')
+  set _team (team: Team) {
+    this.team = team;
+    console.log("||" + team)
   }
 
   @Input ('vmModel')
@@ -51,6 +59,7 @@ export class VmscomponentComponent2 implements OnInit {
   set Usedresources (value : Observable <UsedResources>)
   {
     this.usedResources$ = value;
+    console.log("!!!" + this.usedResources$)
     
   }
 

@@ -107,3 +107,9 @@
 #edit:hover {
   background-color: red;
 }
+
+#spinnerVm {
+  position: relative;
+  z-index: 3;
+  border: 2px solid red;
+}
