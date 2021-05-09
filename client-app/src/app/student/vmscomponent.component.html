@@ -3,48 +3,53 @@
 		<td></td>
         <td> </td>-->
 
-<mat-card class="example-card">
-    <mat-card-header class="cardHeader">
-        <div mat-card-avatar class="example-header-image2" *ngIf="isOn(vmss.vmStatus)"><p class="textAvatar">on</p></div>
-        <div mat-card-avatar class="example-header-image1" *ngIf="isOff(vmss.vmStatus)"><p class="textAvatar">off</p></div>
-        <div mat-card-avatar class="example-header-image3" *ngIf="isFreezed(vmss.vmStatus)"><p class="textAvatar">pause</p></div>
-    </mat-card-header>
-    <div *ngIf = "vmModel.operatingSystem == 'Windows'">
-        <img mat-card-image src="https://media.kasperskydaily.com/wp-content/uploads/sites/89/2020/01/28120905/rip-windows-seven-featured.jpg" alt="Vm Windows">
-    </div>
-    <div *ngIf="vmModel.operatingSystem == 'Linux'">
-        <img mat-card-image src="https://cdn.mos.cms.futurecdn.net/LJSA6h759BKJvuaBZyoUY-320-80.jpg" alt="Vm Linux">
-    </div>
-    <mat-card-content>
-        <mat-list role="list">
-            <mat-list-item class="specItem" role="listitem"><b>CPU virtuali</b>: {{vmss.nvcpu}} </mat-list-item>
-            <mat-list-item class="specItem" role="listitem"><b>RAM</b>: {{vmss.ram}} MB </mat-list-item>
-            <mat-list-item class="specItem" role="listitem"><b>Disco</b>: {{vmss.disk}} MB </mat-list-item>
-        </mat-list>
-    </mat-card-content>
-    <tr *ngFor="let role of roles$ | async" class="contcont">
-       <!--*ngIf= "role.includes('VM_'+vmss.id+'_CREATOR')"-->
-        <div id="buttonsContainer" *ngIf= "role.includes('VM_'+vmss.id+'_CREATOR')">
-            <div class="actionB_wrapper">
-                <button class="actionB" id="on" mat-mini-fab (click)= "set('start',vmss.id)"><mat-icon>play_arrow</mat-icon></button>
+    <mat-card class="example-card">
+        <mat-card-header class="cardHeader">
+            <div mat-card-avatar class="example-header-image2" *ngIf="isOn(vmss.vmStatus)"><p class="textAvatar">on</p></div>
+            <div mat-card-avatar class="example-header-image1" *ngIf="isOff(vmss.vmStatus)"><p class="textAvatar">off</p></div>
+            <div mat-card-avatar class="example-header-image3" *ngIf="isFreezed(vmss.vmStatus)"><p class="textAvatar">pause</p></div>
+            <div class="editButton">
+                <button class="actionB" id="edit" mat-mini-fab ><mat-icon>edit</mat-icon></button>
             </div>
-            <div class="actionB_wrapper">
-                <button class="actionB" id="pause" mat-mini-fab (click)="set('freeze',vmss.id)"><mat-icon>pause</mat-icon></button>
-            </div>
-            <div class="actionB_wrapper">
-                <button class="actionB" id="off" mat-mini-fab (click)= "set('shutDown',vmss.id)"><mat-icon>power_settings_new</mat-icon></button>
-            </div>
-            <div class="actionB_wrapper">
-                <button class="actionB" id="del" mat-mini-fab (click)= "set('delete',vmss.id)"><mat-icon>delete</mat-icon></button>
-            </div>
+        </mat-card-header>
+        <div *ngIf = "vmModel.operatingSystem == 'Windows'">
+            <img mat-card-image src="https://media.kasperskydaily.com/wp-content/uploads/sites/89/2020/01/28120905/rip-windows-seven-featured.jpg" alt="Vm Windows">
+        </div>
+        <div *ngIf="vmModel.operatingSystem == 'Linux'">
+            <img mat-card-image src="https://cdn.mos.cms.futurecdn.net/LJSA6h759BKJvuaBZyoUY-320-80.jpg" alt="Vm Linux">
+        </div>
+        <mat-card-content>
+            
+            <mat-list role="list">
+                <mat-list-item class="specItem" role="listitem"><b>CPU virtuali</b>: {{vmss.nvcpu}} </mat-list-item>
+                <mat-list-item class="specItem" role="listitem"><b>RAM</b>: {{vmss.ram}} MB </mat-list-item>
+                <mat-list-item class="specItem" role="listitem"><b>Disco</b>: {{vmss.disk}} MB </mat-list-item>
+            </mat-list>
+        </mat-card-content>
+        <tr *ngFor="let role of roles$ | async" class="contcont">
+        <!--*ngIf= "role.includes('VM_'+vmss.id+'_CREATOR')"-->
+            <div id="buttonsContainer" *ngIf= "role.includes('VM_'+vmss.id+'_CREATOR')">
+                <div class="actionB_wrapper">
+                    <button class="actionB" id="on" mat-mini-fab (click)= "set('start',vmss.id)"><mat-icon>play_arrow</mat-icon></button>
+                </div>
+                <div class="actionB_wrapper">
+                    <button class="actionB" id="pause" mat-mini-fab (click)="set('freeze',vmss.id)"><mat-icon>pause</mat-icon></button>
+                </div>
+                <div class="actionB_wrapper">
+                    <button class="actionB" id="off" mat-mini-fab (click)= "set('shutDown',vmss.id)"><mat-icon>power_settings_new</mat-icon></button>
+                </div>
+                <div class="actionB_wrapper">
+                    <button class="actionB" id="del" mat-mini-fab (click)= "set('delete',vmss.id)"><mat-icon>delete</mat-icon></button>
+                </div>
+            </div >
         
-        </div >
-        
-</tr>
-</mat-card>
+        </tr>
 
-        
-	</tr>
+
+    </mat-card>
+    
+       
+</tr>
 <div id = "creaVm_button">
     <button mat-fab id="creaVm_button_o" (click)= "createvm()">
         <mat-icon>add</mat-icon>
