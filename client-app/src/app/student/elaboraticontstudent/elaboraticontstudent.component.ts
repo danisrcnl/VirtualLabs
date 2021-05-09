@@ -103,8 +103,7 @@ export class ElaboraticontstudentComponent implements OnInit {
         )
   
       })
-      
-  
+
     })
 
   })
