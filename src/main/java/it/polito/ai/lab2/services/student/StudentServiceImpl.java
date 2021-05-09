@@ -8,12 +8,14 @@ import it.polito.ai.lab2.dtos.VmDTO;
 import it.polito.ai.lab2.entities.*;
 import it.polito.ai.lab2.repositories.StudentRepository;
 import it.polito.ai.lab2.repositories.UserRepository;
+import it.polito.ai.lab2.services.auth.AuthenticationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,6 +32,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    AuthenticationService authenticationService;
 
     @Override
     public boolean addStudent(StudentDTO student) {
@@ -119,6 +124,12 @@ public class StudentServiceImpl implements StudentService {
         u.setStudent(s);
         userRepository.flush();
         studentRepository.flush();
+        List<String> roles = u.getRoles();
+        List<String> courses = s.getCourses().stream().map(Course::getName).collect(Collectors.toList());
+        for(String courseName : courses) {
+            if(!roles.contains("ROLE_COURSE_" + courseName + "_STUDENT"))
+                authenticationService.setPrivileges(u.getUsername(), Arrays.asList("ROLE_COURSE_" + courseName + "_STUDENT"));
+        }
     }
 
 }

@@ -142,7 +142,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void notifyUser (String email) throws UserNotFoundException {
+    public void notifyUser (String email, String firstName) throws UserNotFoundException {
 
         if (!userRepository.findByUsername(email).isPresent())
             throw new UserNotFoundException(email);
@@ -163,9 +163,7 @@ public class NotificationServiceImpl implements NotificationService {
 
         Teacher teacher = u.getTeacher();
         Student student = u.getStudent();
-        String name = "";
-        if (teacher != null) name = teacher.getFirstName();
-        if (student != null) name = student.getFirstName();
+        String name = firstName;
 
         Link rootLink = linkTo(NotificationController.class).withSelfRel();
         String confirmLink = rootLink.getHref() + "/register/confirm/" + id;

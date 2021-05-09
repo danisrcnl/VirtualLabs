@@ -157,7 +157,7 @@ public class CourseServiceImpl implements CourseService {
             assignmentService.linkPaperToAssignment(paperId, id);
         }
 
-        User u = teacherRepository.getOne(studentId).getUser();
+        User u = studentRepository.getOne(studentId).getUser();
         if(u != null)
             authenticationService.setPrivileges(u.getUsername(), Arrays.asList("ROLE_COURSE_" + courseName + "_STUDENT"));
 

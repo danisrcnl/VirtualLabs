@@ -133,7 +133,7 @@ public class AuthController {
             }
 
         }
-        notificationService.notifyUser(signUpRequest.getEmail());
+        notificationService.notifyUser(signUpRequest.getEmail(), signUpRequest.getFirstName());
     }
 
     private Boolean regEx (String email, String id) {
