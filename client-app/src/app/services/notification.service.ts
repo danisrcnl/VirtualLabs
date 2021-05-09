@@ -27,9 +27,9 @@ const httpOptions = {
    }
 
 
-   reject (studentId,teamId) 
+   reject (teamId,studentId) 
    {
-      return this.http.post<any>(`${environment.apiUrlnotification}/reject`,{studentId,teamId});
+      return this.http.get<any>(`${environment.apiUrlnotification}/reject/${teamId}/${studentId}`);
    }
 
   }

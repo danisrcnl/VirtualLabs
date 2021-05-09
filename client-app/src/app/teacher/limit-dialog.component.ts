@@ -10,7 +10,7 @@ import { DialogDataVm } from './vmscomponent.component';
   templateUrl: './limit-dialog.component.html',
   styleUrls: ['./limit-dialog.component.css']
 })
-export class LimitDialogComponent implements OnInit {
+export class LimitDialogComponent2 implements OnInit {
 
   limitForm: FormGroup;
 

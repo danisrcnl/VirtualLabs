@@ -106,7 +106,8 @@ export class StudentsContComponent implements OnInit {
   tempstudent : StudentDTO;
   @ViewChild(StudentsComponent)
   studentsComponent: StudentsComponent
-  
+  minstud : any;
+  maxstud : any;
   
   name: string;
 
@@ -183,6 +184,12 @@ this.route.queryParams.subscribe(data => {
     
         
         this.courseService.getAvailableStudents(this.courseId).subscribe(receivedstudents=>{
+
+            this.courseService.getOne(this.courseId).subscribe(data => {
+
+              this.maxstud = data.max;
+              this.minstud = data.min;
+
            receivedstudents.forEach(s => {
 
           
@@ -195,6 +202,7 @@ this.route.queryParams.subscribe(data => {
   
           }) 
         
+        });
          });
  
         //prendo i team dello studente 
@@ -310,7 +318,7 @@ console.log(this.compagni);
     this.notificationService.confirm(teamid,this.matricola).subscribe(
       
       data => {
-      
+    
    }
    ,
 
@@ -339,6 +347,54 @@ console.log(this.compagni);
   })
 
 }
+
+
+receiverejectmatricola($event) {
+
+ this.matricola = $event;
+
+}
+
+
+receiverejectteamid($event) {
+    
+    let teamid = $event;
+    console.log(teamid);
+    this.notificationService.reject(teamid,this.matricola).subscribe(
+      
+      data => {
+    
+   }
+   ,
+
+  error => {
+       this.studentservice.getStudentCourseTeam(this.studentId,this.courseId).
+        subscribe (teamss => {
+          console.log(teamss);
+          teamss.forEach ( t => {
+            
+            if(t.status==1){
+            this.teamName = t.name;
+            this.tabvalue = true;
+            console.log(this.tabvalue);
+            this.tabvalue$ = of(this.tabvalue);
+            this.compagnidigruppo$ = this.teamservice.getMembers(this.courseId,this.teamName);
+            }
+            
+          })
+    //this.updateteamstatus();
+ 
+ this.updateacceptedstatus(teamid,this.matricola,this.membersStatus);
+  }
+ 
+  )
+    console.log("errore");
+  })
+
+}
+
+
+
 
    //eventi per invito team 
 

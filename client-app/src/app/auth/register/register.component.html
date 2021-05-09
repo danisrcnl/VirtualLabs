@@ -19,7 +19,7 @@
     <button mat-button class = "btn" (click)= "close()"></button>
     </div>
   </mat-dialog-actions>
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form" autocomplete="off">
       <div class="form-group">
         <input type="text" placeholder = "Nome" formControlName="nome" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.nome.errors }" />
         <div *ngIf="submitted && f.nome.errors" class="invalid-feedback">
@@ -33,13 +33,13 @@
         </div>
     </div> 
       <div class="form-group">
-            <input type="text" placeholder = "Matricola" formControlName="matricola" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.matricola.errors }" />
+            <input type="text" placeholder = "Matricola" formControlName="matricola" class="form-control" [(ngModel)]= "matricolis" [ngClass]="{ 'is-invalid': submitted && f.matricola.errors }" />
             <div *ngIf="submitted && f.matricola.errors" class="invalid-feedback">
                 <div *ngIf="f.matricola.errors.required">Inserire una matricola </div>
             </div>
         </div>
         <div class="form-group">
-          <input type="text" placeholder="Email" formControlName="email" class="form-control" 
+          <input type="text" placeholder="Email" formControlName="email" class="form-control" [value]= "autoemail | async"
             [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
           <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
             <div *ngIf="f.email.errors.required">Inserire una email </div>

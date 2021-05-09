@@ -18,7 +18,13 @@ export class RegisterComponent implements OnInit {
     loading : boolean = false;
     loading$ : Observable <boolean>;
     submitted = false;
-
+    matricolis : String ='';
+    numbermatricola : String;
+    autoemail : Observable <String>;
+    student : boolean = false;
+    count : number = 0;
+    matr : String ='';
+   
     constructor(
         private formBuilder: FormBuilder,
         private router: Router,
@@ -40,14 +46,65 @@ export class RegisterComponent implements OnInit {
         this.registerForm = this.formBuilder.group({
             nome: ['', Validators.required],
             cognome: ['', Validators.required],
-            matricola: ['', [Validators.required,Validators.minLength(6)]],
+            matricola: ['', [Validators.required,Validators.minLength(7)]],
             email: ['', Validators.required,Validators.email],
             password: ['', [Validators.required, Validators.minLength(6)]]
         });
 
+        //this.registerForm.controls['email'].setValue(this.matricolis);
+
+        this.onChanges();
+  
   this.loading$ = of(this.loading);
         
     }
+
+   onChanges() : void {
+
+
+    this.registerForm.valueChanges.subscribe ( val => {
+        
+
+        if(val.matricola == 's' && this.count==0)
+        {
+            this.student = true;
+            this.count ++;
+            let s = val.matricola + '@studenti.polito.it';
+            this.autoemail = of (s);
+        }
+        else if (val.matricola == 'd' && this.count==0)
+        {
+          this.count++;
+          console.log("d");
+          this.student = false;
+          let n = val.matricola +'@polito.it';
+          this.autoemail = of (n);
+        }
+
+        if (this.student == true && this.count!=0 )    {
+             console.log("continuo s");
+            let s = val.matricola + '@studenti.polito.it';
+            this.autoemail = of (s); 
+        }
+
+        if (this.student == false && this.count!=0)
+        {
+            console.log("continuo d");
+            let n = val.matricola +'@polito.it';
+          this.autoemail = of (n);
+        }
+
+
+        this.matr = this.registerForm.controls['matricola'].value;
+console.log(this.matr.length);
+        if(this.matr.length == 0 && this.count!=0)
+        {
+            console.log(this.matr.length);
+            this.count = 0;
+        }  
+        
+    })
+   }
 
     // convenience getter for easy access to form fields
     get f() { return this.registerForm.controls; }
@@ -66,9 +123,12 @@ export class RegisterComponent implements OnInit {
         this.loading$ = of(this.loading);
         this.loading$.subscribe(data => {console.log(data);});
 
+       this.numbermatricola = this.f.matricola.value;
+       this.numbermatricola = this.numbermatricola.substring(1);
+
         
 
-        this.authService.signup(this.f.nome.value,this.f.cognome.value,this.f.matricola.value,this.f.email.value,this.f.password.value)
+        this.authService.signup(this.f.nome.value,this.f.cognome.value,this.numbermatricola,this.f.email.value,this.f.password.value)
 
             .subscribe(
                 data => {
@@ -81,7 +141,10 @@ export class RegisterComponent implements OnInit {
                                 });
                     this.router.navigate(['/']);
                 },
-                error => {
+                (error) => {
+                    let dialogRef = this.dialog.open(YourDialog, {
+                            data: { name: error },
+                                });
                     this.loading = false;
                     this.loading$ = of(this.loading);
                     this.alertService.error(error);

@@ -1,28 +1,34 @@
 #wrapper {
-    text-align: center;
+  text-align: center;
 }
 
 #buttons {
-    margin-top: 4px;
+  margin-top: 4px;
 }
 
 #buttonSave {
-    margin-right: 4px;
-    background-color: royalblue;
-} #buttonSave:hover {
-    background-color: blue;
+  margin-right: 4px;
+  background-color: royalblue;
+}
+#buttonSave:hover {
+  background-color: blue;
 }
 #buttonClose {
-    margin-left: 4px;
-    background-color: orangered;
-} #buttonClose:hover {
-    background-color: red;
+  margin-left: 4px;
+  background-color: orangered;
+}
+#buttonClose:hover {
+  background-color: red;
 }
 
 .row {
-    width: 100%;
+  width: 100%;
 }
 
 .text {
-    width: 80%;
+  width: 80%;
+}
+
+#so {
+  width: 90%;
 }

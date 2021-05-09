@@ -54,7 +54,14 @@ export class LimitDialogComponent implements OnInit {
   myvalue : any;
  a : any;
  b : any;
+ c : any;
+ d : any;
+ e : any;
+ g : any;
+
  count :any = 0;
+ count2 : any = 0;
+ count3 : any = 0;
   submitted = false;
 
   
@@ -124,9 +131,9 @@ this.dialog.closeAll();
    if(newValue!=undefined && this.count==0) {
      this.count = 1;
   this.a = newValue;
-  console.log("prima volta" + this.ram_consumption);
+
   this.ram_consumption = this.ram_consumption + ((newValue)/this.vmModel.maxRam)*100;
-  console.log("1 " + this.ram_consumption);
+
   this.b = ((newValue)/this.vmModel.maxRam)*100;}
 
 
@@ -134,7 +141,7 @@ this.dialog.closeAll();
    this.ram_consumption = this.ram_consumption -this.b;
   
    this.ram_consumption = this.ram_consumption + ((newValue)/this.vmModel.maxRam)*100;
-    console.log("12 " + this.ram_consumption);
+
    this.b = ((newValue)/this.vmModel.maxRam)*100;
    this.a = newValue;
   }
@@ -144,30 +151,51 @@ this.dialog.closeAll();
 
 valuechangeDisk(newValue) {
   
-   if(newValue!=undefined)
+ 
+
+   if(newValue!=undefined && this.count2==0){
+     this.count2 = 1;
+
+     this.c = newValue;
 
  this.disk_consumption = this.disk_consumption + ((newValue)/this.vmModel.maxDisk)*100;
-   console.log(this.disk_consumption);
-
    
-  if(newValue==0)
-   this.disk_consumption = ((this.vmModel.maxDisk - this.used_resources.disk)/this.vmModel.maxDisk)*100;
-   console.log(this.disk_consumption);
+ this.d = ((newValue)/this.vmModel.maxDisk)*100;}
+
+
+    if(newValue!=this.c){
+   this.disk_consumption = this.disk_consumption - this.d;
+  
+   this.disk_consumption = this.disk_consumption + ((newValue)/this.vmModel.maxDisk)*100;
+
+  this.d = ((newValue)/this.vmModel.maxDisk)*100;
+  this.c = newValue;
+  }
 
 }
 
 
 valuechangenvcpu(newValue) {
   
-   if(newValue!=undefined)
+   if(newValue!=undefined && this.count3==0){
+     this.count3 = 1;
+
+     this.e = newValue;
 
   this.nvcpu_consumption = this.nvcpu_consumption + ((newValue)/this.vmModel.maxNVCpu)*100;
-   
-   
-  if(newValue==0)
 
-    this.nvcpu_consumption = ((this.vmModel.maxNVCpu - this.used_resources.nvcpu)/this.vmModel.maxNVCpu)*100;
-    
+  this.g = ((newValue)/this.vmModel.maxNVCpu)*100;}
+   
+
+   
+    if(newValue!=this.e){
+   this.nvcpu_consumption = this.nvcpu_consumption - this.g;
+  
+   this.nvcpu_consumption = this.nvcpu_consumption + ((newValue)/this.vmModel.maxNVCpu)*100;
+
+  this.e = ((newValue)/this.vmModel.maxNVCpu)*100;
+  this.g = newValue;
+  }
 
 }
 

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LimitDialogComponent } from './limit-dialog.component';
+import { LimitDialogComponent2 } from './limit-dialog.component';
 
 describe('LimitDialogComponent', () => {
-  let component: LimitDialogComponent;
-  let fixture: ComponentFixture<LimitDialogComponent>;
+  let component: LimitDialogComponent2;
+  let fixture: ComponentFixture<LimitDialogComponent2>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LimitDialogComponent ]
+      declarations: [ LimitDialogComponent2 ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LimitDialogComponent);
+    fixture = TestBed.createComponent(LimitDialogComponent2);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

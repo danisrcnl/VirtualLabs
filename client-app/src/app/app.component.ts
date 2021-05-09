@@ -213,16 +213,19 @@ onActivate (componentRef)
         data => { console.log(data);
         this.authService.info().subscribe(
           data1 => {
+            console.log(data1);
+            console.log(this.isTeacher);
             this.isTeacher= data1.isTeacher;
             if (this.isTeacher == false)
         {
           this.router.navigate([this.returnUrl + 'student'], {queryParams: {user: data.username}});
           this.dialog.closeAll();
         }
-        else 
+        else{ 
+          
          this.router.navigate([this.returnUrl + 'teacher'], {queryParams: {user: data.username}});
          this.dialog.closeAll();
-      }
+      }}
         )
       
           this.currentUser = this.authService.currentUser;

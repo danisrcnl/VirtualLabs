@@ -90,7 +90,11 @@ return this.http.get<any>(`${environment.apiUrlcourse}/${coursename}/setMax/${va
 return this.http.get<any>(`${environment.apiUrlcourse}/${coursename}/setEnabled/${value}`);
  }
 
-
+ 
+ getOne (name)
+ {
+   return this.http.get<any>(`${environment.apiUrlcourse}/${name}`);
+ }
 
 courses$ : Observable<Course[]>;
 private courseSubject :Subject<Course[]>;

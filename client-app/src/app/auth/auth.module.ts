@@ -12,7 +12,7 @@ import { RouterModule } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ErrorInterceptor } from './interceptor/error.interceptor';
-import { LimitDialogComponent } from '../teacher/limit-dialog.component';
+import { LimitDialogComponent2 } from '../teacher/limit-dialog.component';
 import { AuthGuard } from '../_helpers/auth.guard';
 import { AuthService } from './authservices/auth.service';
 import { JwtInterceptor } from './interceptor/jwt.interceptor';
@@ -23,7 +23,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 
 @NgModule({
-  declarations: [LoginDialogComponent, RegisterComponent,LimitDialogComponent],
+  declarations: [LoginDialogComponent, RegisterComponent],
   providers: [
     AuthGuard,
     AuthService,
@@ -51,7 +51,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   ],
 
   exports : [
-    LoginDialogComponent, RegisterComponent,LimitDialogComponent
+    LoginDialogComponent, RegisterComponent
   ]})
 
   export class AuthModule{}

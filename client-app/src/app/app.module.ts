@@ -58,6 +58,7 @@ import { ErrorDialog, VmService } from './services/vm.service';
 import { Vms } from './model/vms.model';
 import { CreatePaperComponent } from './create-paper/create-paper.component';
 import { ViewAssignmentComponent } from './view-assignment/view-assignment.component';
+import { LimitDialogComponent2 } from './teacher/limit-dialog.component';
 
 
 
@@ -74,6 +75,7 @@ import { ViewAssignmentComponent } from './view-assignment/view-assignment.compo
     VmscomponentComponent,
     VmsContcomponentComponent2,
     LimitDialogComponent,
+    LimitDialogComponent2,
     StudentsContComponent,
     TeacherComponent,
     AppComponentStudent,

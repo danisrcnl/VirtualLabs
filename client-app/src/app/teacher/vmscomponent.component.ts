@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Group } from '../model/group.model';
 import { StudentService } from '../services/student.service';
 import { Vms } from '../model/vms.model';
-import { LimitDialogComponent } from './limit-dialog.component';
+import { LimitDialogComponent2 } from './limit-dialog.component';
 import { vmModelDTO } from 'app/model/vmModelDTO.model';
 import { StudentDTO } from 'app/model/studentDTO.model';
 
@@ -53,7 +53,7 @@ export class VmscomponentComponent implements OnInit {
   vms : Vms[] = [];
   groups : Group[] = [];
   constructor(public dialog: MatDialog, private studentservice: StudentService,private router: Router, private activeRoute: ActivatedRoute,
-    public dialogRef : MatDialogRef<LimitDialogComponent>, @Inject(MAT_DIALOG_DATA) public data : DialogDataVm) 
+    public dialogRef : MatDialogRef<LimitDialogComponent2>, @Inject(MAT_DIALOG_DATA) public data : DialogDataVm) 
   
   {
     
@@ -69,7 +69,7 @@ export class VmscomponentComponent implements OnInit {
   openlimitdialog()
   {
    
-    const dialogRef = this.dialog.open (LimitDialogComponent, { height: '500px',
+    const dialogRef = this.dialog.open (LimitDialogComponent2, { height: '500px',
     width: '400px',
     data : {
      

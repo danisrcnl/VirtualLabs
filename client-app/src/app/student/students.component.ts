@@ -73,6 +73,8 @@ export class StudentsComponent implements OnInit {
     teamName : string ="";
     paramname : string = "";
     firstParam : string ="";
+    minstud : any;
+    maxstud : any;
     public groupname : string = "";
     public href :string ="";
     public href2 : string ="";
@@ -155,6 +157,19 @@ export class StudentsComponent implements OnInit {
     set Teams (val : Team[])
     {
       this.teams = val;
+    }
+
+
+    @Input ('minstud')
+    set _minstud (val : any)
+    {
+      this.minstud = val;
+    }
+
+    @Input ('maxstud')
+    set _maxstud (val: any)
+    {
+      this.maxstud = val;
     }
 
    ngOnChanges (changes: SimpleChanges) {
