@@ -10,12 +10,12 @@ public class TeamNotFoundException extends TeamServiceException {
     TeamRepository teamRepository;
 
     public TeamNotFoundException(String id) {
-        this.setErrorMessage(id + " not found!");
+        this.setErrorMessage(id + " non trovato!");
         System.out.println(this.getErrorMessage());
     }
 
     public TeamNotFoundException(int id) {
-        this.setErrorMessage("Team with id: " + id + " doesn't exist!");
+        this.setErrorMessage("Il team con id: " + id + " non esiste!");
         System.out.println(this.getErrorMessage());
     }
 
