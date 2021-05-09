@@ -124,10 +124,6 @@ public class CourseServiceImpl implements CourseService {
                 .collect(Collectors.toList());
     }
 
-
-
-
-
     @Override
     public boolean addStudentToCourse(String studentId, String courseName) throws CourseNotFoundException, StudentNotFoundException {
         if(!courseRepository.existsById(courseName))
