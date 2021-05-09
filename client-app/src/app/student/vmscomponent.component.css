@@ -3,8 +3,8 @@
 }
 .example-card {
   max-width: 200px;
-  margin-bottom: 30px;
   margin-top: 10px;
+  margin-bottom: 10px;
   margin-left: 10px;
   width: 100%;
 }
@@ -17,22 +17,25 @@
 }
 
 .example-header-image1 {
+  box-shadow: 1px 1px 10px grey;
   text-align: center;
   background-color: #ff637a;
   background-size: cover;
 }
 
 .example-header-image2 {
+  box-shadow: 1px 1px 10px grey;
   text-align: center;
-  background-color: #63ffac;
+  background-color: #009959;
   background-size: cover;
-}
+} 
 
 .example-header-image3 {
+  box-shadow: 1px 1px 10px grey;
   text-align: center;
-  background-color: #ffea63;
+  background-color: #ffdf2c;
   background-size: cover;
-}
+} #taY {color: #252525;}
 
 .sub {
   color: green;
@@ -93,4 +96,14 @@
 
 .specItem {
   border-bottom: 1px solid #e0e0e0;
+}
+
+.editButton {
+  margin-left: 85px;
+  position: relative;
+  z-index: 2;
+  text-align: right;
+}
+#edit:hover {
+  background-color: red;
 }
