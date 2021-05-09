@@ -10,6 +10,7 @@ import it.polito.ai.lab2.repositories.TeacherRepository;
 import it.polito.ai.lab2.repositories.TeamRepository;
 import it.polito.ai.lab2.services.AiException;
 import it.polito.ai.lab2.services.assignment.AssignmentService;
+import it.polito.ai.lab2.services.auth.AuthenticationService;
 import it.polito.ai.lab2.services.student.StudentService;
 import it.polito.ai.lab2.services.team.TeamServiceException;
 import org.modelmapper.ModelMapper;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,6 +46,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     TeamRepository teamRepository;
+
+    @Autowired
+    AuthenticationService authenticationService;
 
     @Autowired
     AssignmentService assignmentService;
@@ -195,6 +200,9 @@ public class CourseServiceImpl implements CourseService {
         courseRepository
                 .getOne(courseName)
                 .addTeacher(teacherRepository.getOne(teacherId));
+
+        User u = teacherRepository.getOne(teacherId).getUser();
+        authenticationService.setPrivileges(u.getUsername(), Arrays.asList("ROLE_COURSE_" + courseName + "_TEACHER"));
 
         return true;
 
