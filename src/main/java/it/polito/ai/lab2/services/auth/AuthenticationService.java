@@ -11,4 +11,6 @@ public interface AuthenticationService {
     void setPrivileges (String username, List<String> roles);
 
     String getUsername (Long userId);
+
+    Boolean isValid (String username);
 }

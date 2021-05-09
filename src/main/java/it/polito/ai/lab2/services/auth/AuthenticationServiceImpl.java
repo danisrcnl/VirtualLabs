@@ -58,4 +58,17 @@ public class AuthenticationServiceImpl implements AuthenticationService{
                 .getOne(userId)
                 .getUsername();
     }
+
+    @Override
+    public Boolean isValid(String username) throws UserNotFoundException {
+        Optional<User> outcome = userRepository.findByUsername(username);
+        if (!outcome.isPresent())
+            throw new UserNotFoundException(username);
+        List<String> roles = outcome
+                .get()
+                .getRoles();
+        if(!roles.contains("ROLE_STUDENT") && !roles.contains("ROLE_TEACHER"))
+            return false;
+        return true;
+    }
 }
