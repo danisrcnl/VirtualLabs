@@ -62,7 +62,8 @@ export class LimitDialogComponent implements OnInit {
  count :any = 0;
  count2 : any = 0;
  count3 : any = 0;
-  submitted = false;
+submitted = false;
+edit = false;
 
   
   constructor(private alertService: AlertService, private teamService: TeamService, private formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: Vms, public dialog: MatDialog) {
@@ -91,9 +92,11 @@ export class LimitDialogComponent implements OnInit {
    if(m==0)
     this.used_resource = s[1];
     
-    else
+    if(m==1)
     this.vmModel = s[1];
 
+ if(m==2)
+this.edit = s[1];
     m++;
     })
 

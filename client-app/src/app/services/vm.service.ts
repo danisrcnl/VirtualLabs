@@ -24,26 +24,11 @@ export class VmService {
         return this.http.post<any>(`${environment.apiUrlvms}/${courseName}/${teamName}`,{vmDTO,creator})
         .pipe(catchError(this.handleError));
     }
-
-    handleError(err) {
  
-  if(err instanceof HttpErrorResponse) {
-
-    console.log(err.error.message);
-    return throwError(err.error.message);
-
-  } else {
-
-    return throwError(err.error.message);
+    editVm(vm) {
+      return this.http.post<any>(`${environment.apiUrlvms}/setResources`,vm);
+    }
     
-
-  }
-}
-
-
-
-
- 
     getVmsByCourse (courseName) {
 
         return this.http.get<Vms[]>(`${environment.apiUrlvms}/courses/${courseName}`);
@@ -72,6 +57,20 @@ export class VmService {
         return this.http.get<any>(`${environment.apiUrlvms}/${vmId}/changeState/${command}`);
     }
 
+    handleError(err) {
+ 
+     if(err instanceof HttpErrorResponse) {
+
+       console.log(err.error.message);
+         return throwError(err.error.message);
+
+  } else {
+
+         return throwError(err.error.message);
+    
+
+  }
+}
     
 }
 

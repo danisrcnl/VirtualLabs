@@ -65,6 +65,9 @@ export class VmscomponentComponent2 implements OnInit {
 
 
   @Output() addvmEvent = new EventEmitter<Vms>();
+
+  @Output() editvmEvent = new EventEmitter<Vms>();
+
   @Output() changestateEvent = new EventEmitter<any>();
   
 
@@ -91,21 +94,18 @@ export class VmscomponentComponent2 implements OnInit {
   {
    
     const dialogRef = this.dialog.open (LimitDialogComponent, { height: '350px',
-    width: '400px',
+   width: '400px',
     data : { 
       resources : this.usedResources$, vmModel : this.vmModel
   
-    }
+          }
   
     });
     
     dialogRef.afterClosed().subscribe( data => {
 
-      console.log(data);
-
-
        if(data != undefined)
-   {
+     {
       
       this.vm.nvcpu = data.nvcpu;
       console.log(data.nvcpu);
@@ -117,11 +117,42 @@ export class VmscomponentComponent2 implements OnInit {
 
    }
 
+  })
+}
 
+
+editvm(vmss) {
+
+  this.vm = vmss;
+  let ed = true;
+
+  const dialogRef = this.dialog.open (LimitDialogComponent, { height: '350px',
+   width: '400px',
+    data : { 
+      resources : this.usedResources$, vmModel : this.vmModel, edit : ed
+  
+          }
+  
+    });
+    
+    dialogRef.afterClosed().subscribe( data => {
+
+       if(data != undefined)
+     {
+      
+     
+      this.vm.nvcpu = data.nvcpu;
+      console.log(data.nvcpu);
+      this.vm.ram = data.ram;
+      this.vm.disk = data.disk;
+      
+      console.log(this.vm);
+      this.editvmEvent.emit(this.vm);
+
+   }
 
   })
 
-    
 
 
 }
@@ -134,17 +165,17 @@ this.changestateEvent.emit({vmId:vmid,command:commandstring})
 }
 
 isOn (stat: String) {
-  console.log(stat)
+  
   if(stat == "ACTIVE") return true;
   return false;
 }
 isOff (stat: String) {
-  console.log(stat)
+ 
   if (stat == "OFF") return true;
   return false;
 }
 isFreezed (stat: String) {
-  console.log(stat)
+  
   if (stat == "FREEZED") return true;
   return false;
 }

@@ -195,6 +195,13 @@ this.hreff = this.router.url;
       
     }
 
+    receiveeditvm($event) {
+
+     this.vmService.editVm($event).subscribe( data => {console.log(data)});
+
+
+    }
+
     updatevms()
     {
 
