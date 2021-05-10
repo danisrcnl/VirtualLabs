@@ -132,7 +132,6 @@ this.assignmentWithPapersnull = [];
     'Novembre',
     'Dicembre'
   ]
-  console.log($event);
 
 
   let month = months.indexOf($event.mese);
@@ -151,7 +150,8 @@ this.assignmentWithPapersnull = [];
   this.assignmentService.addAssignmentToCourse(this.assignment,this.courseName).subscribe(data => 
     
     {
-        this.assignmentService.setAssignmentContent(this.assignment.id,$event.content).subscribe(data=> {
+        var id: number = <number> <unknown>data;
+        this.assignmentService.setAssignmentContent(id,$event.content).subscribe(data=> {
 
          this.update();
 

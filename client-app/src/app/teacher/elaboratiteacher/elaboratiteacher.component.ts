@@ -22,7 +22,7 @@ export interface DialogConsegna {
 giorno : number;
 mese : String;
 anno : number;
-content : File
+content : FormData
 
 }
 
@@ -139,11 +139,17 @@ export class ElaboratiteacherComponent implements OnInit {
     dialogRef.afterClosed().subscribe(data => {
 
       console.log(data);
+      var file = data.formData;
+      var formValue = data.consegnaForm;
 
-      this.consegnadata.anno = data.anno;
-      this.consegnadata.giorno = data.giorno;
-      this.consegnadata.mese = data.mese;
-      this.consegnadata.content = data.content;
+      console.log(formValue);
+      console.log(formValue.get("anno").value);
+
+      this.consegnadata.anno = formValue.get("anno").value;
+      this.consegnadata.giorno = formValue.get("giorno").value;
+      this.consegnadata.mese = formValue.get("mese").value;
+      this.consegnadata.content = file;
+      console.log(this.consegnadata);
       
       this.addconsegna.emit(this.consegnadata);
       
@@ -197,6 +203,11 @@ export class ElaboratiteacherComponent implements OnInit {
         
       console.log(result);
     });
+  }
+
+  displayDate(date: Date) {
+    var newDate: Date = new Date(date);
+    return newDate.getDate() + "/" + (newDate.getMonth()+1) + "/" + newDate.getFullYear();
   }
     
 }

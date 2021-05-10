@@ -33,8 +33,11 @@ const httpOptions = {
         return this.http.post<void>(`${environment.apiUrlassignments}/${courseName}`, assignment);
     }
 
-    setAssignmentContent (assignmentId: number, image: File) {
-        return this.http.post<void>(`${environment.apiUrlassignments}/${assignmentId}`, image);
+    setAssignmentContent (assignmentId: number, formData: FormData) {
+        var file = formData;
+        console.log(formData);
+        console.log(formData.get("file"))
+        return this.http.post<FormData>(`${environment.apiUrlassignments}/${assignmentId}/setContent`, file).pipe(catchError(this.handleError));
     }
 
     setPaperContent (paperId: number, image: File) {

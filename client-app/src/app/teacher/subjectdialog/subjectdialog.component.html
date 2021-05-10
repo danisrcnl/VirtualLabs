@@ -1,5 +1,5 @@
 
-<form [formGroup] = "myForm" id="wrapper">
+<form [formGroup] = "myForm" id="wrapper" autocomplete="off">
 
   <div id="intro" *ngIf="isIntro">
     <div id="button_modificaEsistente" (click)="showMod()">
@@ -50,13 +50,13 @@
 
       <div id="selMin" *ngIf="!deletePressed">
         <mat-form-field id="selMin_o">
-          <input matInput placeholder="Minimo studenti per team" formControlName = "minstud" [(ngModel)]="data.minstud">
+          <input matInput placeholder="Minimo studenti per team" formControlName = "minstud" [(ngModel)]="data.minstud" type="number">
         </mat-form-field>
       </div>
 
       <div id="selMax" *ngIf="!deletePressed">
         <mat-form-field id="selMax_o">
-          <input matInput placeholder="Massimo studenti per team" formControlName="maxstud" [(ngModel)]="data.maxstud">
+          <input matInput placeholder="Massimo studenti per team" formControlName="maxstud" [(ngModel)]="data.maxstud" type="number">
         </mat-form-field>
       </div>
 

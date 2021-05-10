@@ -45,6 +45,7 @@
 .lab {
   box-shadow: none !important;
   background-color: royalblue;
+  color: white;
 }
 
 .example-box:hover {

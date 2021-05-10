@@ -5,7 +5,7 @@
         </div>
         <div id="inputO">
             <input #imageInput type="file" id="input" accept="image/x-png,image/gif,image/jpeg" formControlName = "content" 
-             [(ngModel)]="data.content" [ngClass]="{ 'is-invalid': submitted && f.content.errors }">
+             [(ngModel)]="data.content" [ngClass]="{ 'is-invalid': submitted && f.content.errors }"  (change)="onFileSelected($event)">
         <div *ngIf="submitted && f.content.errors" class="invalid-feedback">
             <div *ngIf="f.content.errors.required"> Inserire un file  </div>
         </div>
