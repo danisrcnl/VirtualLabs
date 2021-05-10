@@ -42,6 +42,10 @@ export class StudentsComponent implements OnInit {
 
     @Output() confirmrequestEventteamid = new EventEmitter<number>();
 
+    @Output() rejectrequestEventmatricola = new EventEmitter<String>();
+
+    @Output() rejectrequestEventteamid = new EventEmitter<number>();
+
     @Output() groupName = new EventEmitter <String>();
 
     @Output() timeoutValue = new EventEmitter <Number>();
@@ -353,9 +357,10 @@ this.hreff = this.router.url;
       this.confirmrequestEventteamid.emit(teamid);
   }
 
-  reject (matricola,teamid)
-  {
-    
+  reject (matricola,teamid){
+    console.log(matricola,teamid);
+    this.rejectrequestEventmatricola.emit(matricola);
+    this.rejectrequestEventteamid.emit(teamid);
   }
 
   
