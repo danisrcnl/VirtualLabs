@@ -19,7 +19,7 @@
 
 <div id="buttons" *ngIf="teacher && step1 && !imageViewer">
 
-    <div id="buttonReview_w" *ngIf="editable">
+    <div id="buttonReview_w" *ngIf="editable && reviewable">
         <button class="buttonO" mat-flat-button (click)="clickreview()">Carica una revisione</button>
     </div>
     <div id="buttonRate_w" *ngIf="ratable">
