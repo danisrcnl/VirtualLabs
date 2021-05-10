@@ -95,6 +95,8 @@ export class ViewPaperComponent implements OnInit {
      }
 
 
+
+
   displayDate(date: Date) {
     var newDate: Date = new Date(date);
     return newDate.getDate() + "/" + (newDate.getMonth()+1) + "/" + newDate.getFullYear();
