@@ -38,12 +38,14 @@ export class ViewPaperComponent implements OnInit {
   soluzioneForm : FormGroup;
   valutaForm : FormGroup;
   submitted : boolean = false;
+  reviewable: Boolean;
 
   ngOnInit(): void {
     this.id = this.data.id;
     this.history = this.data.history;
     this.currentStatus = this.data.currentStatus;
     this.editable = this.data.editable;
+    this.reviewable = (this.currentStatus != "LETTO" && this.currentStatus != "NULL");
     this.ratable = (this.currentStatus == "RIVISTO" && this.editable == false);
     
     for(let i = 1; i<=30; i++) {

@@ -1,9 +1,9 @@
 <mat-accordion>
 
-    <mat-expansion-panel *ngFor="let ass of assignmentWithPapers" (opened)="setView(ass.papersWithHistory)">
+    <mat-expansion-panel *ngFor="let ass of ordered(assignmentWithPapers)" (opened)="setView(ass.papersWithHistory)">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <button class ="lab" mat-mini-fab>{{ass.assignment.id}}</button>
+          <button class ="lab" mat-flat-button>{{displayDate(ass.assignment.creationDate)}}</button>
         </mat-panel-title>
         <mat-panel-description class="descr">
           {{getValids(ass.papersWithHistory).length}} elaborati
