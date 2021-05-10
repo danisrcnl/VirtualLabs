@@ -9,51 +9,47 @@ import java.util.Optional;
 
 public interface TeamService {
 
-    // @PreAuthorize("hasRole('ROLE_TEAM_' + #id + '_MEMBER')")
     void activateTeamById (int id);
 
-    // @PreAuthorize("hasRole('ROLE_TEAM_' + #courseName + '_' + #teamName + '_MEMBER')")
     void activateTeam (String courseName, String teamName);
 
-    // @PreAuthorize("hasRole('ROLE_TEAM_' + #id + '_MEMBER')")
     void evictTeamById (int id);
 
-    // @PreAuthorize("hasRole('ROLE_TEAM_' + #courseName + '_' + #teamName + '_MEMBER')")
     void evictTeam (String courseName, String teamName);
 
-    // @PreAuthorize("hasAnyRole('ROLE_TEAM_' + #courseName + '_' + #teamName + '_MEMBER', 'ROLE_COURSE_' + #courseName + '_TEACHER')")
+    @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_STUDENT')")
     TeamDTO getTeam (String courseName, String teamName);
 
-    // @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_TEAM_' + #id + '_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_STUDENT')")
     TeamDTO getTeamById (int id);
 
-    // @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_TEAM_' + #id + '_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_STUDENT')")
     List<StudentDTO> getMembersById (int id);
 
-    // @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_TEAM_' + #courseName + '_' + #teamName + '_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_STUDENT')")
     List<StudentDTO> getMembers (String courseName, String teamName);
 
-    // @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_COURSE_' + #courseName + '_STUDENT')")
+    @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_COURSE_' + #courseName + '_STUDENT')")
     TeamDTO proposeTeam (String courseName, String teamName, List<String> memberIds, String creator);
 
-    // @PreAuthorize("hasAnyRole('ROLE_TEAM_' + #courseName + '_' + #teamName + '_MEMBER', 'ROLE_COURSE_' + #courseName + '_TEACHER')")
+    @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_STUDENT')")
     int getTeamId (String courseName, String teamName);
 
-    // @PreAuthorize("hasAnyRole('ROLE_TEAM_' + #courseName + '_' + #teamName + '_MEMBER', 'ROLE_COURSE_' + #courseName + '_TEACHER')")
+    @PreAuthorize("hasAnyRole('ROLE_TEAM_' + #courseName + '_' + #teamName + '_MEMBER', 'ROLE_COURSE_' + #courseName + '_TEACHER')")
     int getUsedNVCpuForTeam (String courseName, String teamName);
 
-    // @PreAuthorize("hasAnyRole('ROLE_TEAM_' + #courseName + '_' + #teamName + '_MEMBER', 'ROLE_COURSE_' + #courseName + '_TEACHER')")
+    @PreAuthorize("hasAnyRole('ROLE_TEAM_' + #courseName + '_' + #teamName + '_MEMBER', 'ROLE_COURSE_' + #courseName + '_TEACHER')")
     int getUsedDiskForTeam (String courseName, String teamName);
 
-    // @PreAuthorize("hasAnyRole('ROLE_TEAM_' + #courseName + '_' + #teamName + '_MEMBER', 'ROLE_COURSE_' + #courseName + '_TEACHER')")
+    @PreAuthorize("hasAnyRole('ROLE_TEAM_' + #courseName + '_' + #teamName + '_MEMBER', 'ROLE_COURSE_' + #courseName + '_TEACHER')")
     int getUsedRamForTeam (String courseName, String teamName);
 
-    // @PreAuthorize("hasAnyRole('ROLE_TEAM_' + #courseName + '_' + #teamName + '_MEMBER', 'ROLE_COURSE_' + #courseName + '_TEACHER')")
+    @PreAuthorize("hasAnyRole('ROLE_TEAM_' + #courseName + '_' + #teamName + '_MEMBER', 'ROLE_COURSE_' + #courseName + '_TEACHER')")
     List<VmDTO> getVmsForTeam (String courseName, String teamName);
 
-    // @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_TEAM_' + #id + '_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_TEAM_' + #id + '_MEMBER')")
     List<VmDTO> getVmsForTeamById (int id);
 
-    // @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_TEAM_' + #id + '_MEMBER')")
+    @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_STUDENT')")
     String getCreator (int id);
 }

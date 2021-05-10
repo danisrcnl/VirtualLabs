@@ -14,21 +14,22 @@ public interface StudentService {
 
     boolean addStudent (StudentDTO student);
 
-    // @PreAuthorize("authentication.name == 's' + #studentId + '@studenti.polito.it' or hasRole('ROLE_TEACHER')")
+    @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_STUDENT')")
     Optional<StudentDTO> getStudent (String studentId);
 
-    // @PreAuthorize("hasRole('ROLE_TEACHER')")
+    @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_STUDENT')")
     List<StudentDTO> getAllStudents ();
 
-    // @PreAuthorize("authentication.name == 's' + #studentId + '@studenti.polito.it' or hasRole('ROLE_TEACHER')")
+    @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_STUDENT')")
     List<CourseDTO> getCoursesForStudent (String studentId);
 
-    // @PreAuthorize("hasRole('ROLE_TEACHER')")
+    @PreAuthorize("hasRole('ROLE_TEACHER')")
     List<Boolean> addAll (List<StudentDTO> students);
 
+    @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_STUDENT')")
     List<TeamDTO> getTeamsForStudent (String studentId);
 
-    // @PreAuthorize("authentication.name == 's' + #studentId + '@studenti.polito.it' or hasRole('ROLE_TEACHER')")
+    @PreAuthorize("authentication.name == 's' + #studentId + '@studenti.polito.it' or hasRole('ROLE_TEACHER')")
     List<VmDTO> getVmsForStudent (String studentId);
 
     void linkToUser (String studentId, String userId);

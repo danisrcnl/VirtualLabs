@@ -254,19 +254,6 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void editCourseName(String courseName, String newName) throws CourseNotFoundException {
-
-        if(!courseRepository.existsById(courseName))
-            throw new CourseNotFoundException(courseName);
-
-        courseRepository
-                .getOne(courseName)
-                .setName(newName);
-    }
-
-
-
-    @Override
     public List<Boolean> enrollAll(List<String> studentIds, String courseName) throws CourseNotFoundException, StudentNotFoundException {
         List<Boolean> successes = new ArrayList<Boolean>();
         if(!courseRepository.existsById(courseName))
