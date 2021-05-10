@@ -368,27 +368,8 @@ receiverejectteamid($event) {
    ,
 
   error => {
-       this.studentservice.getStudentCourseTeam(this.studentId,this.courseId).
-        subscribe (teamss => {
-          console.log(teamss);
-          teamss.forEach ( t => {
-            
-            if(t.status==1){
-            this.teamName = t.name;
-            this.tabvalue = true;
-            console.log(this.tabvalue);
-            this.tabvalue$ = of(this.tabvalue);
-            this.compagnidigruppo$ = this.teamservice.getMembers(this.courseId,this.teamName);
-            }
-            
-          })
-    //this.updateteamstatus();
- 
- this.updateacceptedstatus(teamid,this.matricola,this.membersStatus);
-  }
- 
-  )
-    console.log("errore");
+    
+    this.teamsinconstruction$ = this.studentservice.getStudentCourseTeam(this.studentId,this.courseId);
   })
 
 }
