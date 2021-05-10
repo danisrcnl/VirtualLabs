@@ -113,3 +113,7 @@
   z-index: 3;
   border: 2px solid red;
 }
+
+.element {
+  display: inline-block;
+}

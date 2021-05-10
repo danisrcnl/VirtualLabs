@@ -27,6 +27,7 @@ export class VmscomponentComponent2 implements OnInit {
   roles$ : Observable<String[]>;
   usedResources$ : Observable <UsedResources>;
   team: Team;
+  creator: Boolean;
 
   @Input ('vmsperteam$')
   set Vms (vmss: Observable<Vms[]>)
