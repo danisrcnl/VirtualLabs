@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatChip, MatChipList } from '@angular/material/chips';
 import { AssignmentService } from 'app/services/assignment.service';
 import { StudentService } from 'app/services/student.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import {Assignment} from '../../model/assignment.model';
 import {Paper} from '../../model/paper.model';
 import {PaperStatus} from '../../model/paperStatus.model';
@@ -50,6 +50,20 @@ export class ElaboratistudentComponent implements OnInit {
   constructor(private assignmentService: AssignmentService, private studentService: StudentService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
+    
+  }
+
+  ordered (awp: AssignmentWithPapers[]) {
+    var newArr: AssignmentWithPapers[] = [];
+    newArr = awp.sort((a1, a2) => {
+      if(a1.assignment.creationDate > a2.assignment.creationDate)
+        return 1;
+      if(a1.assignment.creationDate < a2.assignment.creationDate)
+        return -1;
+      else
+        return 0;
+    });
+    return newArr;
   }
 
   setView (papersWithHistory: PaperWithHistory[]) {

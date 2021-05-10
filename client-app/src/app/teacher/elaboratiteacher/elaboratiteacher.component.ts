@@ -158,6 +158,19 @@ export class ElaboratiteacherComponent implements OnInit {
 
   }
 
+  ordered (awp: AssignmentWithPapers[]) {
+    var newArr: AssignmentWithPapers[] = [];
+    newArr = awp.sort((a1, a2) => {
+      if(a1.assignment.creationDate > a2.assignment.creationDate)
+        return 1;
+      if(a1.assignment.creationDate < a2.assignment.creationDate)
+        return -1;
+      else
+        return 0;
+    });
+    return newArr;
+  }
+
   hasSameStatus (status: PaperStatus, value: String) {
 
 
