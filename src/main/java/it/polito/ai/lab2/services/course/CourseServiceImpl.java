@@ -110,7 +110,7 @@ public class CourseServiceImpl implements CourseService {
         return studentRepository
                 .findAll()
                 .stream()
-                .filter(s -> !s.getCourses().contains(c))
+                .filter(s -> !s.getCourses().contains(c) && s.getUser() != null)
                 .map(s -> modelMapper.map(s, StudentDTO.class))
                 .collect(Collectors.toList());
     }

@@ -40,7 +40,7 @@ public class AssignmentController {
     }
 
     @PostMapping("/{courseName}")
-    public void addAssignmentToCourse (@PathVariable String courseName, @RequestBody AssignmentDTO assignmentDTO) throws ResponseStatusException {
+    public Long addAssignmentToCourse (@PathVariable String courseName, @RequestBody AssignmentDTO assignmentDTO) throws ResponseStatusException {
 
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris"));
         Timestamp t = Timestamp.valueOf(localDateTime);
@@ -53,6 +53,7 @@ public class AssignmentController {
         } catch (AiException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
         }
+        return id;
     }
 
     @PostMapping("/{assignmentId}/setContent")

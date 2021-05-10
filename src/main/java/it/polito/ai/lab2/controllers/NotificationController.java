@@ -81,6 +81,16 @@ public class NotificationController {
         else return "redirect:/notification/rejection/failure";
     }
 
+    @GetMapping("/reject/{teamId}/{studentId}")
+    public String rejectTeamMember (@PathVariable int teamId, @PathVariable String studentId) {
+        Optional<String> token = notificationService.getMemberToken(teamId, studentId);
+        if (!token.isPresent())
+            return "redirect:/notification/rejection/failure";
+        if (notificationService.reject(token.get()))
+            return "redirect:/notification/rejection/success";
+        else return "redirect:/notification/rejection/failure";
+    }
+
     @GetMapping("/confirmation/{outcome}")
     public String showConfirm (@PathVariable String outcome, Model model) {
         if(outcome.equals("success"))
