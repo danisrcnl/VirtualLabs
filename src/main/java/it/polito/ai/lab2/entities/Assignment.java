@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class Assignment {
     private String content;
 
     private Timestamp creationDate;
-
+    @NotNull
     private Timestamp expiryDate;
 
     @ManyToOne

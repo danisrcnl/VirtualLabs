@@ -3,6 +3,7 @@ package it.polito.ai.lab2.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
-
+    @NotEmpty
     private String name;
 
     private int status;

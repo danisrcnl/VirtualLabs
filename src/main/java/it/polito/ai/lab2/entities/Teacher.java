@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,11 +19,11 @@ public class Teacher {
 
     @Id
     private String id;
-
+    @NotEmpty
     private String firstName;
-
+    @NotEmpty
     private String name;
-
+    @NotEmpty
     private String email;
 
     private String photoPath;

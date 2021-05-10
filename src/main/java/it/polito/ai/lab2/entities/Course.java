@@ -3,6 +3,7 @@ package it.polito.ai.lab2.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,13 +16,13 @@ public class Course {
 
     @Id
     private String name;
-
+    @NotNull
     private int min;
-
+    @NotNull
     private int max;
 
     private Boolean enabled;
-
+    @NotNull
     private String acronym;
 
     @ManyToMany(mappedBy = "courses")

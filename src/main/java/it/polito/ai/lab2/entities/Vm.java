@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +21,11 @@ public class Vm {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+    @NotNull
     private int nVCpu;
-
+    @NotNull
     private int disk;
-
+    @NotNull
     private int ram;
 
     private VmStatus currentStatus;
