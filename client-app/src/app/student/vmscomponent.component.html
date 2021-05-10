@@ -1,5 +1,5 @@
-<div id="wrapper" *ngIf="team != null">
-<tr *ngFor="let vmss of vmsperteam$ | async" >
+<div id="wrapper" *ngIf="team != null && vmModel != null">
+<tr class="element" *ngFor="let vmss of vmsperteam$ | async" >
         <!--<i>{{ vmss.nvcpu }} {{vmss.disk}} </i>
 		<td></td>
         <td> </td>-->
@@ -58,3 +58,4 @@
 </div>
 </div>
 <div *ngIf="team == null"><h1>Non fai ancora parte di nessun team</h1></div>
+<div *ngIf="vmModel == null"><h1>Non è stato impostato vmModel per questo corso</h1></div>

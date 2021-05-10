@@ -141,7 +141,9 @@ this.route.queryParams.subscribe(data => {
 
 
 
-    this.authService.currentUser.subscribe ( x => {this.currentUser = x;
+    this.authService.currentUser.subscribe ( x => {
+      console.log("!!!>>" + x)
+      this.currentUser = x;
       this.studentId = this.currentUser.username.split("@")[0].substring(1,7);
   
         this.studentservice.getOne(this.studentId).subscribe(
@@ -244,6 +246,7 @@ ngOnChanges (changes: SimpleChanges)
   ngOnInit() {   
 
     this.authService.currentUser.subscribe(u => {
+      console.log("!!!>>" + u)
       this.studentid = u.username;
 
     })
