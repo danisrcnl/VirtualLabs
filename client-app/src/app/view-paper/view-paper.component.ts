@@ -94,6 +94,15 @@ export class ViewPaperComponent implements OnInit {
        this.dialogRef.close(this.valutaForm.value);
      }
 
+     upload() {
+
+
+      const dialogRef = this.dialog.open (CreatePaperComponent)
+
+
+
+     }
+
 
   displayDate(date: Date) {
     var newDate: Date = new Date(date);
