@@ -1,3 +1,9 @@
+/*
+ * VmController.java:
+ * Classe deputata a offrire APIs accessibili tramite richieste HTTP per la gestione delle VMs istanziate dagli
+ * studenti e dei VmModels creati dal docente per i diversi corsi.
+ * */
+
 package it.polito.ai.lab2.controllers;
 
 import it.polito.ai.lab2.dataStructures.VmStatus;

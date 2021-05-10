@@ -1,3 +1,9 @@
+/*
+ * CourseController.java:
+ * Classe deputata a offrire APIs accessibili tramite richieste HTTP per la gestione dei corsi e l'accesso alle loro
+ * proprietà e relazioni
+ * */
+
 package it.polito.ai.lab2.controllers;
 
 import it.polito.ai.lab2.dataStructures.CourseWithTeacher;
@@ -129,17 +135,8 @@ public class CourseController {
         }
         return enrolledStudents(name);
     }
-/*
-    @PostMapping("/{name}/editName")
-    public CourseDTO editName (@PathVariable String name, @RequestBody String newName) throws ResponseStatusException {
-        try {
-            courseService.editCourseName(name, newName);
-        } catch (AiException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
-        }
-        return ModelHelper.enrich(courseService.getCourse(newName).get());
-    }
-*/
+
+
     @GetMapping("/{courseName}/delete")
     public List<CourseDTO> delete (@PathVariable String courseName) throws ResponseStatusException {
         try {

@@ -1,3 +1,9 @@
+/*
+ * TeamController.java:
+ * Classe deputata a offrire APIs accessibili tramite richieste HTTP per la gestione dei Team, entità formate
+ * da più studenti, nell'ambito di un corso.
+ * */
+
 package it.polito.ai.lab2.controllers;
 
 import it.polito.ai.lab2.dataStructures.MemberStatus;

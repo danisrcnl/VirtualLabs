@@ -1,3 +1,8 @@
+/*
+ * AuthController.java:
+ * Classe deputata a offrire APIs accessibili tramite richieste HTTP per autenticazione e registrazione
+ * */
+
 package it.polito.ai.lab2.controllers;
 
 

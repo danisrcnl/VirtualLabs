@@ -1,3 +1,10 @@
+/*
+ * ModelHelper.java:
+ * Classe deputata a offrire la flessibilità data dall'ultilizzo del paradigma HATEOAS. I suoi metodi si limitano
+ * ad arricchire l'oggetto ricevuto con un link alla chiamata HTTP che ne restituisce le proprietà.
+ * Ciò permette al client di parametrizzare questi collegamenti, rendendoli resilienti ad eventuali cambiamenti.
+ * */
+
 package it.polito.ai.lab2.controllers;
 
 import it.polito.ai.lab2.dtos.*;

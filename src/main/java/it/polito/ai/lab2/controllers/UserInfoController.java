@@ -1,3 +1,9 @@
+/*
+ * UserInfoController.java:
+ * Classe che offre una sola API che ritorna informazioni sull'utente corrente, funzionali al corretto funzionamento
+ * dell'applicazione.
+ * */
+
 package it.polito.ai.lab2.controllers;
 
 import org.springframework.http.ResponseEntity;

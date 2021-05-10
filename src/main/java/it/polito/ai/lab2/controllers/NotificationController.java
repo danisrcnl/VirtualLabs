@@ -1,3 +1,9 @@
+/*
+ * NotificationController.java:
+ * Classe deputata a offrire APIs accessibili tramite richieste HTTP funzionali ad accettare o rifiutare un invito per un
+ * team o per confermare la registrazione al sito, tramite l'utilizzo dei Token.
+ * */
+
 package it.polito.ai.lab2.controllers;
 
 import it.polito.ai.lab2.dtos.StudentDTO;

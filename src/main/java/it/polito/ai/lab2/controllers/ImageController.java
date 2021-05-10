@@ -1,3 +1,9 @@
+/*
+ * ImageController.java:
+ * Classe deputata a offrire APIs accessibili tramite richieste HTTP per l'accesso alle immagini salvate sul filesystem
+ * del server per la rappresentazione dei contenuti di papers e assignments.
+ * */
+
 package it.polito.ai.lab2.controllers;
 
 import it.polito.ai.lab2.services.AiException;

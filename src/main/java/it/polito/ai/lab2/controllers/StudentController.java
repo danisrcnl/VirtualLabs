@@ -1,3 +1,9 @@
+/*
+ * StudentController.java:
+ * Classe deputata a offrire APIs accessibili tramite richieste HTTP per la gestione degli studenti e per
+ * l'accesso a loro proprietà e relazioni.
+ * */
+
 package it.polito.ai.lab2.controllers;
 
 import it.polito.ai.lab2.dtos.CourseDTO;
