@@ -115,7 +115,7 @@ export class ElaboratistudentComponent implements OnInit {
 
   }
 
-  viewPaper (id: number, history: PaperStatusTime[], currentStatus: String, editable: Boolean, assignmentId: number) {
+  viewPaper (id: number, history: PaperStatusTime[], currentStatus: String, editable: Boolean, assignmentId: number, assignment: Assignment) {
     const dialogRef = this.dialog.open(ViewPaperComponent, {
       width: '800px',
       data: {
@@ -124,7 +124,8 @@ export class ElaboratistudentComponent implements OnInit {
         currentStatus: currentStatus,
         editable: editable,
         teacher: false,
-        student: true
+        student: true,
+        assignment: assignment
       }
     });
   
@@ -184,6 +185,15 @@ export class ElaboratistudentComponent implements OnInit {
   displayDate(date: Date) {
     var newDate: Date = new Date(date);
     return newDate.getDate() + "/" + (newDate.getMonth()+1) + "/" + newDate.getFullYear();
+  }
+
+  isExpired(date: Date) {
+    var expiry = new Date(date);
+    var now = new Date();
+    if(now > expiry)
+      return true;
+    else
+      return false;
   }
     
 }
