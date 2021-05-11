@@ -136,7 +136,8 @@ editvm(vmss) {
   const dialogRef = this.dialog.open (LimitDialogComponent, { height: '350px',
    width: '400px',
     data : { 
-      resources : this.usedResources$, vmModel : this.vmModel, edit : ed
+    
+      resources : this.usedResources$, vmModel : this.vmModel, edit : ed, vm: vmss
   
           }
   
