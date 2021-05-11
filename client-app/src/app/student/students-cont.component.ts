@@ -600,9 +600,9 @@ receiverejectteamid($event) {
               )
             
             },
-        error => (
+        (error) => (
            this.dainvitare = [],
-          this.closeDialog(), this.openDialog2("Non è stato possibile creare il team"))
+          this.closeDialog(), this.openDialog2(error))
         
     
         )
