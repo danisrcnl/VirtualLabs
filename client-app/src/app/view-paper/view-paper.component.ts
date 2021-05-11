@@ -140,6 +140,10 @@ export class ViewPaperComponent implements OnInit {
     this.imageViewer = false;
   }
 
+  setEdit() {
+    this.dialogRef.close(true);
+  }
+
 
  
 }
