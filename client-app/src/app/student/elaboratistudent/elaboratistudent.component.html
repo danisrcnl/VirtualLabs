@@ -3,7 +3,8 @@
     <mat-expansion-panel *ngFor="let ass of ordered(assignmentWithPapers)" (opened)="setView(ass.papersWithHistory)">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <button class ="lab" mat-flat-button>{{displayDate(ass.assignment.creationDate)}}</button>
+          <button class ="lab" mat-flat-button class="crDate">{{displayDate(ass.assignment.creationDate)}}</button>
+          <button class ="lab" mat-flat-button [ngClass]="classOf(ass.assignment.expiryDate)">{{displayDate(ass.assignment.expiryDate)}}</button>
         </mat-panel-title>
         <mat-panel-description class="descr">
           {{getValids(ass.papersWithHistory).length}} elaborati

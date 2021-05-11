@@ -107,3 +107,11 @@
     background-color: blue;
 }
   
+  .expired {
+    background-color: #fd3434;
+  }
+
+  .notExpired {
+    background-color: #00ff99;
+    color: black;
+  }
