@@ -60,6 +60,10 @@ public class AssignmentController {
         Timestamp t = Timestamp.valueOf(localDateTime);
         assignmentDTO.setCreationDate(t);
 
+        if (t.compareTo(assignmentDTO.getExpiryDate()) > 0)
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "La data di scadenza non può essere inferiore a quella odierna");
+
+
         Long id = assignmentService.addAssignment(assignmentDTO);
 
         try {
