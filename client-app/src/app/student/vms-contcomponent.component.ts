@@ -197,8 +197,12 @@ this.hreff = this.router.url;
 
     receiveeditvm($event) {
 
-     this.vmService.editVm($event).subscribe( data => {console.log(data)});
+      console.log($event);
 
+     this.vmService.editVm($event).subscribe( data => {
+       
+       console.log(data)});
+       this.updatevms();
 
     }
 
@@ -231,6 +235,8 @@ this.hreff = this.router.url;
 
     changestatevm($event)
     {
+
+
       this.vmService.changeState($event.vmId,$event.command).subscribe(data => {console.log(data)
       this.updatevms();
       
