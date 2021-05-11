@@ -28,7 +28,7 @@
       <table [ngClass] = "tableclasses">
         <div class="tableClassesTitle">
           <h1>Seleziona gli studenti da invitare nel tuo team!</h1>
-           <h4> Puoi invitare da un minimo di {{minstud}} a un massimo di {{maxstud}} studenti </h4>
+           <h4> Puoi invitare da un minimo di {{minstud - 1}} a un massimo di {{maxstud - 1}} studenti </h4>
         </div>
 
         <table mat-table [dataSource]= "dataSource" class="studenti">
