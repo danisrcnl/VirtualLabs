@@ -201,7 +201,15 @@ this.hreff = this.router.url;
 
      this.vmService.editVm($event).subscribe( data => {
        
-       console.log(data)});
+       console.log(data)}
+       
+       ,
+       (error) => {
+         let dialogRef = this.dialog.open(YourDialog, {
+                            data: { name: error },
+                                });
+       }
+       );
        this.updatevms();
 
     }

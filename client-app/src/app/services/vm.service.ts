@@ -26,7 +26,7 @@ export class VmService {
     }
  
     editVm(vm) {
-      return this.http.post<any>(`${environment.apiUrlvms}/setResources`,vm);
+      return this.http.post<any>(`${environment.apiUrlvms}/setResources`,vm).pipe(catchError(this.handleError));
     }
     
     getVmsByCourse (courseName) {
@@ -36,7 +36,7 @@ export class VmService {
 
     setVmModel (vmModel:vmModelDTO,courseName)
     {
-        return this.http.post<any>(`${environment.apiUrlvms}/courses/${courseName}/setVmModel`,vmModel);
+        return this.http.post<any>(`${environment.apiUrlvms}/courses/${courseName}/setVmModel`,vmModel).pipe(catchError(this.handleError));
     }
 
     getVmModelforCourse (courseName)
