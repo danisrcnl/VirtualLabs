@@ -50,20 +50,20 @@
 
       <div id="selMin" *ngIf="!deletePressed">
         <mat-form-field id="selMin_o">
-          <input matInput placeholder="Minimo studenti per team" formControlName = "minstud" [(ngModel)]="data.minstud" type="number">
+          <input matInput placeholder="Minimo studenti per team" formControlName = "minstud" [(ngModel)]="data.minstud" type="number" [value] = "selectedcourse.name">
+        <div *ngIf="submitted && f.minstud.errors" class="invalid-feedback">
+          <div *ngIf="f.minstud.errors.required">Inserire n° minimo studenti per team</div>
+        </div>
         </mat-form-field>
       </div>
 
       <div id="selMax" *ngIf="!deletePressed">
         <mat-form-field id="selMax_o">
           <input matInput placeholder="Massimo studenti per team" formControlName="maxstud" [(ngModel)]="data.maxstud" type="number">
+          <div *ngIf="submitted && f.maxstud.errors" class="invalid-feedback">
+            <div *ngIf="f.maxstud.errors.required">Inserire n° massimo studenti per team</div>
+          </div>
         </mat-form-field>
-      </div>
-
-      <div id="enableCourse" *ngIf="!deletePressed">
-
-        <mat-checkbox id="enable" name="enable" formControlName="enabled" [(ngModel)]="data.enabled">Abilita il corso</mat-checkbox>
-  
       </div>
 
       <div id="buttonSave_w" *ngIf="!deletePressed">
@@ -82,30 +82,39 @@
     <div id="nome_w">
       <mat-form-field id="crea_corso_nome">
         <input matInput placeholder="Inserisci Nome" formControlName = "coursename" [(ngModel)]="data.coursename">
+        <div *ngIf="submitted && f.coursename.errors" class="invalid-feedback">
+          <div *ngIf="f.coursename.errors.required">Inserire nome corso</div>
+        </div>
       </mat-form-field>
     </div>
 
     <div id="min_w">
       <mat-form-field id="crea_corso_min">
         <input matInput placeholder="Min studenti" formControlName="minstud2" [(ngModel)]="data.minstud">
+        <div *ngIf="submitted && f.minstud.errors" class="invalid-feedback">
+          <div *ngIf="f.minstud.errors.required">Inserire n° minimo studenti per team</div>
+        </div>
       </mat-form-field>
     </div>
 
     <div id="max_w">
       <mat-form-field id="crea_corso_max">
         <input matInput placeholder="Max studenti" formControlName="maxstud2" [(ngModel)]="data.maxstud">
+        <div *ngIf="submitted && f.maxstud.errors" class="invalid-feedback">
+          <div *ngIf="f.maxstud.errors.required">Inserire n° massimo studenti per team</div>
+        </div>
       </mat-form-field>
     </div>
 
     <div id="acr_w">
       <mat-form-field id="crea_corso_acronimo">
         <input matInput placeholder="Acronimo" formControlName="acronym" [(ngModel)]="data.acronym">
+        <div *ngIf="submitted && f.acronym.errors" class="invalid-feedback">
+          <div *ngIf="f.acronym.errors.required">Inserire acronimo</div>
+        </div>
       </mat-form-field>
     </div>
 
-    <div id="en_w">
-      <mat-checkbox id="enabled2" name="enabled2" formControlName="enabled2" [(ngModel)]="data.enabled">Abilita il corso</mat-checkbox>
-    </div>
 
 <!--<button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>-->
     <div id="buttonCrea_w">
