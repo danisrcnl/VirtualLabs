@@ -3,7 +3,8 @@
     <mat-expansion-panel *ngFor="let ass of ordered(assignmentWithPapers)" (opened)="setView(ass.papersWithHistory)" (closed)="clearChips()">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <button class ="lab" mat-flat-button>{{displayDate(ass.assignment.creationDate)}}</button>
+          <button class ="lab" mat-flat-button class="crDate">{{displayDate(ass.assignment.creationDate)}}</button>
+          <button class ="lab" mat-flat-button [ngClass]="classOf(ass.assignment.expiryDate)">entro il {{displayDate(ass.assignment.expiryDate)}}</button>
         </mat-panel-title>
         <mat-panel-description class="descr">
           {{ ass.papersWithHistory?.length || '0' }} elaborati
@@ -25,7 +26,7 @@
       </div>
      
       <mat-list class="papers">
-        <mat-list-item class="paper" *ngFor="let pap of filteredViewingPapers" (click)="viewPaper(pap.paper.id, pap.history, pap.paper.currentStatus, pap.paper.editable, ass.id)">
+        <mat-list-item class="paper" *ngFor="let pap of filteredViewingPapers" (click)="viewPaper(pap.paper.id, pap.history, pap.paper.currentStatus, pap.paper.editable, ass.id, ass.assignment)">
           <button class="statusCircle" [ngClass]="pap.paper.currentStatus">s{{pap.creator.id}}</button>
           <p class="details">{{pap.creator.firstName}} {{pap.creator.name}}</p>
         </mat-list-item>

@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup,Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CreatePaperComponent } from 'app/create-paper/create-paper.component';
+import { Assignment } from 'app/model/assignment.model';
 import { PaperStatusTime } from 'app/model/paperStatusTime.model';
 import { environment } from 'environments/environment';
 
@@ -39,6 +40,8 @@ export class ViewPaperComponent implements OnInit {
   valutaForm : FormGroup;
   submitted : boolean = false;
   reviewable: Boolean;
+  assignment: Assignment;
+  expired: Boolean = false;
 
   ngOnInit(): void {
     this.id = this.data.id;
@@ -53,6 +56,9 @@ export class ViewPaperComponent implements OnInit {
     }
     this.teacher = this.data.teacher;
     this.student = this.data.student;
+    this.assignment = this.data.assignment;
+    if(this.isExpired(this.assignment.expiryDate))
+      this.expired = true;
 
 
     //Inizializzazione dei Form 
@@ -97,14 +103,17 @@ export class ViewPaperComponent implements OnInit {
 
 
 
-  displayDate(date: Date) {
-    var newDate: Date = new Date(date);
-    return newDate.getDate() + "/" + (newDate.getMonth()+1) + "/" + newDate.getFullYear();
-  }
+     displayDate(date: Date) {
+      var newDate: Date = new Date(date);
+      var dd = String(newDate.getDate()).padStart(2, '0');
+      var mm = String(newDate.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = newDate.getFullYear();
+      return dd + "/" + mm + "/" + yyyy;
+    }
 
   displayTime(date: Date) {
     var newDate: Date = new Date(date);
-    return newDate.getHours() + ":" + newDate.getMinutes();
+    return String(newDate.getHours()).padStart(2, '0') + ":" + String(newDate.getMinutes()).padStart(2, '0');
   }
 
   clickrate(){
@@ -138,6 +147,19 @@ export class ViewPaperComponent implements OnInit {
 
   exitImageViewer() {
     this.imageViewer = false;
+  }
+
+  setEdit() {
+    this.dialogRef.close(true);
+  }
+
+  isExpired(date: Date) {
+    var expiry = new Date(date);
+    var now = new Date();
+    if(now > expiry)
+      return true;
+    else
+      return false;
   }
 
 

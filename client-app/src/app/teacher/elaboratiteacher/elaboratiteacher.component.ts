@@ -193,7 +193,7 @@ export class ElaboratiteacherComponent implements OnInit {
 
   }
 
-  viewPaper (id: number, history: PaperStatusTime[], currentStatus: String, editable: Boolean, assid : number) {
+  viewPaper (id: number, history: PaperStatusTime[], currentStatus: String, editable: Boolean, assignmentId : number, assignment: Assignment) {
     const dialogRef = this.dialog.open(ViewPaperComponent, {
       width: '800px',
       data: {
@@ -203,7 +203,8 @@ export class ElaboratiteacherComponent implements OnInit {
         editable: editable,
         teacher: true,
         student: false,
-        assid
+        assignmentId: assignmentId,
+        assignment: assignment
       }
     });
   
@@ -212,7 +213,7 @@ export class ElaboratiteacherComponent implements OnInit {
         if(result.voto!= undefined)
         this.addvalutazione.emit({voto : result.voto, paperid : id});
         if(result.soluzione!=undefined)
-        this.addsoluzione.emit({res: result, paperid : id, assid : assid});
+        this.addsoluzione.emit({res: result, paperid : id, assid : assignmentId});
         
       console.log(result);
     });
@@ -220,7 +221,25 @@ export class ElaboratiteacherComponent implements OnInit {
 
   displayDate(date: Date) {
     var newDate: Date = new Date(date);
-    return newDate.getDate() + "/" + (newDate.getMonth()+1) + "/" + newDate.getFullYear();
+    var dd = String(newDate.getDate()).padStart(2, '0');
+    var mm = String(newDate.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = newDate.getFullYear();
+    return dd + "/" + mm + "/" + yyyy;
+  }
+
+  isExpired(date: Date) {
+    var expiry = new Date(date);
+    var now = new Date();
+    if(now > expiry)
+      return true;
+    else
+      return false;
+  }
+
+  classOf(date: Date){
+    if(this.isExpired(date))
+      return "expired";
+    else return "notExpired";
   }
     
 }

@@ -27,6 +27,8 @@ export class VmscomponentComponent2 implements OnInit {
   roles$ : Observable<String[]>;
   usedResources$ : Observable <UsedResources>;
   team: Team;
+  creator: Boolean;
+  myRoles: String[];
 
   @Input ('vmsperteam$')
   set Vms (vmss: Observable<Vms[]>)
@@ -61,6 +63,11 @@ export class VmscomponentComponent2 implements OnInit {
     this.usedResources$ = value;
     console.log("!!!" + this.usedResources$)
     
+  }
+
+  @Input('myRoles')
+  set _myRoles (roles: String[]) {
+    this.myRoles = roles;
   }
 
 
@@ -178,6 +185,14 @@ isFreezed (stat: String) {
   
   if (stat == "FREEZED") return true;
   return false;
+}
+amCreator (id: number) {
+  var outcome: Boolean = false;
+  this.myRoles.forEach(role =>{
+    if(role == "ROLE_VM_" + id + "_CREATOR")
+      outcome = true;
+  });
+  return outcome;
 }
 
 }

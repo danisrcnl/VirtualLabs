@@ -153,7 +153,7 @@ this.submitted = true;
                     this.alertService.success('Registration successful', true);
                     this.matDialog.closeAll();
                     let dialogRef = this.dialog.open(YourDialog, {
-                            data: { name: 'Registrazione effettuata!' },
+                            data: { name: 'Registrazione effettuata! Hai ricevuto una mail con un link per attivare il tuo profilo.' },
                                 });
                     this.router.navigate(['/']);
                 },

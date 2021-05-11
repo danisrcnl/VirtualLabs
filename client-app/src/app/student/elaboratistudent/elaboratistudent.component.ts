@@ -115,7 +115,7 @@ export class ElaboratistudentComponent implements OnInit {
 
   }
 
-  viewPaper (id: number, history: PaperStatusTime[], currentStatus: String, editable: Boolean) {
+  viewPaper (id: number, history: PaperStatusTime[], currentStatus: String, editable: Boolean, assignmentId: number, assignment: Assignment) {
     const dialogRef = this.dialog.open(ViewPaperComponent, {
       width: '800px',
       data: {
@@ -124,11 +124,14 @@ export class ElaboratistudentComponent implements OnInit {
         currentStatus: currentStatus,
         editable: editable,
         teacher: false,
-        student: true
+        student: true,
+        assignment: assignment
       }
     });
   
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(edit => {
+      if(edit == true)
+        this.createPaper(assignmentId);
     });
   }
 
@@ -181,7 +184,25 @@ export class ElaboratistudentComponent implements OnInit {
 
   displayDate(date: Date) {
     var newDate: Date = new Date(date);
-    return newDate.getDate() + "/" + (newDate.getMonth()+1) + "/" + newDate.getFullYear();
+    var dd = String(newDate.getDate()).padStart(2, '0');
+    var mm = String(newDate.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = newDate.getFullYear();
+    return dd + "/" + mm + "/" + yyyy;
+  }
+
+  isExpired(date: Date) {
+    var expiry = new Date(date);
+    var now = new Date();
+    if(now > expiry)
+      return true;
+    else
+      return false;
+  }
+
+  classOf(date: Date){
+    if(this.isExpired(date))
+      return "expired";
+    else return "notExpired";
   }
     
 }

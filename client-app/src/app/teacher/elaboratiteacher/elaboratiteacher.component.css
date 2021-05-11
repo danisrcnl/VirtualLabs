@@ -82,3 +82,18 @@
     height: 22px;
     font-weight: bold;
 }
+
+  
+.expired {
+  background-color: white;
+  color: #ff3a3a;
+}
+
+.notExpired {
+  background-color: white;
+  color: #1dac00;
+}
+
+.crDate {
+  margin-right: 4px;
+}

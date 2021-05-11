@@ -60,9 +60,11 @@
 
 <div id="buttons_st" *ngIf="student && !revisioni && !imageViewer">
 
-    <div id="buttonCaricaST_w">
-        <button class="buttonO" mat-flat-button>Carica una nuova soluzione</button>
+    <div id="buttonCaricaST_w" *ngIf="!expired">
+        <button class="buttonO" mat-flat-button (click)="setEdit()">Carica una nuova soluzione</button>
     </div>
+
+    <mat-label *ngIf="expired">Non è più possibile caricare soluzioni per questo laboratorio</mat-label>
 
 </div>
 

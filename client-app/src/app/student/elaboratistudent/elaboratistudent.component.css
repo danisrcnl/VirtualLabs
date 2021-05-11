@@ -107,3 +107,16 @@
     background-color: blue;
 }
   
+  .expired {
+    background-color: white;
+    color: #ff3a3a;
+  }
+
+  .notExpired {
+    background-color: white;
+    color: #1dac00;
+  }
+
+  .crDate {
+    margin-right: 4px;
+  }
