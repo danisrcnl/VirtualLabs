@@ -11,7 +11,7 @@
       </mat-expansion-panel-header>
      
       <mat-list class="papers">
-        <mat-list-item class="paper" *ngFor="let pap of filteredViewingPapers" (click)="viewPaper(pap.paper.id, pap.history, pap.paper.currentStatus, pap.paper.editable, ass.assignment.id)">
+        <mat-list-item class="paper" *ngFor="let pap of filteredViewingPapers" (click)="viewPaper(pap.paper.id, pap.history, pap.paper.currentStatus, pap.paper.editable, ass.assignment.id, ass.assignment)">
           <button class="statusCircle" [ngClass]="pap.paper.currentStatus">s{{pap.creator.id}}</button>
           <p class="details">{{pap.creator.firstName}} {{pap.creator.name}}</p>
         </mat-list-item>
@@ -20,7 +20,7 @@
             <button mat-flat-button class="buttonO" id="readAss" (click)="viewAssignment(ass.assignment)">Leggi la consegna</button>
         </div>
 
-        <div id="addSolWrapper" *ngIf="filteredViewingPapers.length == 0 && isRead(ass.papersWithHistory)">
+        <div id="addSolWrapper" *ngIf="filteredViewingPapers.length == 0 && isRead(ass.papersWithHistory) && !isExpired(ass.assignment.expiryDate)">
           
           <div id="addSol">
             <button mat-mini-fab (click)="createPaper(ass.assignment.id)"><mat-icon>add</mat-icon></button>
@@ -28,6 +28,9 @@
           <div id="addSolLab">
             <mat-label>Carica una soluzione</mat-label>
           </div>
+        </div>
+        <div id="showExpired" *ngIf="isExpired(ass.assignment.expiryDate)">
+          <mat-label>Non è più possibile caricare soluzioni per questo laboratorio</mat-label>
         </div>
       </mat-list>
       
