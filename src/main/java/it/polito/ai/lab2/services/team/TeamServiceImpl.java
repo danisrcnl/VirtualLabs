@@ -205,7 +205,7 @@ public class TeamServiceImpl implements TeamService {
 
         Course c = courseRepository.getOne(courseName);
         if(memberIds.size() > c.getMax() || memberIds.size() < c.getMin())
-            throw new TeamServiceException("Be sure team is into the chosen min/max range");
+            throw new TeamServiceException("Assicurati di aver selezionato il corretto numero di studenti");
 
         team = Team.builder()
                 .name(teamName)
@@ -240,7 +240,7 @@ public class TeamServiceImpl implements TeamService {
                     .collect(Collectors.toList());
 
             if(!availableIds.contains(memberId) || (teamsForCourseStudent.size() != tokensForCourseStudent.size()))
-                throw new TeamServiceException("Student " + memberId + " has already a team for course " + courseName);
+                throw new TeamServiceException("Lo studente con matricola " + memberId + " ha già accettato una proposta" + courseName);
         }
 
         for(String memberId : memberIds) {
