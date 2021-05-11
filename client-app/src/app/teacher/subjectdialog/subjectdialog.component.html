@@ -89,7 +89,7 @@
 
     <div id="min_w">
       <mat-form-field id="crea_corso_min">
-        <input matInput placeholder="Min studenti" formControlName="minstud2" [(ngModel)]="data.minstud">
+        <input matInput placeholder="Min studenti" formControlName="minstud" [(ngModel)]="data.minstud">
         <div *ngIf="submitted && f.minstud.errors" class="invalid-feedback">
           <div *ngIf="f.minstud.errors.required">Inserire n° minimo studenti per team</div>
         </div>
@@ -98,7 +98,7 @@
 
     <div id="max_w">
       <mat-form-field id="crea_corso_max">
-        <input matInput placeholder="Max studenti" formControlName="maxstud2" [(ngModel)]="data.maxstud">
+        <input matInput placeholder="Max studenti" formControlName="maxstud" [(ngModel)]="data.maxstud">
         <div *ngIf="submitted && f.maxstud.errors" class="invalid-feedback">
           <div *ngIf="f.maxstud.errors.required">Inserire n° massimo studenti per team</div>
         </div>
@@ -116,7 +116,7 @@
 
 
     <div id="buttonCrea_w">
-      <button mat-button class="stdB" [mat-dialog-close]="data" (click) = "createcourse()"> Crea </button>
+      <button mat-button class="stdB" (click) = "createcourse()"> Crea </button>
     </div>
     <div id="buttonChiudi_w">
       <button mat-flat-button class="stdB_red" (click)="close()"> Chiudi </button>

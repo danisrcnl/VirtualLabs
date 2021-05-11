@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { StudentService } from 'app/services/student.service';
 import { Course } from 'app/model/course.model';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
@@ -37,7 +37,7 @@ export class SubjectdialogComponent implements OnInit {
   courseDTO : CourseDTO = new CourseDTO();
   courses$ : Observable <CourseDTO[]>;
   currentUser : User;
-
+  submitted = false;
 
   modCourse: Boolean = false;
   newCourse: Boolean = false;
@@ -61,15 +61,11 @@ export class SubjectdialogComponent implements OnInit {
   ngOnInit() {
 
    this.myForm = this.fb.group({
-     selcourse :'',
-     maxstud :'',
-     minstud : '',
-     coursename:'',
-     enabled: false,
-     maxstud2 : '',
-     minstud2:'',
-     enabled2: '',
-     acronym:'',
+     selcourse :[''],
+     maxstud :['',Validators.required],
+     minstud : ['',Validators.required],
+     coursename:['',Validators.required],
+     acronym:['',Validators.required],
      
    })
 
@@ -86,6 +82,7 @@ export class SubjectdialogComponent implements OnInit {
 
   }
 
+      get f() { return this.myForm.controls; }
 
 checkValue(event :any)
 {
@@ -93,12 +90,22 @@ checkValue(event :any)
 }
 createcourse ()
 {
+   this.submitted = true;
+
+if (this.myForm.invalid)
+{
+  console.log("form invalido");
+  return;
+}
+
 
 
 this.courseDTO.acronym= this.data.acronym;
 this.courseDTO.name = this.data.coursename;
 this.courseDTO.min = this.data.minstud;
 this.courseDTO.max = this.data.maxstud;
+
+console.log(this.courseDTO);
 
 if(this.enabled2)
 
