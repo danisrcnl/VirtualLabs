@@ -108,12 +108,13 @@
 }
   
   .expired {
-    background-color: #fd3434;
+    background-color: white;
+    color: #ff3a3a;
   }
 
   .notExpired {
-    background-color: #00ff99;
-    color: black;
+    background-color: white;
+    color: #1dac00;
   }
 
   .crDate {
