@@ -43,9 +43,10 @@ export class CourseService {
  return this.http.get<StudentDTO[]>(`${environment.apiUrlcourse}/${name}/enrolled`,{params : params1});
  }
 
- addCourse (courseDTO,teacherId) {
+ addCourse (courseDTO: CourseDTO, teacherId) {
 
   // let params1 = new HttpParams().set('courseDTO',courseDTO).append('teacherId',teacherId);
+  courseDTO.enabled = true;
   return this.http.post<any>(`${environment.apiUrlcourse}/`,{courseDTO,teacherId});
  }
 
