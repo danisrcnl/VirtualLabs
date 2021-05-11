@@ -12,7 +12,7 @@ public interface NotificationService {
     boolean confirm (String token);
     boolean reject (String token);
     void notifyTeam (String courseName, String teamName, List<String> memberIds, int hours);
-    void notifyUser (String email, String firstName);
+    void notifyUser (String email, String firstName, String lastName);
     boolean confirmUser (String token);
     List<MemberStatus> getMembersStatus (int teamId);
     Optional<String> getMemberToken (int teamId, String studentId);

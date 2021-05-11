@@ -321,12 +321,12 @@ public class AssignmentServiceImpl implements AssignmentService {
             return false;
         Paper p = paperRepository.getOne(paperId);
         p.setCurrentStatus(PaperStatus.RIVISTO);
-        p.setContent(content);
 
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris"));
         Timestamp t = Timestamp.valueOf(localDateTime);
         PaperStatusTimeDTO paperStatusTimeDTO = PaperStatusTimeDTO.builder()
                 .paperStatus(PaperStatus.RIVISTO)
+                .review(content)
                 .timestamp(t)
                 .content(p.getContent())
                 .build();

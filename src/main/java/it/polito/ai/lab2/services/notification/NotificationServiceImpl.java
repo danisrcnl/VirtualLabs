@@ -49,8 +49,9 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void sendMessage (String address, String subject, String body) {
+        System.out.println(address);
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setTo("ideagraphicdesign.lecce@gmail.com");
+        simpleMailMessage.setTo(address);
         simpleMailMessage.setSubject(subject);
         simpleMailMessage.setText(body);
         javaMailSender.send(simpleMailMessage);
@@ -142,7 +143,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void notifyUser (String email, String firstName) throws UserNotFoundException {
+    public void notifyUser (String email, String firstName, String lastName) throws UserNotFoundException {
 
         if (!userRepository.findByUsername(email).isPresent())
             throw new UserNotFoundException(email);
@@ -170,7 +171,11 @@ public class NotificationServiceImpl implements NotificationService {
         String message = "Ciao " + name + "! Grazie per esserti iscritto, trovi qui sotto il link " +
                 " per confermare la tua iscrizione:" + System.lineSeparator() + confirmLink + System.lineSeparator() +
                 System.lineSeparator() + "Se non sei stato tu a effettuare questa operazione, ti invitiamo ad ignorare la mail.";
-        String receiver = u.getUsername();
+        String receiver = "";
+        if(email.charAt(0) == 's')
+            receiver = u.getUsername();
+        else if(email.charAt(0) == 'd')
+            receiver = firstName.toLowerCase() + "." + lastName.toLowerCase() + "@polito.it";
         String subject = "[VirtualLabs] Conferma registrazione";
         sendMessage(receiver, subject, message);
     }
