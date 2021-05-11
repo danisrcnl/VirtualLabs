@@ -255,15 +255,15 @@ public class VmServiceImpl implements VmService {
         String courseName = vm.getTeam().getCourse().getName();
         String teamName = vm.getTeam().getName();
 
-        if(teamService.getUsedNVCpuForTeam(courseName, teamName) + vm.getNVCpu() >
+        if(teamService.getUsedNVCpuForTeam(courseName, teamName) - vm.getNVCpu() + vmDTO.getNVCpu() >
                 teamRepository.getTeamByCourseAndName(courseName, teamName).getCourse().getVmModel().getMaxNVCpu())
             throw new VmServiceException("You exceeded Virtual CPU limit");
 
-        if(teamService.getUsedDiskForTeam(courseName, teamName) + vm.getDisk() >
+        if(teamService.getUsedDiskForTeam(courseName, teamName) - vm.getDisk() + vmDTO.getDisk() >
                 teamRepository.getTeamByCourseAndName(courseName, teamName).getCourse().getVmModel().getMaxDisk())
             throw new VmServiceException("You exceeded disk space limit");
 
-        if(teamService.getUsedRamForTeam(courseName, teamName) + vm.getRam() >
+        if(teamService.getUsedRamForTeam(courseName, teamName) - vm.getRam() + vmDTO.getRam() >
                 teamRepository.getTeamByCourseAndName(courseName, teamName).getCourse().getVmModel().getMaxRam())
             throw new VmServiceException("You exceeded ram space limit");
 
