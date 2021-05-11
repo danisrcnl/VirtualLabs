@@ -552,14 +552,14 @@ receiverejectteamid($event) {
       console.log(this.maxstud);
       console.log(this.minstud);
 
-      if (this.dainvitare.length -1 > this.maxstud)
+      if (this.dainvitare.length > this.maxstud)
       {
         control = true;
         this.openDialog2("Numero di studenti invitato troppo alto", );
         
       }
 
-       else if (this.dainvitare.length -1 < this.minstud)
+       else if (this.dainvitare.length < this.minstud)
       {
         control = true;
         this.openDialog2("Invitare almeno " + this.minstud + "studenti", );

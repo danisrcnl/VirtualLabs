@@ -88,6 +88,7 @@ return this.http.get<any>(`${environment.apiUrlcourse}/${coursename}/setMax/${va
 
   setEnabled (coursename,value)
  {
+   value = true;
 return this.http.get<any>(`${environment.apiUrlcourse}/${coursename}/setEnabled/${value}`);
  }
 

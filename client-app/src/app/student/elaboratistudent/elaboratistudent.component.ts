@@ -115,7 +115,7 @@ export class ElaboratistudentComponent implements OnInit {
 
   }
 
-  viewPaper (id: number, history: PaperStatusTime[], currentStatus: String, editable: Boolean, assignmentId: number, assignment: Assignment) {
+  viewPaper (id: number, history: PaperStatusTime[], currentStatus: String, editable: Boolean, assignmentId: number, assignment: Assignment, mark: number) {
     const dialogRef = this.dialog.open(ViewPaperComponent, {
       width: '800px',
       data: {
@@ -125,7 +125,8 @@ export class ElaboratistudentComponent implements OnInit {
         editable: editable,
         teacher: false,
         student: true,
-        assignment: assignment
+        assignment: assignment,
+        mark: mark
       }
     });
   

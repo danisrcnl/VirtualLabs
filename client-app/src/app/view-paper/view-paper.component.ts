@@ -42,6 +42,8 @@ export class ViewPaperComponent implements OnInit {
   reviewable: Boolean;
   assignment: Assignment;
   expired: Boolean = false;
+  rated: Boolean = false;
+  mark: number;
 
   ngOnInit(): void {
     this.id = this.data.id;
@@ -59,7 +61,9 @@ export class ViewPaperComponent implements OnInit {
     this.assignment = this.data.assignment;
     if(this.isExpired(this.assignment.expiryDate))
       this.expired = true;
-
+    if(this.currentStatus == "VALUTATO")
+      this.rated = true;
+    this.mark = this.data.mark;
 
     //Inizializzazione dei Form 
     this.soluzioneForm = this.formBuilder.group({
@@ -130,6 +134,7 @@ export class ViewPaperComponent implements OnInit {
 
   viewReview(content: String) {
     this.currentReview = content;
+    console.log(content)
     this.step1 = false;
     this.revisioni = true;
   }
