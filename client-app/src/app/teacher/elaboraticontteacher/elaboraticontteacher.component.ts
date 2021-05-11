@@ -155,11 +155,17 @@ this.assignmentWithPapersnull = [];
 
          this.update();
 
+        },
+        (error)=> {
+          this.update();
         })
 
       //aggiorno l'observable che mostra gli assignments con i paper dopo l'aggiunta dell'assignment
      
      
+    },
+    (error) => {
+      this.update();
     });
 
 }
