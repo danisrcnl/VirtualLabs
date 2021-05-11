@@ -62,6 +62,7 @@ export class LimitDialogComponent implements OnInit {
  count :any = 0;
  count2 : any = 0;
  count3 : any = 0;
+ vm : any;
 submitted = false;
 edit = false;
 
@@ -89,34 +90,58 @@ edit = false;
     Object.entries(this.data).forEach( s => {
     
     this.length = (s.length);
-   if(m==0)
+    if(m==0)
     this.used_resource = s[1];
     
     if(m==1)
     this.vmModel = s[1];
 
- if(m==2)
-this.edit = s[1];
+    if(m==2)
+    this.edit = s[1];
+
+    if(m==3)
+    this.vm = s[1];  
     m++;
     })
 
     this.used_resource.subscribe(data => {this.used_resources = data;
-    
-    this.ram_left = (this.vmModel.maxRam - this.used_resources.ram);
-    this.disk_left = (this.vmModel.maxDisk - this.used_resources.disk);
-    this.nvcpu_left = ((this.vmModel.maxNVCpu - this.used_resources.nvcpu));
+  
+    if (this.vm!=undefined){
+    this.ram_left = (this.vmModel.maxRam + this.vm.ram - this.used_resources.ram);
+    this.disk_left = (this.vmModel.maxDisk + this.vm.disk - this.used_resources.disk);
+    this.nvcpu_left = ((this.vmModel.maxNVCpu + this.vm.nvcpu - this.used_resources.nvcpu));
 
-
-    this.ram_consumption = ((this.used_resources.ram)/this.vmModel.maxRam)*100;
-    this.disk_consumption = ((this.used_resources.disk)/this.vmModel.maxDisk)*100;
-    this.nvcpu_consumption = ((this.used_resources.nvcpu)/this.vmModel.maxNVCpu)*100;
+ 
+   
+    this.ram_consumption = ((this.used_resources.ram - this.vm.ram)/this.vmModel.maxRam)*100;
+    this.disk_consumption = ((this.used_resources.disk - this.vm.disk)/this.vmModel.maxDisk)*100;
+    this.nvcpu_consumption = ((this.used_resources.nvcpu - this.vm.nvcpu)/this.vmModel.maxNVCpu)*100;
     console.log(this.vmModel)
 
     console.log(this.used_resources);
     console.log(this.vmModel.maxNVCpu);
     console.log(this.ram_consumption);
     console.log(this.nvcpu_consumption);
-    
+    }
+
+    else
+    {
+
+    this.ram_left = (this.vmModel.maxRam  - this.used_resources.ram);
+    this.disk_left = (this.vmModel.maxDisk  - this.used_resources.disk);
+    this.nvcpu_left = ((this.vmModel.maxNVCpu  - this.used_resources.nvcpu));
+
+ 
+   
+    this.ram_consumption = ((this.used_resources.ram)/this.vmModel.maxRam)*100;
+    this.disk_consumption = ((this.used_resources.disk)/this.vmModel.maxDisk)*100;
+    this.nvcpu_consumption = ((this.used_resources.nvcpu)/this.vmModel.maxNVCpu)*100;
+
+
+
+
+    }
+
   })
   }
 
