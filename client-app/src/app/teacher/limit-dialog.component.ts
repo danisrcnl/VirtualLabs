@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Vms } from 'app/model/vms.model';
-import {MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { Inject } from '@angular/core';
 import { DialogDataVm } from './vmscomponent.component';
 
@@ -36,7 +36,12 @@ export class LimitDialogComponent2 implements OnInit {
   options = ["Windows", "Linux"];
   submitted = false;
   
-  constructor(private formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: DialogDataVm, public dialog: MatDialog) {
+  constructor(
+    
+    private formBuilder: FormBuilder,
+    public dialogRef: MatDialogRef<LimitDialogComponent2>,
+     @Inject(MAT_DIALOG_DATA) public data: DialogDataVm, 
+     public dialog: MatDialog) {
 
   }
 
@@ -79,9 +84,15 @@ setlimit() {
 
   if (this.limitForm.invalid) {
 
-
+console.log ("limitte");
     return;
   }
+
+  else
+  this.dialogRef.close (this.limitForm.value);
+
+
+
 
 
   this.alertACTIVEVMS = "";
