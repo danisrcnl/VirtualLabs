@@ -182,6 +182,7 @@ isFreezed (stat: String) {
 amCreator (id: number) {
   var outcome: Boolean = false;
   this.myRoles.forEach(role =>{
+    console.log("role == ROLE_VM_" + id + "_CREATOR" + role == "ROLE_VM_" + id + "_CREATOR")
     if(role == "ROLE_VM_" + id + "_CREATOR")
       outcome = true;
   });
