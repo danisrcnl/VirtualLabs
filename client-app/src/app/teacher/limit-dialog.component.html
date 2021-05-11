@@ -7,6 +7,9 @@
           <div class="input-field col s12">
             <mat-form-field class="text">
               <input matInput type="number" placeholder="CPU virtuali" autocomplete="off" formControlName="nvcpu" [(ngModel)]="data.nvcpu">
+              <div *ngIf="submitted && f.nvcpu.errors" class="invalid-feedback">
+                <div *ngIf="f.nvcpu.errors.required">Username richiesto</div>
+              </div>
             </mat-form-field>
           </div>
         </div>
@@ -16,6 +19,9 @@
             <mat-form-field class="text">
               <input matInput type="number" placeholder="Memoria primaria" formControlName="RAM" [(ngModel)]="data.RAM" >
               <p matSuffix>MB</p>
+              <div *ngIf="submitted && f.RAM.errors" class="invalid-feedback">
+                <div *ngIf="f.RAM.errors.required">Username richiesto</div>
+              </div>
             </mat-form-field>
           </div>
         </div>
@@ -25,6 +31,9 @@
               <mat-form-field class="text">
                 <input matInput type="number" placeholder="Spazio su disco" formControlName="Disksize" [(ngModel)]="data.Disksize">
                 <p matSuffix>MB</p>
+                <div *ngIf="submitted && f.Disksize.errors" class="invalid-feedback">
+                  <div *ngIf="f.Disksize.errors.required">Username richiesto</div>
+                </div>
               </mat-form-field>
             </div>
           </div>
@@ -50,6 +59,9 @@
                    <mat-option value="Windows"> Windows </mat-option>
                    <mat-option value="Linux"> Linux </mat-option>
                  </mat-select> 
+                <div *ngIf="submitted && f.OperatingSystem.errors" class="invalid-feedback">
+                  <div *ngIf="f.OperatingSystem.errors.required">Username richiesto</div>
+                </div>
               </mat-form-field>
             </div>
           </div>
@@ -60,6 +72,9 @@
             <div class="input-field col s12">
               <mat-form-field class="text">
                 <input matInput type="number" id="ActiveVms" placeholder="Max di VM attive" formControlName="ActiveVms" [(ngModel)]="data.ActiveVms" >
+                <div *ngIf="submitted && f.ActiveVms.errors" class="invalid-feedback">
+                  <div *ngIf="f.ActiveVms.errors.required">Username richiesto</div>
+                </div>
               </mat-form-field>
               </div>
           </div>
@@ -67,11 +82,14 @@
             <div class="input-field col s12">  
               <mat-form-field class="text">  
                 <input matInput type="number" id="TotalVms" placeholder="Max di VM istanziate" formControlName="TotalVms" [(ngModel)]="data.TotalVms">
+                <div *ngIf="submitted && f.TotalVms.errors" class="invalid-feedback">
+                  <div *ngIf="f.TotalVms.errors.required">Username richiesto</div>
+                </div>
               </mat-form-field>
             </div>
           </div>
           <div id="buttons">
-            <button mat-raised-button id="buttonSave" [mat-dialog-close]="data" color="primary"  type="submit" class = "limit"> Salva </button> 
+            <button mat-raised-button id="buttonSave" color="primary"  type="submit" class = "limit"> Salva </button> 
             <button mat-raised-button id="buttonClose" color="primary" (click)="close()"> Chiudi </button>
           </div>
   </form>
