@@ -115,7 +115,7 @@ export class ElaboratistudentComponent implements OnInit {
 
   }
 
-  viewPaper (id: number, history: PaperStatusTime[], currentStatus: String, editable: Boolean) {
+  viewPaper (id: number, history: PaperStatusTime[], currentStatus: String, editable: Boolean, assignmentId: number) {
     const dialogRef = this.dialog.open(ViewPaperComponent, {
       width: '800px',
       data: {
@@ -128,7 +128,9 @@ export class ElaboratistudentComponent implements OnInit {
       }
     });
   
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(edit => {
+      if(edit == true)
+        this.createPaper(assignmentId);
     });
   }
 
