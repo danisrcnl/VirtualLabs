@@ -36,6 +36,11 @@ public class NotificationController {
     @Autowired
     TeacherService teacherService;
 
+    /*
+    * Il metodo accetta un token ed eventualmente lo utilizza per accettare l'invito a far parte di un team.
+    * Internamente ciò comporterà l'eliminazione di tutte le altre richieste ricevute e dunque dei corrispondenti
+    * teams in costruzione.
+    * */
     @GetMapping("/confirm/{tokenId}")
     public String confirm (@PathVariable String tokenId) {
         if(notificationService.confirm(tokenId))
@@ -43,6 +48,10 @@ public class NotificationController {
         else return "redirect:/notification/confirmation/failure";
     }
 
+    /*
+    * Fa lo stesso del metodo sopra, ma a partire dalla coppia teamId-studentId, per poterne garantire la chiamata
+    * dall'applicazione client.
+    * */
     @GetMapping("/confirm/{teamId}/{studentId}")
     public String confirmTeamMember (@PathVariable int teamId, @PathVariable String studentId) {
         Optional<String> token = notificationService.getMemberToken(teamId, studentId);
@@ -53,6 +62,12 @@ public class NotificationController {
         else return "redirect:/notification/confirmation/failure";
     }
 
+    /*
+    * Per prima cosa viene chiamata la confirmUser che, internamente, si occupa di settare lo stato di un utente ad
+    * attivo se il token fornito è ancora valido. A quel punto dal token viene preso lo username corrispondente (ossia
+    * la email) e ne viene estratta la matricola. Questa sarà usata per andare a prendere lo studente/docente
+    * corrispondente dal database e agganciarlo allo user precedentemente creato.
+    * */
     @GetMapping("/register/confirm/{tokenId}")
     public String confirmSignUp (@PathVariable String tokenId) {
         if(notificationService.confirmUser(tokenId)) {
@@ -80,6 +95,9 @@ public class NotificationController {
         else return "redirect:/notification/confirmation/success";
     }
 
+    /*
+    * Metodo esposto per rifiutare l'invito a far parte di un team.
+    * */
     @GetMapping("/reject/{tokenId}")
     public String reject (@PathVariable String tokenId) {
         if(notificationService.reject(tokenId))
@@ -87,6 +105,9 @@ public class NotificationController {
         else return "redirect:/notification/rejection/failure";
     }
 
+    /*
+    * Come il precedente, ma mediante l'utilizzo della coppia teamId-studentId.
+    * */
     @GetMapping("/reject/{teamId}/{studentId}")
     public String rejectTeamMember (@PathVariable int teamId, @PathVariable String studentId) {
         Optional<String> token = notificationService.getMemberToken(teamId, studentId);

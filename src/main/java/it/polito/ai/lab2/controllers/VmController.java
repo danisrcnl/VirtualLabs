@@ -33,6 +33,11 @@ public class VmController {
     @Autowired
     TeamService teamService;
 
+    /*
+    * Il metodo permette di istanziare una nuova VM per il team desiderato nell'ambito di un determinato corso.
+    * Il team deve essere attivo (tutti gli studenti hanno accettato l'invito) e nel corpo della richiesta deve essere
+    * presente un DTO di VM e la matricola di colui che ne sarà il creatore.
+    * */
     @PostMapping("/{courseName}/{teamName}")
     public Long add (@PathVariable String courseName, @PathVariable String teamName, @RequestBody VmSubmission vmSubmission) throws ResponseStatusException {
         if (teamService.getTeam(courseName, teamName).getStatus() == 0)
@@ -45,6 +50,9 @@ public class VmController {
         }
     }
 
+    /*
+    * Restituisce tutte le vms istanziate nell'ambito di un determinato corso, da qualsiasi team.
+    * */
     @GetMapping("/courses/{courseName}")
     public List<VmDTO> getVmsForCourse (@PathVariable String courseName) throws ResponseStatusException {
         try {
@@ -58,6 +66,9 @@ public class VmController {
         }
     }
 
+    /*
+    * Restituisce il vmModel con id specificato.
+    * */
     @GetMapping("/{id}/getVmModel")
     public VmModelDTO getVmModel(@PathVariable Long id) throws ResponseStatusException {
         Optional<VmModelDTO> outcome = vmService.getVmModel(id);
@@ -67,6 +78,9 @@ public class VmController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Couldn't find any vmModel with id: " + id.toString());
     }
 
+    /*
+     * Restituisce, qualora fosse presente, il vmModel legato ad un determinato corso.
+     * */
     @GetMapping("/courses/{courseName}/getVmModelOfCourse")
     public VmModelDTO getVmModelOfCourse(@PathVariable String courseName) throws ResponseStatusException {
         Optional<VmModelDTO> outcome = vmService.getVmModelForCourse(courseName);
@@ -76,6 +90,9 @@ public class VmController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Couldn't find any VmModel for course: " + courseName);
     }
 
+    /*
+    * Restituisce tutte le vms istanziate da un certo team, a partire dal suo identificatore.
+    * */
     @GetMapping("/teams/{teamId}")
     public List<VmDTO> getVmsForTeam (@PathVariable int teamId) throws ResponseStatusException {
         if (teamService.getTeamById(teamId).getStatus() == 0)
@@ -91,6 +108,9 @@ public class VmController {
         }
     }
 
+    /*
+    * Metodo che restituisce la vm con id specificato.
+    * */
     @GetMapping("/{vmId}")
     public VmDTO getOne (@PathVariable Long vmId) throws ResponseStatusException {
         Optional<VmDTO> vmDTO = vmService.getVm(vmId);
@@ -99,6 +119,9 @@ public class VmController {
         return ModelHelper.enrich(vmDTO.get());
     }
 
+    /*
+    * Metodo che aggiunge un vmModel per il corso specificato. Qualora fosse già presente, questo viene sostituito.
+    * */
     @PostMapping("/courses/{courseName}/setVmModel")
     public VmModelDTO setVmModel (@PathVariable String courseName, @RequestBody VmModelDTO vmModelDTO) {
         Long id = null;
@@ -112,6 +135,10 @@ public class VmController {
         return ModelHelper.enrich(vmModelDTO);
     }
 
+    /*
+    * Metodo che setta i parametri delle risorse per una certa vm. Questi devono soddisfare i limiti imposti dal
+    * corrispondente vmModel.
+    * */
     @PostMapping("/setResources")
     public VmDTO setResources (@RequestBody VmDTO vmDTO) throws ResponseStatusException {
         Optional<VmDTO> outcome;
@@ -129,26 +156,42 @@ public class VmController {
         return ModelHelper.enrich(outcome.get());
     }
 
+    /*
+    * Metodo che modifica lo stato di una vm a quello specificato da "command", qualora possibile.
+    * */
     @GetMapping("/{vmId}/changeState/{command}")
     public VmDTO changeState (@PathVariable Long vmId, @PathVariable String command) throws ResponseStatusException {
-        try {
-            vmService.getVm(vmId);
-        } catch (AiException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
-        }
+        if(!vmService.getVm(vmId).isPresent())
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "La vm specificata non esiste");
 
         switch (command) {
             case "start" :
-                vmService.startVm(vmId);
+                try {
+                    vmService.startVm(vmId);
+                } catch (AiException e) {
+                    throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+                }
                 return ModelHelper.enrich(vmService.getVm(vmId).get());
             case "shutDown" :
-                vmService.shutDownVm(vmId);
+                try {
+                    vmService.shutDownVm(vmId);
+                } catch (AiException e) {
+                    throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+                }
                 return ModelHelper.enrich(vmService.getVm(vmId).get());
             case "freeze" :
-                vmService.freezeVm(vmId);
+                try {
+                    vmService.freezeVm(vmId);
+                } catch (AiException e) {
+                    throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+                }
                 return ModelHelper.enrich(vmService.getVm(vmId).get());
             case "delete" :
-                vmService.deleteVm(vmId);
+                try {
+                    vmService.deleteVm(vmId);
+                } catch (AiException e) {
+                    throw new ResponseStatusException(HttpStatus.CONFLICT, e.getErrorMessage());
+                }
                 return VmDTO.builder().build();
             default:
                 return VmDTO.builder().build();

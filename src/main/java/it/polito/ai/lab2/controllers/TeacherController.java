@@ -28,7 +28,9 @@ public class TeacherController {
     @Autowired
     TeacherService teacherService;
 
-
+    /*
+    * Metodo che torna tutti i docenti presenti nel database.
+    * */
     @GetMapping({"", "/"})
     public List<TeacherDTO> all () {
         return teacherService
@@ -38,7 +40,9 @@ public class TeacherController {
                 .collect(Collectors.toList());
     }
 
-    //@PreAuthorize("hasRole('USER')")
+    /*
+    * Metodo che torna il docente con id pari a quello indicato.
+    * */
     @GetMapping("/{id}")
     public TeacherDTO getOne (@PathVariable String id) throws ResponseStatusException {
         Optional<TeacherDTO> teacher = teacherService.getTeacher(id);
@@ -48,6 +52,9 @@ public class TeacherController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Couldn't find teacher with id: " + id);
     }
 
+    /*
+    * Metodo che torna tutti i corsi tenuti dal docente con id pari a quello indicato.
+    * */
     @GetMapping("/{id}/getCourses")
     public List<CourseDTO> getTeacherCourses (@PathVariable String id) throws ResponseStatusException {
         List<CourseDTO> teacherCourses;

@@ -68,6 +68,11 @@ public class AuthController {
     @Autowired
     NotificationService notificationService;
 
+    /*
+    * Il metodo, per prima cosa verifica che l'utente abbia confermato la registrazione, altrimenti restituisce un
+    * messaggio di errore. Se il login va a buon fine, viene restituito un JWT Token che, se accompagnato a ogni
+    * richiesta successiva, garantirà l'autenticazione delle richieste presso il server.
+    * */
     @PostMapping("/signin")
     public ResponseEntity signin(@RequestBody AuthenticationRequest data) {
         Boolean valid;
@@ -76,7 +81,7 @@ public class AuthController {
             try {
                 valid = authenticationService.isValid(username);
             } catch (AiException e) {
-                throw new BadCredentialsException("Invalid username/password supplied");
+                throw new BadCredentialsException("La coppia username/password non esiste nel server");
             }
             if(!valid)
                 throw new BadCredentialsException("Devi confermare la registrazione prima di fare login");
@@ -93,6 +98,13 @@ public class AuthController {
 
     }
 
+    /*
+    * Il metodo per prima cosa verifica che i dati in input soddisfino le richieste (combinazioni matricola-email). Se
+    * così è viene aggiunto l'utente al database. Successivamente verifica se esista o meno uno studente o docente cui
+    * lo user andrà successivamente agganciato. Se così non fosse, viene creato e aggiunto al database, ma non ancora
+    * agganciato allo user. Ciò sarà fatto solo in fase di conferma della registrazione. Al termine, l'utente viene
+    * notificato dell'avvenuta registrazione e riceverà una mail con un link per completare il processo.
+    * */
     @PostMapping("/signup")
     public void signup(@RequestBody SignUpRequest signUpRequest) throws ResponseStatusException {
         if (!regEx(signUpRequest.getEmail(), signUpRequest.getId()))

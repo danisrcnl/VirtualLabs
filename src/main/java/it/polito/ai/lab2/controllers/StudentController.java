@@ -38,6 +38,9 @@ public class StudentController {
     @Autowired
     StudentService studentService;
 
+    /*
+    * Metodo che torna tutti gli studenti presenti nel database.
+    * */
     @GetMapping({"/", ""})
     public List<StudentDTO> all () {
         return studentService
@@ -48,6 +51,9 @@ public class StudentController {
     }
 
 
+    /*
+    * Ritorna lo studente con id pari a quello fornito nell'url.
+    * */
     @GetMapping("/{id}")
     public StudentDTO getOne (@PathVariable String id) throws ResponseStatusException {
         Optional<StudentDTO> student = studentService.getStudent(id);
@@ -58,6 +64,9 @@ public class StudentController {
     }
 
 
+    /*
+    * Metodo che permette l'aggiunta di un nuovo studente, mappato su studentDTO, nel database.
+    * */
     @PostMapping({"", "/"})
     public StudentDTO addStudent (@RequestBody StudentDTO studentDTO) throws ResponseStatusException {
         if(studentService.addStudent(studentDTO))
@@ -66,6 +75,9 @@ public class StudentController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Couldn't add student " + studentDTO.getId());
     }
 
+    /*
+    * Il metodo ritorna tutti i corsi cui lo studente indicato è iscritto.
+    * */
     @GetMapping("/{id}/getCourses")
     public List<CourseDTO> getStudentCourses (@PathVariable String id) throws ResponseStatusException {
         List<CourseDTO> studentCourses;
@@ -80,6 +92,9 @@ public class StudentController {
                 .collect(Collectors.toList());
     }
 
+    /*
+    * Il metodo ritorna tutti i teams di cui lo studente indicato fa parte.
+    * */
     @GetMapping("/{id}/getTeams")
     public List<TeamDTO> getStudentTeams (@PathVariable String id) throws ResponseStatusException {
         List<TeamDTO> studentTeams;
@@ -94,6 +109,10 @@ public class StudentController {
                 .collect(Collectors.toList());
     }
 
+    /*
+    * Metodo che ritorna il team di cui lo studente fa parte per un certo corso. Torna una lista di gruppi per motivi
+    * di allineamento con l'applicazione client.
+    * */
     @GetMapping("/{id}/{courseName}/getTeam")
     public List<TeamDTO> getStudentTeamForCourse (@PathVariable String id, @PathVariable String courseName) throws ResponseStatusException {
         List<TeamDTO> studentTeams;

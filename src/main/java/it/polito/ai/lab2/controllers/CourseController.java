@@ -35,6 +35,9 @@ public class CourseController {
     @Autowired
     CourseService courseService;
 
+    /*
+    * Metodo che torna tutti i corsi presenti nel database.
+    * */
     @GetMapping({"", "/"})
     public List<CourseDTO> all() {
         return courseService
@@ -44,6 +47,9 @@ public class CourseController {
                 .collect(Collectors.toList());
     }
 
+    /*
+    * Metodo che torna il corso con nome pari a quello contenuto nella richiesta. Il nome è univoco.
+    * */
     @GetMapping("/{name}")
     public CourseDTO getOne (@PathVariable String name) throws ResponseStatusException {
         Optional<CourseDTO> course = courseService.getCourse(name);
@@ -53,6 +59,9 @@ public class CourseController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Course " + name + " doesn't exist");
     }
 
+    /*
+    * Metodo che torna tutti gli studenti iscritti al corso specificato nell'url della richiesta.
+    * */
     @GetMapping("/{name}/enrolled")
     public List<StudentDTO> enrolledStudents (@PathVariable String name) throws ResponseStatusException {
         List<StudentDTO> enrolled;
@@ -67,6 +76,10 @@ public class CourseController {
                 .collect(Collectors.toList());
     }
 
+    /*
+    * Metodo che torna tutti gli studenti presenti nel database (confermati) che ancora non sono iscritti al corso
+    * specificato e che dunque possono essere iscritti dal docente.
+    * */
     @GetMapping("/{name}/notEnrolled")
     public List<StudentDTO> notEnrolledStudents (@PathVariable String name) throws ResponseStatusException {
         List<StudentDTO> notEnrolled;
@@ -81,6 +94,11 @@ public class CourseController {
                 .collect(Collectors.toList());
     }
 
+    /*
+    * Metodo che permette l'aggiunta di un nuovo corso al database. In quanto creato da un docente, ne richiede la
+    * matricola. In tal modo il corso verrà aggiunto al database e successivamente il docente aggiunto al corso appena
+    * creato.
+    * */
     @PostMapping({"", "/"})
     public CourseDTO addCourse (@RequestBody CourseWithTeacher courseWithTeacher)
             throws ResponseStatusException {
@@ -96,6 +114,10 @@ public class CourseController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, courseWithTeacher.getCourseDTO().getName());
     }
 
+    /*
+    * Il metodo rende possibile l'aggiunta del docente con id pari a teacherId al corso indicato nell'url. Al termine
+    * ritorna la lista dei docenti che tengono il corso.
+    * */
     @GetMapping("/{courseName}/addTeacher/{teacherId}")
     public List<TeacherDTO> addTeacherToCourse (@PathVariable String courseName, @PathVariable String teacherId)
             throws ResponseStatusException {
@@ -111,6 +133,10 @@ public class CourseController {
                 .collect(Collectors.toList());
     }
 
+    /*
+    * Metodo che permette l'aggiunta al corso desiderato dello studente il cui DTO è stato passato come corpo
+    * della richiesta.
+    * */
     @PostMapping({"/{name}/enrollOne"})
     public List<StudentDTO> enrollOne (@PathVariable String name, @RequestBody StudentDTO studentDTO)
             throws ResponseStatusException {
@@ -122,6 +148,12 @@ public class CourseController {
         return enrolledStudents(name);
     }
 
+    /*
+    * In questo caso il docente può caricare un csv contenete le informazioni degli studenti. Queste saranno usate
+    * per crearne le entrate corrispondenti nel database e successivamente iscrivere i suddetti studenti al corso
+    * selezionato. E' questo un caso in cui lo studente può esistere anche prima che l'utente corrispondente sia
+    * registrato.
+    * */
     @PostMapping("{name}/enrollMany")
     public List<StudentDTO> enrollMany (@PathVariable String name, @RequestParam("file") MultipartFile multipartFile)
                                                             throws UnsupportedMediaTypeStatusException {
@@ -137,6 +169,9 @@ public class CourseController {
     }
 
 
+    /*
+    * Permette l'eliminazione del corso con nome pari a quello indicato.
+    * */
     @GetMapping("/{courseName}/delete")
     public List<CourseDTO> delete (@PathVariable String courseName) throws ResponseStatusException {
         try {
@@ -148,6 +183,9 @@ public class CourseController {
         return courseService.getAllCourses();
     }
 
+    /*
+    * Metodo che torna la lista di studenti iscritti ancora non uniti ad alcun team per il corso indicato con courseName.
+    * */
     @GetMapping("/{courseName}/getAvailableStudents")
     public List<StudentDTO> getAvailableStudents (@PathVariable String courseName) {
         return courseService
@@ -157,6 +195,9 @@ public class CourseController {
                 .collect(Collectors.toList());
     }
 
+    /*
+    * Metodo che permette di settare il valore minimo di studenti per team in un determinato corso.
+    * */
     @GetMapping("/{courseName}/setMin/{value}")
     public CourseDTO setMin (@PathVariable String courseName, @PathVariable int value) throws ResponseStatusException {
 
@@ -173,6 +214,9 @@ public class CourseController {
         );
     }
 
+    /*
+     * Metodo che permette di settare il valore massimo di studenti per team in un determinato corso.
+     * */
     @GetMapping("/{courseName}/setMax/{value}")
     public CourseDTO setMax (@PathVariable String courseName, @PathVariable int value) throws ResponseStatusException {
 
@@ -189,6 +233,9 @@ public class CourseController {
         );
     }
 
+    /*
+     * Metodo che permette di abilitare o disabilitare un determinato corso.
+     * */
     @GetMapping("/{courseName}/setEnabled/{value}")
     public CourseDTO setEnabled (@PathVariable String courseName, @PathVariable Boolean value) throws ResponseStatusException {
 
@@ -211,6 +258,9 @@ public class CourseController {
         );
     }
 
+    /*
+    * Metodo che permette di eliminare un dato studente dalla lista degli iscritti al corso indicato.
+    * */
     @GetMapping("/{courseName}/{studentId}/evict")
     public List<StudentDTO> evictOne (@PathVariable String studentId, @PathVariable String courseName) throws ResponseStatusException {
 

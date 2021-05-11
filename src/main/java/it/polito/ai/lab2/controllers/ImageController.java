@@ -19,6 +19,10 @@ import java.io.InputStream;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class ImageController {
+
+    /*
+    * Dato il nome dell'immagine in input, il metodo ritorna l'immagine corrispondente nel filesystem.
+    * */
     @GetMapping(value = "/assignments/{name}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
     public @ResponseBody byte[] getAssignmentImg(@PathVariable String name) throws IOException {
         String fullname = "/src/main/images/assignments/" + name;
@@ -28,6 +32,9 @@ public class ImageController {
         else throw new AiException();
     }
 
+    /*
+     * Dato il nome dell'immagine in input, il metodo ritorna l'immagine corrispondente nel filesystem.
+     * */
     @GetMapping(value = "/papers/{name}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
     public @ResponseBody byte[] getPaperImg(@PathVariable String name) throws IOException {
         String fullname = "/src/main/images/papers/" + name;

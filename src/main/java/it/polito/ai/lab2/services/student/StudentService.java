@@ -14,7 +14,6 @@ public interface StudentService {
 
     boolean addStudent (StudentDTO student);
 
-    @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_STUDENT')")
     Optional<StudentDTO> getStudent (String studentId);
 
     @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_STUDENT')")

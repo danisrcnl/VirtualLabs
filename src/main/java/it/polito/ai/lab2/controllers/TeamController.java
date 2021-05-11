@@ -37,6 +37,9 @@ public class TeamController {
     @Autowired
     CourseService courseService;
 
+    /*
+    * Ritorna tutti i teams presenti nel database.
+    * */
     @GetMapping("/course/{courseName}")
     public List<TeamDTO> all (@PathVariable String courseName) {
         return courseService
@@ -46,6 +49,9 @@ public class TeamController {
                 .collect(Collectors.toList());
     }
 
+    /*
+    * Ritorna il team con id pari a quello indicato.
+    * */
     @GetMapping("/{id}")
     public TeamDTO getOne (@PathVariable int id) throws ResponseStatusException {
         TeamDTO teamDTO;
@@ -57,6 +63,9 @@ public class TeamController {
         return ModelHelper.enrich(teamDTO);
     }
 
+    /*
+    * Ritorna il team col nome indicato nell'ambito di un determinato corso.
+    * */
     @GetMapping("/{courseName}/{teamName}")
     public TeamDTO getOneByName(@PathVariable String courseName, @PathVariable String teamName) throws ResponseStatusException {
         TeamDTO teamDTO;
@@ -68,6 +77,9 @@ public class TeamController {
         return ModelHelper.enrich(teamDTO);
     }
 
+    /*
+    * Restituisce una lista di studenti, membri del gruppo identificato dalla coppia courseName-teamName.
+    * */
     @GetMapping("/{courseName}/{teamName}/members")
     public List<StudentDTO> getMembers(@PathVariable String courseName, @PathVariable String teamName) throws ResponseStatusException {
         List<StudentDTO> students;
@@ -82,6 +94,10 @@ public class TeamController {
                 .collect(Collectors.toList());
     }
 
+    /*
+    * Metodo che torna una lista di MemberStatus, ossia informazioni relative ai membri di un team proposto, insieme
+    * allo stato di accettazione o meno dell'invito ricevuto.
+    * */
     @GetMapping("/{courseName}/{teamName}/membersStatus")
     public List<MemberStatus> getMembersStatus(@PathVariable String courseName, @PathVariable String teamName) throws ResponseStatusException {
         int id;
@@ -93,6 +109,12 @@ public class TeamController {
         return notificationService.getMembersStatus(id);
     }
 
+    /*
+    * Il metodo offre la possibilità di aggiungere un nuovo team. Si articola in una prima fase per cui viene creata
+    * la proposta di team. Dopo di ciò, tutti i team in cui il creatore è stato invitato vengono "uccisi" in quanto
+    * colui che crea il team ne ha automaticamente accettato l'invito. Dopo di ciò tutti i restanti membri della
+    * proposta di team vengono informati con una email della proposta ricevuta.
+    * */
     @PostMapping("/{courseName}/add")
     public TeamDTO addTeam(@PathVariable String courseName, @RequestBody TeamRequest teamRequest) throws ResponseStatusException {
         String teamName = teamRequest.getTeamName();
@@ -115,6 +137,10 @@ public class TeamController {
                 );
     }
 
+    /*
+    * Il metodo offre la possibilità di avere informazioni circa l'attuale consumo di risorse legate alle virtual
+    * machines per un certo corso, di un certo team.
+    * */
     @GetMapping("/{courseName}/{teamName}/getUsedResources")
     public UsedResources getUsedResources (@PathVariable String courseName, @PathVariable String teamName) throws ResponseStatusException {
         try {
