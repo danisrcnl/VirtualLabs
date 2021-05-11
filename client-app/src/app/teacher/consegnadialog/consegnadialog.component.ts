@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Inject, OnInit} from '@angular/core';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogConsegna } from '../elaboratiteacher/elaboratiteacher.component';
 
@@ -47,6 +47,58 @@ export class ConsegnadialogComponent implements OnInit {
 
   onSubmit() {
 
+
+    let month : any = this.consegnaForm.controls['mese'].value;
+     
+      let month2 = this.months.indexOf(month);
+
+      var dd = String(this.consegnaForm.controls['giorno'].value).padStart(2, '0');
+      var mm = String(month2 + 1).padStart(2, '0'); //January is 0!
+      var yyyy = this.consegnaForm.controls['anno'].value;
+
+      let data = yyyy + "-" + mm + "-" + dd;
+      
+
+
+      switch(mm)
+      {
+
+        case "04" : {
+          if(this.consegnaForm.controls['giorno'].value > 30 )
+          return;
+            break;
+        }
+
+        case "06" : {
+          if(this.consegnaForm.controls['giorno'].value > 30 )
+          return;
+            break;
+        }
+
+        case "09" : {
+          if(this.consegnaForm.controls['giorno'].value > 30 )
+          return;
+             break;
+        }
+
+        case "11" : {
+          if(this.consegnaForm.controls['giorno'].value > 30 )
+          return;
+             break;
+        }
+
+        case "02" : {
+          
+          if(this.consegnaForm.controls['giorno'].value > 28 )
+          return;
+             break;
+        }
+
+      }
+
+     console.log(data);
+
+
     var outcome: Outcome = new Outcome();
 
     console.log (this.consegnaForm.get(['giorno']).value);
@@ -73,4 +125,5 @@ export class ConsegnadialogComponent implements OnInit {
     this.file = event.target.files[0];
   }
 
+   
 }
