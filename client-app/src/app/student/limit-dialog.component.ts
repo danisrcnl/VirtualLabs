@@ -106,7 +106,6 @@ export class LimitDialogComponent implements OnInit {
 
     if (this.vm!=undefined){
 
-      console.log("non undefined");
     this.ram_left = (this.vmModel.maxRam + this.vm.ram - this.used_resources.ram);
     this.disk_left = (this.vmModel.maxDisk + this.vm.disk - this.used_resources.disk);
     this.nvcpu_left = ((this.vmModel.maxNVCpu + this.vm.nvcpu - this.used_resources.nvcpu));
@@ -116,18 +115,13 @@ export class LimitDialogComponent implements OnInit {
     this.ram_consumption = ((this.used_resources.ram - this.vm.ram)/this.vmModel.maxRam)*100;
     this.disk_consumption = ((this.used_resources.disk - this.vm.disk)/this.vmModel.maxDisk)*100;
     this.nvcpu_consumption = ((this.used_resources.nvcpu - this.vm.nvcpu)/this.vmModel.maxNVCpu)*100;
-    console.log(this.vmModel)
-    
-    console.log(this.used_resources);
-    console.log(this.vmModel.maxNVCpu);
-    console.log(this.ram_consumption);
-    console.log(this.nvcpu_consumption);
+
     }
 
     else
     {
 
-      console.log("undefined");
+     
     this.ram_left = (this.vmModel.maxRam  - this.used_resources.ram);
     this.disk_left = (this.vmModel.maxDisk  - this.used_resources.disk);
     this.nvcpu_left = ((this.vmModel.maxNVCpu  - this.used_resources.nvcpu));

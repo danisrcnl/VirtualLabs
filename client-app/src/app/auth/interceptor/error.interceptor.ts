@@ -24,26 +24,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                 location.reload(true);
             }
 
-           /*  if ([409].indexOf(err.status) !== -1) {
-                // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
-               // window.alert(err.error.message);
-
-              let dialogRef = this.dialog.open(YourDialog, {
-                            data: { name: err.error.message },
-                                });
-                
-;            }*/
-/*
-if(err instanceof HttpErrorResponse) {
-    console.log("err: server" + err.error.message);
-    return throwError(err.error.message);
-}
-else {
-    console.log("err client "+err);
-           
-            return throwError(err.error.message);}
-        
-        */
+    
   
 return throwError(err);
         }))

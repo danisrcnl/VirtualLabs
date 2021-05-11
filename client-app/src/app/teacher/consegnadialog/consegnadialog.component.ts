@@ -96,22 +96,17 @@ export class ConsegnadialogComponent implements OnInit {
 
       }
 
-     console.log(data);
-
-
     var outcome: Outcome = new Outcome();
 
-    console.log (this.consegnaForm.get(['giorno']).value);
 
     this.submitted = true;
     var formData = new FormData();
     formData.append("file", this.file);
     outcome.formData = formData;
     outcome.consegnaForm = this.consegnaForm;
-    console.log(outcome.consegnaForm)
 
     if(this.consegnaForm.invalid) {
-      console.log('Form invalid');
+    
       return;
     }
     else

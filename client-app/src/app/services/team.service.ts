@@ -65,7 +65,6 @@ getMembers(courseName,teamName)
  
   if(err instanceof HttpErrorResponse) {
 
-    console.log(err.error.message);
     return throwError(err.error.message);
 
   } else {

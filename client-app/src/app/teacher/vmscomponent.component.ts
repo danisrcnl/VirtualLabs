@@ -62,8 +62,6 @@ export class VmscomponentComponent implements OnInit {
 
   ngOnInit(){
 
-   console.log(this.vmarray);
-
   }
 
   openlimitdialog()
@@ -81,7 +79,6 @@ export class VmscomponentComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe( data => {
 
-      console.log(data);
 
 
    if(data != undefined)

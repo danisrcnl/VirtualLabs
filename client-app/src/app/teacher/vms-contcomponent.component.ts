@@ -33,7 +33,6 @@ export class VmsContcomponentComponent implements OnInit {
 
     this.hreff = router.url;
     this.subject = this.hreff.substring(this.hreff.lastIndexOf('/')+1 );
-    console.log(this.subject);
     this.href = '/teacher/course/'+ this.subject;
      this.href2 = this.href ;
   }
@@ -58,16 +57,14 @@ export class VmsContcomponentComponent implements OnInit {
    ngOnInit() {
 
      this.firstParam = this.route.snapshot.queryParamMap.get('name');
-     console.log(this.firstParam);
-
      this.route.params.subscribe (routeParams => {
      this.hreff = this.router.url;
      this.subject = this.hreff.substring(0,this.hreff.lastIndexOf('?'));
      this.hreff = this.hreff.substring(0,this.hreff.lastIndexOf('/'));
-     this.href = this.subject; console.log(this.href);
+     this.href = this.subject; 
      this.href2 = this.hreff + '/students';
      this.href3 = this.hreff + '/elaborati';
-     console.log(this.href2);
+     
 ;
 });
 
@@ -76,7 +73,7 @@ export class VmsContcomponentComponent implements OnInit {
     this.vmService.getVmModelforCourse(this.firstParam).subscribe(data => {
 
     this.vmModel = data;
-    console.log(this.vmModel);
+  
    })
 
 
@@ -90,12 +87,10 @@ export class VmsContcomponentComponent implements OnInit {
     {
       this.vmModel = $event;
       this.vmModel2 = $event;
-      console.log(this.vmModel);
-      console.log(this.vmModel2);
       this.vmService.setVmModel(this.vmModel2,this.firstParam).subscribe(data =>
         
         
-        {console.log(data)
+        {
         
         }
         , (error) => {

@@ -47,7 +47,7 @@ export class ElaboraticontstudentComponent implements OnInit {
     this.hreff = this.router.url;
     this.subject = this.hreff.substring(0,this.hreff.lastIndexOf('?'));
     this.hreff = this.hreff.substring(0,this.hreff.lastIndexOf('/'));
-    this.href = this.subject; console.log(this.href);
+    this.href = this.subject; 
     this.href2 = this.hreff + '/students';
     this.href3 = this.hreff + '/vms';
     this.courseName = this.route.snapshot.queryParamMap.get('name');
@@ -57,7 +57,7 @@ export class ElaboraticontstudentComponent implements OnInit {
   this.authService.info().subscribe(info => {
 
     var idtmp: String[] = info.username.split('@', 1);
-    console.log(idtmp + ", " + idtmp[0].length);
+    
     this.studentid = idtmp[0].substring(1);
     var id: String = "";
     for (let i = 1; i<idtmp[0].length; i++)
@@ -77,7 +77,7 @@ export class ElaboraticontstudentComponent implements OnInit {
           
           var paperWithHistory: PaperWithHistory = new PaperWithHistory();
           paperWithHistory.paper = paper;
-          console.log(paper.id)
+        
   
           this.assignmentService.getPaperHistory(paper.id).subscribe(history => {
             paperWithHistory.history = history;
@@ -140,12 +140,12 @@ this.assignmentService.getAssignmentPapers($event.id).subscribe(data => {
     if(p.creator == this.studentid)
     
       this.assignmentService.setContent(p.id,$event.content).subscribe(data => {
-        console.log(data);
+      
       this.update();
       },
       (error) => {
         this.update();
-        console.log("errore");
+        
         
       })
     
@@ -187,8 +187,7 @@ ordered (awp: AssignmentWithPapers[]) {
           
           var paperWithHistory: PaperWithHistory = new PaperWithHistory();
           paperWithHistory.paper = paper;
-          console.log(paper.id)
-  
+        
           this.assignmentService.getPaperHistory(paper.id).subscribe(history => {
             paperWithHistory.history = history;
             

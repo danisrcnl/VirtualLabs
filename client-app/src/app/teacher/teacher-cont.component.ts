@@ -64,7 +64,7 @@ this.studenteaggiunto = null;
       
       
        this.courseId.replace('%20', " ");
-       console.log (this.courseId);
+    
        
 
       
@@ -79,7 +79,7 @@ this.studenteaggiunto = null;
     
                   
           this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);
-         console.log("Studenti non iscritti al corso: ",this.studenti);
+        
           this.studentsComponent.updateFilteredOptions();
   
           }
@@ -106,17 +106,10 @@ this.studenteaggiunto = null;
 
 
   ngOnInit() {   
-
-
-
     }
 
   
 
-
-    
-  
-  
 
 
 
@@ -129,10 +122,9 @@ this.studenteaggiunto = null;
   
 
 
-      this.courseService.enrollOne(this.courseId,this.studenteaggiunto).subscribe(data => {console.log(data)
+      this.courseService.enrollOne(this.courseId,this.studenteaggiunto).subscribe(data => {
       this.studenti$=this.courseService.getfreeStudents(this.courseId);
       this.studenti$.subscribe(data => {
-        console.log(data);
       this.studentsComponent.updateFilteredOptions();
       this.studentsComponent.selection.clear();
       this.studentsComponent.studenteselezionato = null;
@@ -153,26 +145,21 @@ this.studenteaggiunto = null;
       
      this.darimuovere.forEach(s => {
 
-      this.courseService.deleteOne(this.courseId,s.id).subscribe(data => {console.log(data)
+      this.courseService.deleteOne(this.courseId,s.id).subscribe(data => {
      // this.studenti$ =  this.courseService.getfreeStudents(this.courseId); 
       this.studentsComponent.updateFilteredOptions();     
 
      
       let index: number = this.enrolledstudents.findIndex(d => d === s);
       this.enrolledstudents.splice(index,1);
-      console.log(this.enrolledstudents);
-       this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);
+      this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);
   
-       
-    },
+       },
       
       ),
       
       error => { 
-
-
-      }
-      ;
+      };
      })
 
       this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);

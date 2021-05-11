@@ -34,34 +34,34 @@ export class VmscomponentComponent2 implements OnInit {
   set Vms (vmss: Observable<Vms[]>)
   {
     this.vmsperteam$ = vmss;
-    console.log(this.vmsperteam$);
+    
   }
 
   @Input ('team')
   set _team (team: Team) {
     this.team = team;
-    console.log("||" + team)
+    
   }
 
   @Input ('vmModel')
   set Vmmodel (vmmodel : vmModelDTO)
   {
     this.vmModel = vmmodel;
-    console.log(this.vmModel);
+   
   }
 
   @Input ('roles$')
   set Roles (roles: Observable<String[]>)
   {
     this.roles$ = roles;
-    console.log(this.roles$);
+   
   }
 
   @Input ('usedResources$')
   set Usedresources (value : Observable <UsedResources>)
   {
     this.usedResources$ = value;
-    console.log("!!!" + this.usedResources$)
+    
     
   }
 
@@ -92,8 +92,6 @@ export class VmscomponentComponent2 implements OnInit {
 
   ngOnInit(){
 
-   
-
 
   }
 
@@ -115,11 +113,8 @@ export class VmscomponentComponent2 implements OnInit {
      {
       
       this.vm.nvcpu = data.nvcpu;
-      console.log(data.nvcpu);
       this.vm.ram = data.ram;
       this.vm.disk = data.disk;
-      
-      console.log(this.vm);
       this.addvmEvent.emit(this.vm);
 
    }
@@ -150,11 +145,8 @@ editvm(vmss) {
       
      
       this.vm.nvcpu = data.nvcpu;
-      console.log(data.nvcpu);
       this.vm.ram = data.ram;
       this.vm.disk = data.disk;
-      
-      console.log(this.vm);
       this.editvmEvent.emit(this.vm);
 
    }

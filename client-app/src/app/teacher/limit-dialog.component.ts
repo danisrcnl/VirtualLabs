@@ -63,7 +63,7 @@ export class LimitDialogComponent2 implements OnInit {
     Object.entries(this.data).forEach( s => {
 
     this.length = (s.length);
-    console.log(s[1]);
+    
     this.vms = Object.assign(s[1]);
     })
     
@@ -84,59 +84,12 @@ setlimit() {
 
   if (this.limitForm.invalid) {
 
-console.log ("limitte");
+
     return;
   }
 
   else
   this.dialogRef.close (this.limitForm.value);
 
-
-
-
-
-  this.alertACTIVEVMS = "";
-  this.alertDISKSIZE = "";
-  this.alertRAM = "";
-  this.alertTOTALVMS = "";
-  this.alertnvcpu ="";
-
-  this.activevms = 0;
-  this.DISKSIZE = 0;
-  this.RAMtotal = 0;
-  this.TOTALVMS = 0;
-  this.nvcputotal =0;
-
-
-
- 
-console.log(this.TOTALVMS);
- console.log("entrato");
- console.log(this.nvcputotal);
- console.log(this.nvcpu);
- console.log (this.activevms);
- console.log (this.TotalVms);
-if (this.nvcpu < this.nvcputotal)
-{
-  this.alertnvcpu = "Limite non consentito"
-}
-
-if (this.RAM < this.RAMtotal)
-{
-  this.alertRAM = "Limite non consentito"
-}
-
-if (this.ActiveVms < this.activevms)
-{
-
-this.alertACTIVEVMS = "Limite non consentito"
-
-}
-
-if (this.TotalVms< this.TOTALVMS)
-{
-  this.alertTOTALVMS = "Limite non consentito"
-
-}
 }
 }

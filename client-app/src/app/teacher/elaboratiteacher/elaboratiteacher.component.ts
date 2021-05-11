@@ -49,7 +49,7 @@ export class ElaboratiteacherComponent implements OnInit {
   @Input('assignmentWithPapers')
   set _assignmentWithPapers (assignmentWithPapers: AssignmentWithPapers[]) {
     this.assignmentWithPapers = assignmentWithPapers;
-    console.log(this.assignmentWithPapers);
+   
   }
 
   constructor (private assignmentService: AssignmentService, private studentService: StudentService, public dialog: MatDialog) { }
@@ -65,7 +65,7 @@ export class ElaboratiteacherComponent implements OnInit {
   setView (papersWithHistory: PaperWithHistory[]) {
     this.viewingPapers = papersWithHistory;
     this.filteredViewingPapers = this.viewingPapers;
-    console.log(this.viewingPapers);
+   
   }
 
   toggle(chip: MatChip) {
@@ -89,9 +89,8 @@ export class ElaboratiteacherComponent implements OnInit {
       this.selection.push(chip.value);
     }
 
-    console.log(this.selection);
     this.filter(this.selection);
-    console.log(this.filteredViewingPapers);
+   
 
     
   }
@@ -138,19 +137,13 @@ export class ElaboratiteacherComponent implements OnInit {
   
     dialogRef.afterClosed().subscribe(data => {
 
-      console.log(data);
+    
       var file = data.formData;
       var formValue = data.consegnaForm;
-
-      console.log(formValue);
-      console.log(formValue.get("anno").value);
-
       this.consegnadata.anno = formValue.get("anno").value;
       this.consegnadata.giorno = formValue.get("giorno").value;
       this.consegnadata.mese = formValue.get("mese").value;
       this.consegnadata.content = file;
-      console.log(this.consegnadata);
-      
       this.addconsegna.emit(this.consegnadata);
       
 
@@ -215,7 +208,6 @@ export class ElaboratiteacherComponent implements OnInit {
         if(result.soluzione!=undefined)
         this.addsoluzione.emit({res: result, paperid : id, assid : assignmentId});
         
-      console.log(result);
     });
   }
 

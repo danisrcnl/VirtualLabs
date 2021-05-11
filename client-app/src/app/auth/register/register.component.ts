@@ -64,10 +64,7 @@ export class RegisterComponent implements OnInit {
 
     this.registerForm.valueChanges.subscribe ( val => {
 
-      console.log(val);
-        
       
-
         if(val.matricola == 's' && this.count==0)
         {
             this.student = true;
@@ -78,21 +75,20 @@ export class RegisterComponent implements OnInit {
         else if (val.matricola == 'd' && this.count==0)
         {
           this.count++;
-          console.log("d");
+          
           this.student = false;
           let n = val.matricola +'@polito.it';
           this.autoemail = of (n);
         }
 
         if (this.student == true && this.count!=0 )    {
-             console.log("continuo s");
+             
             let s = val.matricola + '@studenti.polito.it';
             this.autoemail = of (s); 
         }
 
         if (this.student == false && this.count!=0)
         {
-            console.log("continuo d");
             let n = val.matricola +'@polito.it';
           this.autoemail = of (n);
         }
@@ -118,8 +114,6 @@ this.submitted = true;
         let mail;
         this.autoemail.subscribe(data => {mail = data})
         this.registerForm.controls['email'].setValue(mail);
-        console.log(this.registerForm.controls['email'].value);
-
 
   
          if (this.registerForm.invalid) {
@@ -149,7 +143,6 @@ this.submitted = true;
             .subscribe(
                 data => {
                     this.loading = false;
-                    console.log(data);
                     this.alertService.success('Registration successful', true);
                     this.matDialog.closeAll();
                     let dialogRef = this.dialog.open(YourDialog, {

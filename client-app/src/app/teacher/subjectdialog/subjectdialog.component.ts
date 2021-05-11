@@ -69,7 +69,7 @@ export class SubjectdialogComponent implements OnInit {
      
    })
 
-   this.myForm.valueChanges.subscribe(console.log);
+   this.myForm.valueChanges.subscribe();
 
     this.teacherId = this.currentUser.username.split("@")[0].substring(1,7);
 
@@ -86,7 +86,7 @@ export class SubjectdialogComponent implements OnInit {
 
 checkValue(event :any)
 {
-  console.log(event);
+
 }
 createcourse ()
 {
@@ -94,7 +94,7 @@ createcourse ()
 
 if (this.myForm.invalid)
 {
-  console.log("form invalido");
+
   return;
 }
 
@@ -105,7 +105,6 @@ this.courseDTO.name = this.data.coursename;
 this.courseDTO.min = this.data.minstud;
 this.courseDTO.max = this.data.maxstud;
 
-console.log(this.courseDTO);
 
 if(this.enabled2)
 
@@ -117,7 +116,7 @@ this.courseDTO.enabled = false;
 this.courseservice.addCourse(this.courseDTO,this.teacherId)
 .subscribe(
   
-  data => {console.log(data);
+  data => {
  // this.courses$ = this.teacherService.getCourseforTeacher(this.teacherId);
 
   this.dialog.closeAll();
@@ -129,7 +128,7 @@ this.courseservice.addCourse(this.courseDTO,this.teacherId)
 , error => {this.error = error});
 
 
-console.log(this.courseDTO);
+
 
 }
 
@@ -137,7 +136,7 @@ console.log(this.courseDTO);
  delete()
  {
   let name = this.selectedcourse.name;
-  this.courseservice.deleteCourse(name).subscribe(data => {console.log(data)
+  this.courseservice.deleteCourse(name).subscribe(data => {
   this.dialog.closeAll();
   });
   
@@ -146,7 +145,7 @@ console.log(this.courseDTO);
 
 
  check() {
-console.log(this.data.enabled);
+
 
 let name = this.selectedcourse.name;
 
@@ -182,7 +181,7 @@ this.courses$ = this.teacherService.getCourseforTeacher(this.teacherId);
    
    this.dialog.closeAll();
 
-   console.log(this.data);
+
  }
 
 

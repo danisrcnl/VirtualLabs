@@ -42,7 +42,7 @@ constructor(
   private dialog : MatDialog ) {
 
   this.authService.currentUser.subscribe ( x => {this.currentUser = x;
-    console.log(this.currentUser);
+   
       this.studentId = this.currentUser.username.split("@")[0].substring(1,7);
 
       
@@ -57,7 +57,7 @@ constructor(
       
       
        this.courseId.replace('%20', " ");
-       console.log (this.courseId);
+       
        
       
        this.studentservice.getStudentCourseTeam(this.currentStudent.id,this.courseId).subscribe(
@@ -76,7 +76,7 @@ constructor(
                              
                               data.forEach(t => {
                                 
-                                console.log(t);
+                              
                        })
 
                           })}})
@@ -92,7 +92,7 @@ constructor(
                       }
 
                       )
-                      console.log(this.roles);
+                     
                       this.roles$ = of(this.roles);
                      
                       this.usedResources$ = this.teamService.getUsedResources(this.courseId,this.team.name);
@@ -101,7 +101,7 @@ constructor(
 
 
           error => {
-            console.log("errore");
+           
                    }
 
     );});}
@@ -133,10 +133,10 @@ this.route.params.subscribe (routeParams => {
 this.hreff = this.router.url;
   this.subject = this.hreff.substring(0,this.hreff.lastIndexOf('?'));
   this.hreff = this.hreff.substring(0,this.hreff.lastIndexOf('/'));
-  this.href = this.subject; console.log(this.href);
+  this.href = this.subject; 
    this.href2 = this.hreff + '/students';
    this.href3 = this.hreff + '/elaborati';
-   console.log(this.href2);
+   
 ;
 });
 
@@ -144,7 +144,7 @@ this.hreff = this.router.url;
   this.vmService.getVmModelforCourse(this.firstParam).subscribe(data => {
 
     this.vmModel = data;
-    console.log(this.vmModel);
+    
    })
 
  
@@ -154,7 +154,7 @@ this.hreff = this.router.url;
     receivevmModel($event)
     {
       this.vmModel = $event;
-      console.log(this.vmModel);
+      
     }
     
   
@@ -162,9 +162,9 @@ this.hreff = this.router.url;
     {
       this.vm = $event;
       this.vm.vmStatus = vmStatus.OFF;
-      console.log(this.vm);
+      
       this.vmService.addVm(this.firstParam,this.team.name,this.vm,this.currentStudent.id).subscribe(
-        data1 => {console.log(data1)
+        data1 => {
          this.updatevms();
          this.authService.info().subscribe(data => 
                       
@@ -172,12 +172,12 @@ this.hreff = this.router.url;
                         data.roles.forEach( r => {
                             if(r.includes("VM_"+data1))
                             this.roles.push(r);
-                            console.log("VM_"+data1);
+                            
                         })
                       }
 
                       )
-                      console.log(this.roles);
+                      
                       this.roles$ = of(this.roles);
         },
 
@@ -186,7 +186,7 @@ this.hreff = this.router.url;
                         let dialogRef = this.dialog.open(YourDialog, {
                             data: { name: error },
                                 });
-          console.log(error);
+          
 
         }
         
@@ -197,11 +197,11 @@ this.hreff = this.router.url;
 
     receiveeditvm($event) {
 
-      console.log($event);
+      
 
      this.vmService.editVm($event).subscribe( data => {
        
-       console.log(data)}
+      }
        
        ,
        (error) => {
@@ -228,7 +228,7 @@ this.hreff = this.router.url;
                      this.vmsperteam$ = this.vmService.getVmsForTeam(t.id);
                      this.vmsperteam$.subscribe(data => {
                        data.forEach(t => {
-                         console.log(t);
+                         
                        })
                      }) 
                      
@@ -245,7 +245,7 @@ this.hreff = this.router.url;
     {
 
 
-      this.vmService.changeState($event.vmId,$event.command).subscribe(data => {console.log(data)
+      this.vmService.changeState($event.vmId,$event.command).subscribe(data => {
       this.updatevms();
       
       });

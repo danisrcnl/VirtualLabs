@@ -35,8 +35,6 @@ const httpOptions = {
 
     setAssignmentContent (assignmentId: number, formData: FormData) {
         var file = formData;
-        console.log(formData);
-        console.log(formData.get("file"))
         return this.http.post<FormData>(`${environment.apiUrlassignments}/${assignmentId}/setContent`, file).pipe(catchError(this.handleError));
     }
 
@@ -110,7 +108,6 @@ const httpOptions = {
  
   if(err instanceof HttpErrorResponse) {
 
-    console.log(err.error.message);
     return throwError(err.error.message);
 
   } else {

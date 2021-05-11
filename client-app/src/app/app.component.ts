@@ -59,47 +59,6 @@ export class AppComponent implements OnInit {
 constructor (public dialog:MatDialog,private route: ActivatedRoute, private teacherService:TeacherService, private studentservice: StudentService, private sidenavService: SidenavService, private authService: AuthService, private router: Router) {
 
   
-   /*if (this.authService.currentUserValue) {
-            this.router.navigate(['/']);
-        }
-
-*/
-  
-
-
-
-
-/*
-    this.authService.currentUser.subscribe ( x => {this.currentUser = x;
-      this.studentId = this.currentUser.username.split("@")[0].substring(1,7);
-  console.log("Hey");
-  this.studentservice.getOne(this.studentId).subscribe(
-    s => {
-      this.currentStudent = s;
-    },
-    error => {
-      console.log("errore");
-    }
-  );
-    
-    
-    /*
-    let splitted = this.currentUser.username.split("@", 1);
-    let splittedString: String = new String(splitted);
-    let control = splitted[0][0];
-// splitted[1] conterrà l'id dell'utente, control contiene 'd' o 's'
-    if (control == "s") {
-      splitted = splittedString.split("s", 2);
-      this.studentservice.getOne(splitted[1]).subscribe(x => {
-        this.name = x.firstName;
-      })
-    } else if (control == "d") {
-      splitted = splittedString.split("d", 2);
-      this.teacherService.getOne(splitted[1]).subscribe(x => {
-        this.name = x.firstName;
-      })
-    }
-  */
 }
 
 
@@ -113,7 +72,6 @@ constructor (public dialog:MatDialog,private route: ActivatedRoute, private teac
   
   ngOnInit(){
 
-    console.log("!!!!!!!!!" + this.currentUser);
 
   this.currentUser = this.authService.currentUser;
 
@@ -129,7 +87,7 @@ constructor (public dialog:MatDialog,private route: ActivatedRoute, private teac
       this.currentStudent = s;
     },
     error => {
-      console.log("errore");
+
     }
   );}
 
@@ -139,7 +97,7 @@ constructor (public dialog:MatDialog,private route: ActivatedRoute, private teac
       this.currentStudent = s;
     },
     error => {
-      console.log("errore");
+      
     }
   );}
 
@@ -151,14 +109,10 @@ constructor (public dialog:MatDialog,private route: ActivatedRoute, private teac
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
     if(this.currentUser)
     {
-      
-      console.log("loggato");
+  
       this.isLogin = false;
     }
-    else
-    console.log ("sloggato");
-
-    
+  
     this.studentservice._refresh$.subscribe(()=> {
 
       this.courses$ = this.studentservice.getcourse();
@@ -203,18 +157,17 @@ onActivate (componentRef)
       
 
        dialogRef.afterClosed().subscribe (data => {
-         console.log(data);
+         
 
          if(data != undefined)
          {
            
            this.authService.login (data.username,data.password).subscribe
            (
-        data => { console.log(data);
+        data => {
         this.authService.info().subscribe(
           data1 => {
-            console.log(data1);
-            console.log(this.isTeacher);
+            
             this.isTeacher= data1.isTeacher;
             if (this.isTeacher == false)
         {
@@ -230,10 +183,9 @@ onActivate (componentRef)
       
           this.currentUser = this.authService.currentUser;
    
-  console.log(this.currentUser);
-  
+ 
 
-  this.currentUser.subscribe(data => {console.log(data)
+  this.currentUser.subscribe(data => {
   
    
 
@@ -245,7 +197,7 @@ onActivate (componentRef)
       this.currentStudent = s;
     },
     error => {
-      console.log("errore");
+     
     }
   );}
 
@@ -255,7 +207,7 @@ onActivate (componentRef)
       this.currentStudent = s;
     },
     error => {
-      console.log("errore");
+      
     }
   );}
 
@@ -282,7 +234,7 @@ onActivate (componentRef)
         this.isLogin = true;
         this.authService.logout();
         this.router.navigate (["/"]);
-        console.log("!!!!!!!" + this.currentUser);
+      
     }
 
 }

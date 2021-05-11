@@ -82,17 +82,17 @@ export class TeacherComponent implements OnInit {
 
 this.activeRoute.queryParams.subscribe(data => {
 
-console.log(this.studenti);
+
       this.firstParam = this.activeRoute.snapshot.queryParamMap.get('name');
 
 this.activeRoute.params.subscribe (routeParams => {
 this.hreff = this.router.url;
   this.subject = this.hreff.substring(0,this.hreff.lastIndexOf('?'));
   this.hreff = this.hreff.substring(0,this.hreff.lastIndexOf('/'));
-  this.href = this.subject; console.log(this.href);
+  this.href = this.subject;
    this.href2 = this.hreff + '/vms';
    this.href3= this.hreff + '/elaborati';
-   console.log(this.href2);
+  
 ;
 
      this.enrolledstudents = Object.assign(this.enrolledstudents);

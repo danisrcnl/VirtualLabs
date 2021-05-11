@@ -142,7 +142,7 @@ this.route.queryParams.subscribe(data => {
 
 
     this.authService.currentUser.subscribe ( x => {
-      console.log("!!!>>" + x)
+
       this.currentUser = x;
       this.studentId = this.currentUser.username.split("@")[0].substring(1,7);
   
@@ -151,7 +151,7 @@ this.route.queryParams.subscribe(data => {
            this.currentStudent = s;
               },
          error => {
-           console.log("errore");
+        
                   }
         );
     
@@ -175,7 +175,7 @@ this.route.queryParams.subscribe(data => {
 
        this.route.queryParams.subscribe(params => { this.courseId = params.name
        this.courseId.replace('%20', " ");
-       console.log (this.courseId);
+       
        });
 
       
@@ -197,10 +197,9 @@ this.route.queryParams.subscribe(data => {
           
             if (s.id!=this.studentId) 
              this.enrolledstudents.push(s);
-    
-               console.log(this.enrolledstudents);        
+         
                  this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);
-                   this.studentsComponent.updateFilteredOptions();
+                 this.studentsComponent.updateFilteredOptions();
   
           }) 
         
@@ -213,22 +212,13 @@ this.route.queryParams.subscribe(data => {
         
         this.teamsinconstruction$ = this.studentservice.getStudentCourseTeam(this.studentId,this.courseId);
            this.teamsinconstruction$.subscribe (data => {
-                 console.log(data);
+                
                })
 
         
         this.updateteamstatus();
 
-        console.log(this.teams2.length);
-
-    
-          
-
-           console.log(this.tabvalue);
-
-        
-          //this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);  
-          
+              
 
 });
   };
@@ -246,22 +236,15 @@ ngOnChanges (changes: SimpleChanges)
   ngOnInit() {   
 
     this.authService.currentUser.subscribe(u => {
-      console.log("!!!>>" + u)
+    
       this.studentid = u.username;
 
     })
 
   
-    
-
-//console.log (this.studentid);
+  
 this.studentid = this.studentid.substring(0,7);
-//console.log(this.studentid);
 
-
-
-
-console.log(this.compagni);
 
     this.courseService._refresh$.subscribe(()=> {
 
@@ -284,13 +267,12 @@ console.log(this.compagni);
     this.studenteaggiunto = $event;
     if (!this.enrolledstudents.includes(this.studenteaggiunto)){
     this.enrolledstudents.push(this.studenteaggiunto);
-    console.log(this.enrolledstudents);
-    console.log(this.studenti);
+
     this.enrolledstudents = Object.assign( this.enrolledstudents);
     this.studenti.forEach(item => {
       let index: number = this.studenti.findIndex(d => d === item);
       this.studenti.splice(index,1)});}
-      console.log(this.studenti);
+  
     this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);
     
   }
@@ -299,7 +281,7 @@ console.log(this.compagni);
     this.darimuovere = $event;
     this.darimuovere.forEach(item => {
       let index: number = this.enrolledstudents.findIndex(d => d === item);
-      console.log (this.enrolledstudents);
+
       this.enrolledstudents.splice(index,1);
       if (!this.studenti.includes(item))
       this.studenti.push(item);});
@@ -335,7 +317,7 @@ console.log(this.compagni);
           teamss.forEach ( t => {
 
             if(t.id==teamid){ 
-            console.log(t);
+        
            teamarray.push(t);}
             if(t.status==1){
             this.teamName = t.name;
@@ -382,8 +364,7 @@ console.log(this.compagni);
 
            })
           this.compagnidigruppo$ = of(membstat);
-          console.log(membstat);
-      
+    
           })
      
  
@@ -407,7 +388,7 @@ console.log(this.compagni);
           teamss.forEach ( t => {
 
             if(t.id==teamid){ 
-            console.log(t);
+           
            teamarray.push(t);}
             if(t.status==1){
             this.teamName = t.name;
@@ -454,7 +435,7 @@ console.log(this.compagni);
 
            })
           this.compagnidigruppo$ = of(membstat);
-          console.log(membstat);
+        
       
           })
      
@@ -481,7 +462,7 @@ receiverejectmatricola($event) {
 receiverejectteamid($event) {
     
     let teamid = $event;
-    console.log(teamid);
+   
     this.notificationService.reject(teamid,this.matricola).subscribe(
       
       data => {
@@ -504,13 +485,13 @@ receiverejectteamid($event) {
    groupname ($event)
    {
     this.groupName = $event;
-    console.log (this.groupName);
+    
    }
 
    timeout($event)
    {
     this.timeoutValue = $event;
-    console.log(this.timeoutValue);
+  
    }
    
     openDialog(message) {
@@ -520,7 +501,7 @@ receiverejectteamid($event) {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+
       
     });
   }
@@ -532,7 +513,7 @@ receiverejectteamid($event) {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+
       
     });
   }
@@ -547,10 +528,6 @@ receiverejectteamid($event) {
      let control = false;
 
        this.dainvitare = $event;
-    
-      console.log(this.dainvitare);
-      console.log(this.maxstud);
-      console.log(this.minstud);
 
       if (this.dainvitare.length -1 > this.maxstud)
       {
@@ -574,7 +551,7 @@ receiverejectteamid($event) {
           
       this.openDialog("Creazione team in corso, attendere");
          this.teamservice.addTeam(this.courseId,this.groupName,this.dainvitare,this.timeoutValue,this.studentId)
-        .subscribe(data => {console.log(data),
+        .subscribe(data => {
              
              this.closeDialog();
              this.openDialog2("La proposta per il team è stata inviata");
@@ -590,11 +567,11 @@ receiverejectteamid($event) {
                   this.ms = t;
                   this.ms.teamid = data.id;
                   this.membersStatus.push(this.ms);
-                  console.log(t);
+                 
                }})
-                console.log(this.membersarray.length);
+               
              
-              console.log(this.membersStatus);
+              
               this.compagnidigruppo$ = of(this.membersStatus);
                }
               )
@@ -609,7 +586,7 @@ receiverejectteamid($event) {
         }
 
         this.dainvitare = [];
-        console.log(this.dainvitare);
+        
 
    }
    
@@ -631,39 +608,21 @@ receiverejectteamid($event) {
             {
               this.tabvalue$ = of(this.tabvalue); 
               this.teamsinconstruction.push(t);
-              console.log(this.teamsinconstruction);
+              
             }
           })
 
           
           if(this.teams2.length > 0){
 //se lo studente fa parte già di un gruppo setta tabvalue a true e mostra la tabella con il suo gruppo 
-           console.log("length maggiore 0");
+          
            this.teamsinconstruction = this.teams2;
            this.tabvalue = true;
-          // this.compagnidigruppoo$ = this.teamservice.getMembers(this.courseId,this.teamName);
-          /*
-           this.teamservice.getMembers(this.courseId,this.teamName).subscribe(members => {
-         
-                this.compagnicorso = members;
-                this.compagnidigruppo$ = of(this.compagnicorso);
-                 console.log(this.compagnicorso);
-
-                 this.compagnicorso.forEach(
-                  c => {
-                  
-                  this.studentservice.getOne(c.studentId).subscribe(
-                   data => {this.compagniDTO.push(data)}
-                 );
-           })}
-          
-          )*/
         
           }
           
             this.tabvalue$ = of(this.tabvalue); 
-          
-           //  this.compagnidigruppoo$ = this.teamservice.getMembers(this.courseId,this.teamName);
+        
           
            for (let i=0; i<this.teamsinconstruction.length; i++){
              
@@ -675,7 +634,6 @@ receiverejectteamid($event) {
                 
                 this.tempmember = m;
                 this.tempmember.teamid = this.teamsinconstruction[i].id;
-                console.log(this.tempmember);
                 this.membersStatus.push(this.tempmember);
                 this.tempmember = null;
              
@@ -692,17 +650,14 @@ receiverejectteamid($event) {
                   this.tempmember = this.membersStatus.find(e => e.studentId == s.id);
                   this.tempmember.firstName = s.firstName;
                   this.tempmember.lastName = s.name;
-                
-                  //console.log(this.tempmember);
-                 // this.membersStatus.push(this.tempmember);
+              
                 }  
               }
             )
 
            })
           this.compagnidigruppo$ = of(this.membersStatus);
-          console.log(this.membersStatus);
-          // console.log(this.membersStatus);
+
           })
         }
       
@@ -718,7 +673,7 @@ receiverejectteamid($event) {
    updateacceptedstatus(teamid,matricola,compagnidigruppo : Array<MemberStatus>)
 
    {
-      let compà = new Array<MemberStatus>();
+    let compà = new Array<MemberStatus>();
     compagnidigruppo.forEach( c => {
 
    if(c.teamid == teamid && c.studentId==matricola)
@@ -730,11 +685,7 @@ receiverejectteamid($event) {
 
     })
 
-    console.log(compà);
     this.compagnidigruppo$ = of(compà);
-
-
-
    }
 
 

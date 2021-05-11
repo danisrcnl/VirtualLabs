@@ -65,7 +65,7 @@ export class ElaboraticontteacherComponent implements OnInit {
       this.hreff = this.router.url;
       this.subject = this.hreff.substring(0,this.hreff.lastIndexOf('?'));
       this.hreff = this.hreff.substring(0,this.hreff.lastIndexOf('/'));
-      this.href = this.subject; console.log(this.href);
+      this.href = this.subject; 
       this.href2 = this.hreff + '/students';
       this.href3 = this.hreff + '/vms';
       this.courseName = this.route.snapshot.queryParamMap.get('name');
@@ -91,7 +91,6 @@ export class ElaboraticontteacherComponent implements OnInit {
                 
 
                 this.studentService.getOne(paper.creator).subscribe(student => {
-                  console.log("!!!");
                   paperWithHistory.creator = student;
                   element.papersWithHistory.push(paperWithHistory);
                 },
@@ -105,8 +104,6 @@ export class ElaboraticontteacherComponent implements OnInit {
           })
 
         })
-        console.log(this.assignmentWithPapers);
-        console.log(this.obs_creators$);
 
       })
 
@@ -135,7 +132,7 @@ this.assignmentWithPapersnull = [];
 
 
   let month = months.indexOf($event.mese);
-  console.log(month);
+
  
   this.assignment.creator = this.currentTeacher;
   this.creationDate.getTime();
@@ -144,8 +141,6 @@ this.assignmentWithPapersnull = [];
   this.expiryDate.setFullYear($event.anno);
   this.assignment.expiryDate = this.expiryDate;
   
-
-  console.log(this.assignment);
  
   this.assignmentService.addAssignmentToCourse(this.assignment,this.courseName).subscribe(data => 
     
@@ -160,7 +155,7 @@ this.assignmentWithPapersnull = [];
           this.update();
         })
 
-      //aggiorno l'observable che mostra gli assignments con i paper dopo l'aggiunta dell'assignment
+     
      
      
     },
@@ -197,7 +192,6 @@ receivesoluzione ($event)
 
 receivevalutazione($event) {
 
-console.log($event);
 
 this.assignmentService.ratePaper($event.paperid,$event.voto).subscribe(data => {
 
@@ -231,7 +225,7 @@ this.assignmentWithPapersnull = [];
                 
 
                 this.studentService.getOne(paper.creator).subscribe(student => {
-                  console.log("!!!");
+      
                   paperWithHistory.creator = student;
                   element.papersWithHistory.push(paperWithHistory);
                 },
@@ -245,9 +239,7 @@ this.assignmentWithPapers$ = of(this.assignmentWithPapersnull);
           })
 
         })
-        console.log(this.assignmentWithPapers);
-        console.log(this.obs_creators$);
-
+        
       })
       
 }

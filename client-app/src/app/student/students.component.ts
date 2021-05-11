@@ -228,10 +228,10 @@ this.firstParam = this.activeRoute.snapshot.queryParamMap.get('name');
 this.hreff = this.router.url;
   this.subject = this.hreff.substring(0,this.hreff.lastIndexOf('?'));
   this.hreff = this.hreff.substring(0,this.hreff.lastIndexOf('/'));
-  this.href = this.subject; console.log(this.href);
+  this.href = this.subject; 
    this.href2 = this.hreff + '/vms';
    this.href3 = this.hreff + '/elaborati';
-   console.log(this.href2);
+   
    
 ;
 
@@ -239,7 +239,6 @@ this.hreff = this.router.url;
      this.enrolledstudents = Object.assign(this.enrolledstudents);
      this.dataSource = new MatTableDataSource<StudentDTO> (this.enrolledstudents);
      this.compagniDTO = Object.assign (this.compagniDTO);
-     console.log(this.compagniDTO);
      this.dataSource2 = new MatTableDataSource<StudentDTO> (this.compagniDTO);
       this.filteredOptions = this.mycontrol.valueChanges.pipe(
         startWith(''),
@@ -297,18 +296,15 @@ this.hreff = this.router.url;
   
   saveobject(event) {
     const selectedValue = event.option.value;
-    console.log(selectedValue);
     
     this.studenteselezionato = Object.assign(selectedValue);
-    
-  console.log(this.enrolledstudents);
   
   }
 
   addstudent() {
   
     this.addstudentEvent.emit(this.studenteselezionato);
-    console.log(this.studenti);
+   
 
   }
 
@@ -339,8 +335,7 @@ this.hreff = this.router.url;
 
    this.studentsIds.push(x.id.toString());
    })
-   console.log(this.students);
-   console.log(this.studentsIds);
+
    this.invitestudentEvent.emit(this.studentsIds);
 
    this.students = [];
@@ -350,13 +345,12 @@ this.hreff = this.router.url;
 
   accept(matricola,teamid)
   {
-      console.log(matricola,teamid);
+      
       this.confirmrequestEventmatricola.emit(matricola);
       this.confirmrequestEventteamid.emit(teamid);
   }
 
   reject (matricola,teamid){
-    console.log(matricola,teamid);
     this.rejectrequestEventmatricola.emit(matricola);
     this.rejectrequestEventteamid.emit(teamid);
   }

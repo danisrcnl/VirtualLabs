@@ -24,10 +24,10 @@ export class AuthService {
         return this.http.post<any>(`${config.apiUrl}/auth/signin`, { username, password })
             .pipe(map(user => {
                 if (user && user.token) {
-                    console.log("dentro");
+                   
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('currentUser', JSON.stringify(user));
-                console.log(localStorage);
+          
                 this.currentUserSubject.next(user);
             }
                 return user;
@@ -36,9 +36,9 @@ export class AuthService {
 
     logout() {
         // remove user from local storage and set current user to null
-        console.log ("logout fatto");
+        
         localStorage.removeItem('currentUser');
-        console.log(this.currentUser);
+
         this.currentUserSubject.next(null);
 
     }
@@ -60,7 +60,6 @@ export class AuthService {
  
   if(err instanceof HttpErrorResponse) {
 
-    console.log(err.error.message);
     return throwError(err.error.message);
 
   } else {
