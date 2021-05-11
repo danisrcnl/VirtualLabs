@@ -11,7 +11,7 @@
 <mat-icon class="login_icon">login</mat-icon><i class="fas fa-sign-in-alt"></i>
 <a routerLink="/login"><span class="title"></span></a>
 
-<div *ngIf="currentUser | async" id="welcome_msg">Benvenuto, {{currentStudent?.name}} {{currentStudent?.firstName}}!</div>
+<div *ngIf="(currentUser | async) && (currentUser != undefined)" id="welcome_msg">Benvenuto, {{currentStudent?.name}} {{currentStudent?.firstName}}!</div>
 <button  class="log_button" mat-flat-button (click)="openDialog()" *ngIf="!(currentUser | async)">Login </button>
 <button *ngIf="currentUser | async" class="log_button" mat-flat-button (click)="logout()"> Logout </button>
 

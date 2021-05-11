@@ -113,7 +113,7 @@ constructor (public dialog:MatDialog,private route: ActivatedRoute, private teac
   
   ngOnInit(){
 
-
+    console.log("!!!!!!!!!" + this.currentUser);
 
   this.currentUser = this.authService.currentUser;
 
@@ -282,7 +282,7 @@ onActivate (componentRef)
         this.isLogin = true;
         this.authService.logout();
         this.router.navigate (["/"]);
-        console.log(this.currentUser);
+        console.log("!!!!!!!" + this.currentUser);
     }
 
 }

@@ -27,7 +27,7 @@ export class SubjectdialogComponent implements OnInit {
   maxstud : number;
   minstud : number;
   coursename :string;
-  selectedcourse :Course;
+  selectedcourse :CourseDTO;
   courses : Course[] = new Array<Course>();
   enabled : boolean;
   acronym : string;
