@@ -83,6 +83,9 @@
       <mat-form-field id="nomeGruppoField">
         <mat-label for="groupname" class="mat-row"> Nome gruppo: </mat-label>
         <input matInput type="text" formControlName = "groupname" [(ngModel)]="groupname">
+        <div *ngIf="submitted && f.groupname.errors" class="invalid-feedback">
+          <div *ngIf="f.groupname.errors.required">Inserire il nome del team</div>
+        </div>
       </mat-form-field>
 
       <mat-form-field id="timeoutField">
@@ -94,6 +97,9 @@
         <mat-option value= "12"> 12 ore </mat-option>
         <mat-option value= "24"> 24 ore</mat-option>
         </mat-select>
+        <div *ngIf="submitted && f.timeout.errors" class="invalid-feedback">
+          <div *ngIf="f.timeout.errors.required">Inserire un timeout</div>
+        </div>
       </mat-form-field>
 
       <div id="buttonField">

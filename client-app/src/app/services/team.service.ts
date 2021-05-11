@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Student } from '../teacher/student.model';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { Observable, BehaviorSubject, Subject} from 'rxjs';
+import { HttpClient, HttpParams, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { Observable, BehaviorSubject, Subject, throwError} from 'rxjs';
 import { Course } from '../model/course.model';
 import { find, catchError, tap } from 'rxjs/operators';
 import { Vms } from '../model/vms.model';
@@ -37,7 +37,7 @@ export class TeamService {
 
  addTeam(courseName,teamName,memberIds,hours,creator) {
 
-   return this.http.post<any>(`${environment.apiUrlteam}/${courseName}/add`,{courseName,teamName,memberIds,hours,creator});
+   return this.http.post<any>(`${environment.apiUrlteam}/${courseName}/add`,{courseName,teamName,memberIds,hours,creator}).pipe(catchError(this.handleError));
  }
 
 
@@ -60,7 +60,21 @@ getMembers(courseName,teamName)
     return this.http.get<any>(`${environment.apiUrlteam}/${courseName}/${teamName}/getUsedResources`);
  }
 
+
+  handleError(err) {
  
+  if(err instanceof HttpErrorResponse) {
+
+    console.log(err.error.message);
+    return throwError(err.error.message);
+
+  } else {
+
+    return throwError(err.error.message);
+    
+
+  }
+}
 
 
 }

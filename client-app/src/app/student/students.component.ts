@@ -79,6 +79,7 @@ export class StudentsComponent implements OnInit {
     firstParam : string ="";
     minstud : any;
     maxstud : any;
+    public submitted = false;
     public groupname : string = "";
     public href :string ="";
     public href2 : string ="";
@@ -177,20 +178,6 @@ export class StudentsComponent implements OnInit {
     }
 
    ngOnChanges (changes: SimpleChanges) {
-
-    /*
-    this.tableclasses.hide = changes.tableValue.currentValue;
-    this.tableclasses.show = !changes.tableValue.currentValue;;
-    if (changes.tableValue.currentValue)
-    {
-      this.compagniclass.hide = false;
-      this.compagniclass.show2 = true;
-    }
-    else{
-      this.compagniclass.hide = true;
-      this.compagniclass.show2 = false;
-    }
-*/
   
    }
 
@@ -219,8 +206,8 @@ constructor (private router : Router, private activeRoute: ActivatedRoute, priva
 
     ngOnInit() {
       this.myForm = this.fb.group({
-        timeout: '',
-        groupname: ''
+        timeout: ['',Validators.required],
+        groupname: ['',Validators.required]
       })
       
 
@@ -261,6 +248,8 @@ this.hreff = this.router.url;
         });
     
       }
+
+          get f() { return this.myForm.controls; }
 
      
     isAllSelected() {
@@ -333,6 +322,12 @@ this.hreff = this.router.url;
 
   sendinvite() {
       
+    this.submitted = true;
+
+   if(this.myForm.invalid)
+   {
+     return;
+   } 
    
    this.students = this.selection.selected; 
    this.students.push(this.currentStudent);
@@ -347,6 +342,9 @@ this.hreff = this.router.url;
    console.log(this.students);
    console.log(this.studentsIds);
    this.invitestudentEvent.emit(this.studentsIds);
+
+   this.students = [];
+   this.studentsIds = [];
 
   }
 

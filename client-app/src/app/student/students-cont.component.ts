@@ -314,36 +314,155 @@ console.log(this.compagni);
   {
     
     let teamid = $event;
-    console.log(teamid);
+    let acceptedteam;
+    
+   this.openDialog("Attendi..", );
+
     this.notificationService.confirm(teamid,this.matricola).subscribe(
       
-      data => {
-    
-   }
-   ,
+      data => { 
 
-  error => {
+        this.closeDialog();
+        this.openDialog2("La proposta è stata accettata!");
+    
+       var teamm : Team;
+    var teamarray : Team[] = new Array<Team>();
        this.studentservice.getStudentCourseTeam(this.studentId,this.courseId).
         subscribe (teamss => {
-          console.log(teamss);
           teamss.forEach ( t => {
-            
+
+            if(t.id==teamid){ 
+            console.log(t);
+           teamarray.push(t);}
             if(t.status==1){
             this.teamName = t.name;
             this.tabvalue = true;
-            console.log(this.tabvalue);
             this.tabvalue$ = of(this.tabvalue);
             this.compagnidigruppo$ = this.teamservice.getMembers(this.courseId,this.teamName);
             }
             
           })
-    //this.updateteamstatus();
+  
+     
+    let membstat  : MemberStatus[] = new Array<MemberStatus>();
+
+     this.teamsinconstruction$ = of (teamarray);
+   
+           this.teamservice.getMembers(this.courseId,teamarray[0].name).subscribe(members => {
+
+           
+               members.forEach (m => {
+                
+                this.tempmember = m;
+                this.tempmember.teamid = teamid;
+              
+                membstat.push(this.tempmember);
+                this.tempmember = null;
+             
+              
+           })
+          
+           membstat.forEach(m => {
+
+            this.studentservice.getOne(m.studentId).subscribe(
+              s=> {
+                let indexitem = membstat.find(e => e.studentId == s.id);
+                if (indexitem)
+                {
+                  this.tempmember = membstat.find(e => e.studentId == s.id);
+                  this.tempmember.firstName = s.firstName;
+                  this.tempmember.lastName = s.name;
+      
+                }  
+              }
+            )
+
+           })
+          this.compagnidigruppo$ = of(membstat);
+          console.log(membstat);
+      
+          })
+     
  
- this.updateacceptedstatus(teamid,this.matricola,this.membersStatus);
+
+
   }
  
   )
-    console.log("errore");
+        
+   }
+   ,
+
+  error => {
+     this.closeDialog();
+     this.openDialog2("La proposta è stata accettata!!");
+
+    var teamm : Team;
+    var teamarray : Team[] = new Array<Team>();
+       this.studentservice.getStudentCourseTeam(this.studentId,this.courseId).
+        subscribe (teamss => {
+          teamss.forEach ( t => {
+
+            if(t.id==teamid){ 
+            console.log(t);
+           teamarray.push(t);}
+            if(t.status==1){
+            this.teamName = t.name;
+            this.tabvalue = true;
+            this.tabvalue$ = of(this.tabvalue);
+            this.compagnidigruppo$ = this.teamservice.getMembers(this.courseId,this.teamName);
+            }
+            
+          })
+  
+     
+    let membstat  : MemberStatus[] = new Array<MemberStatus>();
+
+     this.teamsinconstruction$ = of (teamarray);
+   
+           this.teamservice.getMembers(this.courseId,teamarray[0].name).subscribe(members => {
+
+           
+               members.forEach (m => {
+                
+                this.tempmember = m;
+                this.tempmember.teamid = teamid;
+              
+                membstat.push(this.tempmember);
+                this.tempmember = null;
+             
+              
+           })
+          
+           membstat.forEach(m => {
+
+            this.studentservice.getOne(m.studentId).subscribe(
+              s=> {
+                let indexitem = membstat.find(e => e.studentId == s.id);
+                if (indexitem)
+                {
+                  this.tempmember = membstat.find(e => e.studentId == s.id);
+                  this.tempmember.firstName = s.firstName;
+                  this.tempmember.lastName = s.name;
+      
+                }  
+              }
+            )
+
+           })
+          this.compagnidigruppo$ = of(membstat);
+          console.log(membstat);
+      
+          })
+     
+ 
+
+
+  }
+ 
+  )
+    
+
   })
 
 }
@@ -422,11 +541,35 @@ receiverejectteamid($event) {
 
    receiveinvitation($event)
    {
-    
+     let control = false;
 
-      this.openDialog("Creazione team in corso, attendere", );
-      this.dainvitare = $event;
+       this.dainvitare = $event;
+    
+      console.log(this.dainvitare);
+      console.log(this.maxstud);
+      console.log(this.minstud);
+
+      if (this.dainvitare.length -1 > this.maxstud)
+      {
+        control = true;
+        this.openDialog2("Numero di studenti invitato troppo alto", );
+        
+      }
+
+       else if (this.dainvitare.length -1 < this.minstud)
+      {
+        control = true;
+        this.openDialog2("Invitare almeno " + this.minstud + "studenti", );
+        
+      }
+
+
    
+   
+
+        if (control == false) {
+          
+      this.openDialog("Creazione team in corso, attendere");
          this.teamservice.addTeam(this.courseId,this.groupName,this.dainvitare,this.timeoutValue,this.studentId)
         .subscribe(data => {console.log(data),
              
@@ -455,10 +598,16 @@ receiverejectteamid($event) {
             
             },
         error => (
-          this.closeDialog(), this.openDialog("Non è stato possibile creare il team"))
+           this.dainvitare = [],
+          this.closeDialog(), this.openDialog2("Non è stato possibile creare il team"))
         
     
         )
+        }
+
+        this.dainvitare = [];
+        console.log(this.dainvitare);
+
    }
    
    //eventi per mostrare la tabella con le proposte di team 
@@ -518,7 +667,7 @@ receiverejectteamid($event) {
             
            this.teamservice.getMembers(this.courseId,this.teamsinconstruction[i].name).subscribe(members => {
 
-             console.log("ehi");
+           
                members.forEach (m => {
                 
                 this.tempmember = m;
@@ -578,6 +727,7 @@ receiverejectteamid($event) {
 
     })
 
+    console.log(compà);
     this.compagnidigruppo$ = of(compà);
 
 
