@@ -222,5 +222,20 @@ export class ElaboratiteacherComponent implements OnInit {
     var newDate: Date = new Date(date);
     return newDate.getDate() + "/" + (newDate.getMonth()+1) + "/" + newDate.getFullYear();
   }
+
+  isExpired(date: Date) {
+    var expiry = new Date(date);
+    var now = new Date();
+    if(now > expiry)
+      return true;
+    else
+      return false;
+  }
+
+  classOf(date: Date){
+    if(this.isExpired(date))
+      return "expired";
+    else return "notExpired";
+  }
     
 }

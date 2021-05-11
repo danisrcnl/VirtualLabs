@@ -195,6 +195,12 @@ export class ElaboratistudentComponent implements OnInit {
     else
       return false;
   }
+
+  classOf(date: Date){
+    if(this.isExpired(date))
+      return "expired";
+    else return "notExpired";
+  }
     
 }
 

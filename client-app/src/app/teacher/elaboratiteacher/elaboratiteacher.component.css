@@ -82,3 +82,12 @@
     height: 22px;
     font-weight: bold;
 }
+
+.expired {
+  background-color: #fd3434;
+}
+
+.notExpired {
+  background-color: #00ff99;
+  color: black;
+}
