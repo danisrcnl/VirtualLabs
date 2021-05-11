@@ -7,10 +7,10 @@
             <div id="itemtext">
                 {{displayDate(st.timestamp)}} &nbsp; {{displayTime(st.timestamp)}} &nbsp;&nbsp; {{st.paperStatus}}
             </div>
-            <div id="itembutton2" *ngIf="st.content != null">
+            <div id="itembutton2" *ngIf="st.paperStatus == 'CONSEGNATO'">
                 <button mat-flat-button class="buttonO" (click)="goViewSol(st.content)">Vedi soluzione</button>
             </div>
-            <div id="itembutton" *ngIf="st.review != null && student">
+            <div id="itembutton" *ngIf="st.paperStatus == 'RIVISTO' && student">
                 <button mat-flat-button class="buttonO" (click)="viewReview(st.review)">Vedi revisione del docente</button>
             </div>
         </mat-list-item>
@@ -60,11 +60,13 @@
 
 <div id="buttons_st" *ngIf="student && !revisioni && !imageViewer">
 
-    <div id="buttonCaricaST_w" *ngIf="!expired">
+    <div id="buttonCaricaST_w" *ngIf="!expired && editable">
         <button class="buttonO" mat-flat-button (click)="setEdit()">Carica una nuova soluzione</button>
     </div>
 
-    <mat-label *ngIf="expired">Non è più possibile caricare soluzioni per questo laboratorio</mat-label>
+    <mat-label *ngIf="expired || !editable">Non è più possibile caricare soluzioni per questo laboratorio</mat-label>
+
+    <mat-label *ngIf="rated && student"><br>Voto assegnato: {{mark}}</mat-label>
 
 </div>
 
