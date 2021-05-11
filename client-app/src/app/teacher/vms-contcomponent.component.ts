@@ -5,6 +5,8 @@ import { StudentService } from '../services/student.service';
 import { Vms } from '../model/vms.model';
 import { vmModelDTO } from 'app/model/vmModelDTO.model';
 import { VmService } from 'app/services/vm.service';
+import { YourDialog } from 'app/student/vms-contcomponent.component';
+import { MatDialog } from '@angular/material/dialog';
 
 export interface DialogDataVm {
   nvcpu  : number;
@@ -22,7 +24,12 @@ export interface DialogDataVm {
 })
 export class VmsContcomponentComponent implements OnInit {
 
-  constructor(private studentservice : StudentService, private route: ActivatedRoute, private router : Router, private vmService : VmService) { 
+  constructor(
+    private studentservice : StudentService, 
+    private route: ActivatedRoute, 
+    private router : Router, 
+    private vmService : VmService,
+    private dialog : MatDialog) { 
 
     this.hreff = router.url;
     this.subject = this.hreff.substring(this.hreff.lastIndexOf('/')+1 );
@@ -85,7 +92,18 @@ export class VmsContcomponentComponent implements OnInit {
       this.vmModel2 = $event;
       console.log(this.vmModel);
       console.log(this.vmModel2);
-      this.vmService.setVmModel(this.vmModel2,this.firstParam).subscribe(data => console.log(data));
+      this.vmService.setVmModel(this.vmModel2,this.firstParam).subscribe(data =>
+        
+        
+        {console.log(data)
+        
+        }
+        , (error) => {
+          let dialogRef = this.dialog.open(YourDialog, {
+                            data: { name: error },
+                                });
+        }
+        );
 
     }
 }
