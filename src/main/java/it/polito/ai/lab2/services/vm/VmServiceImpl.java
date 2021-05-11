@@ -63,19 +63,19 @@ public class VmServiceImpl implements VmService {
 
         if(teamService.getUsedNVCpuForTeam(courseName, teamName) + vm.getNVCpu() >
                 teamRepository.getTeamByCourseAndName(courseName, teamName).getCourse().getVmModel().getMaxNVCpu())
-            throw new VmServiceException("You exceeded Virtual CPU limit");
+            throw new VmServiceException("Hai superato il limite di virtual CPUs");
 
         if(teamService.getUsedDiskForTeam(courseName, teamName) + vm.getDisk() >
                 teamRepository.getTeamByCourseAndName(courseName, teamName).getCourse().getVmModel().getMaxDisk())
-            throw new VmServiceException("You exceeded disk space limit");
+            throw new VmServiceException("Hai superato il limite di memoria secondaria");
 
         if(teamService.getUsedRamForTeam(courseName, teamName) + vm.getRam() >
                 teamRepository.getTeamByCourseAndName(courseName, teamName).getCourse().getVmModel().getMaxRam())
-            throw new VmServiceException("You exceeded ram space limit");
+            throw new VmServiceException("Hai superato il limite di RAM");
 
         if(vmRepository.getVmsForCourse(courseName).size() + 1 >
                 vmModelRepository.getVmModelByCourse(courseName).getMaxVmsForCourse())
-            throw new VmServiceException("You exceeded max number of allocated vms for course " + courseName);
+            throw new VmServiceException("Hai ecceduto il massimo numero di VMs allocate per il corso di " + courseName);
 
         if(!studentRepository.existsById(creator))
             throw new StudentNotFoundException("Creator has an invalid identifier (" + creator + ")");
@@ -159,7 +159,7 @@ public class VmServiceImpl implements VmService {
                 .collect(Collectors.toList());
 
         if (activeVms.size() + 1 > course.getVmModel().getMaxActiveVms())
-            throw new VmServiceException("There are too many active vms for course " + course.getName());
+            throw new VmServiceException("Ci sono troppe VMs attive per il corso di " + course.getName());
 
         vmRepository
                 .getOne(id)
@@ -257,15 +257,15 @@ public class VmServiceImpl implements VmService {
 
         if(teamService.getUsedNVCpuForTeam(courseName, teamName) - vm.getNVCpu() + vmDTO.getNVCpu() >
                 teamRepository.getTeamByCourseAndName(courseName, teamName).getCourse().getVmModel().getMaxNVCpu())
-            throw new VmServiceException("You exceeded Virtual CPU limit");
+            throw new VmServiceException("Hai superato il limite di virtual CPUs");
 
         if(teamService.getUsedDiskForTeam(courseName, teamName) - vm.getDisk() + vmDTO.getDisk() >
                 teamRepository.getTeamByCourseAndName(courseName, teamName).getCourse().getVmModel().getMaxDisk())
-            throw new VmServiceException("You exceeded disk space limit");
+            throw new VmServiceException("Hai superato il limite di memoria secondaria");
 
         if(teamService.getUsedRamForTeam(courseName, teamName) - vm.getRam() + vmDTO.getRam() >
                 teamRepository.getTeamByCourseAndName(courseName, teamName).getCourse().getVmModel().getMaxRam())
-            throw new VmServiceException("You exceeded ram space limit");
+            throw new VmServiceException("Hai superato il limite di RAM");
 
         vm.setNVCpu(vmDTO.getNVCpu());
         vm.setDisk(vmDTO.getDisk());
