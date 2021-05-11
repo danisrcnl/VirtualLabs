@@ -240,7 +240,7 @@ public class TeamServiceImpl implements TeamService {
                     .collect(Collectors.toList());
 
             if(!availableIds.contains(memberId) || (teamsForCourseStudent.size() != tokensForCourseStudent.size()))
-                throw new TeamServiceException("Lo studente con matricola " + memberId + " ha già accettato una proposta" + courseName);
+                throw new TeamServiceException("Lo studente con matricola " + memberId + " ha già accettato una proposta per " + courseName);
         }
 
         for(String memberId : memberIds) {
