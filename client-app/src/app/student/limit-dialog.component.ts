@@ -52,19 +52,19 @@ export class LimitDialogComponent implements OnInit {
   nvcpu_left: any;
   disk_left: any;
   myvalue : any;
- a : any;
- b : any;
- c : any;
- d : any;
- e : any;
- g : any;
+  a : any;
+  b : any;
+  c : any;
+  d : any;
+  e : any;
+  g : any;
 
  count :any = 0;
  count2 : any = 0;
  count3 : any = 0;
  vm : any;
-submitted = false;
-edit = false;
+ submitted = false;
+ edit = false;
 
   
   constructor(private alertService: AlertService, private teamService: TeamService, private formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: Vms, public dialog: MatDialog) {
@@ -77,11 +77,7 @@ edit = false;
       nvcpu: ['',Validators.required],
       RAM: ['',Validators.required],
       Disksize: ['',Validators.required],
-      
-
-
-
-      
+         
     });
   
       
@@ -191,18 +187,18 @@ valuechangeDisk(newValue) {
 
      this.c = newValue;
 
- this.disk_consumption = this.disk_consumption + ((newValue)/this.vmModel.maxDisk)*100;
+     this.disk_consumption = this.disk_consumption + ((newValue)/this.vmModel.maxDisk)*100;
    
- this.d = ((newValue)/this.vmModel.maxDisk)*100;}
+     this.d = ((newValue)/this.vmModel.maxDisk)*100;}
 
 
     if(newValue!=this.c){
-   this.disk_consumption = this.disk_consumption - this.d;
+    this.disk_consumption = this.disk_consumption - this.d;
   
-   this.disk_consumption = this.disk_consumption + ((newValue)/this.vmModel.maxDisk)*100;
+    this.disk_consumption = this.disk_consumption + ((newValue)/this.vmModel.maxDisk)*100;
 
-  this.d = ((newValue)/this.vmModel.maxDisk)*100;
-  this.c = newValue;
+    this.d = ((newValue)/this.vmModel.maxDisk)*100;
+    this.c = newValue;
   }
 
 }
@@ -215,19 +211,19 @@ valuechangenvcpu(newValue) {
 
      this.e = newValue;
 
-  this.nvcpu_consumption = this.nvcpu_consumption + ((newValue)/this.vmModel.maxNVCpu)*100;
+     this.nvcpu_consumption = this.nvcpu_consumption + ((newValue)/this.vmModel.maxNVCpu)*100;
 
-  this.g = ((newValue)/this.vmModel.maxNVCpu)*100;}
+     this.g = ((newValue)/this.vmModel.maxNVCpu)*100;}
    
 
    
     if(newValue!=this.e){
-   this.nvcpu_consumption = this.nvcpu_consumption - this.g;
+    this.nvcpu_consumption = this.nvcpu_consumption - this.g;
   
-   this.nvcpu_consumption = this.nvcpu_consumption + ((newValue)/this.vmModel.maxNVCpu)*100;
+    this.nvcpu_consumption = this.nvcpu_consumption + ((newValue)/this.vmModel.maxNVCpu)*100;
 
-  this.e = ((newValue)/this.vmModel.maxNVCpu)*100;
-  this.g = newValue;
+    this.e = ((newValue)/this.vmModel.maxNVCpu)*100;
+    this.g = newValue;
   }
 
 }
@@ -242,45 +238,6 @@ this.alertService.clear();
             return;
         }
     
-        
-
-
-  this.alertACTIVEVMS = "";
-  this.alertDISKSIZE = "";
-  this.alertRAM = "";
-  this.alertTOTALVMS = "";
-  this.alertnvcpu ="";
-
-  this.activevms = 0;
-  this.DISKSIZE = 0;
-  this.RAMtotal = 0;
-  this.TOTALVMS = 0;
-  this.nvcputotal = 0;
- 
-
-if (this.nvcpu < this.nvcputotal)
-{
-  this.alertnvcpu = "Limite non consentito"
-}
-
-if (this.RAM < this.RAMtotal)
-{
-  this.alertRAM = "Limite non consentito"
-}
-
-if (this.ActiveVms < this.activevms)
-{
-
-this.alertACTIVEVMS = "Limite non consentito"
-
-}
-
-if (this.TotalVms< this.TOTALVMS)
-{
-  this.alertTOTALVMS = "Limite non consentito"
-
-}
-
 
 }
 }
