@@ -57,6 +57,9 @@ public class CourseServiceImpl implements CourseService {
     @Autowired
     AssignmentService assignmentService;
 
+    /*
+    * Aggiunge il DTO ricevuto, mappato su corrispondente entità nel db dei corsi.
+    * */
     @Override
     public boolean addCourse(CourseDTO course) {
         Course c = modelMapper.map(course, Course.class);
@@ -67,6 +70,10 @@ public class CourseServiceImpl implements CourseService {
         return true;
     }
 
+    /*
+    * Mappa su un DTO il corso reperito dal db con nome uguale a quello richiesto. Se presente lo torna come Optional,
+    * altrimenti tornerà un Empty.
+    * */
     @Override
     public Optional<CourseDTO> getCourse(String name) {
         if(!courseRepository.existsById(name))
@@ -75,6 +82,9 @@ public class CourseServiceImpl implements CourseService {
         return Optional.ofNullable(modelMapper.map(c, CourseDTO.class));
     }
 
+    /*
+    * Torna tutti i corsi presenti nel db, mappati su DTOs corrispondenti.
+    * */
     @Override
     public List<CourseDTO> getAllCourses() {
         return courseRepository
@@ -85,9 +95,9 @@ public class CourseServiceImpl implements CourseService {
     }
 
 
-
-
-
+    /*
+    * Dato un corso, vengono restituiti tutti gli studenti in relazione con esso.
+    * */
     @Override
     public List<StudentDTO> getEnrolledStudents(String courseName) throws CourseNotFoundException {
         if(!courseRepository.existsById(courseName))
@@ -100,6 +110,10 @@ public class CourseServiceImpl implements CourseService {
                 .collect(Collectors.toList());
     }
 
+    /*
+    * Esatto contrario del metodo precedente. Restituisce tutti gli studenti attivi che non sono ancora presenti nel
+    * corso.
+    * */
     @Override
     public List<StudentDTO> getNotEnrolled(String courseName) throws CourseNotFoundException {
         if(!courseRepository.existsById(courseName))
@@ -116,6 +130,9 @@ public class CourseServiceImpl implements CourseService {
     }
 
 
+    /*
+    * Dato un corso, vengono ritornati tutti i docenti che sono in relazione con esso.
+    * */
     @Override
     public List<TeacherDTO> getTeachersForCourse(String courseName) throws CourseNotFoundException {
         if(!courseRepository.existsById(courseName))
@@ -128,6 +145,12 @@ public class CourseServiceImpl implements CourseService {
                 .collect(Collectors.toList());
     }
 
+    /*
+    * Per prima cosa verifica che lo studente da aggiungere non sia già presente nel corso. Dopo di ciò lo studente viene
+    * effettivamente aggiunto alla lista degli iscritti. A cascata, allo studente vengono aggiunti tanti papers quanti
+    * sono gli assignments del corso. Se lo studente è agganciato a uno user, allora a esso vengono aggiunti i privilegi
+    * di studente del corso indicato.
+    * */
     @Override
     public boolean addStudentToCourse(String studentId, String courseName) throws CourseNotFoundException, StudentNotFoundException {
         if(!courseRepository.existsById(courseName))
@@ -168,6 +191,11 @@ public class CourseServiceImpl implements CourseService {
         return true;
     }
 
+    /*
+    * Rende possibile l'eliminazione di uno studente dal corso selezionato, se e solo se questo non appartenga a un
+    * team, in quel caso viene lanciata una corrispondente eccezione. Se va a buon fine, elimina anche il ruolo dello
+    * user corrispondente.
+    * */
     @Override
     public boolean evictOne (String studentId, String courseName) throws StudentNotFoundException, CourseNotFoundException {
         if (!studentRepository.existsById(studentId))
@@ -175,15 +203,24 @@ public class CourseServiceImpl implements CourseService {
         if (!courseRepository.existsById(courseName))
             throw new CourseNotFoundException(courseName);
         if (hasAlreadyATeamFor(studentId, courseName))
-            throw new TeamServiceException("Cannot delete student belonging to a team");
+            throw new TeamServiceException("Non puoi eliminare uno studente che fa parte di un team");
 
         Student s = studentRepository.getOne(studentId);
         Course c = courseRepository.getOne(courseName);
         s.getCourses().remove(c);
         c.getStudents().remove(s);
+
+        User u = s.getUser();
+        if(u != null)
+            u.getRoles().remove("ROLE_COURSE_" + courseName + "_STUDENT");
+
         return true;
     }
 
+    /*
+    * Se non già presente, aggiunge il teacher selezionato alla lista dei docenti del corso. Al termine aggiunge il
+    * privilegio di teacher per quel corso allo user corrispondente.
+    * */
     @Override
     public boolean addTeacherToCourse(String teacherId, String courseName) throws CourseNotFoundException, TeacherNotFoundException {
 
@@ -213,6 +250,9 @@ public class CourseServiceImpl implements CourseService {
 
     }
 
+    /*
+    * Abilita un corso, settando a true la proprietà enabled.
+    * */
     @Override
     public void enableCourse(String courseName) throws CourseNotFoundException {
         if(!courseRepository.existsById(courseName))
@@ -223,6 +263,9 @@ public class CourseServiceImpl implements CourseService {
                 .setEnabled(true);
     }
 
+    /*
+    * Disabilita un corso, settando a false la proprietà enabled.
+    * */
     @Override
     public void disableCourse(String courseName) throws CourseNotFoundException {
         if(!courseRepository.existsById(courseName))
@@ -233,6 +276,9 @@ public class CourseServiceImpl implements CourseService {
                 .setEnabled(false);
     }
 
+    /*
+    * Elimina il corso selezionato. Prima rimuove tutte le relazioni con le corrispondenti entità.
+    * */
     @Override
     public void deleteCourse(String courseName) throws CourseNotFoundException {
         if(!courseRepository.existsById(courseName))
@@ -253,6 +299,11 @@ public class CourseServiceImpl implements CourseService {
         courseRepository.flush();
     }
 
+    /*
+    * Data una lista di matricole, viene tentata la loro aggiunta al corso selezionato. Il risultato dell'aggiunta
+    * (un booleano come da specifiche) viene memorizzato in una lista di booleani che servirà a rappresentare l'esito
+    * di ogni singola aggiunta. La lista viene dunque restituita come return value.
+    * */
     @Override
     public List<Boolean> enrollAll(List<String> studentIds, String courseName) throws CourseNotFoundException, StudentNotFoundException {
         List<Boolean> successes = new ArrayList<Boolean>();
@@ -268,6 +319,10 @@ public class CourseServiceImpl implements CourseService {
         return successes;
     }
 
+    /*
+    * Effettua il parse del csv che viene trasformato in Reader dal metodo di controllore. Dopo di ciò chiama la
+    * addAll e la enrollAll precedentemente definite.
+    * */
     @Override
     public List<Boolean> addAndEnroll(Reader r, String courseName) {
         CsvToBean<StudentDTO> csvToBean = new CsvToBeanBuilder(r)
@@ -285,6 +340,9 @@ public class CourseServiceImpl implements CourseService {
         return enrollAll(Ids, courseName);
     }
 
+    /*
+    * Setta il valore minimo di studenti per team per il corso courseName.
+    * */
     @Override
     public void setMinForCourse(int value, String courseName) throws CourseNotFoundException {
         if(!courseRepository.existsById(courseName))
@@ -295,6 +353,9 @@ public class CourseServiceImpl implements CourseService {
                 .setMin(value);
     }
 
+    /*
+     * Setta il valore massimo di studenti per team per il corso courseName.
+     * */
     @Override
     public void setMaxForCourse(int value, String courseName) throws CourseNotFoundException {
         if(!courseRepository.existsById(courseName))
@@ -305,6 +366,9 @@ public class CourseServiceImpl implements CourseService {
                 .setMax(value);
     }
 
+    /*
+    * Restituisce i teams presenti nel db, corrispondenti al corso indicato da courseName.
+    * */
     @Override
     public List<TeamDTO> getTeamForCourse(String courseName) throws CourseNotFoundException {
         if(!courseRepository.existsById(courseName))
@@ -318,6 +382,11 @@ public class CourseServiceImpl implements CourseService {
                 .collect(Collectors.toList());
     }
 
+    /*
+    * Se lo studente con matricola pari a id ha già un team per il corso indicato da courseName, questo viene inserito
+    * in una lista di TeamDTO che verrà tornata come risultato. La sua dimensione sarà 0 se lo studente non ha ancora
+    * un team per quel corso, 1 in caso contrario.
+    * */
     @Override
     public List<TeamDTO> getStudentTeamInCourse(String id, String courseName) throws CourseNotFoundException, StudentNotFoundException {
 
@@ -336,6 +405,10 @@ public class CourseServiceImpl implements CourseService {
                 .collect(Collectors.toList());
     }
 
+    /*
+    * Ritorna gli studenti che per il corso hanno già un team, avvalendosi di un metodo del repository mappato su
+    * una query HQL.
+    * */
     @Override
     public List<StudentDTO> getStudentsInTeams(String courseName) throws CourseNotFoundException {
         if(!courseRepository.existsById(courseName))
@@ -348,6 +421,11 @@ public class CourseServiceImpl implements CourseService {
                 .collect(Collectors.toList());
     }
 
+    /*
+    * Duale del precedente, restituisce gli studenti che non hanno ancora un team nell'ambito del corso courseName.
+    * Per un presunto errore nell'implementazione della query HQL, un ulteriore filtraggio viene effettuato sullo
+    * stream.
+    * */
     @Override
     public List<StudentDTO> getAvailableStudents(String courseName) throws CourseNotFoundException {
         if(!courseRepository.existsById(courseName))
@@ -363,6 +441,10 @@ public class CourseServiceImpl implements CourseService {
                 .collect(Collectors.toList());
     }
 
+    /*
+    * Se getStudentsInTeam contiene la matricola dello studente passato come parametro alla funzione, torna true. False
+    * altrimenti.
+    * */
     @Override
     public Boolean hasAlreadyATeamFor(String studentId, String courseName) throws StudentNotFoundException, CourseNotFoundException {
         if(!studentRepository.existsById(studentId))
@@ -379,6 +461,9 @@ public class CourseServiceImpl implements CourseService {
         return false;
     }
 
+    /*
+    * Dato un team, restituisce il corso cui esso appartiene.
+    * */
     @Override
     public CourseDTO getTeamCourse(int teamId) throws TeamNotFoundException {
         if(!teamRepository.existsById(teamId))

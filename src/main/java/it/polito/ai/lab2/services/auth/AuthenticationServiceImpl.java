@@ -18,6 +18,9 @@ public class AuthenticationServiceImpl implements AuthenticationService{
     @Autowired
     UserRepository userRepository;
 
+    /*
+    * Se non già esistente, crea un nuovo User nel db e lo inizializza come inattivo.
+    * */
     @Override
     public void addUser(String username, String password) throws UserExistingException {
         if(userRepository.findByUsername(username).isPresent())
@@ -29,6 +32,9 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         userRepository.save(u);
     }
 
+    /*
+    * Elimina dal db lo User con username selezionata.
+    * */
     @Override
     public void deleteUser(String username) throws UserNotFoundException {
         Optional<User> u = userRepository.findByUsername(username);
@@ -37,6 +43,10 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         userRepository.delete(u.get());
     }
 
+    /*
+    * Aggiunge alla lista dei privilegi dell'utente (qualora non già presenti) i privilegi ricevuti come lista di
+    * stringhe in input.
+    * */
     @Override
     public void setPrivileges(String username, List<String> roles) throws UserNotFoundException {
         Optional<User> u = userRepository.findByUsername(username);
@@ -50,6 +60,9 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         u.get().setRoles(userRoles);
     }
 
+    /*
+    * Dato lo userId di un utente, restituisce il suo username.
+    * */
     @Override
     public String getUsername(Long userId) throws UserNotFoundException {
         if(!userRepository.existsById(userId))
@@ -59,18 +72,14 @@ public class AuthenticationServiceImpl implements AuthenticationService{
                 .getUsername();
     }
 
+    /*
+    * Metodo che ritorna true se l'utente ha effettuato l'attivazione del profilo, false in caso contrario.
+    * */
     @Override
     public Boolean isValid(String username) throws UserNotFoundException {
         Optional<User> outcome = userRepository.findByUsername(username);
         if (!outcome.isPresent())
             throw new UserNotFoundException(username);
         return outcome.get().getActive();
-        /*
-        List<String> roles = outcome
-                .get()
-                .getRoles();
-        if(!roles.contains("ROLE_STUDENT") && !roles.contains("ROLE_TEACHER"))
-            return false;
-        return true;*/
     }
 }

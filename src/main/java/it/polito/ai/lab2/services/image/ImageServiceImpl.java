@@ -13,6 +13,12 @@ import java.util.Optional;
 @Service
 @Transactional
 public class ImageServiceImpl implements ImageService {
+
+    /*
+    * Crea le directories assignments e papers qualora non già presenti. Dopo di ciò effettua l'upload delle
+    * immagini che avranno come nome l'id dell'entità caricata. Se già presente (update del content), viene aggiunto
+    * un numero progressivo (es 154.jpg, 154_1.jpg, 154_2.jpg, ...).
+    * */
     @Override
     public String uploadImage(MultipartFile file, String subfolder, String name) throws IOException {
         String folder = "images/" + subfolder + "/";
