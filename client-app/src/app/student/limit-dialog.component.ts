@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Vms } from 'app/model/vms.model';
 import {MatDialog, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { Inject } from '@angular/core';
-import { AlertService } from 'app/auth/authservices/alert.service';
 import { TeamService } from '../services/team.service';
 import { UsedResources } from 'app/model/UsedResources.model';
 import { vmModelDTO } from 'app/model/vmModelDTO.model';
@@ -16,9 +15,7 @@ import { Observable } from 'rxjs';
 })
 export class LimitDialogComponent implements OnInit {
 
-
-  
-
+ 
   limitForm: FormGroup;
 
   vms: Vms[] = []; 
@@ -67,7 +64,7 @@ export class LimitDialogComponent implements OnInit {
  edit = false;
 
   
-  constructor(private alertService: AlertService, private teamService: TeamService, private formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: Vms, public dialog: MatDialog) {
+  constructor(private teamService: TeamService, private formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: Vms, public dialog: MatDialog) {
 
   }
 
@@ -103,7 +100,8 @@ export class LimitDialogComponent implements OnInit {
     this.used_resource.subscribe(data => {this.used_resources = data;
   
 
-
+    //Se sto facendo l'edit di una vm, imposto i valori per visualizzare le risorse rimaste senza 
+    //valutare i valori della vm che sto modificando 
     if (this.vm!=undefined){
 
     this.ram_left = (this.vmModel.maxRam + this.vm.ram - this.used_resources.ram);
@@ -111,29 +109,26 @@ export class LimitDialogComponent implements OnInit {
     this.nvcpu_left = ((this.vmModel.maxNVCpu + this.vm.nvcpu - this.used_resources.nvcpu));
 
  
-   
+    //Valori percentuali da mostrare nello spinner 
     this.ram_consumption = ((this.used_resources.ram - this.vm.ram)/this.vmModel.maxRam)*100;
     this.disk_consumption = ((this.used_resources.disk - this.vm.disk)/this.vmModel.maxDisk)*100;
     this.nvcpu_consumption = ((this.used_resources.nvcpu - this.vm.nvcpu)/this.vmModel.maxNVCpu)*100;
 
     }
 
+    //Qui invece mi trovo nel caso della creazione di una nuova vm 
     else
     {
 
-     
     this.ram_left = (this.vmModel.maxRam  - this.used_resources.ram);
     this.disk_left = (this.vmModel.maxDisk  - this.used_resources.disk);
     this.nvcpu_left = ((this.vmModel.maxNVCpu  - this.used_resources.nvcpu));
 
  
-   
+    //Valori percentuali da mostrare nello spinner 
     this.ram_consumption = ((this.used_resources.ram)/this.vmModel.maxRam)*100;
     this.disk_consumption = ((this.used_resources.disk)/this.vmModel.maxDisk)*100;
     this.nvcpu_consumption = ((this.used_resources.nvcpu)/this.vmModel.maxNVCpu)*100;
-
-
-
 
     }
 
@@ -143,13 +138,14 @@ export class LimitDialogComponent implements OnInit {
 
   get f() { return this.limitForm.controls; }
 
-close()
-{
-this.dialog.closeAll();
-}
+  close()
+  {
+  this.dialog.closeAll();
+  }
 
 
-  valuechangeRam(newValue) {
+//Aggiorno valori spinner 
+valuechangeRam(newValue) {
   
    if(newValue!=undefined && this.count==0) {
      this.count = 1;
@@ -172,6 +168,7 @@ this.dialog.closeAll();
   
 }
 
+//Aggiorno valori spinner
 valuechangeDisk(newValue) {
   
  
@@ -197,7 +194,7 @@ valuechangeDisk(newValue) {
 
 }
 
-
+//Aggiorno valori spinner
 valuechangenvcpu(newValue) {
   
    if(newValue!=undefined && this.count3==0){
@@ -210,7 +207,6 @@ valuechangenvcpu(newValue) {
      this.g = ((newValue)/this.vmModel.maxNVCpu)*100;}
    
 
-   
     if(newValue!=this.e){
     this.nvcpu_consumption = this.nvcpu_consumption - this.g;
   
@@ -224,14 +220,11 @@ valuechangenvcpu(newValue) {
 
 
 createvm() {
-this.alertService.clear();
   
-  this.submitted = true;
+ this.submitted = true;
 
  if (this.limitForm.invalid) {
             return;
-        }
-    
-
+}
 }
 }

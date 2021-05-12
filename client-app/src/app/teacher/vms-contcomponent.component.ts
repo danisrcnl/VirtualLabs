@@ -69,7 +69,7 @@ export class VmsContcomponentComponent implements OnInit {
 });
 
     
-
+    //Ricevo il VmModel dal servizio 
     this.vmService.getVmModelforCourse(this.firstParam).subscribe(data => {
 
     this.vmModel = data;
@@ -83,6 +83,7 @@ export class VmsContcomponentComponent implements OnInit {
     
   }
 
+  //Ricevo il VmModel da settare dal componente figlio 
   receivevmModel($event)
     {
       this.vmModel = $event;

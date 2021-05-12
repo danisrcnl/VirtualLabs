@@ -13,7 +13,6 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Student } from './teacher/student.model';
 import { User } from './auth/user';
-import { Studentreturn } from './auth/models/studentreturn';
 import { AppComponentStudent } from './student/app.component';
 import { SidenavService } from './services/sidenav.service';
 import { AuthService } from './auth/authservices/auth.service';
@@ -35,7 +34,6 @@ export interface DialogLogin {
 export class AppComponent implements OnInit {
 
   courses$ : Observable <Course[]>;
-  studs$ : Observable <Studentreturn[]>;
   courses : Course[] = new Array<Course>();
   currentUser : Observable <User>;
   studentId : String;
@@ -73,14 +71,15 @@ constructor (public dialog:MatDialog,private route: ActivatedRoute, private teac
   ngOnInit(){
 
 
+  //Prendo l'user dal servizio di autenticazione
   this.currentUser = this.authService.currentUser;
 
-  this.currentUser.subscribe(data => {console.log(data)
+  //Prendo l'id dello studente dall'user 
+  this.currentUser.subscribe(data => {
   
-   
-
    this.studentId = data.username.split("@")[0].substring(1,7);
 
+   //Se l'username inizia con la s allora cerco lo studente nel servizio adibito allo studente
    if(data.username.startsWith("s")){
    this.studentservice.getOne(this.studentId).subscribe(
     s => {
@@ -91,6 +90,7 @@ constructor (public dialog:MatDialog,private route: ActivatedRoute, private teac
     }
   );}
 
+  //Se l'username inizia con la d allora cerco l'insegnante nel servizio adibito all'insegnante
   if(data.username.startsWith("d")){
    this.teacherService.getOne(this.studentId).subscribe(
     s => {
@@ -99,12 +99,8 @@ constructor (public dialog:MatDialog,private route: ActivatedRoute, private teac
     error => {
       
     }
-  );}
-
-
-  });
-
-    
+  );}});
+ 
 
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
     if(this.currentUser)
@@ -112,23 +108,6 @@ constructor (public dialog:MatDialog,private route: ActivatedRoute, private teac
   
       this.isLogin = false;
     }
-  
-    this.studentservice._refresh$.subscribe(()=> {
-
-      this.courses$ = this.studentservice.getcourse();
-    });
-  
-
-    this.studentservice._refresh$.subscribe(()=>{
-      this.studs$ = this.studentservice.getAll();
-     
-    });
-
-    this.studs$ = this.studentservice.getAll();
-
-    
-
-    this.courses$ = this.studentservice.getcourse();
   
   }
 
@@ -167,66 +146,29 @@ onActivate (componentRef)
         data => {
         this.authService.info().subscribe(
           data1 => {
-            
+        
             this.isTeacher= data1.isTeacher;
+            //Se l'user non è teacher allora lo redirigo alla pagina /student seguita dal suo username 
+            //come parametro
             if (this.isTeacher == false)
         {
           this.router.navigate([this.returnUrl + 'student'], {queryParams: {user: data.username}});
           this.dialog.closeAll();
         }
-        else{ 
+
+        //Altrimenti lo redirigo alla pagina /teacher seguita dal suo username come parametro della URL
+           else{ 
           
          this.router.navigate([this.returnUrl + 'teacher'], {queryParams: {user: data.username}});
          this.dialog.closeAll();
-      }}
-        )
-      
-          this.currentUser = this.authService.currentUser;
-   
- 
+      }}       )
 
-  this.currentUser.subscribe(data => {
-  
-   
-
-   this.studentId = data.username.split("@")[0].substring(1,7);
-
-   if(data.username.startsWith("s")){
-   this.studentservice.getOne(this.studentId).subscribe(
-    s => {
-      this.currentStudent = s;
-    },
-    error => {
-     
-    }
-  );}
-
-  if(data.username.startsWith("d")){
-   this.teacherService.getOne(this.studentId).subscribe(
-    s => {
-      this.currentStudent = s;
-    },
-    error => {
-      
-    }
-  );}
-
-
-  });
       
       })
-         }
-
-
-       })
+         }})
 
 
 
-   }
-
-
-   openmodDialog() {
-     this.dialog.open (SubjectdialogComponent);
    }
 
    logout()

@@ -1,21 +1,3 @@
-
- <!-- <div class="toolbar">
-<mat-toolbar color="primary">
-
-<mat-toolbar-row>
-<mat-icon (click) ="toggleForMenuClick()" class="menu" >menu</mat-icon>
-<a routerLink="/home"><span class="title"> VirtualLabs</span></a>
-<span class ="loginicon" ></span>
-<mat-icon class="login">login</mat-icon><i class="fas fa-sign-in-alt"></i>
-<a routerLink="/login"><span class="title"></span></a>
-<button mat-raised-button (click)="openDialog()">Login</button>
-</mat-toolbar-row>
-</mat-toolbar>
-</div>
-
-
-<mat-toolbar> <span>{{title}}</span></mat-toolbar>
--->
 <div class="inventory-body"></div>
 <mat-sidenav-container  autosize="true">
 
@@ -24,14 +6,13 @@
     <div class="container">
 
       <mat-nav-list>
-        <mat-list-item *ngFor="let item of courses" [routerLink]="['course'+'/students']" [queryParams] = "{name : item.name}"> {{item.name}} </mat-list-item>
+        <mat-list-item *ngFor="let item of courses$ | async" [routerLink]="['course'+'/students']" [queryParams] = "{name : item.name}"> {{item.name}} </mat-list-item>
       </mat-nav-list>
 
     </div>
 
   </mat-sidenav>
   
- 
   <mat-sidenav-content class="inventory-body">
     
     <router-outlet></router-outlet>

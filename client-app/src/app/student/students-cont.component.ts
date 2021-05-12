@@ -29,8 +29,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Popup } from './popup/popup.component';
 
  export interface DialogPopup{
-
-  animal:string;
   name: string;
  }
 
@@ -87,10 +85,10 @@ export class StudentsContComponent implements OnInit {
 
   //variabili per caricare la tabella con le proposte di Team
   studentid : string;
-  students : Student[] = new Array<Student>(); //da qua ricavo poi nome e cognome degli studenti  
+  students : Student[] = new Array<Student>(); 
   membersStatus : MemberStatus[] = new Array<MemberStatus>();
   membersStatus$ : Observable<MemberStatus[]>;
-  //da qua controllo se lo studente ha accettato o ancora no la proposta 
+  
   tempmember : MemberStatus;
   teams : Team[] = new Array<Team>();
   count : number = 0;
@@ -118,8 +116,8 @@ export class StudentsContComponent implements OnInit {
      private activeRoute: ActivatedRoute, private authService: AuthService,public dialog: MatDialog) {
     
 
-    //prendo l'username dell'user loggato 
-this.route.queryParams.subscribe(data => {
+  
+  this.route.queryParams.subscribe(data => {
     
   this.teams = [];
   this.courseId = "";
@@ -136,132 +134,80 @@ this.route.queryParams.subscribe(data => {
   this.compagni = [];
 
 
+    // Prendo l'username dell'user loggato
+  this.authService.currentUser.subscribe ( x => {
 
-
-
-
-
-    this.authService.currentUser.subscribe ( x => {
-
-      this.currentUser = x;
-      this.studentId = this.currentUser.username.split("@")[0].substring(1,7);
+  this.currentUser = x;
+  this.studentId = this.currentUser.username.split("@")[0].substring(1,7);
   
-        this.studentservice.getOne(this.studentId).subscribe(
-         s => {
+  this.studentservice.getOne(this.studentId).subscribe(
+        s => {
            this.currentStudent = s;
               },
-         error => {
+        error => {
         
-                  }
-        );
-    
-        });
+                  });
+    });
 
     
-    
-  
-    
-    this.activeRoute.paramMap.subscribe(params => {
+   
+  this.activeRoute.paramMap.subscribe(params => {
 
 
-      this.href = this.router.url;
-      let id = 0;
+  this.href = this.router.url;
+  let id = 0;
       
-      this.studenti = [];
-      this.enrolledstudents = [];
+  this.studenti = [];
+  this.enrolledstudents = [];
         
       
-     //chiamata alla funzione 
+     //Setto il valore dell'id del corso 
 
-       this.route.queryParams.subscribe(params => { this.courseId = params.name
-       this.courseId.replace('%20', " ");
+  this.route.queryParams.subscribe(params => { this.courseId = params.name
+  this.courseId.replace('%20', " ");
        
        });
-
-      
-
       });
     
               
     
-        
-        this.courseService.getAvailableStudents(this.courseId).subscribe(receivedstudents=>{
+  //Chiedo al servizio di darmi gli studenti liberi che possono essere invitati in un team
+  this.courseService.getAvailableStudents(this.courseId).subscribe(receivedstudents=>{
 
-            this.courseService.getOne(this.courseId).subscribe(data => {
+    //Recupero i limiti di studenti che possono essere invitati in un team 
+       this.courseService.getOne(this.courseId).subscribe(data => {
 
               this.maxstud = data.max;
               this.minstud = data.min;
 
-           receivedstudents.forEach(s => {
+                receivedstudents.forEach(s => {
 
-          
-            if (s.id!=this.studentId) 
-             this.enrolledstudents.push(s);
+                  if (s.id!=this.studentId) 
+                  this.enrolledstudents.push(s);
          
-                 this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);
-                 this.studentsComponent.updateFilteredOptions();
+                   this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);
+                   this.studentsComponent.updateFilteredOptions();
   
           }) 
-        
-        });
-         });
+          });
+          });
  
-        //prendo i team dello studente 
+        //Prendo i team dello studente per il corso selezionato
 
-      
-        
         this.teamsinconstruction$ = this.studentservice.getStudentCourseTeam(this.studentId,this.courseId);
-           this.teamsinconstruction$.subscribe (data => {
-                
-               })
-
-        
-        this.updateteamstatus();
-
-              
+         
+        //Aggiorno la vista con le informazioni dei Team pendendti o eventualmente con il Team di cui fa parte lo studente
+        this.updateteamstatus();     
 
 });
   };
-
-
-
-
-ngOnChanges (changes: SimpleChanges)
-{
-
-
-}
-  
+ 
 
   ngOnInit() {   
 
-    this.authService.currentUser.subscribe(u => {
-    
-      this.studentid = u.username;
-
-    })
-
-  
-  
-this.studentid = this.studentid.substring(0,7);
-
-
-    this.courseService._refresh$.subscribe(()=> {
-
-      this.courses$ = this.studentservice.getcourse();
-    });
-  
-    this.courses$ = this.studentservice.getcourse();
-
-
   }
 
-  
 
-
-
-    
-  
 
   receivestudent($event) {
     this.studenteaggiunto = $event;
@@ -299,8 +245,7 @@ this.studentid = this.studentid.substring(0,7);
   {
     
     let teamid = $event;
-    let acceptedteam;
-    
+   
    this.openDialog("Attendi..", );
 
     this.notificationService.confirm(teamid,this.matricola).subscribe(
@@ -311,7 +256,7 @@ this.studentid = this.studentid.substring(0,7);
         this.openDialog2("La proposta è stata accettata!");
     
        var teamm : Team;
-    var teamarray : Team[] = new Array<Team>();
+       var teamarray : Team[] = new Array<Team>();
        this.studentservice.getStudentCourseTeam(this.studentId,this.courseId).
         subscribe (teamss => {
           teamss.forEach ( t => {
@@ -366,15 +311,8 @@ this.studentid = this.studentid.substring(0,7);
           this.compagnidigruppo$ = of(membstat);
     
           })
-     
- 
-
-
-  }
- 
-  )
-        
-   }
+  
+  })}
    ,
 
   error => {
@@ -438,10 +376,6 @@ this.studentid = this.studentid.substring(0,7);
         
       
           })
-     
- 
-
-
   }
  
   )
@@ -465,13 +399,9 @@ receiverejectteamid($event) {
    
     this.notificationService.reject(teamid,this.matricola).subscribe(
       
-      data => {
-    
-   }
+      data => {}
    ,
-
   error => {
-    
     this.teamsinconstruction$ = this.studentservice.getStudentCourseTeam(this.studentId,this.courseId);
   })
 
@@ -590,7 +520,7 @@ receiverejectteamid($event) {
 
    }
    
-   //eventi per mostrare la tabella con le proposte di team 
+   //Funzione che aggiorna la vista 
    updateteamstatus()
    {
      this.teams$ = this.studentservice.getStudentCourseTeam(this.studentId,this.courseId);
@@ -659,36 +589,10 @@ receiverejectteamid($event) {
           this.compagnidigruppo$ = of(this.membersStatus);
 
           })
-        }
-      
-         
-        
-        
-        
-        
+        }      
       }); 
    }
    
-
-   updateacceptedstatus(teamid,matricola,compagnidigruppo : Array<MemberStatus>)
-
-   {
-    let compà = new Array<MemberStatus>();
-    compagnidigruppo.forEach( c => {
-
-   if(c.teamid == teamid && c.studentId==matricola)
-   {
-     c.hasAccepted = true;
-
-   }
-   compà.push(c);
-
-    })
-
-    this.compagnidigruppo$ = of(compà);
-   }
-
-
   }
 
   

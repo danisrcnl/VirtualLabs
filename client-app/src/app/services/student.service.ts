@@ -8,7 +8,6 @@ import { Vms } from '../model/vms.model';
 import { Group } from '../model/group.model';
 import { environment } from 'environments/environment';
 import { User } from '../auth/user';
-import { Studentreturn } from '../auth/models/studentreturn';
 import { config } from 'app/config';
 import { Proposal } from '../model/proposal.model';
 import { CourseDTO } from '../model/courseDTO.model';
@@ -52,11 +51,6 @@ private courseSubject :Subject<Course[]>;
     return this.refresh$;
 
   }
-
-  getAll() {
-    return this.http.get<Studentreturn[]>(`${environment.apiUrlstudent}`);
-  }
-
 
 
   replacebyname (courses : Course[], name : string, newname: string)

@@ -190,6 +190,7 @@ receivesoluzione ($event)
 }
 
 
+
 receivevalutazione($event) {
 
 
@@ -201,6 +202,8 @@ this.assignmentService.ratePaper($event.paperid,$event.voto).subscribe(data => {
 
 }
 
+
+//Funzione che aggiorna la vista 
 update () {
 
 this.assignmentWithPapersnull = [];

@@ -114,6 +114,7 @@ this.studenteaggiunto = null;
 
 
 
+  //La funzione riceve lo studente da iscrivere al corso e aggiorna la vista 
   receivestudent($event) {
     this.studenteaggiunto = $event;
     if (!this.enrolledstudents.includes(this.studenteaggiunto)){
@@ -121,7 +122,7 @@ this.studenteaggiunto = null;
     this.enrolledstudents = Object.assign( this.enrolledstudents);
   
 
-
+      //Aggiungo studente al corso 
       this.courseService.enrollOne(this.courseId,this.studenteaggiunto).subscribe(data => {
       this.studenti$=this.courseService.getfreeStudents(this.courseId);
       this.studenti$.subscribe(data => {
@@ -137,7 +138,7 @@ this.studenteaggiunto = null;
     
   }}
 
-  //funzione per cancellare uno o più studenti dal corso 
+  //La funzione riceve un array di studenti (o uno studente) da cancellare dal corso 
   receivearray ($event) {
 
     this.darimuovere = $event;
@@ -145,8 +146,9 @@ this.studenteaggiunto = null;
       
      this.darimuovere.forEach(s => {
 
+      //Cancellazione di uno o più studenti dal corso 
       this.courseService.deleteOne(this.courseId,s.id).subscribe(data => {
-     // this.studenti$ =  this.courseService.getfreeStudents(this.courseId); 
+     
       this.studentsComponent.updateFilteredOptions();     
 
      

@@ -59,6 +59,7 @@ export class ConsegnadialogComponent implements OnInit {
       let data = yyyy + "-" + mm + "-" + dd;
       
 
+      //Switch per il controllo della correttezza della data inserita nel form 
 
       switch(mm)
       {

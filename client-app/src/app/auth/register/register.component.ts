@@ -6,13 +6,11 @@ import { first } from 'rxjs/operators';
 import { User } from '../user';
 import { UserService } from 'app/services/user.service';
 import { AuthenticationService } from '../authentication.service';
-import { AlertService } from '../authservices/alert.service';
 import { AuthService } from '../authservices/auth.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs';
 
-@Component({ templateUrl: 'register.component.html',
-styleUrls: ['register.component.css']})
+@Component({ templateUrl: 'register.component.html', styleUrls: ['register.component.css']})
 export class RegisterComponent implements OnInit {
     registerForm: FormGroup;
     loading : boolean = false;
@@ -30,17 +28,11 @@ export class RegisterComponent implements OnInit {
         private router: Router,
         private authenticationService: AuthenticationService,
         private userService: UserService,
-        private alertService: AlertService,
         private matDialog : MatDialog,
         private authService: AuthService,
         public dialog : MatDialog,
         public dialogRef: MatDialogRef<RegisterComponent>,
-    ) {
-        // redirect to home if already logged in
-        if (this.authenticationService.currentUserValue) {
-           // this.router.navigate(['/']);
-        }
-    }
+    ) {}
 
     ngOnInit() {
         this.registerForm = this.formBuilder.group({
@@ -51,14 +43,19 @@ export class RegisterComponent implements OnInit {
             password: ['', [Validators.required, Validators.minLength(6)]]
         });
 
-        //this.registerForm.controls['email'].setValue(this.matricolis);
+
 
         this.onChanges();
-  
-  this.loading$ = of(this.loading);
+
+        //Parametro che servirà per visualizzare o meno la rotellina sulla vista una volta inoltrata la richiesta
+        //di registrazione 
+        this.loading$ = of(this.loading);
         
     }
 
+    //La funzione ascolta il cambio di parametri del form (nello specifico il valore della matricola)
+    //e in base a questo riesce a costruire passo dopo passo una mail istituzionale che dipenderà
+    //dalla lettera iniziale della matricola 
    onChanges() : void {
 
 
@@ -105,45 +102,41 @@ export class RegisterComponent implements OnInit {
     })
    }
 
-    // convenience getter for easy access to form fields
+    // Getter per accedere più facilmente ai parametri del form 
     get f() { return this.registerForm.controls; }
 
     onSubmit() {
  
-this.submitted = true;
+        this.submitted = true;
         let mail;
         this.autoemail.subscribe(data => {mail = data})
         this.registerForm.controls['email'].setValue(mail);
 
-  
+        //Se il form è invalido mi fermo 
          if (this.registerForm.invalid) {
             return;
         }
        
-      
-
-        // reset alerts on submit
-        this.alertService.clear();
-
-        // stop here if form is invalid
+    
        
         this.loading = true;
         this.loading$ = of(this.loading);
         this.loading$.subscribe(data => {console.log(data);});
 
-       this.numbermatricola = this.f.matricola.value;
-       this.numbermatricola = this.numbermatricola.substring(1);
+        //Taglio la lettera iniziale dalla matricola perché durante il programma la gestisco
+        //solo come numero 
+        this.numbermatricola = this.f.matricola.value;
+        this.numbermatricola = this.numbermatricola.substring(1);
        
 
 
         
-
+        //Chiamo il metodo per registrarmi con i campi presi dal form 
         this.authService.signup(this.f.nome.value,this.f.cognome.value,this.numbermatricola,this.f.email.value,this.f.password.value)
 
             .subscribe(
                 data => {
                     this.loading = false;
-                    this.alertService.success('Registration successful', true);
                     this.matDialog.closeAll();
                     let dialogRef = this.dialog.open(YourDialog, {
                             data: { name: 'Registrazione effettuata! Hai ricevuto una mail con un link per attivare il tuo profilo.' },
@@ -156,7 +149,6 @@ this.submitted = true;
                                 });
                     this.loading = false;
                     this.loading$ = of(this.loading);
-                    this.alertService.error(error);
                     
                 });
     }

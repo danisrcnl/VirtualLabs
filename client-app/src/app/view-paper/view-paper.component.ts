@@ -110,7 +110,7 @@ export class ViewPaperComponent implements OnInit {
      displayDate(date: Date) {
       var newDate: Date = new Date(date);
       var dd = String(newDate.getDate()).padStart(2, '0');
-      var mm = String(newDate.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var mm = String(newDate.getMonth() + 1).padStart(2, '0'); //Gennaio è 0!
       var yyyy = newDate.getFullYear();
       return dd + "/" + mm + "/" + yyyy;
     }

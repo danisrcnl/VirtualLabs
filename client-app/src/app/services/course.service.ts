@@ -7,7 +7,6 @@ import { find, catchError, tap } from 'rxjs/operators';
 import { Vms } from '../model/vms.model';
 import { Group } from '../model/group.model';
 import { User } from '../auth/user';
-import { Studentreturn } from '../auth/models/studentreturn';
 import { Proposal } from '../model/proposal.model';
 import { CourseDTO } from '../model/courseDTO.model';
 import { StudentDTO} from '../model/studentDTO.model';

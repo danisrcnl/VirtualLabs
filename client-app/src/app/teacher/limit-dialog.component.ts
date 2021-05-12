@@ -78,13 +78,12 @@ this.dialog.closeAll();
 
 
 
+//Imposto i limiti del VmModel
 setlimit() {
 
  this.submitted = true;
 
   if (this.limitForm.invalid) {
-
-
     return;
   }
 

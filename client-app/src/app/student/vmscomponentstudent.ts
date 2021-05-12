@@ -85,25 +85,17 @@ export class VmscomponentComponent2 implements OnInit {
 
   constructor(public dialog: MatDialog,private router: Router, private activeRoute: ActivatedRoute) 
   
-  {
-    
-    
-  }
+  {}
 
-  ngOnInit(){
+  ngOnInit(){}
 
-
-  }
-
+  //Apro il Dialog per prendere i dati che mi serviranno da mandare al componente padre per la creazione della vm 
   createvm()
   {
    
-    const dialogRef = this.dialog.open (LimitDialogComponent, { height: '350px',
-   width: '400px',
+    const dialogRef = this.dialog.open (LimitDialogComponent, { height: '350px', width: '400px',
     data : { 
-      resources : this.usedResources$, vmModel : this.vmModel
-  
-          }
+      resources : this.usedResources$, vmModel : this.vmModel}
   
     });
     
@@ -117,12 +109,12 @@ export class VmscomponentComponent2 implements OnInit {
       this.vm.disk = data.disk;
       this.addvmEvent.emit(this.vm);
 
-   }
+     }
 
   })
 }
 
-
+//Modifico i dati della vm e mando i dati del dialog al componente padre
 editvm(vmss) {
 
   this.vm = vmss;
@@ -132,9 +124,7 @@ editvm(vmss) {
    width: '400px',
     data : { 
     
-      resources : this.usedResources$, vmModel : this.vmModel, edit : ed, vm: vmss
-  
-          }
+      resources : this.usedResources$, vmModel : this.vmModel, edit : ed, vm: vmss}
   
     });
     
@@ -159,10 +149,11 @@ editvm(vmss) {
 
 set(commandstring,vmid) {
 
-
 this.changestateEvent.emit({vmId:vmid,command:commandstring})
   
 }
+
+//Controllo parametri per la vista 
 
 isOn (stat: String) {
   
@@ -179,10 +170,12 @@ isFreezed (stat: String) {
   if (stat == "FREEZED") return true;
   return false;
 }
+
+//Se sono creatore vengono mostrati nella vista i pulsanti di cambio di stato della vm 
 amCreator (id: number) {
   var outcome: Boolean = false;
   this.myRoles.forEach(role =>{
-    console.log("role == ROLE_VM_" + id + "_CREATOR" + role == "ROLE_VM_" + id + "_CREATOR")
+
     if(role == "ROLE_VM_" + id + "_CREATOR")
       outcome = true;
   });

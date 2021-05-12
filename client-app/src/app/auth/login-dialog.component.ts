@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { AuthService } from './authservices/auth.service';
-import { AlertService } from './authservices/alert.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RegisterComponent } from './register/register.component';
 import { JwtInterceptor } from './interceptor/jwt.interceptor';
@@ -25,13 +24,12 @@ export class LoginDialogComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private authService: AuthService,
-        private alertService: AlertService,
         private matDialog: MatDialog,
         public dialogRef: MatDialogRef<LoginDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data : DialogLogin,
        
     ) {
-        // redirect to home if already logged in
+        // Redirect alla pagina iniziale se è già loggato
         if (this.authService.currentUserValue) {
             this.router.navigate(['/']);
         }
@@ -43,22 +41,16 @@ export class LoginDialogComponent implements OnInit {
             password: ['', Validators.required]
         });
 
-        // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
      
     }
 
-    // convenience getter for easy access to form fields
     get f() { return this.loginForm.controls; }
 
     onSubmit() {
       this.submitted = true;
      
 
-      // reset alerts on submit
-      this.alertService.clear();
-
-      // stop here if form is invalid
       if (this.loginForm.invalid) {
         return;
       }
@@ -70,9 +62,10 @@ export class LoginDialogComponent implements OnInit {
   
      }
 
+    //Apri popup per la registrazione  
     openregister() {
         
-        this.matDialog.open (RegisterComponent, { panelClass: 'custom-modalbox', disableClose : true });
+    this.matDialog.open (RegisterComponent, { panelClass: 'custom-modalbox', disableClose : true });
 
     }
 

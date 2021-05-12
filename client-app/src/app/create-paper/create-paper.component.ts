@@ -21,25 +21,19 @@ export class CreatePaperComponent implements OnInit {
   file: File;
 
   ngOnInit(): void {
-
-   
-  
-
-
   }
 
+  //Manda il file caricato alla funzione che chiama il dialog  
   carica() {
 
     this.submitted = true;
-    
-   
     var formData = new FormData();
     formData.append("file", this.file);
     this.dialogRef.close(formData);
 
-
   }
 
+  //Prende il file selezionato dal campo file dell'html 
   onFileSelected (event) {
     this.file = event.target.files[0];
   }

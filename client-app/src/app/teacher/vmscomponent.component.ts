@@ -43,7 +43,6 @@ export class VmscomponentComponent implements OnInit {
     this.vmModel = model;
     this.vmarray.push(this.vmModel);
     
-    
   }
 
 
@@ -69,10 +68,7 @@ export class VmscomponentComponent implements OnInit {
    
     const dialogRef = this.dialog.open (LimitDialogComponent2, { height: '500px',
     width: '400px',
-    data : {
-     
-  
-    }
+    data : {}
   
     });
 

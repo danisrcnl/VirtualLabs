@@ -40,7 +40,7 @@ export class ElaboraticontstudentComponent implements OnInit {
   ngOnInit() {
 
 
-
+  //Imposto parametri utili per reindirizzare alle route corrette
   this.firstParam = this.route.snapshot.queryParamMap.get('name');
   
     this.route.params.subscribe (routeParams => {
@@ -111,7 +111,8 @@ export class ElaboraticontstudentComponent implements OnInit {
 }
 
 
-
+//La funzione gestisce l'evento del componente figlio che viene emesso quando uno studente legge per 
+//la prima volta la consegna 
 receivelettaconsegna($event) {
 
 this.assignmentService.getAssignmentPapers($event.id).subscribe(data => {
@@ -130,7 +131,8 @@ this.assignmentService.getAssignmentPapers($event.id).subscribe(data => {
 }
 
 
-
+//La funzione gestisce l'evento del componente figlio che viene emesso quando uno studente consegna
+//il paper 
 receivecontentpaper($event) {
 
 this.assignmentService.getAssignmentPapers($event.id).subscribe(data => {
@@ -156,6 +158,7 @@ this.assignmentService.getAssignmentPapers($event.id).subscribe(data => {
 
 }
 
+//Funzione di ordinamento degli assignments
 ordered (awp: AssignmentWithPapers[]) {
   var newArr: AssignmentWithPapers[] = [];
   newArr = awp.sort((a1, a2) => {
@@ -169,6 +172,7 @@ ordered (awp: AssignmentWithPapers[]) {
   return newArr;
 }
 
+//Funzione che aggiorna la vista 
  update() {
 
   this.assignmentWithPapersnull = [];

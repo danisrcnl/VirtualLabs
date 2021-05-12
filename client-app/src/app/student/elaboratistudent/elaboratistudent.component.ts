@@ -37,15 +37,12 @@ export class ElaboratistudentComponent implements OnInit {
 
   @Output() lettaconsegna = new EventEmitter<any>();
 
-
-
   @Input('assignmentWithPapers')
   set _assignmentWithPapers (assignmentWithPapers: AssignmentWithPapers[]) {
     this.assignmentWithPapers = assignmentWithPapers;
   }
 
   
-
 
   constructor(private assignmentService: AssignmentService, private studentService: StudentService, public dialog: MatDialog) { }
 
@@ -115,6 +112,8 @@ export class ElaboratistudentComponent implements OnInit {
 
   }
 
+
+  //Funzione che apre lo specchietto per vedere le informazioni del paper 
   viewPaper (id: number, history: PaperStatusTime[], currentStatus: String, editable: Boolean, assignmentId: number, assignment: Assignment, mark: number) {
     const dialogRef = this.dialog.open(ViewPaperComponent, {
       width: '800px',
@@ -136,6 +135,7 @@ export class ElaboratistudentComponent implements OnInit {
     });
   }
 
+  //Funzione che apre lo specchietto per creare il paper  
   createPaper (id: number) {
     const dialogRef = this.dialog.open(CreatePaperComponent, {
       width: '600px',
@@ -176,8 +176,6 @@ export class ElaboratistudentComponent implements OnInit {
      dialogRef.afterClosed().subscribe(data => {
 
   this.lettaconsegna.emit(assignment);
-
-
  })
     
 

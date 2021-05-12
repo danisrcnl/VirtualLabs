@@ -8,7 +8,6 @@ import { Vms } from '../model/vms.model';
 import { Group } from '../model/group.model';
 import { environment } from 'environments/environment';
 import { User } from '../auth/user';
-import { Studentreturn } from '../auth/models/studentreturn';
 import { config } from 'app/config';
 import { Proposal } from '../model/proposal.model';
 import { Team } from '../model/team.model';

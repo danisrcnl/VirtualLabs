@@ -53,45 +53,15 @@ this.authService.currentUser.subscribe (x => this.currentUser = x);
   
   ngOnInit(){
 
-  
-
-
-
    this.studentId = this.currentUser.username.split("@")[0].substring(1,7);
-    
-   
-    
+     
     this.studentservice._refresh$.subscribe(()=> {
 
       this.courses$ = this.studentservice.getStudentCourses(this.studentId);
-      //this.courses$ = this.courseService.getAllCourses();
+      
     });
   
     this.courses$ = this.studentservice.getStudentCourses(this.studentId);
-    //this.courses$ = this.courseService.getAllCourses();
-
-    this.courses$.subscribe( coursess => {
-
-      coursess.forEach (c => {
-
-        this.courses.push(c);
-      })
-for (let i=0 ;i< this.courses.length; i++)
-    {
-      
-      this.courses.forEach (c => {
-
-        this.temp = c.name.toLowerCase().split(' ').join('-');
-      ;
-        c.path = this.temp;
-      })
-
-    }
-    })
-
-    
-
-    
 
     this.sidenavService.setSidenav(this.sidenav);
   }
@@ -108,7 +78,3 @@ for (let i=0 ;i< this.courses.length; i++)
 
   
 }
-
-
-
-

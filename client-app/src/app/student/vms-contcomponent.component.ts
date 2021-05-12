@@ -43,55 +43,49 @@ constructor(
 
   this.authService.currentUser.subscribe ( x => {this.currentUser = x;
    
-      this.studentId = this.currentUser.username.split("@")[0].substring(1,7);
+    this.studentId = this.currentUser.username.split("@")[0].substring(1,7);
 
       
- 
-
   this.studentservice.getOne(this.studentId).subscribe(
     s => {
       this.currentStudent = s;
 
-       this.route.queryParams.subscribe(params => { this.courseId = params.name
-      
-      
-      
-       this.courseId.replace('%20', " ");
+       this.route.queryParams.subscribe(params => { 
+         
+         this.courseId = params.name;
+         
+         this.courseId.replace('%20', " ");
        
-       
-      
-       this.studentservice.getStudentCourseTeam(this.currentStudent.id,this.courseId).subscribe(
+            this.studentservice.getStudentCourseTeam(this.currentStudent.id,this.courseId).subscribe(
 
-          data => {
+               data => {
 
-            this.teams = data;
-             this.teams.forEach(t => 
-                 {
-                   if (t.status == 1) {
-                       this.team = t;
+                 this.teams = data;
+                   
+                   this.teams.forEach(t => {
+                   
+                    if (t.status == 1) {
+                    
+                      this.team = t;
 
-                        this.vmsperteam$ = this.vmService.getVmsForTeam(t.id);
+                      this.vmsperteam$ = this.vmService.getVmsForTeam(t.id);
                        
-                          this.vmsperteam$.subscribe(data => {
+                      this.vmsperteam$.subscribe(data => {
                              
-                              data.forEach(t => {
+                        data.forEach(t => {
                                 
                               
                        })
-
-                          })}})
+                      })
+                    }
+                  })
                       
-                          
-                     
-                     this.authService.info().subscribe(data => 
+                    this.authService.info().subscribe(data => {
                       
-                      {
-                        data.roles.forEach( r => {
-                            this.roles.push(r);
-                        })
-                      }
-
-                      )
+                         data.roles.forEach( r => {
+                            
+                          this.roles.push(r);
+                        })})
                      
                       this.roles$ = of(this.roles);
                      
@@ -100,7 +94,7 @@ constructor(
                    })  });},
 
 
-          error => {
+              error => {
            
                    }
 
@@ -115,25 +109,24 @@ constructor(
    teamId : Number;
    
    selectedegroups : Group[];
-   public href :string ="";
-   public href2 : string ="";
-    public href3 : string ="";
-    public hreff : string ="";
-        public subject : string ="";
+   href :string ="";
+   href2 : string ="";
+   href3 : string ="";
+   hreff : string ="";
+   subject : string ="";
    
    currentStudent : StudentDTO;
-    firstParam : string ="";
-    vmModel : vmModelDTO;
+   firstParam : string ="";
+   vmModel : vmModelDTO;
   
    ngOnInit() {
 
-    this.firstParam = this.route.snapshot.queryParamMap.get('name');
-
-this.route.params.subscribe (routeParams => {
-this.hreff = this.router.url;
-  this.subject = this.hreff.substring(0,this.hreff.lastIndexOf('?'));
-  this.hreff = this.hreff.substring(0,this.hreff.lastIndexOf('/'));
-  this.href = this.subject; 
+   this.firstParam = this.route.snapshot.queryParamMap.get('name');
+   this.route.params.subscribe (routeParams => {
+   this.hreff = this.router.url;
+   this.subject = this.hreff.substring(0,this.hreff.lastIndexOf('?'));
+   this.hreff = this.hreff.substring(0,this.hreff.lastIndexOf('/'));
+   this.href = this.subject; 
    this.href2 = this.hreff + '/students';
    this.href3 = this.hreff + '/elaborati';
    
@@ -145,19 +138,10 @@ this.hreff = this.router.url;
 
     this.vmModel = data;
     
-   })
-
- 
-     
-    
-}
-    receivevmModel($event)
-    {
-      this.vmModel = $event;
-      
-    }
+   })}
     
   
+    //Ricevo vm da aggiungere dal componente figlio 
     receivevm($event)
     {
       this.vm = $event;
@@ -171,8 +155,7 @@ this.hreff = this.router.url;
                       {
                         data.roles.forEach( r => {
                             if(r.includes("VM_"+data1))
-                            this.roles.push(r);
-                            
+                             this.roles.push(r);     
                         })
                       }
 
@@ -184,36 +167,27 @@ this.hreff = this.router.url;
         (error) => {
 
                         let dialogRef = this.dialog.open(YourDialog, {
-                            data: { name: error },
+                        data: { name: error },
                                 });
           
 
-        }
-        
-     
-      );
+        });
       
     }
 
+    //Ricevo vm da modificare
     receiveeditvm($event) {
 
-      
-
-     this.vmService.editVm($event).subscribe( data => {
-       
-      }
-       
+     this.vmService.editVm($event).subscribe( 
+       data => { this.updatevms();}
        ,
        (error) => {
-         let dialogRef = this.dialog.open(YourDialog, {
-                            data: { name: error },
-                                });
-       }
-       );
-       this.updatevms();
+         let dialogRef = this.dialog.open(YourDialog, { data: { name: error }});
+       });
+      
+      }
 
-    }
-
+    //Aggiorno la vista delle vm con i nuovi parametri 
     updatevms()
     {
 
@@ -221,8 +195,8 @@ this.hreff = this.router.url;
           data => {
           this.teams = data;
             
-              this.teams.forEach(t => 
-                 {if (t.status == 1) {
+              this.teams.forEach(t =>{
+                if (t.status == 1) {
                    this.team = t;
 
                      this.vmsperteam$ = this.vmService.getVmsForTeam(t.id);
@@ -232,18 +206,18 @@ this.hreff = this.router.url;
                        })
                      }) 
                      
-                      }
-                           })
+                   }
+                 })
 
- this.usedResources$ = this.teamService.getUsedResources(this.courseId,this.team.name);
+             this.usedResources$ = this.teamService.getUsedResources(this.courseId,this.team.name);
 
-                    })
+             })
     }
 
 
+    //Cambio lo stato della vm
     changestatevm($event)
     {
-
 
       this.vmService.changeState($event.vmId,$event.command).subscribe(data => {
       this.updatevms();

@@ -4,10 +4,12 @@ import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { config } from 'app/config';
 import { User } from '../user';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+    public jwtHelper : JwtHelperService;
     private currentUserSubject: BehaviorSubject<User>;
     public currentUser: Observable<User>;
 
@@ -27,7 +29,6 @@ export class AuthService {
                    
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('currentUser', JSON.stringify(user));
-          
                 this.currentUserSubject.next(user);
             }
                 return user;
@@ -55,6 +56,22 @@ export class AuthService {
 
     }
 
+
+    isAuthenticated() {
+
+
+        let user = localStorage.getItem('currentUser');
+        let token = localStorage.getItem('token');
+        console.log(user);
+        console.log(token);
+        if(token) {
+            //Controllo se il token è nullo o vuoto e ritorna vero o falso 
+            return !this.jwtHelper.isTokenExpired(token);
+
+        }
+        else
+        return false
+    }
     
     handleError(err) {
  

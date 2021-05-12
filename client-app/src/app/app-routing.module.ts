@@ -17,29 +17,19 @@ import { AppComponentTeacher } from './teacher/app.component';
 import { VmsContcomponentComponent2 } from './student/vms-contcomponent.component';
 import { ElaboraticontteacherComponent } from './teacher/elaboraticontteacher/elaboraticontteacher.component';
 import { ElaboraticontstudentComponent } from './student/elaboraticontstudent/elaboraticontstudent.component';
+import { AuthGuard } from './_helpers/auth.guard';
 export const routes: Routes = [
 
   
+//Definisco i componenti che verranno renderizzati in base al percorso scelto dall'utente 
+
+//Tutte le viste dell'insegnante e dello studente sono protette da una guardia che permette l'accesso
+//solo agli utenti loggati e con il ruolo adatto alla vista
 
 { path :"",
 component : HomeComponentComponent
 
 },
-
-
-{
-  path: "auth/register",
-  component : RegisterComponent
-
-
-},
-
-{
-  path: "auth/login",
-  component : LoginDialogComponent,
-
-},
-
 
 
 { path:"teacher", component : AppComponentTeacher, children: [
@@ -50,11 +40,17 @@ component : HomeComponentComponent
     
       { path: "vms", component: VmsContcomponentComponent } ,
       { path: "students", component: TeacherContComponent},
-       { path: "elaborati", component: ElaboraticontteacherComponent}
+      { path: "elaborati", component: ElaboraticontteacherComponent,
+    }
     
       
-  ]}]}
+  ]}],
+  canActivate: [AuthGuard],
+  data : {role: "ROLE_TEACHER"}
+}
 ,
+
+
 
 {
   path: "student",
@@ -67,8 +63,8 @@ component : HomeComponentComponent
       { path: "elaborati", component: ElaboraticontstudentComponent}
     
     ]}],
-     //runGuardsAndResolvers: 'always'
-   
+    canActivate: [AuthGuard],
+    data : {role: "ROLE_STUDENT"}   
 
 },
 
