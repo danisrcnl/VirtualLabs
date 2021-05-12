@@ -88,6 +88,8 @@ checkValue(event :any)
 {
 
 }
+
+//Aggiungo il corso appena immesso nel myForm 
 createcourse ()
 {
    this.submitted = true;
@@ -144,8 +146,10 @@ this.courseservice.addCourse(this.courseDTO,this.teacherId)
  }
 
 
- check() {
 
+
+ //Setto minimo e massimo studenti 
+ check() {
 
 let name = this.selectedcourse.name;
 
@@ -171,8 +175,6 @@ this.courses$ = this.teacherService.getCourseforTeacher(this.teacherId);
 else
 this.courses$ = this.teacherService.getCourseforTeacher(this.teacherId);
  
-
-
 
  }
 

@@ -114,6 +114,8 @@ for (let i=0 ;i< this.courses.length; i++)
    }
 
 
+
+   //Apro lo specchietto per modificare/cancellare/creare il corso 
    openmodDialog() {
      const dialogRef = this.dialog.open (SubjectdialogComponent, {
      data : {acronym : this.acronym, maxstud : this.maxstud, minstud : this.minstud, coursename : this.coursename, enabled: this.enabled}

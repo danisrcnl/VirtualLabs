@@ -46,9 +46,6 @@ export class VmscomponentComponent implements OnInit {
   }
 
 
- 
-
-
   vms : Vms[] = [];
   groups : Group[] = [];
   constructor(public dialog: MatDialog, private studentservice: StudentService,private router: Router, private activeRoute: ActivatedRoute,
@@ -63,6 +60,8 @@ export class VmscomponentComponent implements OnInit {
 
   }
 
+
+  //Apro lo specchietto che mi permette di settare il VmModel
   openlimitdialog()
   {
    

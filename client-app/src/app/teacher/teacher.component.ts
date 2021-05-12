@@ -179,16 +179,13 @@ this.hreff = this.router.url;
   
     this.addstudentEvent.emit(this.studenteselezionato);
     this.studenteselezionato = null;
-    
 
   }
 
   updateFilteredOptions() {
     this.studenti$.subscribe(data1 => {
 
-      
-      
-
+  
 this.filteredOptions = this.mycontrol.valueChanges.pipe(
         startWith(''),
         map(value => typeof value === 'string' ? value : this.displayFn(value)),
