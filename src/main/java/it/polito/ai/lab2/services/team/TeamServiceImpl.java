@@ -47,7 +47,10 @@ public class TeamServiceImpl implements TeamService {
     @Autowired
     ModelMapper modelMapper;
 
-
+    /*
+    * Il metodo attiva il team selezionato mettendo a 1 il suo status. Dopo di ciò i membri del team vengono arricchiti
+    * con i relativi privilegi (tutti con MEMBER, il creatore anche con CREATOR).
+    * */
     @Override
     public void activateTeamById(int id) throws TeamNotFoundException {
         if(!teamRepository.existsById(id))
@@ -77,6 +80,9 @@ public class TeamServiceImpl implements TeamService {
         }
     }
 
+    /*
+    * Stesso metodo di sopra, ma chiamabile a partire da courseName e teamName.
+    * */
     @Override
     public void activateTeam(String courseName, String teamName) throws TeamNotFoundException {
         Team t = teamRepository.getTeamByCourseAndName(courseName, teamName);
@@ -84,33 +90,62 @@ public class TeamServiceImpl implements TeamService {
             throw new TeamNotFoundException(teamName);
 
         t.setStatus(1);
+
+        List<User> users = t
+                .getMembers()
+                .stream()
+                .map(Student :: getUser)
+                .collect(Collectors.toList());
+
+        String creator = t.getCreator().getId();
+
+        for (User user : users) {
+            if(user.getStudent().getId().equals(creator)) {
+                authenticationService.setPrivileges(user.getUsername(), Arrays.asList("ROLE_TEAM_" + courseName + "_" + teamName + "_CREATOR"));
+                authenticationService.setPrivileges(user.getUsername(), Arrays.asList("ROLE_TEAM_" + t.getId() + "_CREATOR"));
+            }
+            authenticationService.setPrivileges(user.getUsername(), Arrays.asList("ROLE_TEAM_" + courseName + "_" + teamName + "_MEMBER"));
+            authenticationService.setPrivileges(user.getUsername(), Arrays.asList("ROLE_TEAM_" + t.getId() + "_MEMBER"));
+        }
     }
 
+    /*
+    * Dato l'id di un team, questo viene eliminato e tutti i ruoli corrispondenti ai suoi membri nei confronti del gruppo
+    * vengono cancellati.
+    * */
     @Override
     public void evictTeamById(int id) throws TeamNotFoundException {
         if(!teamRepository.existsById(id))
             throw new TeamNotFoundException(id);
 
-        List<User> users = teamRepository
-                .getOne(id)
+        Team t = teamRepository.getOne(id);
+        String teamName = t.getName();
+        String courseName = t.getCourse().getName();
+
+        List<User> users = t
                 .getMembers()
                 .stream()
                 .map(Student :: getUser)
                 .collect(Collectors.toList());
 
         for (User user : users) {
-            user.getRoles().removeIf(r -> r.contains("TEAM_" + id));
+            user.getRoles().removeIf(r -> (r.contains("TEAM_" + id) || (r.contains("TEAM_" + courseName + "_" + teamName))));
         }
 
         teamRepository.delete(teamRepository.getOne(id));
         teamRepository.flush();
     }
 
+    /*
+    * Come sopra, ma a partire da courseName e teamName.
+    * */
     @Override
     public void evictTeam(String courseName, String teamName) throws TeamNotFoundException {
         Team t = teamRepository.getTeamByCourseAndName(courseName, teamName);
         if(t == null)
             throw new TeamNotFoundException(teamName);
+
+        int id = t.getId();
 
         List<User> users = teamRepository
                 .getTeamByCourseAndName(courseName, teamName)
@@ -120,7 +155,7 @@ public class TeamServiceImpl implements TeamService {
                 .collect(Collectors.toList());
 
         for (User user : users) {
-            user.getRoles().removeIf(r -> r.contains("TEAM_" + courseName + "_" + teamName));
+            user.getRoles().removeIf(r -> (r.contains("TEAM_" + id) || (r.contains("TEAM_" + courseName + "_" + teamName))));
         }
 
         teamRepository.delete(t);
@@ -145,14 +180,9 @@ public class TeamServiceImpl implements TeamService {
         }
     }
 
-    @Override
-    public TeamDTO getTeam(String courseName, String teamName) throws CourseNotFoundException, TeamNotFoundException {
-        Team t = teamRepository.getTeamByCourseAndName(courseName, teamName);
-        if(t == null)
-            throw new TeamNotFoundException(teamName);
-        return modelMapper.map(t, TeamDTO.class);
-    }
-
+    /*
+    * A partire dall'id di un gruppo, ritorna il gruppo corrispondente.
+    * */
     @Override
     public TeamDTO getTeamById(int id) throws TeamNotFoundException {
         if(!teamRepository.existsById(id))
@@ -163,6 +193,20 @@ public class TeamServiceImpl implements TeamService {
         );
     }
 
+    /*
+    * Come sopra, ma a partire da courseName e teamName.
+    * */
+    @Override
+    public TeamDTO getTeam(String courseName, String teamName) throws CourseNotFoundException, TeamNotFoundException {
+        Team t = teamRepository.getTeamByCourseAndName(courseName, teamName);
+        if(t == null)
+            throw new TeamNotFoundException(teamName);
+        return modelMapper.map(t, TeamDTO.class);
+    }
+
+    /*
+    * Dato l'id di un team, vengono tornati i suoi membri come studentDTO.
+    * */
     @Override
     public List<StudentDTO> getMembersById(int id) throws TeamNotFoundException {
         if(!teamRepository.existsById(id))
@@ -175,6 +219,9 @@ public class TeamServiceImpl implements TeamService {
                 .collect(Collectors.toList());
     }
 
+    /*
+    * Come sopra, ma a partire da courseName e teamName.
+    * */
     @Override
     public List<StudentDTO> getMembers(String courseName, String teamName) throws TeamNotFoundException {
         Team t = teamRepository.getTeamByCourseAndName(courseName, teamName);
@@ -187,6 +234,15 @@ public class TeamServiceImpl implements TeamService {
                 .collect(Collectors.toList());
     }
 
+    /*
+    * A valle di tutti i check relativi a esistenza delle entità e rispetto delle specifiche imposte dal docente,
+    * per ogni membro vengono salvati in teamsForCourseStudent tutti i gruppi a cui è stato invitato e in
+    * tokensForCourseStudent tutti i tokens di team relativi a quel corso. In questo modo se la dimensione delle due
+    * liste è differente, allora vuol dire che l'utente ha già accettato un invito e pertanto non è più invitabile,
+    * benchè il suo id figuri tra gli availableIds. Se uno dei membri ricade in questo caso, la proposta viene abortita.
+    * Dopo di ciò si provvede a collegare ogni entità student con l'entità team creata a monte e la proposta viene
+    * salvata in db.
+    * */
     @Override
     public TeamDTO proposeTeam(String courseName, String teamName, List<String> memberIds, String creator)
         throws TeamServiceException {
@@ -257,6 +313,10 @@ public class TeamServiceImpl implements TeamService {
         return modelMapper.map(t, TeamDTO.class);
     }
 
+    /*
+    * Dato un team (identificato da courseName e teamName) viene tornato l'attuale utilizzo di VCPU nell'ambito della
+    * allocazione di VMs.
+    * */
     @Override
     public int getUsedNVCpuForTeam(String courseName, String teamName) throws TeamNotFoundException {
         Team t = teamRepository.getTeamByCourseAndName(courseName, teamName);
@@ -270,6 +330,10 @@ public class TeamServiceImpl implements TeamService {
                 .reduce(0, Integer :: sum);
     }
 
+    /*
+     * Dato un team (identificato da courseName e teamName) viene tornato l'attuale utilizzo di disco nell'ambito della
+     * allocazione di VMs.
+     * */
     @Override
     public int getUsedDiskForTeam(String courseName, String teamName) throws TeamNotFoundException {
         Team t = teamRepository.getTeamByCourseAndName(courseName, teamName);
@@ -283,6 +347,10 @@ public class TeamServiceImpl implements TeamService {
                 .reduce(0, Integer :: sum);
     }
 
+    /*
+     * Dato un team (identificato da courseName e teamName) viene tornato l'attuale utilizzo di RAM nell'ambito della
+     * allocazione di VMs.
+     * */
     @Override
     public int getUsedRamForTeam(String courseName, String teamName) throws TeamNotFoundException {
         Team t = teamRepository.getTeamByCourseAndName(courseName, teamName);
@@ -297,7 +365,9 @@ public class TeamServiceImpl implements TeamService {
     }
 
 
-
+    /*
+     * Torna tutte le VMs istanziate dai membri di un team.
+     * */
     @Override
     public List<VmDTO> getVmsForTeam(String courseName, String teamName) throws TeamNotFoundException {
         Team t = teamRepository.getTeamByCourseAndName(courseName, teamName);
@@ -311,6 +381,9 @@ public class TeamServiceImpl implements TeamService {
                 .collect(Collectors.toList());
     }
 
+    /*
+    * Come sopra, ma a partire dall'id del team.
+    * */
     @Override
     public List<VmDTO> getVmsForTeamById(int id) throws TeamNotFoundException {
         if(!teamRepository.existsById(id))
@@ -324,6 +397,9 @@ public class TeamServiceImpl implements TeamService {
                 .collect(Collectors.toList());
     }
 
+    /*
+    * Ritorna la matricola dello studente creatore del gruppo.
+    * */
     @Override
     public String getCreator(int id) throws TeamNotFoundException {
         if (!teamRepository.existsById(id))
@@ -335,6 +411,9 @@ public class TeamServiceImpl implements TeamService {
                 .getId();
     }
 
+    /*
+    * Dato il nome di un gruppo nell'ambito di un corso, viene tornato l'id del gruppo stesso.
+    * */
     @Override
     public int getTeamId(String courseName, String teamName) throws TeamNotFoundException {
         if(teamRepository.getTeamByCourseAndName(courseName, teamName) == null)

@@ -30,6 +30,9 @@ public class TeacherServiceImpl implements TeacherService {
     @Autowired
     ModelMapper modelMapper;
 
+    /*
+    * Dato un teacherId viene restituito il docente corrispondente, se presente.
+    * */
     @Override
     public Optional<TeacherDTO> getTeacher(String teacherId) {
         if(!teacherRepository.existsById(teacherId))
@@ -38,6 +41,9 @@ public class TeacherServiceImpl implements TeacherService {
         return Optional.ofNullable(modelMapper.map(t, TeacherDTO.class));
     }
 
+    /*
+    * Aggiunge al database un docente sulla base del DTO ricevuto in input.
+    * */
     @Override
     public boolean addTeacher(TeacherDTO teacher) {
         Teacher t = modelMapper.map(teacher, Teacher.class);
@@ -48,6 +54,9 @@ public class TeacherServiceImpl implements TeacherService {
         return true;
     }
 
+    /*
+    * Ritorna tutti i docenti nel database.
+    * */
     @Override
     public List<TeacherDTO> getAllTeachers() {
         return teacherRepository
@@ -57,6 +66,9 @@ public class TeacherServiceImpl implements TeacherService {
                 .collect(Collectors.toList());
     }
 
+    /*
+    * Dato un docente, restituisce tutti i corsi da egli tenuti.
+    * */
     @Override
     public List<CourseDTO> getCoursesForTeacher(String teacherId) throws TeacherNotFoundException {
         if(!teacherRepository.existsById(teacherId))
@@ -70,6 +82,10 @@ public class TeacherServiceImpl implements TeacherService {
                 .collect(Collectors.toList());
     }
 
+    /*
+    * Dati un teacherId e uno username, il docente e l'utente corrispondenti vengono associati in una relazione
+    * one-to-one.
+    * */
     @Override
     public void linkToUser(String teacherId, String userId) throws TeacherNotFoundException, UserNotFoundException {
         if(!teacherRepository.existsById(teacherId))

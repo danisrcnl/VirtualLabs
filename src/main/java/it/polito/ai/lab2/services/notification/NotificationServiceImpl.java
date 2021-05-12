@@ -57,6 +57,13 @@ public class NotificationServiceImpl implements NotificationService {
         javaMailSender.send(simpleMailMessage);
     }
 
+    /*
+    * Metodo che conferma l'invito a un gruppo, partendo da un token. Si utilizza il metodo findAllByExpiry before,
+    * mappato su una query HQL in tokenRepository, per accertarsi che il token non sia ancora scaduto. Se così fosse,
+    * tutti i token relativi a quel team ancora non eliminati verranno eliminati e il team sarà eliminato in quanto non
+    * più finalizzabile. Diversamente il token viene eliminato e se era l'ultimo rimasto, allora il team viene anche
+    * attivato.
+    * */
     @Override
     public boolean confirm (String token) {
 
@@ -92,6 +99,10 @@ public class NotificationServiceImpl implements NotificationService {
         return true;
     }
 
+    /*
+    * Serve per rifiutare l'invito a far parte di un gruppo. Insieme ad esso vengono eliminati anche tutti gli altri
+    * inviti e il team viene cancellato, in quanto non più finalizzabile.
+    * */
     @Override
     public boolean reject (String token) {
 
@@ -108,6 +119,11 @@ public class NotificationServiceImpl implements NotificationService {
         return true;
     }
 
+    /*
+    * Serve a informare i membri della proposta di gruppo della proposta stessa. Vengono generati i token con scadenza
+    * fissata a data e ora odierna più un fattore determinato da hours. Dopo aver effettuato il binding tra il token e
+    * lo studente, viene generata la email da mandare a ogni utente.
+    * */
     @Override
     public void notifyTeam (String courseName, String teamName, List<String> memberIds, int hours) {
 
@@ -142,6 +158,11 @@ public class NotificationServiceImpl implements NotificationService {
         }
     }
 
+    /*
+    * Serve a rendere accessibile a colui che ha appena effettuato la registrazione un link di attivazione. Questo
+    * è costruito sulla base di un token generato appositamente per l'utente. La mail di destinazione viene costruita
+    * in modi differenti, a seconda che si tratti di un docente o di uno studente.
+    * */
     @Override
     public void notifyUser (String email, String firstName, String lastName) throws UserNotFoundException {
 
@@ -180,6 +201,10 @@ public class NotificationServiceImpl implements NotificationService {
         sendMessage(receiver, subject, message);
     }
 
+    /*
+    * Serve a confermare l'iscrizione presso l'applicazione. Se il token è ancora valido, allora l'utente viene
+    * reperito tramite lo userId e il suo campo active viene settato a true. L'utente si potrà loggare.
+    * */
     @Override
     public boolean confirmUser (String token) throws UserNotFoundException {
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/Paris"));
@@ -198,6 +223,11 @@ public class NotificationServiceImpl implements NotificationService {
         return true;
     }
 
+    /*
+    * Il metodo salva la lista delle matricole dei membri del gruppo e la lista dei token non ancora riscattati.
+    * A questo punto viene costruita una lista di MemberStatus, ossia una struttura dati che conterrà informazioni
+    * utili circa lo stato di creazione del team.
+    * */
     @Override
     public List<MemberStatus> getMembersStatus(int teamId) throws TeamNotFoundException {
         List<String> membersIds =
@@ -227,6 +257,10 @@ public class NotificationServiceImpl implements NotificationService {
         return memberStatuses;
     }
 
+    /*
+    * Data la matricola di uno studente e l'id di un team di cui fa parte, il metodo ritorna il token ad esso
+    * associato, se presente. Altrimenti tornerà un optional vuoto.
+    * */
     @Override
     public Optional<String> getMemberToken(int teamId, String studentId) {
         List<Token> teamTokens = new ArrayList<>(tokenRepository.findAllByTeamId(teamId));
@@ -237,6 +271,14 @@ public class NotificationServiceImpl implements NotificationService {
         return Optional.empty();
     }
 
+    /*
+    * Per prima cosa vengono trovati tutti i token di team relativi a un certo studente (il campo studentId
+    * è valido solo per quelli di team). Per ognuno di essi, se il token appartiene a un team diverso da
+    * quello in cui si vuole entrare, vengono salvati in una lista tutti i token relativi allo stesso team.
+    * Quel team viene dunque cancellato e il suo id salvato in una lista. Tutti i tokens precedentemente
+    * salvati vengono eliminati. Gli utenti del gruppo appena eliminato vengono informati del fatto che la
+    * proposta non è più valida.
+    * */
     @Override
     public void deleteOtherTeams(int teamId, String studentId) throws TeamNotFoundException {
 
@@ -251,21 +293,22 @@ public class NotificationServiceImpl implements NotificationService {
             int id = tk.getTeamId();
             if (id != teamId && !deletedTeams.contains(id)) {
                 toBeDeleted = tokenRepository.findAllByTeamId(id);
-                teamService.evictTeamById(id);
-                deletedTeams.add(id);
-                for (Token tkDel : toBeDeleted)
-                    tokenRepository.delete(tkDel);
 
                 List<String> memberIds = teamRepository
-                        .getOne(teamId)
+                        .getOne(id)
                         .getMembers()
                         .stream()
                         .map(s -> s.getId())
                         .collect(Collectors.toList());
 
                 String teamName = teamRepository
-                        .getOne(teamId)
+                        .getOne(id)
                         .getName();
+
+                teamService.evictTeamById(id);
+                deletedTeams.add(id);
+                for (Token tkDel : toBeDeleted)
+                    tokenRepository.delete(tkDel);
 
                 for (String memberId : memberIds) {
                     String message = "Ciao, questo è un messaggio generato per gli " +
@@ -281,6 +324,9 @@ public class NotificationServiceImpl implements NotificationService {
 
     }
 
+    /*
+    * Data la stringa del token torna eventualmente l'entità corrispondente.
+    * */
     @Override
     public Optional<Token> getToken(String token) {
         if(!tokenRepository.existsById(token))

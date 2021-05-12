@@ -36,6 +36,9 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     AuthenticationService authenticationService;
 
+    /*
+    * Costruisce un'entità student mappata sul DTO ricevuto e la salva nel database, qualora non già presente.
+    * */
     @Override
     public boolean addStudent(StudentDTO student) {
         Student s = modelMapper.map(student, Student.class);
@@ -46,17 +49,20 @@ public class StudentServiceImpl implements StudentService {
         return true;
     }
 
+    /*
+    * Ritorna un DTO dello studente associato alla matricola ricevuta come parametro.
+    * */
     @Override
     public Optional<StudentDTO> getStudent(String studentId) {
         if(studentRepository.existsById(studentId))
-            return Optional.ofNullable(
-                    modelMapper
-                            .map(studentRepository
-                                    .getOne(studentId), StudentDTO.class));
+            return Optional.ofNullable(modelMapper.map(studentRepository.getOne(studentId), StudentDTO.class));
         else
             return Optional.empty();
     }
 
+    /*
+    * Restituisce tutti gli studenti presenti nel db.
+    * */
     @Override
     public List<StudentDTO> getAllStudents() {
         return studentRepository
@@ -66,6 +72,9 @@ public class StudentServiceImpl implements StudentService {
                 .collect(Collectors.toList());
     }
 
+    /*
+    * Dato uno studente, restituisce tutti i corsi a cui è iscritto.
+    * */
     @Override
     public List<CourseDTO> getCoursesForStudent(String studentId) throws StudentNotFoundException {
         if(!studentRepository.existsById(studentId))
@@ -79,6 +88,10 @@ public class StudentServiceImpl implements StudentService {
                 .collect(Collectors.toList());
     }
 
+    /*
+    * Data una lista di DTOs, chiama iterativamente la addStudent e ne salva i risultati in un vettore di Boolean,
+    * come nel caso della enrollAll.
+    * */
     @Override
     public List<Boolean> addAll(List<StudentDTO> students) {
         List<Boolean> successes = new ArrayList<Boolean>();
@@ -86,6 +99,9 @@ public class StudentServiceImpl implements StudentService {
         return successes;
     }
 
+    /*
+    * Data la matricola di uno studente, vengono trovati e restituiti tutti i team di cui fa parte.
+    * */
     @Override
     public List<TeamDTO> getTeamsForStudent(String studentId) throws StudentNotFoundException {
         if(!studentRepository.existsById(studentId))
@@ -98,6 +114,9 @@ public class StudentServiceImpl implements StudentService {
                 .collect(Collectors.toList());
     }
 
+    /*
+     * Data la matricola di uno studente, vengono trovate e restituite tutte le vms ad esso associate.
+     * */
     @Override
     public List<VmDTO> getVmsForStudent(String studentId) throws StudentNotFoundException {
         if(!studentRepository.existsById(studentId))
@@ -111,6 +130,11 @@ public class StudentServiceImpl implements StudentService {
                 .collect(Collectors.toList());
     }
 
+    /*
+    * Dati uno username e uno studentId, il metodo associa le due entità reperite dal db. Nel caso in cui lo studente
+    * già esistesse perche aggiunto tramite csv dal docente, per tutti i corsi a cui lo studente risulta iscritto, viene
+    * aggiunto il corrispondente ruolo di autorizzazione nella lista dei ruoli dello user appena agganciato.
+    * */
     @Override
     public void linkToUser(String studentId, String userId) throws StudentNotFoundException, UserNotFoundException {
         if(!studentRepository.existsById(studentId))
