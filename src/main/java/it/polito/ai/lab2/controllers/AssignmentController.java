@@ -80,6 +80,8 @@ public class AssignmentController {
     * */
     @PostMapping("/{assignmentId}/setContent")
     public String setAssignmentContent (@PathVariable Long assignmentId , @RequestParam("file") MultipartFile multipartFile) throws ResponseStatusException {
+        if(!multipartFile.getContentType().equals("image/jpeg") && !multipartFile.getContentType().equals("image/png"))
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "L'immagine deve essere jpg, jpeg o png");
         String subfolder = "assignments";
         String name = assignmentId.toString();
         String value = "";
@@ -105,6 +107,8 @@ public class AssignmentController {
      * */
     @PostMapping("/paper/{paperId}/setContent")
     public String setPaperContent (@PathVariable Long paperId , @RequestParam("file") MultipartFile multipartFile) throws ResponseStatusException {
+        if(!multipartFile.getContentType().equals("image/jpeg") && !multipartFile.getContentType().equals("image/png"))
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "L'immagine deve essere jpg, jpeg o png");
         String subfolder = "papers";
         String name = paperId.toString();
         String value = "";
