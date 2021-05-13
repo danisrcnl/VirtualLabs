@@ -36,6 +36,8 @@ export class LoginDialogComponent implements OnInit {
     }
 
     ngOnInit() {
+
+        //Controllo che username e password non siano vuoti 
         this.loginForm = this.formBuilder.group({
             username: ['', Validators.required],
             password: ['', Validators.required]

@@ -135,6 +135,7 @@ this.courseservice.addCourse(this.courseDTO,this.teacherId)
 }
 
 
+//Cancello il corso 
  delete()
  {
   let name = this.selectedcourse.name;
@@ -168,11 +169,14 @@ if(this.data.enabled == true)
 {
   this.courseservice.setEnabled(name,this.data.enabled).subscribe(data => {
 
+    //Aggiorno la vista
 this.courses$ = this.teacherService.getCourseforTeacher(this.teacherId);
 
   });
 }
 else
+
+//Aggiorno la vista
 this.courses$ = this.teacherService.getCourseforTeacher(this.teacherId);
  
 
