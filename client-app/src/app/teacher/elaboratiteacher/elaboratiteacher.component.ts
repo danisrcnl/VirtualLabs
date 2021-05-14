@@ -58,10 +58,7 @@ export class ElaboratiteacherComponent implements OnInit {
     
   }
 
-  addAssignment () {
-
-  }
-
+  
   setView (papersWithHistory: PaperWithHistory[]) {
     this.viewingPapers = papersWithHistory;
     this.filteredViewingPapers = this.viewingPapers;
@@ -126,6 +123,9 @@ export class ElaboratiteacherComponent implements OnInit {
   }
 
 
+
+  //Apro lo specchietto per creare l'assignment, ricevo i dati dal dialog e li mando al componente padre 
+  //che chiamerà il metodo del serivzio adibito alla creazione dell'assignment
   createconsegna() 
   {
     const dialogRef = this.dialog.open(ConsegnadialogComponent, {

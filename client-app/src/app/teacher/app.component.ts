@@ -92,9 +92,7 @@ for (let i=0 ;i< this.courses.length; i++)
         c.path = this.temp;
       })
 
-    }
-
-    
+    }   
     })
 
     
@@ -108,6 +106,7 @@ for (let i=0 ;i< this.courses.length; i++)
   }
 
  
+  //Apro lo specchietto per il Login
    openDialog() {
      this.dialog.open (LoginDialogComponent, { height: '400px',
      width: '600px',});

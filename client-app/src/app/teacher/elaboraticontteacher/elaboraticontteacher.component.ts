@@ -131,6 +131,7 @@ this.assignmentWithPapersnull = [];
   ]
 
 
+  //Trasformo il mese da Stringa a Number
   let month = months.indexOf($event.mese);
 
  
@@ -142,6 +143,7 @@ this.assignmentWithPapersnull = [];
   this.assignment.expiryDate = this.expiryDate;
   
  
+
   this.assignmentService.addAssignmentToCourse(this.assignment,this.courseName).subscribe(data => 
     
     {
@@ -190,7 +192,7 @@ receivesoluzione ($event)
 }
 
 
-
+//Funzione che riceve il paperid e il voto da assegnare a quel determinato paper
 receivevalutazione($event) {
 
 

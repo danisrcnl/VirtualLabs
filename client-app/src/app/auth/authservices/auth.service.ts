@@ -26,8 +26,9 @@ export class AuthService {
         return this.http.post<any>(`${config.apiUrl}/auth/signin`, { username, password })
             .pipe(map(user => {
                 if (user && user.token) {
-                   
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
+                  
+                // Immagazzina i dettagli dell'utente e il jwt token nel local storage per tenere traccia dell'utente loggato
+                
                 localStorage.setItem('currentUser', JSON.stringify(user));
                 this.currentUserSubject.next(user);
             }
@@ -36,10 +37,9 @@ export class AuthService {
     }
 
     logout() {
-        // remove user from local storage and set current user to null
+        // Rimuovo l'utente dal local storage e setto l'utente a null
         
         localStorage.removeItem('currentUser');
-
         this.currentUserSubject.next(null);
 
     }
@@ -56,22 +56,6 @@ export class AuthService {
 
     }
 
-
-    isAuthenticated() {
-
-
-        let user = localStorage.getItem('currentUser');
-        let token = localStorage.getItem('token');
-        console.log(user);
-        console.log(token);
-        if(token) {
-            //Controllo se il token è nullo o vuoto e ritorna vero o falso 
-            return !this.jwtHelper.isTokenExpired(token);
-
-        }
-        else
-        return false
-    }
     
     handleError(err) {
  

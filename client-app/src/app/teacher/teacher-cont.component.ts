@@ -56,22 +56,13 @@ this.studenti = [];
 this.dataSource = null;
 this.studenteaggiunto = null;
 
-    
-    this.href = this.router.url;
+this.href = this.router.url;
      
-       this.courseId = params.name;
+this.courseId = params.name;
       
-      
-      
-       this.courseId.replace('%20', " ");
+this.courseId.replace('%20', " ");
     
-       
-
-      
-
- 
-      
-    
+          
       this.courseService.getenrolledStudents(this.courseId).subscribe(receivedstudents=>{
         receivedstudents.forEach(s1 => {
 
@@ -82,9 +73,7 @@ this.studenteaggiunto = null;
         
           this.studentsComponent.updateFilteredOptions();
   
-          }
-          
-        ) 
+          }) 
         
          })
 
@@ -109,10 +98,6 @@ this.studenteaggiunto = null;
     }
 
   
-
-
-
-
 
   //La funzione riceve lo studente da iscrivere al corso e aggiorna la vista 
   receivestudent($event) {
@@ -167,12 +152,7 @@ this.studenteaggiunto = null;
       this.dataSource = new MatTableDataSource<StudentDTO>(this.enrolledstudents);
 
     
-  }
-
-
-
-    
-  }
+  }}
 
   
 
