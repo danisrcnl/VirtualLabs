@@ -25,7 +25,7 @@ public class ImageController {
     * */
     @GetMapping(value = "/assignments/{name}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
     public @ResponseBody byte[] getAssignmentImg(@PathVariable String name) throws IOException {
-        String fullname = "/src/main/images/assignments/" + name;
+        String fullname = "images/assignments/" + name;
         InputStream in = new FileInputStream(System.getProperty("user.dir") + fullname);
         if(in != null)
             return in.readAllBytes();
@@ -37,7 +37,7 @@ public class ImageController {
      * */
     @GetMapping(value = "/papers/{name}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
     public @ResponseBody byte[] getPaperImg(@PathVariable String name) throws IOException {
-        String fullname = "/src/main/images/papers/" + name;
+        String fullname = "images/papers/" + name;
         InputStream in = new FileInputStream(System.getProperty("user.dir") + fullname);
         if(in != null)
             return in.readAllBytes();

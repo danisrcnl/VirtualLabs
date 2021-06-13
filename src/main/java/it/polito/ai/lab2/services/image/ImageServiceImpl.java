@@ -31,24 +31,25 @@ public class ImageServiceImpl implements ImageService {
             throw new AiException();
         newFileName += ("." + outcome.get());
 
-        File directory = new File("src\\main\\images");
+        //File directory = new File("src\\main\\images"); aggiungi src\\main\\ prima di tutti i pathname
+        File directory = new File("images");
 
         if(!directory.isDirectory()) {
             directory.mkdir();
-            directory = new File("src\\main\\images\\assignments");
+            directory = new File("images/assignments");
             directory.mkdir();
-            directory = new File("src\\main\\images\\papers");
+            directory = new File("images/papers");
             directory.mkdir();
         }
 
 
-        File prova = new File("src\\main\\images\\" + subfolder + "\\" + newFileName);
+        File prova = new File("images/" + subfolder + "/" + newFileName);
         while (prova.exists()) {
             i++;
             newFileName = name + "_" + i + "." + outcome.get();
-            prova = new File("src\\main\\images\\" + subfolder + "\\" + newFileName);
+            prova = new File("images/" + subfolder + "/" + newFileName);
         }
-        String fileLocation = new File("src\\main\\images\\" + subfolder + "\\").getAbsolutePath() + "\\" + newFileName;
+        String fileLocation = new File("images/" + subfolder + "/").getAbsolutePath() + "/" + newFileName;
         FileOutputStream fos = new FileOutputStream(fileLocation);
         fos.write(imageBytes);
         fos.close();
