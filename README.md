@@ -52,7 +52,3 @@ Database is initialized with some data:
 - **courses-teachers relationships** [courseName":"username"]:
 
 		"Applicazioni Internet":"d000000@polito.it"
-
-## Main branches
-- on branch **project**, the backend application
-- on branch **project-mat** the frontend application
