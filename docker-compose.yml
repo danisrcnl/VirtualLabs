@@ -2,25 +2,21 @@ version: '3.1'
 
 services:
   front:
-    image: clientapp
+    image: danisrcnl/ai-project-frontend:1.0
     ports:
       - "4200:4200"
   back:
-    image: backendapp
+    image: danisrcnl/ai-project-backend:1.0
     ports:
       - "8080:8080"
-    volumes:
-      - C:\Users\Kribo\OneDrive\Documenti\images:/images
     depends_on:
       - mysql
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/teams?autoReconnect=true&useSSL=false
   mysql:
-    image: mariadb:latest
+    image: danisrcnl/ai-project-db:2.0
     ports:
       - "3306:3306"
-    volumes:
-      - C:\Users\Kribo\OneDrive\Documenti\db:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=admin
       - MYSQL_DATABASE=teams
