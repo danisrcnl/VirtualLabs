@@ -1,5 +1,6 @@
 # Applicazioni Internet 2020 - Project
 ## @Politecnico di Torino
+### Daniele Sarcinella (danisrcnl) and Matteo Pellegrino (mattellegrino)
 
 You can either clone the entire repository or just get the *docker-compose.yml* file it contains. The only prerequisite is that you have **docker** installed on your machine.
 
